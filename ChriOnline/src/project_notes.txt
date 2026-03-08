@@ -1,0 +1,26 @@
+THE FLOW OF AN ACTION DONE BY THE CLIENT (EXAMPLE) :
+
+[ProductDetailScreen]     # user clicks "Add to Cart"
+        ↓
+[CartController]          # builds Request(Action.ADD_TO_CART, token, data)
+        ↓
+[ServerConnection]        # serializes to JSON, sends via TCP socket
+        ↓
+[ClientHandler]           # receives JSON on a dedicated thread
+        ↓
+[RequestRouter]           # validates token, routes to correct service
+        ↓
+[CartService]             # checks business rules (stock, quantity...)
+        ↓
+[CartDAO]                 # executes SQL via DBConnection
+        ↓
+[CartService]             # builds Response
+        ↓
+[ServerConnection]        # deserializes JSON response
+        ↓
+[CartController]          # reads Response (success/error)
+        ↓
+[CartScreen]              # updates UI accordingly
+
+(parallel)
+[UDPNotifier] → UDP → [UDPListener] → [NotificationScreen]
