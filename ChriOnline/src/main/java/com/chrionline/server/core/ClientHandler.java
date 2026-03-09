@@ -1,5 +1,7 @@
 package com.chrionline.server.core;
 
+import com.chrionline.shared.dto.Response;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,8 +29,8 @@ public class ClientHandler implements Runnable {
             String message;
             while ((message = in.readLine()) != null) {
                 System.out.println("[HANDLER] Received: " + message);
-                // T-04 will plug in here: parse JSON → route → respond
-                out.println("Echo: " + message);
+                Response response = RequestRouter.route(message);
+                out.println(response.toJson());
             }
 
         } catch (IOException e) {
