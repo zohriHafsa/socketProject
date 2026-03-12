@@ -1,5 +1,6 @@
 package com.chrionline.server.core;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,7 +16,9 @@ public class ServerLogger {
 
     static {
         try {
-            writer = new PrintWriter(new FileWriter(LOG_FILE, true), true);
+            File f = new File(LOG_FILE);
+            System.out.println("[LOGGER] Log file: " + f.getAbsolutePath());
+            writer = new PrintWriter(new FileWriter(f, true), true);
         } catch (IOException e) {
             System.err.println("Failed to initialize logger: " + e.getMessage());
         }
@@ -39,6 +42,7 @@ public class ServerLogger {
         System.out.println(line);
         if (writer != null) {
             writer.println(line);
+            writer.flush();
         }
     }
 }
