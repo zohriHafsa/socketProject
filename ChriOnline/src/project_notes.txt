@@ -1,0 +1,74 @@
+THE FLOW OF AN ACTION DONE BY THE CLIENT (EXAMPLE) :
+
+    [ProductDetailScreen]     # user clicks "Add to Cart"
+            ↓
+    [CartController]          # builds Request(Action.ADD_TO_CART, token, data)
+            ↓
+    [ServerConnection]        # serializes to JSON, sends via TCP socket
+            ↓
+    [ClientHandler]           # receives JSON on a dedicated thread
+            ↓
+    [RequestRouter]           # validates token, routes to correct service
+            ↓
+    [CartService]             # checks business rules (stock, quantity...)
+            ↓
+    [CartDAO]                 # executes SQL via DBConnection
+            ↓
+    [CartService]             # builds Response
+            ↓
+    [ServerConnection]        # deserializes JSON response
+            ↓
+    [CartController]          # reads Response (success/error)
+            ↓
+    [CartScreen]              # updates UI accordingly
+
+    (parallel)
+    [UDPNotifier] → UDP → [UDPListener] → [NotificationScreen]
+
+
+SERVICES USED IN RequestRouter (Auth example)
+
+    Right now in RequestRouter:
+
+    private static Response handleAuth(Request request) {
+        // Todo: wire AuthService
+        return Response.ok("Auth placeholder", null);
+    }
+
+    After connecting the service:
+
+        private static Response handleAuth(Request request) {
+            switch (request.getAction()) {
+                case LOGIN:    return AuthService.login(request);
+                case REGISTER: return AuthService.register(request);
+                case LOGOUT:   return AuthService.logout(request);
+                default:       return Response.error("Unknown auth action.");
+            }
+        }
+
+    Example service logic:
+
+        public static Response login(Request request) {
+            String email = request.getString("email");
+            String password = request.getString("password");
+
+            User user = UserDAO.findByEmail(email);
+            if (user == null) return Response.error("User not found.");
+
+            if (!user.getPasswordHash().equals(hash(password)))
+                return Response.error("Wrong password.");
+
+            String token = SessionManager.createSession(user);
+            return Response.ok("Login successful.", token);
+        }
+
+    Flow:
+        RequestRouter.handleAuth(request)
+            ↓
+        AuthService.login(request)
+            ↓
+        UserDAO.findByEmail(email)
+        ↓
+        MySQL
+        ↓
+        Response → back to client

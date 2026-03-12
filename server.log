@@ -1,0 +1,124 @@
+[2026-03-12 00:31:33.977] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:31:34.453] [INFO] [main] Routing action: ADD_TO_CART
+[2026-03-12 00:31:34.458] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:31:34.464] [INFO] [main] Routing action: REMOVE_FROM_CART
+[2026-03-12 00:31:34.469] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:31:34.474] [INFO] [main] Routing action: CLEAR_CART
+[2026-03-12 00:31:34.475] [INFO] [main] CLEAR_CART userId=3
+[2026-03-12 00:31:34.478] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:31:34.484] [INFO] [main] Routing action: PLACE_ORDER
+[2026-03-12 00:31:34.488] [INFO] [main] Routing action: GET_ORDER_HISTORY
+[2026-03-12 00:31:34.500] [INFO] [main] Routing action: GET_ORDER_STATUS
+[2026-03-12 00:31:34.507] [INFO] [main] Routing action: PROCESS_PAYMENT
+[2026-03-12 00:31:34.517] [INFO] [main] PROCESS_PAYMENT orderId=ORD-0004-2026 status=ACCEPTE
+[2026-03-12 00:40:26.389] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:40:26.683] [INFO] [main] Routing action: ADD_TO_CART
+[2026-03-12 00:40:26.694] [INFO] [main] ADD_TO_CART userId=2 productId=5 qty=1
+[2026-03-12 00:40:26.695] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:40:26.701] [INFO] [main] Routing action: REMOVE_FROM_CART
+[2026-03-12 00:40:26.706] [INFO] [main] REMOVE_FROM_CART userId=2 productId=5
+[2026-03-12 00:40:26.708] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:40:26.714] [INFO] [main] Routing action: CLEAR_CART
+[2026-03-12 00:40:26.718] [INFO] [main] CLEAR_CART userId=3
+[2026-03-12 00:40:26.720] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:40:26.723] [INFO] [main] Routing action: PLACE_ORDER
+[2026-03-12 00:40:26.801] [INFO] [main] PLACE_ORDER userId=4 orderId=ORD-E66FEADC total=74.97 payment=ACCEPTE
+[2026-03-12 00:40:26.802] [INFO] [main] Routing action: GET_ORDER_HISTORY
+[2026-03-12 00:40:26.818] [INFO] [main] Routing action: GET_ORDER_STATUS
+[2026-03-12 00:40:26.826] [INFO] [main] Routing action: PROCESS_PAYMENT
+[2026-03-12 00:40:26.836] [INFO] [main] PROCESS_PAYMENT orderId=ORD-0004-2026 status=ACCEPTE
+[2026-03-12 00:43:39.586] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:43:39.862] [INFO] [main] Routing action: ADD_TO_CART
+[2026-03-12 00:43:39.876] [INFO] [main] ADD_TO_CART userId=2 productId=5 qty=1
+[2026-03-12 00:43:39.877] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:43:39.882] [INFO] [main] Routing action: REMOVE_FROM_CART
+[2026-03-12 00:43:39.887] [INFO] [main] REMOVE_FROM_CART userId=2 productId=5
+[2026-03-12 00:43:39.889] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:43:39.894] [INFO] [main] Routing action: CLEAR_CART
+[2026-03-12 00:43:39.898] [INFO] [main] CLEAR_CART userId=3
+[2026-03-12 00:43:39.900] [INFO] [main] Routing action: GET_CART
+[2026-03-12 00:43:39.904] [INFO] [main] Routing action: PLACE_ORDER
+[2026-03-12 00:43:39.907] [INFO] [main] Routing action: GET_ORDER_HISTORY
+[2026-03-12 00:43:39.922] [INFO] [main] Routing action: GET_ORDER_STATUS
+[2026-03-12 00:43:39.928] [INFO] [main] Routing action: PROCESS_PAYMENT
+[2026-03-12 00:43:46.102] [INFO] [main] Starting ChriOnline Server...
+[2026-03-12 00:43:53.033] [INFO] [pool-1-thread-1] Client connected: 0:0:0:0:0:0:0:1
+[2026-03-12 00:43:56.341] [INFO] [pool-1-thread-1] Received from 0:0:0:0:0:0:0:1: 
+[2026-03-12 00:43:56.404] [INFO] [pool-1-thread-1] Client disconnected.
+[2026-03-12 00:44:05.695] [INFO] [pool-1-thread-3] Client connected: 0:0:0:0:0:0:0:1
+[2026-03-12 00:44:25.370] [INFO] [pool-1-thread-3] Received from 0:0:0:0:0:0:0:1: ff
+[2026-03-12 00:44:25.397] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-12 00:44:25.410] [INFO] [pool-1-thread-3] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-12 00:44:51.731] [INFO] [pool-1-thread-3] Received from 0:0:0:0:0:0:0:1: 
+[2026-03-12 00:44:51.734] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-12 00:44:51.735] [INFO] [pool-1-thread-3] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-12 00:44:54.490] [INFO] [pool-1-thread-3] Received from 0:0:0:0:0:0:0:1: 
+[2026-03-12 00:44:54.491] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-12 00:44:54.491] [INFO] [pool-1-thread-3] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-12 00:45:50.250] [INFO] [pool-1-thread-3] Received from 0:0:0:0:0:0:0:1: 
+[2026-03-12 00:45:50.251] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-12 00:45:50.251] [INFO] [pool-1-thread-3] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-12 00:46:05.065] [INFO] [pool-1-thread-3] Received from 0:0:0:0:0:0:0:1: ddd
+[2026-03-12 00:46:05.066] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-12 00:46:05.067] [INFO] [pool-1-thread-3] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-12 00:46:11.018] [INFO] [pool-1-thread-3] Received from 0:0:0:0:0:0:0:1: 
+[2026-03-12 00:46:11.019] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-12 00:46:11.020] [INFO] [pool-1-thread-3] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-12 00:46:45.937] [INFO] [pool-1-thread-3] Received from 0:0:0:0:0:0:0:1: {"action":"GET_CART","data":{"userId":2}}
+[2026-03-12 00:46:45.945] [INFO] [pool-1-thread-3] Routing action: GET_CART
+[2026-03-12 00:46:46.237] [INFO] [pool-1-thread-3] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"OK","data":{"total":1269.99,"cartId":1,"items":[{"unitPrice":1199.99,"quantity":1,"productId":1,"subtotal":1199.99,"cartId":1,"stockQuantity":30,"productName":"iPhone 15 Pro","productDescription":"Smartphone Apple 256 Go, titane naturel","productPrice":1199.99,"cartItemId":1},{"unitPrice":35.0,"quantity":2,"productId":11,"subtotal":70.0,"cartId":1,"stockQuantity":60,"productName":"Clean Code","productDescription":"Robert C. Martin - écrire du code propre","productPrice":35.0,"cartItemId":2}],"itemCount":2}}
+[2026-03-12 00:46:51.497] [INFO] [pool-1-thread-3] Client disconnected.
+[2026-03-12 00:47:59.579] [INFO] [pool-1-thread-4] Client connected: 0:0:0:0:0:0:0:1
+[2026-03-12 00:48:49.013] [INFO] [pool-1-thread-4] Received from 0:0:0:0:0:0:0:1: {"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}
+[2026-03-12 00:48:49.014] [ERROR] [pool-1-thread-4] Invalid JSON: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 43 path $
+[2026-03-12 00:48:49.015] [INFO] [pool-1-thread-4] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Invalid JSON: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 43 path $"}
+[2026-03-12 00:48:55.303] [INFO] [pool-1-thread-4] Received from 0:0:0:0:0:0:0:1: 
+[2026-03-12 00:48:55.304] [ERROR] [pool-1-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-12 00:48:55.305] [INFO] [pool-1-thread-4] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-12 00:49:03.675] [INFO] [pool-1-thread-4] Received from 0:0:0:0:0:0:0:1: {"action":"GET_CART","data":{"userId":2}}
+[2026-03-12 00:49:03.676] [INFO] [pool-1-thread-4] Routing action: GET_CART
+[2026-03-12 00:49:03.682] [INFO] [pool-1-thread-4] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"OK","data":{"total":1269.99,"cartId":1,"items":[{"unitPrice":1199.99,"quantity":1,"productId":1,"subtotal":1199.99,"cartId":1,"stockQuantity":30,"productName":"iPhone 15 Pro","productDescription":"Smartphone Apple 256 Go, titane naturel","productPrice":1199.99,"cartItemId":1},{"unitPrice":35.0,"quantity":2,"productId":11,"subtotal":70.0,"cartId":1,"stockQuantity":60,"productName":"Clean Code","productDescription":"Robert C. Martin - écrire du code propre","productPrice":35.0,"cartItemId":2}],"itemCount":2}}
+[2026-03-12 00:49:11.927] [INFO] [pool-1-thread-4] Received from 0:0:0:0:0:0:0:1: {"action":"ADD_TO_CART","data":{"productId":5,"quantity":1,"userId":2}}
+[2026-03-12 00:49:11.930] [INFO] [pool-1-thread-4] Routing action: ADD_TO_CART
+[2026-03-12 00:49:11.953] [INFO] [pool-1-thread-4] ADD_TO_CART userId=2 productId=5 qty=1
+[2026-03-12 00:49:11.954] [INFO] [pool-1-thread-4] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"Product added to cart"}
+[2026-03-12 00:49:19.215] [INFO] [pool-1-thread-4] Received from 0:0:0:0:0:0:0:1: {"action":"REMOVE_FROM_CART","data":{"productId":5,"userId":2}}
+[2026-03-12 00:49:19.215] [INFO] [pool-1-thread-4] Routing action: REMOVE_FROM_CART
+[2026-03-12 00:49:19.225] [INFO] [pool-1-thread-4] REMOVE_FROM_CART userId=2 productId=5
+[2026-03-12 00:49:19.226] [INFO] [pool-1-thread-4] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"Product removed from cart"}
+[2026-03-12 00:49:25.968] [INFO] [pool-1-thread-4] Received from 0:0:0:0:0:0:0:1: {"action":"PLACE_ORDER","data":{"paymentMethod":"CARTE_BANCAIRE","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"cardLastFour":"9999"}}
+[2026-03-12 00:49:25.970] [INFO] [pool-1-thread-4] Routing action: PLACE_ORDER
+[2026-03-12 00:49:25.974] [INFO] [pool-1-thread-4] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Cart is empty"}
+[2026-03-12 00:49:38.894] [INFO] [pool-1-thread-4] Received from 0:0:0:0:0:0:0:1: {"action":"GET_ORDER_HISTORY","data":{"userId":4}}
+[2026-03-12 00:49:38.895] [INFO] [pool-1-thread-4] Routing action: GET_ORDER_HISTORY
+[2026-03-12 00:49:38.919] [INFO] [pool-1-thread-4] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"OK","data":[{"totalAmount":74.97,"createdAt":"2026-03-12 00:40:26","orderId":"ORD-E66FEADC","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"items":[{"unitPrice":24.99,"quantity":3,"productId":7,"orderId":"ORD-E66FEADC","orderItemId":6,"subtotal":74.97,"productSnapshot":"{\"price\":24.99,\"name\":\"T-Shirt Coton Bio\"}","productName":"T-Shirt Coton Bio"}],"status":"VALIDEE","updatedAt":"2026-03-12 00:40:26"},{"totalAmount":74.97,"createdAt":"2026-03-12 00:38:47","orderId":"ORD-0004-2026","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"items":[{"unitPrice":24.99,"quantity":3,"productId":7,"orderId":"ORD-0004-2026","orderItemId":4,"subtotal":74.97,"productSnapshot":"{\"name\":\"T-Shirt Coton Bio\",\"price\":24.99}","productName":"T-Shirt Coton Bio"}],"status":"VALIDEE","updatedAt":"2026-03-12 00:40:26"}]}
+[2026-03-12 00:50:48.416] [INFO] [pool-1-thread-4] Received from 0:0:0:0:0:0:0:1: 
+[2026-03-12 00:50:48.417] [INFO] [pool-1-thread-4] Client disconnected.
+[2026-03-12 00:50:54.190] [INFO] [pool-1-thread-6] Client connected: 0:0:0:0:0:0:0:1
+[2026-03-12 00:51:08.964] [INFO] [pool-1-thread-6] Received from 0:0:0:0:0:0:0:1: {"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}{"action":"GET_CART","data":{"userId":2}}
+[2026-03-12 00:51:08.964] [ERROR] [pool-1-thread-6] Invalid JSON: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 43 path $
+[2026-03-12 00:51:08.965] [INFO] [pool-1-thread-6] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Invalid JSON: com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 43 path $"}
+[2026-03-12 00:51:11.034] [INFO] [pool-1-thread-6] Received from 0:0:0:0:0:0:0:1: {"action":"GET_CART","data":{"userId":2}}
+[2026-03-12 00:51:11.035] [INFO] [pool-1-thread-6] Routing action: GET_CART
+[2026-03-12 00:51:11.042] [INFO] [pool-1-thread-6] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"OK","data":{"total":1269.99,"cartId":1,"items":[{"unitPrice":1199.99,"quantity":1,"productId":1,"subtotal":1199.99,"cartId":1,"stockQuantity":30,"productName":"iPhone 15 Pro","productDescription":"Smartphone Apple 256 Go, titane naturel","productPrice":1199.99,"cartItemId":1},{"unitPrice":35.0,"quantity":2,"productId":11,"subtotal":70.0,"cartId":1,"stockQuantity":60,"productName":"Clean Code","productDescription":"Robert C. Martin - écrire du code propre","productPrice":35.0,"cartItemId":2}],"itemCount":2}}
+[2026-03-12 00:51:15.520] [INFO] [pool-1-thread-6] Received from 0:0:0:0:0:0:0:1: {"action":"ADD_TO_CART","data":{"productId":5,"quantity":1,"userId":2}}
+[2026-03-12 00:51:15.520] [INFO] [pool-1-thread-6] Routing action: ADD_TO_CART
+[2026-03-12 00:51:15.532] [INFO] [pool-1-thread-6] ADD_TO_CART userId=2 productId=5 qty=1
+[2026-03-12 00:51:15.533] [INFO] [pool-1-thread-6] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"Product added to cart"}
+[2026-03-12 00:51:20.162] [INFO] [pool-1-thread-6] Received from 0:0:0:0:0:0:0:1: {"action":"REMOVE_FROM_CART","data":{"productId":5,"userId":2}}
+[2026-03-12 00:51:20.163] [INFO] [pool-1-thread-6] Routing action: REMOVE_FROM_CART
+[2026-03-12 00:51:20.169] [INFO] [pool-1-thread-6] REMOVE_FROM_CART userId=2 productId=5
+[2026-03-12 00:51:20.169] [INFO] [pool-1-thread-6] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"Product removed from cart"}
+[2026-03-12 00:51:24.707] [INFO] [pool-1-thread-6] Received from 0:0:0:0:0:0:0:1: {"action":"PLACE_ORDER","data":{"paymentMethod":"CARTE_BANCAIRE","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"cardLastFour":"9999"}}
+[2026-03-12 00:51:24.708] [INFO] [pool-1-thread-6] Routing action: PLACE_ORDER
+[2026-03-12 00:51:24.712] [INFO] [pool-1-thread-6] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Cart is empty"}
+[2026-03-12 00:51:35.441] [INFO] [pool-1-thread-6] Received from 0:0:0:0:0:0:0:1: {"action":"PLACE_ORDER","data":{"paymentMethod":"CARTE_BANCAIRE","shippingAddress":"10 Rue de Paris, Lyon","userId":2,"cardLastFour":"1234"}}
+[2026-03-12 00:51:35.442] [INFO] [pool-1-thread-6] Routing action: PLACE_ORDER
+[2026-03-12 00:51:35.585] [INFO] [pool-1-thread-6] PLACE_ORDER userId=2 orderId=ORD-9D385967 total=1269.99 payment=ACCEPTE
+[2026-03-12 00:51:35.585] [INFO] [pool-1-thread-6] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"Order placed successfully","data":{"totalAmount":1269.99,"orderId":"ORD-9D385967","paymentId":"PAY-BC418E2B","orderStatus":"VALIDEE","transactionRef":"TXN-8501324C","paymentStatus":"ACCEPTE"}}
+[2026-03-12 00:51:50.867] [INFO] [pool-1-thread-6] Received from 0:0:0:0:0:0:0:1: {"action":"GET_ORDER_HISTORY","data":{"userId":4}}
+[2026-03-12 00:51:50.869] [INFO] [pool-1-thread-6] Routing action: GET_ORDER_HISTORY
+[2026-03-12 00:51:50.876] [INFO] [pool-1-thread-6] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"OK","data":[{"totalAmount":74.97,"createdAt":"2026-03-12 00:40:26","orderId":"ORD-E66FEADC","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"items":[{"unitPrice":24.99,"quantity":3,"productId":7,"orderId":"ORD-E66FEADC","orderItemId":6,"subtotal":74.97,"productSnapshot":"{\"price\":24.99,\"name\":\"T-Shirt Coton Bio\"}","productName":"T-Shirt Coton Bio"}],"status":"VALIDEE","updatedAt":"2026-03-12 00:40:26"},{"totalAmount":74.97,"createdAt":"2026-03-12 00:38:47","orderId":"ORD-0004-2026","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"items":[{"unitPrice":24.99,"quantity":3,"productId":7,"orderId":"ORD-0004-2026","orderItemId":4,"subtotal":74.97,"productSnapshot":"{\"name\":\"T-Shirt Coton Bio\",\"price\":24.99}","productName":"T-Shirt Coton Bio"}],"status":"VALIDEE","updatedAt":"2026-03-12 00:40:26"}]}
+[2026-03-12 00:51:59.470] [INFO] [pool-1-thread-6] Received from 0:0:0:0:0:0:0:1: {"action":"PROCESS_PAYMENT","data":{"cardLastFour":"1111","paymentMethod":"CARTE_BANCAIRE","orderId":"ORD-0004-2026"}}
+[2026-03-12 00:51:59.472] [INFO] [pool-1-thread-6] Routing action: PROCESS_PAYMENT
+[2026-03-12 00:51:59.478] [INFO] [pool-1-thread-6] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Order already paid"}

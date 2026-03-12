@@ -1,0 +1,35 @@
+package com.chrionline.shared.enums;
+
+public enum Action {
+    // Auth
+    LOGIN,
+    REGISTER,
+    LOGOUT,
+
+    // Products
+    GET_PRODUCTS,
+    GET_PRODUCT_DETAIL,
+    SEARCH_PRODUCTS,
+
+    // Cart
+    ADD_TO_CART,
+    REMOVE_FROM_CART,
+    GET_CART,
+    CLEAR_CART,
+
+    // Orders
+    PLACE_ORDER,
+    GET_ORDER_HISTORY,
+    GET_ORDER_STATUS,
+
+    // Payment
+    PROCESS_PAYMENT,
+
+    // Admin
+    ADMIN_ADD_PRODUCT,
+    ADMIN_EDIT_PRODUCT,
+    ADMIN_DELETE_PRODUCT,
+    ADMIN_GET_USERS,
+    ADMIN_TOGGLE_USER,
+    ADMIN_UPDATE_ORDER_STATUS
+}
