@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
+
     private final Socket socket;
     private BufferedReader in;
     private PrintWriter out;
@@ -19,41 +20,39 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
+        String clientAddr = socket.getInetAddress().getHostAddress();
         try {
-            in  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
 
-            System.out.println("[HANDLER] Client connected: "
-                    + socket.getInetAddress().getHostAddress());
+            ServerLogger.info("Client connected: " + clientAddr);
 
             String message;
             while ((message = in.readLine()) != null) {
-                System.out.println("[HANDLER] Received: " + message);
+                ServerLogger.info("Received from " + clientAddr + ": " + message);
                 Response response = RequestRouter.route(message);
-                out.println(response.toJson());
+                String responseJson = response.toJson();
+                ServerLogger.info("Response to " + clientAddr + ": " + responseJson);
+                out.println(responseJson);
             }
 
         } catch (IOException e) {
-            System.err.println("[HANDLER] Connection lost: " + e.getMessage());
+            ServerLogger.error("Connection lost (" + clientAddr + "): " + e.getMessage());
         } finally {
             disconnect();
         }
     }
 
     public void sendMessage(String message) {
-        if (out != null) {
-            out.println(message);
-        }
+        if (out != null) out.println(message);
     }
 
     public void disconnect() {
         try {
-            if (socket != null && !socket.isClosed()) {
-                socket.close();
-            }
-            System.out.println("[HANDLER] Client disconnected.");
+            if (socket != null && !socket.isClosed()) socket.close();
+            ServerLogger.info("Client disconnected.");
         } catch (IOException e) {
-            System.err.println("[HANDLER] Error closing socket: " + e.getMessage());
+            ServerLogger.error("Error closing socket: " + e.getMessage());
         }
     }
 }
