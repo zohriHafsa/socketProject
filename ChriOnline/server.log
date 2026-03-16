@@ -1,0 +1,705 @@
+[2026-03-16 00:03:33.726] [INFO] [com.chrionline.server.ServerMain.main()] Starting ChriOnline Server...
+[2026-03-16 00:05:28.704] [INFO] [pool-2-thread-1] Client connected: 127.0.0.1
+[2026-03-16 00:05:28.722] [INFO] [pool-2-thread-1] Received from 127.0.0.1: GET / HTTP/1.1
+[2026-03-16 00:05:28.804] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.804] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.804] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 00:05:28.812] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.814] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.814] [INFO] [pool-2-thread-1] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 00:05:28.814] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.816] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.821] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+[2026-03-16 00:05:28.822] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.824] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.824] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 00:05:28.825] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.825] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.827] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 00:05:28.829] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.830] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.830] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 00:05:28.834] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.834] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.834] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 00:05:28.838] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.839] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.839] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Upgrade-Insecure-Requests: 1
+[2026-03-16 00:05:28.841] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.842] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.842] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Sec-Fetch-Dest: document
+[2026-03-16 00:05:28.845] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.845] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.848] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Sec-Fetch-Mode: navigate
+[2026-03-16 00:05:28.854] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.856] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.858] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Sec-Fetch-Site: none
+[2026-03-16 00:05:28.868] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.868] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.870] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Sec-Fetch-User: ?1
+[2026-03-16 00:05:28.871] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.871] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.872] [INFO] [pool-2-thread-1] Received from 127.0.0.1: Priority: u=0, i
+[2026-03-16 00:05:28.872] [ERROR] [pool-2-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.872] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.872] [INFO] [pool-2-thread-1] Received from 127.0.0.1: 
+[2026-03-16 00:05:28.872] [INFO] [pool-2-thread-1] Client disconnected.
+[2026-03-16 00:05:28.990] [INFO] [pool-2-thread-3] Client connected: 127.0.0.1
+[2026-03-16 00:05:28.990] [INFO] [pool-2-thread-3] Received from 127.0.0.1: GET /favicon.ico HTTP/1.1
+[2026-03-16 00:05:28.992] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.992] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.992] [INFO] [pool-2-thread-3] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 00:05:28.992] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.992] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.992] [INFO] [pool-2-thread-3] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 00:05:28.992] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.992] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.992] [INFO] [pool-2-thread-3] Received from 127.0.0.1: Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+[2026-03-16 00:05:28.992] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.992] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.992] [INFO] [pool-2-thread-3] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 00:05:28.992] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.992] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.992] [INFO] [pool-2-thread-3] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 00:05:28.992] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:28.992] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:28.999] [INFO] [pool-2-thread-3] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 00:05:28.999] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:29.001] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:29.002] [INFO] [pool-2-thread-3] Received from 127.0.0.1: Referer: http://localhost:9090/
+[2026-03-16 00:05:29.002] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:29.002] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:29.002] [INFO] [pool-2-thread-3] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 00:05:29.002] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:29.002] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:29.007] [INFO] [pool-2-thread-3] Received from 127.0.0.1: Sec-Fetch-Dest: image
+[2026-03-16 00:05:29.007] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:29.007] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:29.007] [INFO] [pool-2-thread-3] Received from 127.0.0.1: Sec-Fetch-Mode: no-cors
+[2026-03-16 00:05:29.010] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:29.010] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:29.011] [INFO] [pool-2-thread-3] Received from 127.0.0.1: Sec-Fetch-Site: same-origin
+[2026-03-16 00:05:29.012] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:29.012] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:29.012] [INFO] [pool-2-thread-3] Received from 127.0.0.1: Priority: u=6
+[2026-03-16 00:05:29.014] [ERROR] [pool-2-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 00:05:29.014] [INFO] [pool-2-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 00:05:29.014] [INFO] [pool-2-thread-3] Received from 127.0.0.1: 
+[2026-03-16 00:05:29.014] [INFO] [pool-2-thread-3] Client disconnected.
+[2026-03-16 01:12:15.103] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_CART
+[2026-03-16 01:12:15.379] [INFO] [com.chrionline.MainTest.main()] Routing action: ADD_TO_CART
+[2026-03-16 01:12:15.388] [INFO] [com.chrionline.MainTest.main()] ADD_TO_CART userId=2 productId=5 qty=1
+[2026-03-16 01:12:15.390] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_CART
+[2026-03-16 01:12:15.396] [INFO] [com.chrionline.MainTest.main()] Routing action: REMOVE_FROM_CART
+[2026-03-16 01:12:15.401] [INFO] [com.chrionline.MainTest.main()] REMOVE_FROM_CART userId=2 productId=5
+[2026-03-16 01:12:15.404] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_CART
+[2026-03-16 01:12:15.409] [INFO] [com.chrionline.MainTest.main()] Routing action: CLEAR_CART
+[2026-03-16 01:12:15.414] [INFO] [com.chrionline.MainTest.main()] CLEAR_CART userId=3
+[2026-03-16 01:12:15.418] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_CART
+[2026-03-16 01:12:15.424] [INFO] [com.chrionline.MainTest.main()] Routing action: PLACE_ORDER
+[2026-03-16 01:12:15.496] [INFO] [com.chrionline.MainTest.main()] PLACE_ORDER userId=4 orderId=ORD-7C9E12F4 total=74.97 payment=ACCEPTE
+[2026-03-16 01:12:15.499] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_ORDER_HISTORY
+[2026-03-16 01:12:15.507] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_ORDER_STATUS
+[2026-03-16 01:12:15.514] [INFO] [com.chrionline.MainTest.main()] Routing action: PROCESS_PAYMENT
+[2026-03-16 01:12:15.522] [INFO] [com.chrionline.MainTest.main()] PROCESS_PAYMENT orderId=ORD-0004-2026 status=ACCEPTE
+[2026-03-16 01:13:34.899] [INFO] [com.chrionline.server.ServerMain.main()] Starting ChriOnline Server...
+[2026-03-16 01:13:42.018] [INFO] [pool-1-thread-1] Client connected: 127.0.0.1
+[2026-03-16 01:13:42.038] [INFO] [pool-1-thread-1] Received from 127.0.0.1: GET / HTTP/1.1
+[2026-03-16 01:13:42.088] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.093] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.093] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 01:13:42.096] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.098] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.099] [INFO] [pool-1-thread-1] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 01:13:42.101] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.102] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.102] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+[2026-03-16 01:13:42.103] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.103] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.103] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 01:13:42.103] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.103] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.103] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 01:13:42.103] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.108] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.109] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 01:13:42.109] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.109] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.111] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 01:13:42.112] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.114] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.116] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Upgrade-Insecure-Requests: 1
+[2026-03-16 01:13:42.116] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.116] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.118] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Sec-Fetch-Dest: document
+[2026-03-16 01:13:42.118] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.118] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.118] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Sec-Fetch-Mode: navigate
+[2026-03-16 01:13:42.121] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.122] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.122] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Sec-Fetch-Site: none
+[2026-03-16 01:13:42.123] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.123] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.125] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Sec-Fetch-User: ?1
+[2026-03-16 01:13:42.125] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.125] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.128] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Priority: u=0, i
+[2026-03-16 01:13:42.134] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.134] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.134] [INFO] [pool-1-thread-1] Received from 127.0.0.1: 
+[2026-03-16 01:13:42.138] [INFO] [pool-1-thread-1] Client disconnected.
+[2026-03-16 01:13:42.222] [INFO] [pool-1-thread-3] Client connected: 127.0.0.1
+[2026-03-16 01:13:42.222] [INFO] [pool-1-thread-3] Received from 127.0.0.1: GET /favicon.ico HTTP/1.1
+[2026-03-16 01:13:42.224] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.224] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.224] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 01:13:42.224] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.226] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.226] [INFO] [pool-1-thread-3] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 01:13:42.226] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.228] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.228] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+[2026-03-16 01:13:42.228] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.232] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.234] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 01:13:42.234] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.234] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.236] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 01:13:42.236] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.236] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.236] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 01:13:42.238] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.238] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.238] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Referer: http://localhost:9090/
+[2026-03-16 01:13:42.238] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.238] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.238] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 01:13:42.241] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.242] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.243] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Sec-Fetch-Dest: image
+[2026-03-16 01:13:42.244] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.244] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.248] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Sec-Fetch-Mode: no-cors
+[2026-03-16 01:13:42.249] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.250] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.251] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Sec-Fetch-Site: same-origin
+[2026-03-16 01:13:42.251] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.251] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.251] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Priority: u=6
+[2026-03-16 01:13:42.251] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 01:13:42.251] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 01:13:42.251] [INFO] [pool-1-thread-3] Received from 127.0.0.1: 
+[2026-03-16 01:13:42.251] [INFO] [pool-1-thread-3] Client disconnected.
+[2026-03-16 01:15:44.857] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_CART
+[2026-03-16 01:15:45.037] [INFO] [com.chrionline.MainTest.main()] Routing action: ADD_TO_CART
+[2026-03-16 01:15:45.047] [INFO] [com.chrionline.MainTest.main()] ADD_TO_CART userId=2 productId=5 qty=1
+[2026-03-16 01:15:45.049] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_CART
+[2026-03-16 01:15:45.056] [INFO] [com.chrionline.MainTest.main()] Routing action: REMOVE_FROM_CART
+[2026-03-16 01:15:45.062] [INFO] [com.chrionline.MainTest.main()] REMOVE_FROM_CART userId=2 productId=5
+[2026-03-16 01:15:45.067] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_CART
+[2026-03-16 01:15:45.072] [INFO] [com.chrionline.MainTest.main()] Routing action: CLEAR_CART
+[2026-03-16 01:15:45.076] [INFO] [com.chrionline.MainTest.main()] CLEAR_CART userId=3
+[2026-03-16 01:15:45.077] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_CART
+[2026-03-16 01:15:45.084] [INFO] [com.chrionline.MainTest.main()] Routing action: PLACE_ORDER
+[2026-03-16 01:15:45.089] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_ORDER_HISTORY
+[2026-03-16 01:15:45.099] [INFO] [com.chrionline.MainTest.main()] Routing action: GET_ORDER_STATUS
+[2026-03-16 01:15:45.109] [INFO] [com.chrionline.MainTest.main()] Routing action: PROCESS_PAYMENT
+[2026-03-16 11:23:18.874] [INFO] [com.chrionline.server.ServerMain.main()] Starting ChriOnline Server...
+[2026-03-16 11:23:39.527] [INFO] [pool-1-thread-1] Client connected: 127.0.0.1
+[2026-03-16 11:23:39.986] [INFO] [pool-1-thread-1] Received from 127.0.0.1: GET / HTTP/1.1
+[2026-03-16 11:23:40.060] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.065] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.066] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 11:23:40.067] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.068] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.068] [INFO] [pool-1-thread-1] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 11:23:40.069] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.071] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.075] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+[2026-03-16 11:23:40.085] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.089] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.092] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 11:23:40.095] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.105] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.106] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 11:23:40.107] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.108] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.108] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 11:23:40.110] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.110] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.111] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 11:23:40.112] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.115] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.116] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Upgrade-Insecure-Requests: 1
+[2026-03-16 11:23:40.117] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.118] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.120] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Sec-Fetch-Dest: document
+[2026-03-16 11:23:40.123] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.124] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.125] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Sec-Fetch-Mode: navigate
+[2026-03-16 11:23:40.126] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.126] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.127] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Sec-Fetch-Site: none
+[2026-03-16 11:23:40.127] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.128] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.128] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Sec-Fetch-User: ?1
+[2026-03-16 11:23:40.131] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.132] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.134] [INFO] [pool-1-thread-1] Received from 127.0.0.1: Priority: u=0, i
+[2026-03-16 11:23:40.135] [ERROR] [pool-1-thread-1] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.136] [INFO] [pool-1-thread-1] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.136] [INFO] [pool-1-thread-1] Received from 127.0.0.1: 
+[2026-03-16 11:23:40.139] [INFO] [pool-1-thread-1] Client disconnected.
+[2026-03-16 11:23:40.251] [INFO] [pool-1-thread-3] Client connected: 127.0.0.1
+[2026-03-16 11:23:40.253] [INFO] [pool-1-thread-3] Received from 127.0.0.1: GET /favicon.ico HTTP/1.1
+[2026-03-16 11:23:40.254] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.256] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.258] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 11:23:40.266] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.267] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.267] [INFO] [pool-1-thread-3] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 11:23:40.270] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.272] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.273] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+[2026-03-16 11:23:40.275] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.277] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.288] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 11:23:40.294] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.299] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.302] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 11:23:40.304] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.306] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.308] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 11:23:40.309] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.309] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.310] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Referer: http://localhost:9090/
+[2026-03-16 11:23:40.311] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.315] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.316] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 11:23:40.318] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.318] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.321] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Sec-Fetch-Dest: image
+[2026-03-16 11:23:40.323] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.324] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.325] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Sec-Fetch-Mode: no-cors
+[2026-03-16 11:23:40.325] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.326] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.326] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Sec-Fetch-Site: same-origin
+[2026-03-16 11:23:40.327] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.327] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.327] [INFO] [pool-1-thread-3] Received from 127.0.0.1: Priority: u=6
+[2026-03-16 11:23:40.328] [ERROR] [pool-1-thread-3] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:23:40.328] [INFO] [pool-1-thread-3] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:23:40.328] [INFO] [pool-1-thread-3] Received from 127.0.0.1: 
+[2026-03-16 11:23:40.329] [INFO] [pool-1-thread-3] Client disconnected.
+[2026-03-16 11:27:35.556] [INFO] [com.chrionline.server.ServerMain.main()] Starting ChriOnline Server...
+[2026-03-16 11:28:42.056] [INFO] [pool-1-thread-1] Client connected: 0:0:0:0:0:0:0:1
+[2026-03-16 11:28:42.130] [INFO] [pool-1-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"GET_PRODUCTS","token":null,"data":null}
+[2026-03-16 11:28:42.163] [INFO] [pool-1-thread-1] Routing action: GET_PRODUCTS
+[2026-03-16 11:28:42.168] [INFO] [pool-1-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"Products placeholder - action: GET_PRODUCTS"}
+[2026-03-16 11:28:47.790] [INFO] [pool-1-thread-1] Client disconnected.
+[2026-03-16 11:32:38.161] [INFO] [com.chrionline.server.ServerMain.main()] Starting ChriOnline Server...
+[2026-03-16 11:32:59.399] [INFO] [pool-2-thread-1] Client connected: 0:0:0:0:0:0:0:1
+[2026-03-16 11:32:59.433] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"GET_PRODUCTS","token":null,"data":null}
+[2026-03-16 11:32:59.467] [INFO] [pool-2-thread-1] Routing action: GET_PRODUCTS
+[2026-03-16 11:32:59.670] [INFO] [pool-2-thread-1] GET_PRODUCTS count=18
+[2026-03-16 11:32:59.674] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"OK","data":[{"isAvailable":true,"productId":1,"price":1199.99,"name":"iPhone 15 Pro","description":"...","stockQuantity":30,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"name":"Samsung Galaxy S24","description":"...","stockQuantity":45,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":150,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":16,"price":1299.0,"name":"V?lo de Route Carbon","description":"...","stockQuantity":8,"categoryName":"Sport","categoryId":4},{"isAvailable":true,"productId":17,"price":29.9,"name":"Tapis de Yoga","description":"...","stockQuantity":150,"categoryName":"Sport","categoryId":4},{"isAvailable":true,"productId":18,"price":149.99,"name":"Raquette de Tennis","description":"...","stockQuantity":30,"categoryName":"Sport","categoryId":4}]}
+[2026-03-16 11:33:14.908] [INFO] [pool-2-thread-2] Client connected: 127.0.0.1
+[2026-03-16 11:33:14.910] [INFO] [pool-2-thread-2] Received from 127.0.0.1: GET / HTTP/1.1
+[2026-03-16 11:33:14.911] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.912] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.912] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 11:33:14.913] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.914] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.914] [INFO] [pool-2-thread-2] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 11:33:14.915] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.917] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.918] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+[2026-03-16 11:33:14.918] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.918] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.920] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 11:33:14.920] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.921] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.921] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 11:33:14.922] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.923] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.923] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 11:33:14.924] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.925] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.925] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 11:33:14.926] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.926] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.927] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Upgrade-Insecure-Requests: 1
+[2026-03-16 11:33:14.927] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.928] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.928] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Sec-Fetch-Dest: document
+[2026-03-16 11:33:14.929] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.929] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.930] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Sec-Fetch-Mode: navigate
+[2026-03-16 11:33:14.930] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.931] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.931] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Sec-Fetch-Site: none
+[2026-03-16 11:33:14.931] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.933] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.934] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Sec-Fetch-User: ?1
+[2026-03-16 11:33:14.934] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.935] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.935] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Priority: u=0, i
+[2026-03-16 11:33:14.936] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.937] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.937] [INFO] [pool-2-thread-2] Received from 127.0.0.1: 
+[2026-03-16 11:33:14.938] [INFO] [pool-2-thread-2] Client disconnected.
+[2026-03-16 11:33:14.993] [INFO] [pool-2-thread-4] Client connected: 127.0.0.1
+[2026-03-16 11:33:14.994] [INFO] [pool-2-thread-4] Received from 127.0.0.1: GET /favicon.ico HTTP/1.1
+[2026-03-16 11:33:14.994] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.995] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.995] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 11:33:14.996] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.996] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.997] [INFO] [pool-2-thread-4] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 11:33:14.997] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.997] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.998] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+[2026-03-16 11:33:14.998] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:14.999] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:14.999] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 11:33:15.000] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:15.000] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:15.000] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 11:33:15.001] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:15.002] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:15.002] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 11:33:15.004] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:15.004] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:15.005] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Referer: http://localhost:9090/
+[2026-03-16 11:33:15.005] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:15.005] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:15.006] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 11:33:15.006] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:15.006] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:15.008] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Sec-Fetch-Dest: image
+[2026-03-16 11:33:15.008] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:15.009] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:15.009] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Sec-Fetch-Mode: no-cors
+[2026-03-16 11:33:15.010] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:15.010] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:15.010] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Sec-Fetch-Site: same-origin
+[2026-03-16 11:33:15.011] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:15.011] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:15.011] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Priority: u=6
+[2026-03-16 11:33:15.012] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:15.012] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:15.012] [INFO] [pool-2-thread-4] Received from 127.0.0.1: 
+[2026-03-16 11:33:15.013] [INFO] [pool-2-thread-4] Client disconnected.
+[2026-03-16 11:33:16.247] [INFO] [pool-2-thread-6] Client connected: 127.0.0.1
+[2026-03-16 11:33:16.247] [INFO] [pool-2-thread-6] Received from 127.0.0.1: GET / HTTP/1.1
+[2026-03-16 11:33:16.247] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.249] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.249] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 11:33:16.249] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.249] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.250] [INFO] [pool-2-thread-6] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 11:33:16.250] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.250] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.251] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+[2026-03-16 11:33:16.251] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.252] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.252] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 11:33:16.253] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.253] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.253] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 11:33:16.254] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.254] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.255] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 11:33:16.255] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.256] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.256] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 11:33:16.256] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.257] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.257] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Upgrade-Insecure-Requests: 1
+[2026-03-16 11:33:16.258] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.258] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.258] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Sec-Fetch-Dest: document
+[2026-03-16 11:33:16.259] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.259] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.259] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Sec-Fetch-Mode: navigate
+[2026-03-16 11:33:16.260] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.260] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.260] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Sec-Fetch-Site: none
+[2026-03-16 11:33:16.262] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.262] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.262] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Sec-Fetch-User: ?1
+[2026-03-16 11:33:16.263] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.263] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.264] [INFO] [pool-2-thread-6] Received from 127.0.0.1: Priority: u=0, i
+[2026-03-16 11:33:16.264] [ERROR] [pool-2-thread-6] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.264] [INFO] [pool-2-thread-6] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.265] [INFO] [pool-2-thread-6] Received from 127.0.0.1: 
+[2026-03-16 11:33:16.265] [INFO] [pool-2-thread-6] Client disconnected.
+[2026-03-16 11:33:16.309] [INFO] [pool-2-thread-8] Client connected: 127.0.0.1
+[2026-03-16 11:33:16.310] [INFO] [pool-2-thread-8] Received from 127.0.0.1: GET /favicon.ico HTTP/1.1
+[2026-03-16 11:33:16.310] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.310] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.311] [INFO] [pool-2-thread-8] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 11:33:16.311] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.311] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.312] [INFO] [pool-2-thread-8] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 11:33:16.312] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.312] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.312] [INFO] [pool-2-thread-8] Received from 127.0.0.1: Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+[2026-03-16 11:33:16.313] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.313] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.313] [INFO] [pool-2-thread-8] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 11:33:16.313] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.314] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.314] [INFO] [pool-2-thread-8] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 11:33:16.314] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.314] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.315] [INFO] [pool-2-thread-8] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 11:33:16.315] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.316] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.316] [INFO] [pool-2-thread-8] Received from 127.0.0.1: Referer: http://localhost:9090/
+[2026-03-16 11:33:16.317] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.317] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.317] [INFO] [pool-2-thread-8] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 11:33:16.319] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.319] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.320] [INFO] [pool-2-thread-8] Received from 127.0.0.1: Sec-Fetch-Dest: image
+[2026-03-16 11:33:16.320] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.320] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.321] [INFO] [pool-2-thread-8] Received from 127.0.0.1: Sec-Fetch-Mode: no-cors
+[2026-03-16 11:33:16.321] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.321] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.321] [INFO] [pool-2-thread-8] Received from 127.0.0.1: Sec-Fetch-Site: same-origin
+[2026-03-16 11:33:16.322] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.323] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.323] [INFO] [pool-2-thread-8] Received from 127.0.0.1: Priority: u=6
+[2026-03-16 11:33:16.323] [ERROR] [pool-2-thread-8] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:16.324] [INFO] [pool-2-thread-8] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:16.324] [INFO] [pool-2-thread-8] Received from 127.0.0.1: 
+[2026-03-16 11:33:16.324] [INFO] [pool-2-thread-8] Client disconnected.
+[2026-03-16 11:33:17.690] [INFO] [pool-2-thread-10] Client connected: 127.0.0.1
+[2026-03-16 11:33:17.696] [INFO] [pool-2-thread-10] Received from 127.0.0.1: GET / HTTP/1.1
+[2026-03-16 11:33:17.697] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.698] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.698] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 11:33:17.699] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.699] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.700] [INFO] [pool-2-thread-10] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 11:33:17.700] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.701] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.701] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+[2026-03-16 11:33:17.702] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.702] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.703] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 11:33:17.704] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.704] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.705] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 11:33:17.705] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.706] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.706] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 11:33:17.707] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.707] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.707] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 11:33:17.709] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.709] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.710] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Upgrade-Insecure-Requests: 1
+[2026-03-16 11:33:17.710] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.711] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.712] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Sec-Fetch-Dest: document
+[2026-03-16 11:33:17.712] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.712] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.712] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Sec-Fetch-Mode: navigate
+[2026-03-16 11:33:17.713] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.714] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.714] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Sec-Fetch-Site: none
+[2026-03-16 11:33:17.714] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.715] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.715] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Sec-Fetch-User: ?1
+[2026-03-16 11:33:17.716] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.716] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.717] [INFO] [pool-2-thread-10] Received from 127.0.0.1: Priority: u=0, i
+[2026-03-16 11:33:17.717] [ERROR] [pool-2-thread-10] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.717] [INFO] [pool-2-thread-10] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.718] [INFO] [pool-2-thread-10] Received from 127.0.0.1: 
+[2026-03-16 11:33:17.718] [INFO] [pool-2-thread-10] Client disconnected.
+[2026-03-16 11:33:17.760] [INFO] [pool-2-thread-12] Client connected: 127.0.0.1
+[2026-03-16 11:33:17.761] [INFO] [pool-2-thread-12] Received from 127.0.0.1: GET /favicon.ico HTTP/1.1
+[2026-03-16 11:33:17.761] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.762] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.762] [INFO] [pool-2-thread-12] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 11:33:17.762] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.762] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.763] [INFO] [pool-2-thread-12] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 11:33:17.763] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.763] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.763] [INFO] [pool-2-thread-12] Received from 127.0.0.1: Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+[2026-03-16 11:33:17.763] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.764] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.764] [INFO] [pool-2-thread-12] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 11:33:17.764] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.764] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.764] [INFO] [pool-2-thread-12] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 11:33:17.765] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.765] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.765] [INFO] [pool-2-thread-12] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 11:33:17.765] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.767] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.767] [INFO] [pool-2-thread-12] Received from 127.0.0.1: Referer: http://localhost:9090/
+[2026-03-16 11:33:17.767] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.768] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.768] [INFO] [pool-2-thread-12] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 11:33:17.768] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.769] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.769] [INFO] [pool-2-thread-12] Received from 127.0.0.1: Sec-Fetch-Dest: image
+[2026-03-16 11:33:17.769] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.769] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.770] [INFO] [pool-2-thread-12] Received from 127.0.0.1: Sec-Fetch-Mode: no-cors
+[2026-03-16 11:33:17.770] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.770] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.770] [INFO] [pool-2-thread-12] Received from 127.0.0.1: Sec-Fetch-Site: same-origin
+[2026-03-16 11:33:17.770] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.771] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.771] [INFO] [pool-2-thread-12] Received from 127.0.0.1: Priority: u=6
+[2026-03-16 11:33:17.771] [ERROR] [pool-2-thread-12] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:33:17.771] [INFO] [pool-2-thread-12] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:33:17.771] [INFO] [pool-2-thread-12] Received from 127.0.0.1: 
+[2026-03-16 11:33:17.772] [INFO] [pool-2-thread-12] Client disconnected.
+[2026-03-16 11:33:30.040] [INFO] [pool-2-thread-1] Client disconnected.
+[2026-03-16 11:48:11.971] [INFO] [com.chrionline.server.ServerMain.main()] Starting ChriOnline Server...
+[2026-03-16 11:48:38.378] [INFO] [com.chrionline.server.ServerMain.main()] Starting ChriOnline Server...
+[2026-03-16 11:49:01.215] [INFO] [pool-2-thread-1] Client connected: 0:0:0:0:0:0:0:1
+[2026-03-16 11:50:51.159] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"REGISTER","token":null,"data":{"username":"hafssa","email":"hafssa@test.com","password":"1234","firstName":"Hafssa","lastName":"Test","address":"Tetouan","phone":"0600000000"}}
+[2026-03-16 11:50:51.200] [INFO] [pool-2-thread-1] Routing action: REGISTER
+[2026-03-16 11:50:51.402] [INFO] [pool-2-thread-1] REGISTER userId=6 username=hafssa
+[2026-03-16 11:50:51.406] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"Registration successful","data":{"userId":6,"username":"hafssa"}}
+[2026-03-16 11:50:51.736] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"LOGIN","token":null,"data":{"username":"hafssa","password":"1234"}}
+[2026-03-16 11:50:51.737] [INFO] [pool-2-thread-1] Routing action: LOGIN
+[2026-03-16 11:50:51.758] [INFO] [pool-2-thread-1] Session created: token=823b2324-a30e-408a-99a4-39b903102eeb userId=6
+[2026-03-16 11:50:51.759] [INFO] [pool-2-thread-1] LOGIN userId=6
+[2026-03-16 11:50:51.759] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"Login successful","data":{"role":"CLIENT","userId":6,"token":"823b2324-a30e-408a-99a4-39b903102eeb","username":"hafssa"}}
+[2026-03-16 11:50:52.333] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"LOGIN","token":null,"data":{"username":"hafssa","password":"wrongpass"}}
+[2026-03-16 11:50:52.333] [INFO] [pool-2-thread-1] Routing action: LOGIN
+[2026-03-16 11:50:52.336] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Invalid password"}
+[2026-03-16 11:50:52.950] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"GET_PRODUCTS","token":null,"data":null}
+[2026-03-16 11:50:52.950] [INFO] [pool-2-thread-1] Routing action: GET_PRODUCTS
+[2026-03-16 11:50:52.953] [INFO] [pool-2-thread-1] GET_PRODUCTS count=18
+[2026-03-16 11:50:52.955] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"OK","data":[{"isAvailable":true,"productId":1,"price":1199.99,"name":"iPhone 15 Pro","description":"...","stockQuantity":30,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"name":"Samsung Galaxy S24","description":"...","stockQuantity":45,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":150,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":16,"price":1299.0,"name":"V?lo de Route Carbon","description":"...","stockQuantity":8,"categoryName":"Sport","categoryId":4},{"isAvailable":true,"productId":17,"price":29.9,"name":"Tapis de Yoga","description":"...","stockQuantity":150,"categoryName":"Sport","categoryId":4},{"isAvailable":true,"productId":18,"price":149.99,"name":"Raquette de Tennis","description":"...","stockQuantity":30,"categoryName":"Sport","categoryId":4}]}
+[2026-03-16 11:50:53.523] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"GET_PRODUCT_DETAIL","token":null,"data":{"productId":1}}
+[2026-03-16 11:50:53.524] [INFO] [pool-2-thread-1] Routing action: GET_PRODUCT_DETAIL
+[2026-03-16 11:50:53.525] [INFO] [pool-2-thread-1] GET_PRODUCT_DETAIL id=1
+[2026-03-16 11:50:53.527] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"OK","data":{"isAvailable":true,"productId":1,"price":1199.99,"name":"iPhone 15 Pro","description":"...","stockQuantity":30,"categoryId":6}}
+[2026-03-16 11:50:54.090] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"SEARCH_PRODUCTS","token":null,"data":{"keyword":"phone"}}
+[2026-03-16 11:50:54.092] [INFO] [pool-2-thread-1] Routing action: SEARCH_PRODUCTS
+[2026-03-16 11:50:54.094] [INFO] [pool-2-thread-1] SEARCH_PRODUCTS keyword='phone' results=1
+[2026-03-16 11:50:54.095] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"OK","data":[{"isAvailable":true,"productId":1,"price":1199.99,"name":"iPhone 15 Pro","description":"...","stockQuantity":30,"categoryName":"Smartphones","categoryId":6}]}
+[2026-03-16 11:50:54.734] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"GET_CART","token":null,"data":{"userId":2}}
+[2026-03-16 11:50:54.735] [INFO] [pool-2-thread-1] Routing action: GET_CART
+[2026-03-16 11:50:54.742] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"OK","data":{"total":1269.99,"cartId":1,"items":[{"unitPrice":1199.99,"quantity":1,"productId":1,"subtotal":1199.99,"cartId":1,"stockQuantity":30,"productName":"iPhone 15 Pro","productDescription":"...","productPrice":1199.99,"cartItemId":1},{"unitPrice":35.0,"quantity":2,"productId":11,"subtotal":70.0,"cartId":1,"stockQuantity":60,"productName":"Clean Code","productDescription":"...","productPrice":35.0,"cartItemId":2}],"itemCount":2}}
+[2026-03-16 11:50:55.312] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"ADD_TO_CART","token":null,"data":{"userId":2,"productId":5,"quantity":1}}
+[2026-03-16 11:50:55.313] [INFO] [pool-2-thread-1] Routing action: ADD_TO_CART
+[2026-03-16 11:50:55.320] [INFO] [pool-2-thread-1] ADD_TO_CART userId=2 productId=5 qty=1
+[2026-03-16 11:50:55.321] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"Product added to cart"}
+[2026-03-16 11:50:55.891] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"REMOVE_FROM_CART","token":null,"data":{"userId":2,"productId":5}}
+[2026-03-16 11:50:55.892] [INFO] [pool-2-thread-1] Routing action: REMOVE_FROM_CART
+[2026-03-16 11:50:55.896] [INFO] [pool-2-thread-1] REMOVE_FROM_CART userId=2 productId=5
+[2026-03-16 11:50:55.897] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"Product removed from cart"}
+[2026-03-16 11:50:56.565] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"PLACE_ORDER","token":null,"data":{"userId":4,"shippingAddress":"5 Rue du Moulin","paymentMethod":"CARTE_BANCAIRE","cardLastFour":"9999"}}
+[2026-03-16 11:50:56.566] [INFO] [pool-2-thread-1] Routing action: PLACE_ORDER
+[2026-03-16 11:50:56.568] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":false,"message":"Cart is empty"}
+[2026-03-16 11:50:57.459] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"GET_ORDER_HISTORY","token":null,"data":{"userId":4}}
+[2026-03-16 11:50:57.459] [INFO] [pool-2-thread-1] Routing action: GET_ORDER_HISTORY
+[2026-03-16 11:50:57.466] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"OK","data":[{"totalAmount":74.97,"createdAt":"2026-03-16 01:12:15","orderId":"ORD-7C9E12F4","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"items":[{"unitPrice":24.99,"quantity":3,"productId":7,"orderId":"ORD-7C9E12F4","orderItemId":6,"subtotal":74.97,"productSnapshot":"{\"price\":24.99,\"name\":\"T-Shirt Coton Bio\"}","productName":"T-Shirt Coton Bio"}],"status":"VALIDEE","updatedAt":"2026-03-16 01:12:15"},{"totalAmount":74.97,"createdAt":"2026-03-15 23:41:06","orderId":"ORD-0004-2026","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"items":[{"unitPrice":24.99,"quantity":3,"productId":7,"orderId":"ORD-0004-2026","orderItemId":4,"subtotal":74.97,"productSnapshot":"{\"name\":\"T-Shirt Coton Bio\",\"price\":24.99}","productName":"T-Shirt Coton Bio"}],"status":"VALIDEE","updatedAt":"2026-03-16 01:12:15"}]}
+[2026-03-16 11:50:58.264] [INFO] [pool-2-thread-1] Received from 0:0:0:0:0:0:0:1: {"action":"LOGOUT","token":"823b2324-a30e-408a-99a4-39b903102eeb","data":null}
+[2026-03-16 11:50:58.264] [INFO] [pool-2-thread-1] Routing action: LOGOUT
+[2026-03-16 11:50:58.265] [INFO] [pool-2-thread-1] Session invalidated: 823b2324-a30e-408a-99a4-39b903102eeb
+[2026-03-16 11:50:58.265] [INFO] [pool-2-thread-1] LOGOUT token=823b2324-a30e-408a-99a4-39b903102eeb
+[2026-03-16 11:50:58.265] [INFO] [pool-2-thread-1] Response to 0:0:0:0:0:0:0:1: {"success":true,"message":"Logged out"}
+[2026-03-16 11:50:58.827] [INFO] [pool-2-thread-1] Client disconnected.
+[2026-03-16 11:52:21.302] [INFO] [pool-2-thread-2] Client connected: 127.0.0.1
+[2026-03-16 11:52:21.314] [INFO] [pool-2-thread-2] Received from 127.0.0.1: GET / HTTP/1.1
+[2026-03-16 11:52:21.316] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.316] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.317] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 11:52:21.317] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.318] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.318] [INFO] [pool-2-thread-2] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 11:52:21.319] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.319] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.320] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+[2026-03-16 11:52:21.321] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.322] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.322] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 11:52:21.324] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.324] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.325] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 11:52:21.325] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.326] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.326] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 11:52:21.327] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.327] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.328] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 11:52:21.329] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.330] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.330] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Upgrade-Insecure-Requests: 1
+[2026-03-16 11:52:21.331] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.331] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.332] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Sec-Fetch-Dest: document
+[2026-03-16 11:52:21.333] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.333] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.334] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Sec-Fetch-Mode: navigate
+[2026-03-16 11:52:21.334] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.335] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.335] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Sec-Fetch-Site: none
+[2026-03-16 11:52:21.336] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.336] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.336] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Sec-Fetch-User: ?1
+[2026-03-16 11:52:21.337] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.337] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.338] [INFO] [pool-2-thread-2] Received from 127.0.0.1: Priority: u=0, i
+[2026-03-16 11:52:21.338] [ERROR] [pool-2-thread-2] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.338] [INFO] [pool-2-thread-2] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.338] [INFO] [pool-2-thread-2] Received from 127.0.0.1: 
+[2026-03-16 11:52:21.340] [INFO] [pool-2-thread-2] Client disconnected.
+[2026-03-16 11:52:21.387] [INFO] [pool-2-thread-4] Client connected: 127.0.0.1
+[2026-03-16 11:52:21.387] [INFO] [pool-2-thread-4] Received from 127.0.0.1: GET /favicon.ico HTTP/1.1
+[2026-03-16 11:52:21.387] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.388] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.388] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Host: localhost:9090
+[2026-03-16 11:52:21.388] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.389] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.389] [INFO] [pool-2-thread-4] Received from 127.0.0.1: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:148.0) Gecko/20100101 Firefox/148.0
+[2026-03-16 11:52:21.389] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.390] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.390] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Accept: image/avif,image/webp,image/png,image/svg+xml,image/*;q=0.8,*/*;q=0.5
+[2026-03-16 11:52:21.390] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.390] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.391] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Accept-Language: en-US,en;q=0.9
+[2026-03-16 11:52:21.391] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.392] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.392] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Accept-Encoding: gzip, deflate, br, zstd
+[2026-03-16 11:52:21.393] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.393] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.393] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Connection: keep-alive
+[2026-03-16 11:52:21.394] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.394] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.395] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Referer: http://localhost:9090/
+[2026-03-16 11:52:21.395] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.396] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.396] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Cookie: jenkins-timestamper-offset=-3600000; JSESSIONID.468b840a=node01hdm139pw8kh8dmof0qlr8lgw2.node0; screenResolution=1408x792; JSESSIONID.6e3cfdc3=node014ax4shmos3gg1s3vj4616t13y7.node0; JSESSIONID.57e218a9=node01gt2eh42kle4k1supom3dzeq6d3.node0; JSESSIONID.f9f49c84=node0iqau5dimr9qo16vjxaznrmkh04.node0; username-localhost-8888="2|1:0|10:1773236246|23:username-localhost-8888|192:eyJ1c2VybmFtZSI6ICIzODIxNjVmYmI4Yzg0OWM1YmI2MzE0ZmJjZWU5NGJlYSIsICJuYW1lIjogIkFub255bW91cyBDYXJtZSIsICJkaXNwbGF5X25hbWUiOiAiQW5vbnltb3VzIENhcm1lIiwgImluaXRpYWxzIjogIkFDIiwgImNvbG9yIjogbnVsbH0=|943fe58c2deb34b19d7c6c51a899d7dc91695f032f4a14649fa7fb136ed9d655"; _xsrf=2|815e2210|72042982a7f8dd0a1515865416eb8d11|1773236246
+[2026-03-16 11:52:21.396] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.397] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.397] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Sec-Fetch-Dest: image
+[2026-03-16 11:52:21.398] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.398] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.398] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Sec-Fetch-Mode: no-cors
+[2026-03-16 11:52:21.400] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.400] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.400] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Sec-Fetch-Site: same-origin
+[2026-03-16 11:52:21.401] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.401] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.402] [INFO] [pool-2-thread-4] Received from 127.0.0.1: Priority: u=6
+[2026-03-16 11:52:21.402] [ERROR] [pool-2-thread-4] Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $
+[2026-03-16 11:52:21.403] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
+[2026-03-16 11:52:21.403] [INFO] [pool-2-thread-4] Received from 127.0.0.1: 
+[2026-03-16 11:52:21.403] [INFO] [pool-2-thread-4] Client disconnected.
