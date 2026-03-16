@@ -1,15 +1,20 @@
 package com.chrionline.server.core;
 
+import com.chrionline.server.service.AuthService;
 import com.chrionline.server.service.CartService;
 import com.chrionline.server.service.OrderService;
 import com.chrionline.server.service.PaymentService;
+import com.chrionline.server.service.ProductService;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
 
 public class RequestRouter {
 
-    private static final CartService cartService = new CartService();
-    private static final OrderService orderService = new OrderService();
+    // ── ALL service instances must be INSIDE the class ──────────
+    private static final AuthService authService       = new AuthService();
+    private static final ProductService productService = new ProductService();
+    private static final CartService cartService       = new CartService();
+    private static final OrderService orderService     = new OrderService();
     private static final PaymentService paymentService = new PaymentService();
 
     public static Response route(String rawJson) {
@@ -72,14 +77,27 @@ public class RequestRouter {
         }
     }
 
+    // ── Auth handler ─────────────────────────────────────────────
     private static Response handleAuth(Request request) {
-        return Response.ok("Auth placeholder - action: " + request.getAction(), null);
+        switch (request.getAction()) {
+            case REGISTER: return authService.register(request);
+            case LOGIN:    return authService.login(request);
+            case LOGOUT:   return authService.logout(request);
+            default:       return Response.error("Unknown auth action");
+        }
     }
 
+    // ── Products handler ──────────────────────────────────────────
     private static Response handleProducts(Request request) {
-        return Response.ok("Products placeholder - action: " + request.getAction(), null);
+        switch (request.getAction()) {
+            case GET_PRODUCTS:       return productService.getProducts(request);
+            case GET_PRODUCT_DETAIL: return productService.getProductDetail(request);
+            case SEARCH_PRODUCTS:    return productService.searchProducts(request);
+            default:                 return Response.error("Unknown product action");
+        }
     }
 
+    // ── Admin handler (placeholder for now) ───────────────────────
     private static Response handleAdmin(Request request) {
         return Response.ok("Admin placeholder - action: " + request.getAction(), null);
     }

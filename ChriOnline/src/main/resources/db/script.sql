@@ -110,25 +110,24 @@ CREATE TABLE products (
 ) ENGINE=InnoDB;
 
 INSERT INTO products (name, description, price, stock_quantity, category_id) VALUES
-                                                                                 ('iPhone 15 Pro',        'Smartphone Apple 256 Go, titane naturel',         1199.99,  30,  5),
-                                                                                 ('Samsung Galaxy S24',   'Smartphone Android 128 Go, IA embarquée',          899.99,  45,  5),
-                                                                                 ('Google Pixel 8',       'Smartphone Google 128 Go, Android pur',            699.99,  25,  5),
-                                                                                 ('MacBook Pro M3',       'Laptop Apple 14 pouces, puce M3, 16 Go RAM',      2199.99,  15,  6),
-                                                                                 ('Dell XPS 15',          'Laptop Dell Core i9, écran OLED 4K',              1749.99,  20,  6),
-                                                                                 ('Lenovo ThinkPad X1',   'Laptop professionnel, Core i7, 16 Go RAM',        1299.99,  18,  6),
-                                                                                 ('T-Shirt Coton Bio',    'T-shirt 100% coton biologique, unisexe',            24.99, 200,  7),
-                                                                                 ('T-Shirt Nike Dri-FIT', 'T-shirt de sport respirant, plusieurs couleurs',    34.99, 150,  7),
-                                                                                 ('Jean Slim Noir',       'Jean slim stretch, taille haute',                   59.99, 120,  8),
-                                                                                 ('Chino Beige',          'Pantalon chino coupe droite, coton',                49.99,  80,  8),
-                                                                                 ('Clean Code',           'Robert C. Martin — écrire du code propre',          35.00,  60,  9),
-                                                                                 ('Design Patterns',      'Gang of Four — 23 patterns de conception',          42.00,  40,  9),
-                                                                                 ('Java : The Complete Reference', 'Herbert Schildt — Java 17 complet',        55.00,  35,  9),
-                                                                                 ('Le Petit Prince',      'Antoine de Saint-Exupéry — conte philosophique',    12.99,  90, 10),
-                                                                                 ('1984',                 'George Orwell — roman dystopique',                  14.99,  70, 10),
-                                                                                 ('Vélo de Route Carbon', 'Vélo carbone 11 vitesses, cadre ultraléger',      1299.00,   8,  4),
-                                                                                 ('Tapis de Yoga',        'Tapis antidérapant 6 mm, 183 x 61 cm',              29.90, 150,  4),
-                                                                                 ('Raquette de Tennis',   'Raquette HEAD Speed MP, 300g',                     149.99,  30,  4);
-
+                           ('iPhone 15 Pro',        '...',  1199.99,  30,  6),  -- Smartphones
+                           ('Samsung Galaxy S24',   '...',   899.99,  45,  6),  -- Smartphones
+                           ('Google Pixel 8',       '...',   699.99,  25,  6),  -- Smartphones
+                           ('MacBook Pro M3',       '...',  2199.99,  15,  7),  -- Ordinateurs
+                           ('Dell XPS 15',          '...',  1749.99,  20,  7),  -- Ordinateurs
+                           ('Lenovo ThinkPad X1',   '...',  1299.99,  18,  7),  -- Ordinateurs
+                           ('T-Shirt Coton Bio',    '...',    24.99, 200,  2),  -- Vêtements
+                           ('T-Shirt Nike Dri-FIT', '...',    34.99, 150,  2),  -- Vêtements
+                           ('Jean Slim Noir',       '...',    59.99, 120,  2),  -- Vêtements
+                           ('Chino Beige',          '...',    49.99,  80,  2),  -- Vêtements
+                           ('Clean Code',           '...',    35.00,  60,  5),  -- Informatique
+                           ('Design Patterns',      '...',    42.00,  40,  5),  -- Informatique
+                           ('Java : The Complete Reference', '...', 55.00, 35, 5), -- Informatique
+                           ('Le Petit Prince',      '...',    12.99,  90,  3),  -- Livres
+                           ('1984',                 '...',    14.99,  70,  3),  -- Livres
+                           ('Vélo de Route Carbon', '...',  1299.00,   8,  4),  -- Sport
+                           ('Tapis de Yoga',        '...',    29.90, 150,  4),  -- Sport
+                           ('Raquette de Tennis',   '...',   149.99,  30,  4);  -- Sport
 
 -- -------------------------------------------------------------
 --  TABLE : carts
