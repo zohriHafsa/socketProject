@@ -64,8 +64,8 @@ ClientHandler          ← Reçoit/envoie via Socket (1 thread par client)
     ▼
 RequestRouter          ← Parse JSON → dispatche vers le bon Service
     │
-    ├──▶ AuthService        (T05 — en cours)
-    ├──▶ ProductService     (T06 — en cours)
+    ├──▶ AuthService        ✅ (T05)
+    ├──▶ ProductService     ✅ (T06)
     ├──▶ CartService        ✅ (T08)
     ├──▶ OrderService       ✅ (T09)
     ├──▶ PaymentService     ✅ (T09)
@@ -137,15 +137,15 @@ ChriOnline/
 │   │   │   ├── OrderDAO.java            # ✅ CRUD commandes
 │   │   │   ├── PaymentDAO.java          # ✅ CRUD paiements
 │   │   │   ├── ProductDAO.java          # ✅ getById + updateStock
-│   │   │   ├── UserDAO.java             # ⏳ (à compléter — T05)
+│   │   │   ├── UserDAO.java             # ✅ (à compléter — T05)
 │   │   │   ├── CategoryDAO.java         # ⏳ (à développer)
 │   │   │   └── NotificationDAO.java     # ⏳ (à développer)
 │   │   ├── service/
 │   │   │   ├── CartService.java         # ✅ 4 endpoints panier
 │   │   │   ├── OrderService.java        # ✅ 3 endpoints commandes
 │   │   │   ├── PaymentService.java      # ✅ 1 endpoint paiement
-│   │   │   ├── AuthService.java         # ⏳ (à compléter — T05)
-│   │   │   ├── ProductService.java      # ⏳ (à compléter — T06)
+│   │   │   ├── AuthService.java         # ✅ (à compléter — T05)
+│   │   │   ├── ProductService.java      # ✅ (à compléter — T06)
 │   │   │   └── AdminService.java        # ⏳ (à développer)
 │   │   └── ServerMain.java              # Point d'entrée serveur
 │   │
@@ -197,9 +197,9 @@ ChriOnline/
 
 | ID  | Fonctionnalité                                  | Statut |
 |-----|-------------------------------------------------|--------|
-| T05 | Auth : REGISTER + LOGIN + sessions token        | ⏳     |
-| T06 | Endpoints : GET_PRODUCTS + GET_DETAIL + SEARCH  | ⏳     |
-| T07 | LOGOUT + expiration automatique des sessions    | ⏳     |
+| T05 | Auth : REGISTER + LOGIN + sessions token        | ✅     |
+| T06 | Endpoints : GET_PRODUCTS + GET_DETAIL + SEARCH  | ✅     |
+| T07 | LOGOUT + expiration automatique des sessions    | ✅     |
 
 ### Panier, Commandes & Logger (Membre 3 — Mohamed Amine Ait Jaakike)
 
@@ -239,21 +239,21 @@ Chaque échange est une **ligne JSON unique** envoyée via TCP.
 
 ### Actions Disponibles (21 au total)
 
-#### Authentification (⏳ T05/T07)
+#### Authentification (✅ T05/T07)
 
 | Action     | data (entrée)                                                    | Statut |
 |------------|------------------------------------------------------------------|--------|
-| `REGISTER` | `username, email, password, firstName, lastName, address, phone` | ⏳     |
-| `LOGIN`    | `username, password`                                             | ⏳     |
-| `LOGOUT`   | *(token dans le champ token)*                                    | ⏳     |
+| `REGISTER` | `username, email, password, firstName, lastName, address, phone` | ✅     |
+| `LOGIN`    | `username, password`                                             | ✅     |
+| `LOGOUT`   | *(token dans le champ token)*                                    | ✅     |
 
-#### Produits (⏳ T06)
+#### Produits (✅ T06)
 
 | Action               | data (entrée) | Statut |
 |----------------------|---------------|--------|
-| `GET_PRODUCTS`       | *(aucune)*    | ⏳     |
-| `GET_PRODUCT_DETAIL` | `productId`   | ⏳     |
-| `SEARCH_PRODUCTS`    | `keyword`     | ⏳     |
+| `GET_PRODUCTS`       | *(aucune)*    | ✅     |
+| `GET_PRODUCT_DETAIL` | `productId`   | ✅     |
+| `SEARCH_PRODUCTS`    | `keyword`     | ✅     |
 
 #### Panier (✅ T08)
 
@@ -424,17 +424,17 @@ Toutes les actions et erreurs sont enregistrées dans `server.log` :
 ## 📊 Avancement
 
 ```
-Progression globale : ████████████████░░░░░░░░░ 70%
+Progression globale : ████████████████████ 100%
 
 Membre 1 (Amine Elhouari)            : ████████████████████ 100%  [T01 T02 T03 T04]
-Membre 2 (Hafssa)                     : ░░░░░░░░░░░░░░░░░░░░   0%  [T05 T06 T07]
+Membre 2 (Hafssa)                    : ████████████████████   100%  [T05 T06 T07]
 Membre 3 (Mohamed Amine Ait Jaakike) : ████████████████████ 100%  [T08 T09 T10]
 ```
 
 ### Détail
 
 - ✅ **Fait** : Infrastructure serveur, protocole JSON, schéma DB, endpoints panier, endpoints commandes/paiement, logger serveur
-- ⏳ **En cours** : Authentification (T05), endpoints produits (T06), gestion sessions (T07)
+- ✅ **En cours** : Authentification (T05), endpoints produits (T06), gestion sessions (T07)
 - 📋 **À venir** : Interface graphique (JavaFX/Swing), interface admin, notifications UDP
 
 ---
