@@ -1,29 +1,36 @@
 package com.chrionline.server.core;
 
-import com.chrionline.server.service.AuthService;
-import com.chrionline.server.service.CartService;
-import com.chrionline.server.service.OrderService;
-import com.chrionline.server.service.PaymentService;
-import com.chrionline.server.service.ProductService;
+import com.chrionline.server.dao.NotificationDAO;
+import com.chrionline.server.service.*;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
 
+import java.net.InetAddress;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
 public class RequestRouter {
 
-    // ── ALL service instances must be INSIDE the class ──────────
-    private static final AuthService authService       = new AuthService();
+    private static final AuthService    authService    = new AuthService();
     private static final ProductService productService = new ProductService();
-    private static final CartService cartService       = new CartService();
-    private static final OrderService orderService     = new OrderService();
+    private static final CartService    cartService    = new CartService();
+    private static final OrderService   orderService   = new OrderService();
     private static final PaymentService paymentService = new PaymentService();
+    private static final AdminService   adminService   = new AdminService();
+    private static final NotificationDAO notifDAO      = new NotificationDAO();
 
     public static Response route(String rawJson) {
+        return route(rawJson, null);
+    }
+
+    public static Response route(String rawJson, InetAddress clientAddress) {
         Request request;
         try {
             request = Request.fromJson(rawJson);
         } catch (Exception e) {
-            ServerLogger.error("Invalid JSON: " + e.getMessage());
-            return Response.error("Invalid JSON: " + e.getMessage());
+            ServerLogger.error("Invalid JSON : " + e.getMessage());
+            return Response.error("Invalid JSON : " + e.getMessage());
         }
 
         if (request.getAction() == null) {
@@ -33,72 +40,101 @@ public class RequestRouter {
 
         ServerLogger.info("Routing action: " + request.getAction());
 
+        // ═══════ TOKEN VALIDATION ══════════════
+        // Public endpoints : no token required
         switch (request.getAction()) {
-
             case LOGIN:
             case REGISTER:
-            case LOGOUT:
-                return handleAuth(request);
-
             case GET_PRODUCTS:
             case GET_PRODUCT_DETAIL:
             case SEARCH_PRODUCTS:
-                return handleProducts(request);
-
-            case ADD_TO_CART:
-                return cartService.addToCart(request);
-            case REMOVE_FROM_CART:
-                return cartService.removeFromCart(request);
-            case GET_CART:
-                return cartService.getCart(request);
-            case CLEAR_CART:
-                return cartService.clearCart(request);
-
-            case PLACE_ORDER:
-                return orderService.placeOrder(request);
-            case GET_ORDER_HISTORY:
-                return orderService.getOrderHistory(request);
-            case GET_ORDER_STATUS:
-                return orderService.getOrderStatus(request);
-
-            case PROCESS_PAYMENT:
-                return paymentService.processPayment(request);
-
-            case ADMIN_ADD_PRODUCT:
-            case ADMIN_EDIT_PRODUCT:
-            case ADMIN_DELETE_PRODUCT:
-            case ADMIN_GET_USERS:
-            case ADMIN_TOGGLE_USER:
-            case ADMIN_UPDATE_ORDER_STATUS:
-                return handleAdmin(request);
-
+                break;
             default:
-                return Response.error("Unknown action: " + request.getAction());
+                if (!SessionManager.isValid(request.getToken())) {
+                    ServerLogger.warn("Token invalide ou expiré pour action "
+                            + request.getAction());
+                    return Response.error(
+                            "Session invalide ou expirée. Veuillez vous reconnecter.");
+                }
         }
-    }
 
-    // ── Auth handler ─────────────────────────────────────────────
-    private static Response handleAuth(Request request) {
+        // ═══════ ROUTING ═══════════════════════
         switch (request.getAction()) {
-            case REGISTER: return authService.register(request);
+
+            // Auth
             case LOGIN:    return authService.login(request);
+            case REGISTER: return authService.register(request);
             case LOGOUT:   return authService.logout(request);
-            default:       return Response.error("Unknown auth action");
-        }
-    }
 
-    // ── Products handler ──────────────────────────────────────────
-    private static Response handleProducts(Request request) {
-        switch (request.getAction()) {
+            // Products (public)
             case GET_PRODUCTS:       return productService.getProducts(request);
             case GET_PRODUCT_DETAIL: return productService.getProductDetail(request);
             case SEARCH_PRODUCTS:    return productService.searchProducts(request);
-            default:                 return Response.error("Unknown product action");
+
+            // Cart
+            case ADD_TO_CART:      return cartService.addToCart(request);
+            case REMOVE_FROM_CART: return cartService.removeFromCart(request);
+            case GET_CART:         return cartService.getCart(request);
+            case CLEAR_CART:       return cartService.clearCart(request);
+
+            // Orders
+            case PLACE_ORDER:        return orderService.placeOrder(request);
+            case GET_ORDER_HISTORY:  return orderService.getOrderHistory(request);
+            case GET_ORDER_STATUS:   return orderService.getOrderStatus(request);
+
+            // Payment
+            case PROCESS_PAYMENT: return paymentService.processPayment(request);
+
+            // Notifications
+            case GET_NOTIFICATIONS: return handleGetNotifications(request);
+
+            // Admin
+            case ADMIN_ADD_PRODUCT:          return adminService.addProduct(request);
+            case ADMIN_EDIT_PRODUCT:         return adminService.editProduct(request);
+            case ADMIN_DELETE_PRODUCT:       return adminService.deleteProduct(request);
+            case ADMIN_GET_USERS:            return adminService.getUsers(request);
+            case ADMIN_TOGGLE_USER:          return adminService.toggleUser(request);
+            case ADMIN_UPDATE_ORDER_STATUS:  return adminService.updateOrderStatus(request);
+            case ADMIN_GET_ALL_ORDERS:       return adminService.getAllOrders(request);
+
+            // UDP
+            case REGISTER_UDP: return handleRegisterUdp(request, clientAddress);
+
+            default:
+                return Response.error("Unknown action : " + request.getAction());
         }
     }
 
-    // ── Admin handler (placeholder for now) ───────────────────────
-    private static Response handleAdmin(Request request) {
-        return Response.ok("Admin placeholder - action: " + request.getAction(), null);
+    private static Response handleGetNotifications(Request request) {
+        int userId = request.getInt("userId");
+        if (userId <= 0) return Response.error("userId requis.");
+        try {
+            List<Map<String, Object>> notifs = notifDAO.getByUserId(userId);
+            return Response.ok("Notifications récupérées.", notifs);
+        } catch (SQLException e) {
+            ServerLogger.error("GET_NOTIFICATIONS error : " + e.getMessage());
+            return Response.error("Erreur : " + e.getMessage());
+        }
+    }
+
+    private static Response handleRegisterUdp(Request request,
+                                              InetAddress clientAddress) {
+        try {
+            int userId  = request.getInt("userId");
+            int udpPort = request.getInt("udpPort");
+            if (userId <= 0 || udpPort <= 0)
+                return Response.error("userId et udpPort requis.");
+
+            InetAddress addr = clientAddress != null
+                    ? clientAddress
+                    : InetAddress.getByName("127.0.0.1");
+
+            UDPNotifier.getInstance().registerClient(userId, addr, udpPort);
+            return Response.ok("UDP enregistré pour userId=" + userId
+                    + " sur port " + udpPort, null);
+        } catch (Exception e) {
+            ServerLogger.error("REGISTER_UDP error : " + e.getMessage());
+            return Response.error("Erreur UDP : " + e.getMessage());
+        }
     }
 }

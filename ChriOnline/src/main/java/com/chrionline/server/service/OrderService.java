@@ -1,139 +1,176 @@
 package com.chrionline.server.service;
 
 import com.chrionline.server.core.ServerLogger;
-import com.chrionline.server.dao.CartDAO;
-import com.chrionline.server.dao.OrderDAO;
-import com.chrionline.server.dao.PaymentDAO;
-import com.chrionline.server.dao.ProductDAO;
+import com.chrionline.server.core.UDPNotifier;
+import com.chrionline.server.dao.*;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
 import com.google.gson.Gson;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class OrderService {
 
-    private final OrderDAO orderDAO = new OrderDAO();
-    private final CartDAO cartDAO = new CartDAO();
-    private final ProductDAO productDAO = new ProductDAO();
-    private final PaymentDAO paymentDAO = new PaymentDAO();
-    private final Gson gson = new Gson();
+    private final OrderDAO        orderDAO        = new OrderDAO();
+    private final CartDAO         cartDAO         = new CartDAO();
+    private final ProductDAO      productDAO      = new ProductDAO();
+    private final PaymentDAO      paymentDAO      = new PaymentDAO();
+    private final NotificationDAO notificationDAO = new NotificationDAO();
+
+    // ═══════════ PLACE ORDER ═══════════════════
 
     public Response placeOrder(Request request) {
+        int    userId          = request.getInt("userId");
+        String shippingAddress = request.getString("shippingAddress");
+        String paymentMethod   = request.getString("paymentMethod");
+        String cardLastFour    = request.getString("cardLastFour");
+
+        if (shippingAddress == null || shippingAddress.isEmpty())
+            return Response.error("Adresse de livraison requise.");
+        if (!isValidPaymentMethod(paymentMethod))
+            return Response.error("Méthode invalide. Utilisez : "
+                    + "CARTE_BANCAIRE, PAIEMENT_FICTIF, VIREMENT");
+
         try {
-            int userId = request.getInt("userId");
-            String shippingAddress = request.getString("shippingAddress");
-            String paymentMethod = request.getString("paymentMethod");
-            String cardLastFour = request.getString("cardLastFour");
-
-            if (shippingAddress == null || shippingAddress.isEmpty())
-                return Response.error("Shipping address is required");
-            if (paymentMethod == null || paymentMethod.isEmpty())
-                return Response.error("Payment method is required");
-
+            // 1 ── Panier ──────────────────────────
             int cartId = cartDAO.getCartIdByUserId(userId);
-            if (cartId == -1) return Response.error("Cart is empty");
+            if (cartId < 0) return Response.error("Panier introuvable.");
 
             List<Map<String, Object>> cartItems = cartDAO.getCartItems(cartId);
-            if (cartItems.isEmpty()) return Response.error("Cart is empty");
+            if (cartItems.isEmpty()) return Response.error("Le panier est vide.");
 
-            for (Map<String, Object> item : cartItems) {
-                int productId = (int) item.get("productId");
-                int qty = (int) item.get("quantity");
-                Map<String, Object> product = productDAO.getProductById(productId);
-                if (product == null)
-                    return Response.error("Product not found: " + productId);
-                if ((int) product.get("stockQuantity") < qty)
-                    return Response.error("Insufficient stock for: " + product.get("name"));
-            }
-
-            String orderId = "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+            // 2 ── Total ───────────────────────────
             double totalAmount = cartItems.stream()
-                    .mapToDouble(i -> (double) i.get("subtotal")).sum();
+                    .mapToDouble(i -> ((Number) i.get("subtotal")).doubleValue())
+                    .sum();
+
+            // 3 ── Créer la commande ───────────────
+            String orderId = "ORD-" + UUID.randomUUID().toString()
+                    .substring(0, 8).toUpperCase();
 
             orderDAO.createOrder(orderId, userId, totalAmount, shippingAddress);
 
+            // 4 ── Créer les articles + décrémenter stock
             for (Map<String, Object> item : cartItems) {
-                int productId = (int) item.get("productId");
-                int qty = (int) item.get("quantity");
-                double unitPrice = (double) item.get("unitPrice");
-                String snapshot = gson.toJson(Map.of(
-                        "name", item.get("productName"),
-                        "price", unitPrice));
-                orderDAO.createOrderItem(orderId, productId, snapshot, qty, unitPrice);
-                productDAO.updateStock(productId, qty);
+                int    pid       = ((Number) item.get("productId")).intValue();
+                int    qty       = ((Number) item.get("quantity")).intValue();
+                double unitPrice = ((Number) item.get("unitPrice")).doubleValue();
+                String pName     = (String)  item.get("productName");
+                double pPrice    = ((Number) item.get("productPrice")).doubleValue();
+
+                String snapshot = new Gson().toJson(Map.of(
+                        "name", pName != null ? pName : "?",
+                        "price", pPrice));
+
+                orderDAO.createOrderItem(orderId, pid, snapshot, qty, unitPrice);
+
+                if (!productDAO.updateStock(pid, qty))
+                    ServerLogger.warn("Stock insuffisant produit ID=" + pid);
             }
 
-            String paymentId = "PAY-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-            String transactionRef = "TXN-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-            String paymentStatus = simulatePayment();
-            String paidAt = paymentStatus.equals("ACCEPTE")
-                    ? LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                    : null;
+            // 5 ── Paiement simulé (90 % succès) ──
+            String  paymentId      = "PAY-" + UUID.randomUUID().toString()
+                    .substring(0, 8).toUpperCase();
+            boolean paymentSuccess = Math.random() < 0.9;
+            String  paymentStatus  = paymentSuccess ? "ACCEPTE" : "REFUSE";
+            String  txnRef         = paymentSuccess
+                    ? "TXN-" + UUID.randomUUID().toString()
+                    .substring(0, 8).toUpperCase() : null;
+            String  paidAt         = paymentSuccess
+                    ? LocalDateTime.now().toString() : null;
 
             paymentDAO.createPayment(paymentId, orderId, paymentMethod,
-                    paymentStatus, totalAmount, cardLastFour, transactionRef, paidAt);
+                    paymentStatus, totalAmount, cardLastFour, txnRef, paidAt);
 
-            if (paymentStatus.equals("ACCEPTE")) {
-                orderDAO.updateOrderStatus(orderId, "VALIDEE");
-            }
+            // 6 ── Statut commande ─────────────────
+            String orderStatus = paymentSuccess ? "VALIDEE" : "EN_ATTENTE";
+            if (paymentSuccess)
+                orderDAO.updateOrderStatus(orderId, orderStatus);
 
+            // 7 ── Vider le panier ─────────────────
             cartDAO.clearCart(cartId);
 
-            Map<String, Object> result = new HashMap<>();
-            result.put("orderId", orderId);
-            result.put("totalAmount", totalAmount);
-            result.put("orderStatus", paymentStatus.equals("ACCEPTE") ? "VALIDEE" : "EN_ATTENTE");
-            result.put("paymentId", paymentId);
-            result.put("paymentStatus", paymentStatus);
-            result.put("transactionRef", transactionRef);
+            // 8 ── Notification UDP + DB ────────────
+            String notifMsg = paymentSuccess
+                    ? "Commande " + orderId + " confirmée ! Total : " + totalAmount + " €"
+                    : "Commande " + orderId + " en attente de paiement.";
 
-            ServerLogger.info("PLACE_ORDER userId=" + userId + " orderId=" + orderId
+            notificationDAO.createNotification(userId, notifMsg, "ORDER", "UDP");
+
+            if (paymentSuccess)
+                UDPNotifier.getInstance()
+                        .notifyOrderConfirmation(userId, orderId, totalAmount);
+
+            // 9 ── Réponse ─────────────────────────
+            Map<String, Object> result = new HashMap<>();
+            result.put("orderId",        orderId);
+            result.put("totalAmount",    totalAmount);
+            result.put("orderStatus",    orderStatus);
+            result.put("paymentId",      paymentId);
+            result.put("paymentStatus",  paymentStatus);
+            result.put("transactionRef", txnRef);
+
+            ServerLogger.info("PLACE_ORDER " + orderId + " userId=" + userId
                     + " total=" + totalAmount + " payment=" + paymentStatus);
-            return Response.ok("Order placed successfully", result);
-        } catch (Exception e) {
-            ServerLogger.error("placeOrder: " + e.getMessage());
-            return Response.error("Failed to place order: " + e.getMessage());
+            return Response.ok("Commande créée avec succès !", result);
+
+        } catch (SQLException e) {
+            ServerLogger.error("PLACE_ORDER error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
         }
     }
+
+    // ═══════════ ORDER HISTORY ═════════════════
 
     public Response getOrderHistory(Request request) {
+        int userId = request.getInt("userId");
         try {
-            int userId = request.getInt("userId");
             List<Map<String, Object>> orders = orderDAO.getOrdersByUserId(userId);
-            for (Map<String, Object> order : orders) {
-                List<Map<String, Object>> items =
-                        orderDAO.getOrderItems((String) order.get("orderId"));
-                order.put("items", items);
-            }
-            return Response.ok(orders);
-        } catch (Exception e) {
-            ServerLogger.error("getOrderHistory: " + e.getMessage());
-            return Response.error("Failed to get order history: " + e.getMessage());
+            ServerLogger.info("GET_ORDER_HISTORY userId=" + userId
+                    + " count=" + orders.size());
+            return Response.ok("Historique des commandes.", orders);
+        } catch (SQLException e) {
+            ServerLogger.error("GET_ORDER_HISTORY error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
         }
     }
+
+    // ═══════════ ORDER STATUS (avec items + payment) ═══
 
     public Response getOrderStatus(Request request) {
-        try {
-            String orderId = request.getString("orderId");
-            Map<String, Object> order = orderDAO.getOrderById(orderId);
-            if (order == null) return Response.error("Order not found");
+        String orderId = request.getString("orderId");
+        if (orderId == null || orderId.isEmpty())
+            return Response.error("ID de commande requis.");
 
-            order.put("items", orderDAO.getOrderItems(orderId));
-            order.put("payment", paymentDAO.getPaymentByOrderId(orderId));
-            return Response.ok(order);
-        } catch (Exception e) {
-            ServerLogger.error("getOrderStatus: " + e.getMessage());
-            return Response.error("Failed to get order status: " + e.getMessage());
+        try {
+            Map<String, Object> order = orderDAO.getOrderById(orderId);
+            if (order == null)
+                return Response.error("Commande introuvable (" + orderId + ").");
+
+            // ── Ajouter les articles ─────────────
+            List<Map<String, Object>> items = orderDAO.getOrderItems(orderId);
+            order.put("items", items);
+
+            // ── Ajouter le paiement ──────────────
+            Map<String, Object> payment = paymentDAO.getPaymentByOrderId(orderId);
+            if (payment != null) order.put("payment", payment);
+
+            ServerLogger.info("GET_ORDER_STATUS " + orderId);
+            return Response.ok("Détails de la commande.", order);
+
+        } catch (SQLException e) {
+            ServerLogger.error("GET_ORDER_STATUS error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
         }
     }
 
-    private String simulatePayment() {
-        return Math.random() < 0.9 ? "ACCEPTE" : "REFUSE";
+    // ═══════════ UTILS ═════════════════════════
+
+    private boolean isValidPaymentMethod(String m) {
+        return "CARTE_BANCAIRE".equals(m)
+                || "PAIEMENT_FICTIF".equals(m)
+                || "VIREMENT".equals(m);
     }
 }

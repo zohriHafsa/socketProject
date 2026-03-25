@@ -12,17 +12,15 @@ public class ClientHandler implements Runnable {
 
     private final Socket socket;
     private BufferedReader in;
-    private PrintWriter out;
+    private PrintWriter    out;
 
-    public ClientHandler(Socket socket) {
-        this.socket = socket;
-    }
+    public ClientHandler(Socket socket) { this.socket = socket; }
 
     @Override
     public void run() {
         String clientAddr = socket.getInetAddress().getHostAddress();
         try {
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            in  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
 
             ServerLogger.info("Client connected: " + clientAddr);
@@ -30,7 +28,11 @@ public class ClientHandler implements Runnable {
             String message;
             while ((message = in.readLine()) != null) {
                 ServerLogger.info("Received from " + clientAddr + ": " + message);
-                Response response = RequestRouter.route(message);
+
+                // ── Passe l'adresse IP au routeur pour REGISTER_UDP ──
+                Response response = RequestRouter.route(message,
+                        socket.getInetAddress());
+
                 String responseJson = response.toJson();
                 ServerLogger.info("Response to " + clientAddr + ": " + responseJson);
                 out.println(responseJson);

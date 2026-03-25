@@ -1,11 +1,14 @@
 package com.chrionline.server.service;
 
-
 import com.chrionline.server.core.ServerLogger;
 import com.chrionline.server.dao.UserDAO;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,106 +16,112 @@ public class AuthService {
 
     private final UserDAO userDAO = new UserDAO();
 
-    // ── REGISTER ──────────────────────────────────────────────
+    // ── REGISTER ───────────────────────────────
     public Response register(Request request) {
+        String username  = request.getString("username");
+        String email     = request.getString("email");
+        String password  = request.getString("password");
+        String firstName = request.getString("firstName");
+        String lastName  = request.getString("lastName");
+        String address   = request.getString("address");
+        String phone     = request.getString("phone");
+
+        if (username == null || email == null || password == null) {
+            return Response.error("Champs obligatoires manquants (username, email, password).");
+        }
+
         try {
-            // 1. Read fields from the JSON "data" object
-            String username  = request.getString("username");
-            String email     = request.getString("email");
-            String password  = request.getString("password");
-            String firstName = request.getString("firstName");
-            String lastName  = request.getString("lastName");
-            String address   = request.getString("address");
-            String phone     = request.getString("phone");
+            if (userDAO.getUserByUsername(username) != null)
+                return Response.error("Ce nom d'utilisateur est déjà pris.");
 
-            // 2. Validate required fields
-            if (username == null || password == null || email == null)
-                return Response.error("username, email, password required");
+            if (userDAO.getUserByEmail(email) != null)
+                return Response.error("Cet email est déjà utilisé.");
 
-            // 3. Check username/email not already taken
-            if (userDAO.findByUsername(username) != null)
-                return Response.error("Username already exists");
-            if (userDAO.findByEmail(email) != null)
-                return Response.error("Email already exists");
-
-            // 4. Hash the password (simple for now — could use BCrypt later)
-            String hash = Integer.toHexString(password.hashCode());
-
-            // 5. Insert into DB
-            int userId = userDAO.createUser(username, email, hash,
+            String hash = hashSHA256(password);
+            int userId  = userDAO.createUser(username, email, hash,
                     firstName, lastName, address, phone);
+            if (userId < 0)
+                return Response.error("Échec de la création du compte.");
 
-            ServerLogger.info("REGISTER userId=" + userId + " username=" + username);
-            return Response.ok("Registration successful",
-                    Map.of("userId", userId, "username", username));
+            ServerLogger.info("REGISTER OK : " + username + " (ID:" + userId + ")");
 
-        } catch (Exception e) {
-            ServerLogger.error("register: " + e.getMessage());
-            return Response.error("Registration failed: " + e.getMessage());
+            Map<String, Object> result = new HashMap<>();
+            result.put("userId",   userId);
+            result.put("username", username);
+            return Response.ok("Inscription réussie !", result);
+
+        } catch (SQLException e) {
+            ServerLogger.error("REGISTER SQL error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
         }
     }
 
-    // ── LOGIN ─────────────────────────────────────────────────
+    // ── LOGIN ──────────────────────────────────
+    @SuppressWarnings("unchecked")
     public Response login(Request request) {
+        String username = request.getString("username");
+        String password = request.getString("password");
+
+        if (username == null || password == null)
+            return Response.error("Username et password requis.");
+
         try {
-            String username = request.getString("username");
-            String password = request.getString("password");
-
-            if (username == null || password == null)
-                return Response.error("username and password required");
-
-            // Look up user in DB
-            Map<String, Object> user = userDAO.findByUsername(username);
+            Map<String, Object> user = userDAO.getUserByUsername(username);
             if (user == null)
-                return Response.error("User not found");
+                return Response.error("Utilisateur introuvable.");
 
-            // Compare hashed passwords
-            String hash = Integer.toHexString(password.hashCode());
-            if (!hash.equals(user.get("passwordHash")))
-                return Response.error("Invalid password");
-
-            // Check account not disabled
             if (!(boolean) user.get("isActive"))
-                return Response.error("Account disabled");
+                return Response.error("Ce compte est désactivé.");
 
-            // Create session → generates a UUID token
-            String token = SessionManager.createSession(
-                    (int) user.get("userId"),
-                    (String) user.get("role")
-            );
+            String storedHash = (String) user.get("passwordHash");
+            if (!storedHash.equals(hashSHA256(password)))
+                return Response.error("Mot de passe incorrect.");
 
-            // Build response data
-            Map<String, Object> data = new HashMap<>();
-            data.put("token",    token);
-            data.put("userId",   user.get("userId"));
-            data.put("username", user.get("username"));
-            data.put("role",     user.get("role"));
+            int    userId = (int)    user.get("userId");
+            String role   = (String) user.get("role");
+            String token  = SessionManager.createSession(userId, username, role);
 
-            ServerLogger.info("LOGIN userId=" + user.get("userId"));
-            return Response.ok("Login successful", data);
+            ServerLogger.info("LOGIN OK : " + username
+                    + " (ID:" + userId + ", role=" + role + ")");
 
-        } catch (Exception e) {
-            ServerLogger.error("login: " + e.getMessage());
-            return Response.error("Login failed: " + e.getMessage());
+            Map<String, Object> result = new HashMap<>();
+            result.put("token",     token);
+            result.put("userId",    userId);
+            result.put("username",  username);
+            result.put("role",      role);
+            result.put("firstName", user.get("firstName"));
+            result.put("lastName",  user.get("lastName"));
+            return Response.ok("Connexion réussie !", result);
+
+        } catch (SQLException e) {
+            ServerLogger.error("LOGIN SQL error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
         }
     }
 
-    // ── LOGOUT ────────────────────────────────────────────────
+    // ── LOGOUT ─────────────────────────────────
     public Response logout(Request request) {
+        String token = request.getToken();
+        if (token == null)
+            return Response.error("Aucun token fourni.");
+
+        if (SessionManager.invalidate(token)) {
+            ServerLogger.info("LOGOUT OK");
+            return Response.ok("Déconnexion réussie.", null);
+        }
+        return Response.error("Session introuvable ou déjà expirée.");
+    }
+
+    // ── Hash ───────────────────────────────────
+    private String hashSHA256(String input) {
         try {
-            String token = request.getToken();
-            if (token == null)
-                return Response.error("Token required");
-
-            boolean ok = SessionManager.invalidate(token);
-            if (!ok) return Response.error("Invalid token");
-
-            ServerLogger.info("LOGOUT token=" + token);
-            return Response.ok("Logged out", null);
-
-        } catch (Exception e) {
-            ServerLogger.error("logout: " + e.getMessage());
-            return Response.error("Logout failed: " + e.getMessage());
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hex = new StringBuilder();
+            for (byte b : hash) hex.append(String.format("%02x", b));
+            return hex.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-256 not available", e);
         }
     }
 }

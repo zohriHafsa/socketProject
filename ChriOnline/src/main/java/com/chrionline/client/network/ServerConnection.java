@@ -8,17 +8,26 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ServerConnection {
 
     private static ServerConnection instance;
 
-    private Socket socket;
-    private BufferedReader in;
-    private PrintWriter out;
-
     private static final String HOST = "localhost";
-    private static final int PORT = 9090;
+    private static final int    PORT = 9090;
+
+    private Socket         socket;
+    private BufferedReader  in;
+    private PrintWriter     out;
+
+    private final ExecutorService networkExecutor = Executors.newSingleThreadExecutor(r -> {
+        Thread t = new Thread(r, "Network-IO");
+        t.setDaemon(true);
+        return t;
+    });
 
     private ServerConnection() {}
 
@@ -29,53 +38,51 @@ public class ServerConnection {
         return instance;
     }
 
-    // Connect to server
     public boolean connect() {
         try {
             socket = new Socket(HOST, PORT);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream(), true);
-            System.out.println("[CLIENT] Connected to server at " + HOST + ":" + PORT);
+            in     = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out    = new PrintWriter(socket.getOutputStream(), true);
             return true;
         } catch (IOException e) {
-            System.err.println("[CLIENT] Could not connect to server: " + e.getMessage());
+            System.err.println("[CLIENT] Connection failed: " + e.getMessage());
             return false;
         }
     }
 
-    // Send Request → get Response
-    public Response send(Request request) {
-        if (!isConnected()) {
-            return Response.error("Not connected to server.");
-        }
+    public synchronized Response send(Request request) {
         try {
             out.println(request.toJson());
-            String raw = in.readLine();
-            if (raw == null) return Response.error("Server closed the connection.");
-            return Response.fromJson(raw);
+            String line = in.readLine();
+            if (line != null) {
+                return Response.fromJson(line);
+            }
+            return Response.error("Aucune réponse du serveur.");
         } catch (IOException e) {
-            System.err.println("[CLIENT] Send error: " + e.getMessage());
-            return Response.error("Communication error: " + e.getMessage());
+            return Response.error("Erreur réseau : " + e.getMessage());
         }
     }
 
-    // Disconnect
+    /**
+     * Envoi asynchrone pour ne pas bloquer le thread JavaFX.
+     * Le résultat est retourné via CompletableFuture.
+     */
+    public CompletableFuture<Response> sendAsync(Request request) {
+        return CompletableFuture.supplyAsync(() -> send(request), networkExecutor);
+    }
+
     public void disconnect() {
         try {
-            if (socket != null && !socket.isClosed()) {
-                socket.close();
-                System.out.println("[CLIENT] Disconnected from server.");
-            }
+            if (socket != null && !socket.isClosed()) socket.close();
         } catch (IOException e) {
-            System.err.println("[CLIENT] Error disconnecting: " + e.getMessage());
+            System.err.println("[CLIENT] Disconnect error: " + e.getMessage());
         }
     }
 
-    // Status
     public boolean isConnected() {
-        return socket != null && socket.isConnected() && !socket.isClosed();
+        return socket != null && !socket.isClosed() && socket.isConnected();
     }
 
     public String getHost() { return HOST; }
-    public int getPort() { return PORT; }
+    public int    getPort() { return PORT; }
 }
