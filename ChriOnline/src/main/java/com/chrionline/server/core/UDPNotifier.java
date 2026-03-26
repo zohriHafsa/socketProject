@@ -21,9 +21,10 @@ public class UDPNotifier {
     private static class ClientInfo {
         final InetAddress address;
         final int port;
+
         ClientInfo(InetAddress address, int port) {
             this.address = address;
-            this.port    = port;
+            this.port = port;
         }
     }
 
@@ -38,7 +39,9 @@ public class UDPNotifier {
     }
 
     public static synchronized UDPNotifier getInstance() {
-        if (instance == null) instance = new UDPNotifier();
+        if (instance == null) {
+            instance = new UDPNotifier();
+        }
         return instance;
     }
 
@@ -57,19 +60,19 @@ public class UDPNotifier {
     // ── Notifications ──────────────────────────
     public void notifyOrderStatusChange(int userId, String orderId, String newStatus) {
         send(userId, Map.of(
-                "type",      "ORDER_STATUS_CHANGE",
-                "orderId",   orderId,
+                "type", "ORDER_STATUS_CHANGE",
+                "orderId", orderId,
                 "newStatus", newStatus,
-                "message",   "Commande " + orderId + " → " + newStatus
+                "message", "Commande " + orderId + " → " + newStatus
         ));
     }
 
     public void notifyOrderConfirmation(int userId, String orderId, double totalAmount) {
         send(userId, Map.of(
-                "type",        "ORDER_CONFIRMED",
-                "orderId",     orderId,
+                "type", "ORDER_CONFIRMED",
+                "orderId", orderId,
                 "totalAmount", totalAmount,
-                "message",     "Commande " + orderId + " confirmée ! Total : " + totalAmount + " €"
+                "message", "Commande " + orderId + " confirmée ! Total : " + totalAmount + " €"
         ));
     }
 
@@ -81,7 +84,7 @@ public class UDPNotifier {
             return;
         }
         try {
-            String json   = new Gson().toJson(data);
+            String json = new Gson().toJson(data);
             byte[] buffer = json.getBytes();
             DatagramPacket packet = new DatagramPacket(
                     buffer, buffer.length, ci.address, ci.port);
@@ -93,6 +96,8 @@ public class UDPNotifier {
     }
 
     public void close() {
-        if (socket != null && !socket.isClosed()) socket.close();
+        if (socket != null && !socket.isClosed()) {
+            socket.close();
+        }
     }
 }

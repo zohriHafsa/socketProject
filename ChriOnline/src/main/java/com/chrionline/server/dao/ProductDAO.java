@@ -72,8 +72,8 @@ public class ProductDAO {
     // ── Admin CRUD ─────────────────────────────
 
     public int addProduct(String name, String description, double price,
-                          int stockQuantity, int categoryId,
-                          String imageUrl) throws SQLException {
+            int stockQuantity, int categoryId,
+            String imageUrl) throws SQLException {
         String sql = "INSERT INTO products (name, description, price, "
                 + "stock_quantity, category_id, image_url, is_available) "
                 + "VALUES (?, ?, ?, ?, ?, ?, true)";
@@ -93,8 +93,8 @@ public class ProductDAO {
     }
 
     public boolean updateProduct(int productId, String name, String description,
-                                 double price, int stockQuantity,
-                                 int categoryId, String imageUrl) throws SQLException {
+            double price, int stockQuantity,
+            int categoryId, String imageUrl) throws SQLException {
         String sql = "UPDATE products SET name=?, description=?, price=?, "
                 + "stock_quantity=?, category_id=?, image_url=? "
                 + "WHERE product_id=?";

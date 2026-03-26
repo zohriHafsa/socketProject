@@ -13,7 +13,7 @@ public class NotificationDAO {
     }
 
     public void createNotification(int userId, String message,
-                                   String type, String protocol) throws SQLException {
+            String type, String protocol) throws SQLException {
         String sql = "INSERT INTO notifications (user_id, message, type, protocol) "
                 + "VALUES (?, ?, ?, ?)";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
@@ -32,7 +32,9 @@ public class NotificationDAO {
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) list.add(mapNotif(rs));
+            while (rs.next()) {
+                list.add(mapNotif(rs));
+            }
         }
         return list;
     }
@@ -44,7 +46,9 @@ public class NotificationDAO {
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) list.add(mapNotif(rs));
+            while (rs.next()) {
+                list.add(mapNotif(rs));
+            }
         }
         return list;
     }
@@ -70,7 +74,9 @@ public class NotificationDAO {
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) return rs.getInt(1);
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
             return 0;
         }
     }
@@ -78,12 +84,12 @@ public class NotificationDAO {
     private Map<String, Object> mapNotif(ResultSet rs) throws SQLException {
         Map<String, Object> n = new HashMap<>();
         n.put("notificationId", rs.getInt("notification_id"));
-        n.put("userId",         rs.getInt("user_id"));
-        n.put("message",        rs.getString("message"));
-        n.put("type",           rs.getString("type"));
-        n.put("isRead",         rs.getBoolean("is_read"));
-        n.put("protocol",       rs.getString("protocol"));
-        n.put("createdAt",      rs.getString("created_at"));
+        n.put("userId", rs.getInt("user_id"));
+        n.put("message", rs.getString("message"));
+        n.put("type", rs.getString("type"));
+        n.put("isRead", rs.getBoolean("is_read"));
+        n.put("protocol", rs.getString("protocol"));
+        n.put("createdAt", rs.getString("created_at"));
         return n;
     }
 }

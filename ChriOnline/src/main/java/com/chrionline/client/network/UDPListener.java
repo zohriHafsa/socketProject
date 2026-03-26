@@ -40,6 +40,22 @@ public class UDPListener extends Thread {
     private final Gson                 gson    = new Gson();
     private volatile boolean           running = true;
 
+    public UDPListener(int port) {
+        this.port = port;
+    }
+
+    /**
+     * Callback appelé à chaque notification reçue.
+     */
+    public void setOnNotification(Consumer<Map<String, Object>> callback) {
+        this.onNotification = callback;
+    }
+
+    public int getPort() {
+        if (socket != null) {
+            return socket.getLocalPort();
+        }
+        return port;
     public UDPListener(Consumer<JsonObject> onNotification) {
         this.onNotification = onNotification;
         setDaemon(true);
@@ -48,6 +64,10 @@ public class UDPListener extends Thread {
 
     @Override
     public void run() {
+        try {
+            socket = new DatagramSocket(port);
+            running = true;
+            System.out.println("[UDP] Listener démarré sur le port " + socket.getLocalPort());
         try (DatagramSocket socket = new DatagramSocket(UDP_PORT)) {
             byte[] buffer = new byte[BUFFER_SIZE];
             System.out.println("[UDP] Écoute des notifications sur le port " + UDP_PORT);
@@ -60,6 +80,12 @@ public class UDPListener extends Thread {
                 System.out.println("[UDP] Reçu : " + raw);
 
                 try {
+                    Map<String, Object> data = new Gson().fromJson(
+                            json, new TypeToken<Map<String, Object>>() {
+                            }.getType());
+                    if (onNotification != null) {
+                        onNotification.accept(data);
+                    }
                     JsonObject notification = gson.fromJson(raw, JsonObject.class);
                     // Toujours passer par Platform.runLater pour modifier l'UI
                     Platform.runLater(() -> onNotification.accept(notification));
@@ -74,6 +100,10 @@ public class UDPListener extends Thread {
 
     public void stopListening() {
         running = false;
+        if (socket != null && !socket.isClosed()) {
+            socket.close();
+        }
+        System.out.println("[UDP] Listener arrêté.");
         interrupt();
     }
 }
