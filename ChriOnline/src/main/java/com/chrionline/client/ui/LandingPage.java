@@ -643,16 +643,13 @@ public class LandingPage {
         t.getStyleClass().add("section-title");
         Region sp = new Region();
         HBox.setHgrow(sp, Priority.ALWAYS);
-        Label cnt = new Label("");
-        cnt.getStyleClass().add("section-subtitle");
-        cnt.setId("product-count-label");
 
         Button viewAll = new Button("Voir tout \u2192");
         viewAll.getStyleClass().add("nav-link");
         viewAll.setStyle("-fx-text-fill: #6C3483; -fx-font-weight: bold;");
         viewAll.setOnAction(e -> NavigationManager.showProductList());
 
-        titleRow.getChildren().addAll(t, sp, cnt, viewAll);
+        titleRow.getChildren().addAll(t, sp, viewAll);
 
         productsGrid = new FlowPane();
         productsGrid.setHgap(24);
@@ -693,6 +690,7 @@ public class LandingPage {
         imgBox.getStyleClass().add("product-card-image-container");
         imgBox.setPrefHeight(190);
         imgBox.setMinHeight(190);
+        imgBox.setMaxHeight(190);
         imgBox.setCursor(javafx.scene.Cursor.HAND);
         imgBox.setOnMouseClicked(e ->
                 NavigationManager.showProductDetail(intV(p.get("productId"))));
@@ -700,12 +698,24 @@ public class LandingPage {
         Image productImage = loadProductImage(imageUrl);
 
         if (productImage != null && !productImage.isError()) {
-            ImageView iv = new ImageView(productImage);
-            iv.setFitWidth(240);
-            iv.setFitHeight(170);
-            iv.setPreserveRatio(true);
-            iv.setSmooth(true);
-            imgBox.getChildren().add(iv);
+            Region imgRegion = new Region();
+            imgRegion.setPrefSize(260, 190);
+            imgRegion.setMaxSize(260, 190);
+            javafx.scene.layout.BackgroundImage bgImg = new javafx.scene.layout.BackgroundImage(
+                productImage,
+                javafx.scene.layout.BackgroundRepeat.NO_REPEAT,
+                javafx.scene.layout.BackgroundRepeat.NO_REPEAT,
+                javafx.scene.layout.BackgroundPosition.CENTER,
+                new javafx.scene.layout.BackgroundSize(javafx.scene.layout.BackgroundSize.AUTO, javafx.scene.layout.BackgroundSize.AUTO, false, false, false, true)
+            );
+            imgRegion.setBackground(new javafx.scene.layout.Background(bgImg));
+            
+            javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(260, 190);
+            clip.setArcWidth(20);
+            clip.setArcHeight(20);
+            imgRegion.setClip(clip);
+            
+            imgBox.getChildren().add(imgRegion);
         } else {
             Label letter = new Label(
                     name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
@@ -1262,14 +1272,21 @@ public class LandingPage {
     private void displayProducts(List<Map<String, Object>> products) {
         productsGrid.getChildren().clear();
         Label cnt = (Label) root.lookup("#product-count-label");
-        if (cnt != null) cnt.setText(products.size() + " produit(s)");
-        if (products.isEmpty()) {
+        
+        List<Map<String, Object>> displayList = new ArrayList<>(products);
+        Collections.shuffle(displayList);
+        if (displayList.size() > 8) {
+            displayList = displayList.subList(0, 8);
+        }
+
+        if (cnt != null) cnt.setText(displayList.size() + " produit(s)");
+        if (displayList.isEmpty()) {
             showEmpty("Aucun produit trouve", false);
             return;
         }
 
         List<Node> cards = new ArrayList<>();
-        for (Map<String, Object> p : products) {
+        for (Map<String, Object> p : displayList) {
             Node card = buildCard(p);
             card.setOpacity(0);
             card.setTranslateY(40);
