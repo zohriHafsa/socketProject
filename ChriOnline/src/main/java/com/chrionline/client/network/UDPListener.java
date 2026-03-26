@@ -30,14 +30,16 @@ public class UDPListener implements Runnable {
     }
 
     public int getPort() {
-        if (socket != null) return socket.getLocalPort();
+        if (socket != null) {
+            return socket.getLocalPort();
+        }
         return port;
     }
 
     @Override
     public void run() {
         try {
-            socket  = new DatagramSocket(port);
+            socket = new DatagramSocket(port);
             running = true;
             System.out.println("[UDP] Listener démarré sur le port " + socket.getLocalPort());
 
@@ -51,7 +53,8 @@ public class UDPListener implements Runnable {
 
                 try {
                     Map<String, Object> data = new Gson().fromJson(
-                            json, new TypeToken<Map<String, Object>>(){}.getType());
+                            json, new TypeToken<Map<String, Object>>() {
+                            }.getType());
                     if (onNotification != null) {
                         onNotification.accept(data);
                     }
@@ -68,7 +71,9 @@ public class UDPListener implements Runnable {
 
     public void stop() {
         running = false;
-        if (socket != null && !socket.isClosed()) socket.close();
+        if (socket != null && !socket.isClosed()) {
+            socket.close();
+        }
         System.out.println("[UDP] Listener arrêté.");
     }
 }
