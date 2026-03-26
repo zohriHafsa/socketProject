@@ -5,35 +5,20 @@ import com.chrionline.client.network.ServerConnection;
 import com.chrionline.shared.dto.Response;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.util.Duration;
 
 import java.util.Map;
+import java.util.Objects;
 
-/**
- * TÂCHE 2 — RegisterScreen
- * ════════════════════════
- * Utilise AuthController.register() puis AuthController.login().
- *
- * REGISTER renvoie : { userId, username }
- * LOGIN renvoie    : { token, userId, username, role, firstName, lastName }  (Map plat)
- */
 public class RegisterScreen {
 
     private final AuthController authController = new AuthController();
@@ -41,90 +26,328 @@ public class RegisterScreen {
 
     public Node getView() {
         StackPane root = new StackPane();
-        root.setStyle("-fx-background-color: linear-gradient(to bottom right, #0f0728, #3b1278, #6d28d9);");
+        root.getStyleClass().add("auth-root");
 
+        // ── Watermark ────────────────────────────────────
+        Label watermark = new Label("ChriOnline");
+        watermark.getStyleClass().add("auth-brand-watermark");
+        watermark.setMouseTransparent(true);
+        StackPane.setAlignment(watermark, Pos.CENTER);
+
+        // ── Back to home ─────────────────────────────────
+        Button backLink = new Button("\u2190  Retour a l'accueil");
+        backLink.getStyleClass().add("auth-back-link");
+        backLink.setOnAction(e -> NavigationManager.showLanding());
+        StackPane.setAlignment(backLink, Pos.TOP_LEFT);
+        StackPane.setMargin(backLink, new Insets(24, 0, 0, 24));
+
+        // ── Scrollable content ───────────────────────────
         ScrollPane scroll = new ScrollPane();
         scroll.setFitToWidth(true);
-        scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.getStyleClass().add("auth-scroll");
 
-        VBox card = new VBox(18);
+        VBox centerBox = new VBox(24);
+        centerBox.setAlignment(Pos.CENTER);
+        centerBox.setPadding(new Insets(30, 40, 40, 40));
+        centerBox.setMaxWidth(500);
+
+        // ── Branding ─────────────────────────────────────
+        VBox branding = buildBranding();
+
+        // ── White card ───────────────────────────────────
+        VBox card = new VBox(12);
+        card.getStyleClass().add("auth-card");
+        card.setPadding(new Insets(28, 36, 24, 36));
+        card.setAlignment(Pos.CENTER);
         card.setMaxWidth(460);
-        card.setPadding(new Insets(44, 50, 44, 50));
-        card.setAlignment(Pos.CENTER_LEFT);
-        card.setStyle(
-                "-fx-background-color: rgba(255,255,255,0.07);" +
-                        "-fx-background-radius: 20;" +
-                        "-fx-border-color: rgba(255,255,255,0.13);" +
-                        "-fx-border-radius: 20;" +
-                        "-fx-border-width: 1;"
-        );
 
-        Label brand = lbl("ChriOnline", 24, FontWeight.BOLD, Color.WHITE);
-        Label title = lbl("Créer un compte", 22, FontWeight.BOLD, Color.rgb(220, 200, 255));
+        // Title
+        HBox titleRow = new HBox(10);
+        titleRow.setAlignment(Pos.CENTER_LEFT);
+        Label userIcon = new Label("\uD83D\uDC64");
+        userIcon.setStyle("-fx-font-size: 22px;");
+        Label title = new Label("Creer un compte");
+        title.getStyleClass().add("auth-title");
+        title.setStyle("-fx-font-size: 22px;");
+        titleRow.getChildren().addAll(userIcon, title);
 
-        TextField     usernameField  = styledField("ex : jean_dupont");
-        TextField     emailField     = styledField("ex : jean@email.com");
-        TextField     firstNameField = styledField("Prénom");
-        TextField     lastNameField  = styledField("Nom");
-        PasswordField passwordField  = styledPassword("Minimum 6 caractères");
-        PasswordField confirmField   = styledPassword("Répétez le mot de passe");
+        Label subtitle = new Label("Rejoignez ChriOnline en quelques secondes");
+        subtitle.getStyleClass().add("auth-subtitle");
 
-        VBox fnGroup = fieldGroup("Prénom *",         firstNameField);
-        VBox lnGroup = fieldGroup("Nom de famille *", lastNameField);
+        // Divider
+        Region div = new Region();
+        div.setStyle("-fx-background-color: #E8E8E8; -fx-pref-height: 1;");
+
+        // ── Fields ───────────────────────────────────────
+
+        // Username
+        Label userLabel = new Label("Nom d'utilisateur *");
+        userLabel.getStyleClass().add("auth-field-label");
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("ex : jean_dupont");
+        usernameField.getStyleClass().add("auth-field");
+        VBox userGroup = new VBox(5, userLabel, usernameField);
+
+        // Email
+        Label emailLabel = new Label("Adresse e-mail *");
+        emailLabel.getStyleClass().add("auth-field-label");
+        TextField emailField = new TextField();
+        emailField.setPromptText("ex : jean@email.com");
+        emailField.getStyleClass().add("auth-field");
+        VBox emailGroup = new VBox(5, emailLabel, emailField);
+
+        // First name + Last name (side by side)
+        Label fnLabel = new Label("Prenom *");
+        fnLabel.getStyleClass().add("auth-field-label");
+        TextField firstNameField = new TextField();
+        firstNameField.setPromptText("Prenom");
+        firstNameField.getStyleClass().add("auth-field");
+        VBox fnGroup = new VBox(5, fnLabel, firstNameField);
         HBox.setHgrow(fnGroup, Priority.ALWAYS);
+
+        Label lnLabel = new Label("Nom de famille *");
+        lnLabel.getStyleClass().add("auth-field-label");
+        TextField lastNameField = new TextField();
+        lastNameField.setPromptText("Nom");
+        lastNameField.getStyleClass().add("auth-field");
+        VBox lnGroup = new VBox(5, lnLabel, lastNameField);
         HBox.setHgrow(lnGroup, Priority.ALWAYS);
+
         HBox nameRow = new HBox(12, fnGroup, lnGroup);
+        nameRow.getStyleClass().add("auth-field-row");
 
-        Label errorLabel = new Label();
-        errorLabel.setTextFill(Color.rgb(252, 129, 129));
-        errorLabel.setFont(Font.font(12));
-        errorLabel.setWrapText(true);
-        errorLabel.setVisible(false);
-        errorLabel.setManaged(false);
+        // Password
+        Label passLabel = new Label("Mot de passe *");
+        passLabel.getStyleClass().add("auth-field-label");
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("Minimum 6 caracteres");
+        passwordField.getStyleClass().add("auth-password-field");
+        VBox passGroup = new VBox(5, passLabel, passwordField);
 
-        Button registerBtn = new Button("Créer mon compte");
-        registerBtn.setMaxWidth(Double.MAX_VALUE);
-        registerBtn.setFont(Font.font("System", FontWeight.BOLD, 14));
-        registerBtn.setStyle(btnStyle("#f59e0b"));
-        registerBtn.setOnMouseEntered(e -> registerBtn.setStyle(btnStyle("#d97706")));
-        registerBtn.setOnMouseExited(e  -> registerBtn.setStyle(btnStyle("#f59e0b")));
+        // Confirm password
+        Label confirmLabel = new Label("Confirmer le mot de passe *");
+        confirmLabel.getStyleClass().add("auth-field-label");
+        PasswordField confirmField = new PasswordField();
+        confirmField.setPromptText("Repetez le mot de passe");
+        confirmField.getStyleClass().add("auth-password-field");
+        VBox confirmGroup = new VBox(5, confirmLabel, confirmField);
+
+        // ── Error box ────────────────────────────────────
+        HBox errorBox = new HBox(8);
+        errorBox.getStyleClass().add("auth-error");
+        errorBox.setVisible(false);
+        errorBox.setManaged(false);
+        errorBox.setAlignment(Pos.CENTER_LEFT);
+        Label errorIcon = new Label("\u26A0\uFE0F");
+        errorIcon.setStyle("-fx-font-size: 14px;");
+        Label errorText = new Label();
+        errorText.getStyleClass().add("auth-error-text");
+        errorText.setWrapText(true);
+        HBox.setHgrow(errorText, Priority.ALWAYS);
+        errorBox.getChildren().addAll(errorIcon, errorText);
+
+        // ── Success box (for registration success) ───────
+        HBox successBox = new HBox(8);
+        successBox.getStyleClass().add("auth-success");
+        successBox.setVisible(false);
+        successBox.setManaged(false);
+        successBox.setAlignment(Pos.CENTER_LEFT);
+        Label successIcon = new Label("\u2705");
+        successIcon.setStyle("-fx-font-size: 14px;");
+        Label successText = new Label();
+        successText.getStyleClass().add("auth-success-text");
+        successText.setWrapText(true);
+        HBox.setHgrow(successText, Priority.ALWAYS);
+        successBox.getChildren().addAll(successIcon, successText);
+
+        // ── Register button ──────────────────────────────
+        Button registerBtn = new Button("Creer mon compte");
+        registerBtn.getStyleClass().add("auth-btn-primary");
         registerBtn.setOnAction(e -> handleRegister(
                 usernameField, emailField, firstNameField, lastNameField,
-                passwordField, confirmField, registerBtn, errorLabel
+                passwordField, confirmField, registerBtn,
+                errorBox, errorText, successBox, successText
         ));
 
-        Hyperlink loginLink = new Hyperlink("Déjà un compte ? Se connecter");
-        loginLink.setTextFill(Color.rgb(167, 139, 250));
-        loginLink.setStyle("-fx-border-color: transparent;");
+        // "ou" divider
+        HBox orDivider = buildOrDivider();
+
+        // Login link
+        HBox loginRow = new HBox(4);
+        loginRow.setAlignment(Pos.CENTER);
+        Label hasAccount = new Label("Deja un compte ?");
+        hasAccount.getStyleClass().add("auth-secondary-text");
+        Button loginLink = new Button("Se connecter");
+        loginLink.getStyleClass().add("auth-link");
         loginLink.setOnAction(e -> NavigationManager.showLogin());
+        loginRow.getChildren().addAll(hasAccount, loginLink);
 
-        Region sep = new Region();
-        sep.setPrefHeight(1);
-        sep.setStyle("-fx-background-color: rgba(255,255,255,0.1);");
+        // ── Password requirements hint ───────────────────
+        HBox passHint = new HBox(6);
+        passHint.setAlignment(Pos.CENTER_LEFT);
+        passHint.setPadding(new Insets(0, 0, 0, 2));
+        Label hintIcon = new Label("\u2139\uFE0F");
+        hintIcon.setStyle("-fx-font-size: 11px;");
+        Label hintText = new Label("Le mot de passe doit contenir au moins 6 caracteres");
+        hintText.setStyle("-fx-font-size: 11px; -fx-text-fill: #BDC3C7;");
+        passHint.getChildren().addAll(hintIcon, hintText);
 
+        // ── Assemble card ────────────────────────────────
         card.getChildren().addAll(
-                brand, title, sep,
-                fieldGroup("Nom d'utilisateur *", usernameField),
-                fieldGroup("Adresse e-mail *",    emailField),
-                nameRow,
-                fieldGroup("Mot de passe *",              passwordField),
-                fieldGroup("Confirmer le mot de passe *", confirmField),
-                errorLabel, registerBtn, loginLink
+                titleRow, subtitle, div,
+                userGroup, emailGroup, nameRow,
+                passGroup, passHint, confirmGroup,
+                errorBox, successBox,
+                registerBtn,
+                orDivider,
+                loginRow
         );
 
-        StackPane wrapper = new StackPane(card);
-        wrapper.setPadding(new Insets(40));
-        scroll.setContent(wrapper);
-        root.getChildren().add(scroll);
+        centerBox.getChildren().addAll(branding, card);
+
+        StackPane scrollContent = new StackPane(centerBox);
+        scrollContent.setAlignment(Pos.CENTER);
+        scroll.setContent(scrollContent);
+
+        // Particles
+        Pane particles = buildParticles();
+
+        root.getChildren().addAll(particles, watermark, backLink, scroll);
+
+        // ── Entrance animation ───────────────────────────
+        Platform.runLater(() -> {
+            branding.setOpacity(0);
+            branding.setTranslateY(-15);
+            card.setOpacity(0);
+            card.setTranslateY(20);
+
+            FadeTransition fb = new FadeTransition(Duration.millis(500), branding);
+            fb.setToValue(1);
+            TranslateTransition tb = new TranslateTransition(
+                    Duration.millis(500), branding);
+            tb.setToY(0);
+            tb.setInterpolator(Interpolator.EASE_OUT);
+
+            FadeTransition fc = new FadeTransition(Duration.millis(600), card);
+            fc.setToValue(1);
+            fc.setDelay(Duration.millis(150));
+            TranslateTransition tc = new TranslateTransition(
+                    Duration.millis(600), card);
+            tc.setToY(0);
+            tc.setDelay(Duration.millis(150));
+            tc.setInterpolator(Interpolator.EASE_OUT);
+
+            new ParallelTransition(fb, tb, fc, tc).play();
+        });
+
         return root;
     }
 
-    // ── Logique REGISTER ──────────────────────────────────────────────────────
+    // ═══════════════════════════════════════════════════════
+    //  BRANDING
+    // ═══════════════════════════════════════════════════════
+
+    private VBox buildBranding() {
+        VBox branding = new VBox(6);
+        branding.setAlignment(Pos.CENTER);
+
+        try {
+            ImageView logo = new ImageView(new Image(
+                    Objects.requireNonNull(
+                            getClass().getResourceAsStream("/images/logo.png"))));
+            logo.setFitHeight(48);
+            logo.setPreserveRatio(true);
+            logo.setSmooth(true);
+            branding.getChildren().add(logo);
+        } catch (Exception ignored) {}
+
+        HBox nameBox = new HBox(0);
+        nameBox.setAlignment(Pos.CENTER);
+        Label l1 = new Label("Chri");
+        l1.setStyle(
+                "-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF;"
+                        + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 2);");
+        Label l2 = new Label("Online");
+        l2.setStyle(
+                "-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #D2B4DE;"
+                        + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 2);");
+        nameBox.getChildren().addAll(l1, l2);
+
+        Label tagline = new Label("Creez votre compte en quelques clics");
+        tagline.setStyle(
+                "-fx-font-size: 13px; -fx-text-fill: rgba(255,255,255,0.55);");
+
+        branding.getChildren().addAll(nameBox, tagline);
+        return branding;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  "OU" DIVIDER
+    // ═══════════════════════════════════════════════════════
+
+    private HBox buildOrDivider() {
+        HBox box = new HBox(12);
+        box.setAlignment(Pos.CENTER);
+        box.setPadding(new Insets(2, 0, 2, 0));
+
+        Region line1 = new Region();
+        line1.setStyle("-fx-background-color: #E8E8E8; -fx-pref-height: 1;");
+        HBox.setHgrow(line1, Priority.ALWAYS);
+
+        Label text = new Label("ou");
+        text.setStyle("-fx-font-size: 12px; -fx-text-fill: #BDC3C7;");
+
+        Region line2 = new Region();
+        line2.setStyle("-fx-background-color: #E8E8E8; -fx-pref-height: 1;");
+        HBox.setHgrow(line2, Priority.ALWAYS);
+
+        box.getChildren().addAll(line1, text, line2);
+        return box;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  PARTICLES
+    // ═══════════════════════════════════════════════════════
+
+    private Pane buildParticles() {
+        Pane layer = new Pane();
+        layer.getStyleClass().add("auth-particles");
+        layer.setMouseTransparent(true);
+
+        java.util.Random rand = new java.util.Random();
+        for (int i = 0; i < 12; i++) {
+            javafx.scene.shape.Circle dot = new javafx.scene.shape.Circle(
+                    rand.nextDouble() * 2 + 1.5);
+            dot.setFill(javafx.scene.paint.Color.rgb(255, 255, 255,
+                    0.04 + rand.nextDouble() * 0.06));
+            dot.setLayoutX(rand.nextDouble() * 1400);
+            dot.setLayoutY(rand.nextDouble() * 900);
+            layer.getChildren().add(dot);
+
+            TranslateTransition tt = new TranslateTransition(
+                    Duration.seconds(8 + rand.nextDouble() * 12), dot);
+            tt.setByY(-40 - rand.nextDouble() * 60);
+            tt.setByX((rand.nextDouble() - 0.5) * 40);
+            tt.setCycleCount(Animation.INDEFINITE);
+            tt.setAutoReverse(true);
+            tt.setInterpolator(Interpolator.EASE_BOTH);
+            tt.play();
+        }
+
+        return layer;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  REGISTER LOGIC
+    // ═══════════════════════════════════════════════════════
 
     private void handleRegister(TextField usernameField, TextField emailField,
                                 TextField firstNameField, TextField lastNameField,
                                 PasswordField passwordField, PasswordField confirmField,
-                                Button registerBtn, Label errorLabel) {
+                                Button registerBtn,
+                                HBox errorBox, Label errorText,
+                                HBox successBox, Label successText) {
 
         String username  = usernameField.getText().trim();
         String email     = emailField.getText().trim();
@@ -133,51 +356,80 @@ public class RegisterScreen {
         String password  = passwordField.getText();
         String confirm   = confirmField.getText();
 
-        // Validation locale
+        hideError(errorBox);
+        hideError(successBox);
+
+        // Validation
         if (username.isEmpty() || email.isEmpty() || firstName.isEmpty()
                 || lastName.isEmpty() || password.isEmpty()) {
-            showError(errorLabel, "Tous les champs marqués * sont obligatoires.");
+            showError(errorBox, errorText,
+                    "Tous les champs marques * sont obligatoires.");
+            shakeNode(errorBox);
             return;
         }
-        if (!password.equals(confirm)) {
-            showError(errorLabel, "Les mots de passe ne correspondent pas.");
+
+        if (!email.contains("@") || !email.contains(".")) {
+            showError(errorBox, errorText,
+                    "Veuillez entrer une adresse e-mail valide.");
+            shakeNode(errorBox);
             return;
         }
+
         if (password.length() < 6) {
-            showError(errorLabel, "Le mot de passe doit contenir au moins 6 caractères.");
+            showError(errorBox, errorText,
+                    "Le mot de passe doit contenir au moins 6 caracteres.");
+            shakeNode(errorBox);
+            return;
+        }
+
+        if (!password.equals(confirm)) {
+            showError(errorBox, errorText,
+                    "Les mots de passe ne correspondent pas.");
+            shakeNode(errorBox);
             return;
         }
 
         registerBtn.setDisable(true);
-        registerBtn.setText("Création en cours...");
+        registerBtn.setText("Creation en cours...");
 
         new Thread(() -> {
             if (!ServerConnection.getInstance().isConnected())
                 ServerConnection.getInstance().connect();
 
-            // 1. REGISTER
+            // 1. Register
             Response registerResp = authController.register(
-                    username, email, password, firstName, lastName, "", ""
-            );
+                    username, email, password, firstName, lastName, "", "");
 
             if (!registerResp.isSuccess()) {
                 Platform.runLater(() -> {
-                    showError(errorLabel, registerResp.getMessage());
+                    showError(errorBox, errorText, registerResp.getMessage());
+                    shakeNode(errorBox);
                     registerBtn.setDisable(false);
-                    registerBtn.setText("Créer mon compte");
+                    registerBtn.setText("Creer mon compte");
                 });
                 return;
             }
 
-            // 2. AUTO-LOGIN après inscription réussie
+            // Show success briefly
+            Platform.runLater(() -> {
+                successText.setText("Compte cree avec succes ! Connexion...");
+                successBox.setVisible(true);
+                successBox.setManaged(true);
+                successBox.setOpacity(0);
+                FadeTransition ft = new FadeTransition(
+                        Duration.millis(250), successBox);
+                ft.setToValue(1);
+                ft.play();
+            });
+
+            // 2. Auto-login
             Response loginResp = authController.login(username, password);
 
             Platform.runLater(() -> {
                 registerBtn.setDisable(false);
-                registerBtn.setText("Créer mon compte");
+                registerBtn.setText("Creer mon compte");
 
                 if (loginResp.isSuccess()) {
-                    // getData() = Map plat : { token, userId, username, role, firstName, lastName }
                     Map<String, Object> data = castToMap(loginResp.getData());
                     NavigationManager.setSession(
                             getStr(data, "token"),
@@ -187,16 +439,59 @@ public class RegisterScreen {
                             getStr(data, "firstName"),
                             getStr(data, "lastName")
                     );
-                    NavigationManager.showLanding();
+
+                    // Brief delay to show success message
+                    PauseTransition pause = new PauseTransition(
+                            Duration.millis(600));
+                    pause.setOnFinished(ev -> NavigationManager.showLanding());
+                    pause.play();
+
                 } else {
-                    // Inscription OK mais login échoué → rediriger vers login
-                    NavigationManager.showLogin();
+                    // Registration succeeded but login failed
+                    successText.setText(
+                            "Compte cree ! Veuillez vous connecter.");
+                    PauseTransition pause = new PauseTransition(
+                            Duration.seconds(1.5));
+                    pause.setOnFinished(ev -> NavigationManager.showLogin());
+                    pause.play();
                 }
             });
         }).start();
     }
 
-    // ── Helpers désérialisation ───────────────────────────────────────────────
+    // ═══════════════════════════════════════════════════════
+    //  ERROR / SUCCESS HELPERS
+    // ═══════════════════════════════════════════════════════
+
+    private void showError(HBox box, Label text, String msg) {
+        text.setText(msg);
+        box.setVisible(true);
+        box.setManaged(true);
+        box.setOpacity(0);
+        FadeTransition ft = new FadeTransition(Duration.millis(250), box);
+        ft.setToValue(1);
+        ft.play();
+    }
+
+    private void hideError(HBox box) {
+        box.setVisible(false);
+        box.setManaged(false);
+    }
+
+    private void shakeNode(Node node) {
+        TranslateTransition tt = new TranslateTransition(
+                Duration.millis(50), node);
+        tt.setFromX(0);
+        tt.setByX(8);
+        tt.setCycleCount(6);
+        tt.setAutoReverse(true);
+        tt.setOnFinished(e -> node.setTranslateX(0));
+        tt.play();
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  HELPERS
+    // ═══════════════════════════════════════════════════════
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> castToMap(Object obj) {
@@ -208,7 +503,8 @@ public class RegisterScreen {
 
     private String getStr(Map<String, Object> m, String key) {
         if (m == null) return "";
-        Object v = m.get(key); return v != null ? v.toString() : "";
+        Object v = m.get(key);
+        return v != null ? v.toString() : "";
     }
 
     private int getInt(Map<String, Object> m, String key) {
@@ -217,45 +513,5 @@ public class RegisterScreen {
         if (v == null) return -1;
         if (v instanceof Double) return ((Double) v).intValue();
         return Integer.parseInt(v.toString());
-    }
-
-    // ── Helpers UI ────────────────────────────────────────────────────────────
-
-    private void showError(Label lbl, String msg) {
-        lbl.setText(msg); lbl.setVisible(true); lbl.setManaged(true);
-    }
-
-    private VBox fieldGroup(String labelText, javafx.scene.control.Control field) {
-        Label l = new Label(labelText);
-        l.setTextFill(Color.rgb(200, 180, 240));
-        l.setFont(Font.font(12));
-        return new VBox(6, l, field);
-    }
-
-    private Label lbl(String text, int size, FontWeight weight, Color color) {
-        Label l = new Label(text);
-        l.setFont(Font.font("System", weight, size));
-        l.setTextFill(color);
-        return l;
-    }
-
-    private TextField styledField(String prompt) {
-        TextField tf = new TextField(); tf.setPromptText(prompt); tf.setStyle(inputStyle()); return tf;
-    }
-
-    private PasswordField styledPassword(String prompt) {
-        PasswordField pf = new PasswordField(); pf.setPromptText(prompt); pf.setStyle(inputStyle()); return pf;
-    }
-
-    private String inputStyle() {
-        return "-fx-background-color: rgba(255,255,255,0.09);-fx-text-fill: white;" +
-                "-fx-prompt-text-fill: rgba(200,180,255,0.5);-fx-background-radius: 9;" +
-                "-fx-border-color: rgba(255,255,255,0.15);-fx-border-radius: 9;" +
-                "-fx-padding: 10 14;-fx-font-size: 13;";
-    }
-
-    private String btnStyle(String color) {
-        return "-fx-background-color:" + color + ";-fx-text-fill:white;" +
-                "-fx-background-radius:9;-fx-padding:12 0;-fx-cursor:hand;";
     }
 }
