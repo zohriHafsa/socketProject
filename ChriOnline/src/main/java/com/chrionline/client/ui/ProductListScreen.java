@@ -13,10 +13,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,6 @@ public class ProductListScreen {
     private Label                     priceValueLabel;
     private Label                     statusLabel;
 
-    // badge labels — kept as fields so they can be updated
     private Label cartCountLabel  = new Label("0");
     private Label notifCountLabel = new Label("0");
 
@@ -53,8 +53,7 @@ public class ProductListScreen {
     }
 
     // ═══════════════════════════════════════════════════════
-    //  HEADER — copie exacte de LandingPage.buildHeader()
-    //  + champ de recherche ajouté
+    //  HEADER
     // ═══════════════════════════════════════════════════════
 
     private StackPane buildHeader() {
@@ -68,7 +67,6 @@ public class ProductListScreen {
         inner.setMinHeight(70);
         inner.setAlignment(Pos.CENTER_LEFT);
 
-        // ── Logo ─────────────────────────────────────────
         HBox logo = new HBox(8);
         logo.setAlignment(Pos.CENTER_LEFT);
         logo.setCursor(javafx.scene.Cursor.HAND);
@@ -89,12 +87,11 @@ public class ProductListScreen {
         l2.getStyleClass().add("header-logo-accent");
         logo.getChildren().addAll(l1, l2);
 
-        // ── Nav ──────────────────────────────────────────
         HBox nav = new HBox(4);
         nav.setAlignment(Pos.CENTER);
 
         Button nHome   = navBtn("Accueil",   false);
-        Button nProd   = navBtn("Produits",  true);    // active
+        Button nProd   = navBtn("Produits",  true);
         Button nOrders = navBtn("Commandes", false);
         Button nAbout  = navBtn("A propos",  false);
 
@@ -103,7 +100,6 @@ public class ProductListScreen {
         nOrders.setOnAction(e -> NavigationManager.showOrders());
         nav.getChildren().addAll(nHome, nProd, nOrders, nAbout);
 
-        // ── Search field (ajout) ──────────────────────────
         searchField = new TextField();
         searchField.setPromptText("Rechercher...");
         searchField.getStyleClass().add("search-field");
@@ -113,7 +109,6 @@ public class ProductListScreen {
             else searchOnServer(n.trim());
         });
 
-        // ── Notification bell avec badge ──────────────────
         StackPane notifStack = new StackPane();
         Button notifBtn = new Button("\uD83D\uDD14");
         notifBtn.getStyleClass().add("header-icon-btn");
@@ -131,7 +126,6 @@ public class ProductListScreen {
         StackPane.setMargin(notifBadge, new Insets(-4, -4, 0, 0));
         notifStack.getChildren().addAll(notifBtn, notifBadge);
 
-        // ── Cart avec badge ───────────────────────────────
         StackPane cartStack = new StackPane();
         Button cartBtn2 = new Button("\uD83D\uDED2");
         cartBtn2.getStyleClass().add("header-icon-btn");
@@ -149,7 +143,6 @@ public class ProductListScreen {
         StackPane.setMargin(cartBadge, new Insets(-4, -4, 0, 0));
         cartStack.getChildren().addAll(cartBtn2, cartBadge);
 
-        // ── User avatar button ────────────────────────────
         Button userBtn = new Button();
         userBtn.getStyleClass().add("header-user-btn");
 
@@ -180,7 +173,6 @@ public class ProductListScreen {
         userBtn.setText(null);
         userBtn.setOnAction(e -> NavigationManager.showProfile());
 
-        // ── Layout ───────────────────────────────────────
         Region sp1 = new Region(); HBox.setHgrow(sp1, Priority.ALWAYS);
         Region sp2 = new Region(); HBox.setHgrow(sp2, Priority.ALWAYS);
 
@@ -378,7 +370,7 @@ public class ProductListScreen {
     }
 
     // ═══════════════════════════════════════════════════════
-    //  CARTES — mêmes classes CSS que LandingPage
+    //  CARTES PRODUIT — avec affichage réel des images
     // ═══════════════════════════════════════════════════════
 
     private void displayProducts(List<Map<String, Object>> products) {
@@ -394,12 +386,13 @@ public class ProductListScreen {
     }
 
     private VBox buildCard(Map<String, Object> product) {
-        int     id      = getInt(product, "productId");
-        String  name    = getStr(product, "name");
-        double  price   = getDbl(product, "price");
-        int     stock   = getInt(product, "stockQuantity");
-        String  cat     = getStr(product, "categoryName");
-        boolean inStock = stock > 0;
+        int     id       = getInt(product, "productId");
+        String  name     = getStr(product, "name");
+        double  price    = getDbl(product, "price");
+        int     stock    = getInt(product, "stockQuantity");
+        String  cat      = getStr(product, "categoryName");
+        String  imageUrl = getStr(product, "imageUrl");
+        boolean inStock  = stock > 0;
 
         VBox card = new VBox(6);
         card.getStyleClass().add("product-card");
@@ -408,15 +401,27 @@ public class ProductListScreen {
         card.setCursor(javafx.scene.Cursor.HAND);
         card.setOnMouseClicked(e -> NavigationManager.showProductDetail(id));
 
-        // Image placeholder (lettre initiale) — même que LandingPage
+        // ── Image ou lettre placeholder ──────────────────
         StackPane imgBox = new StackPane();
         imgBox.getStyleClass().add("product-card-image-container");
         imgBox.setPrefHeight(160);
         imgBox.setMinHeight(160);
-        Label letter = new Label(
-                name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
-        letter.getStyleClass().add("product-image-letter");
-        imgBox.getChildren().add(letter);
+
+        Image productImage = loadProductImage(imageUrl);
+
+        if (productImage != null && !productImage.isError()) {
+            ImageView iv = new ImageView(productImage);
+            iv.setFitWidth(220);
+            iv.setFitHeight(140);
+            iv.setPreserveRatio(true);
+            iv.setSmooth(true);
+            imgBox.getChildren().add(iv);
+        } else {
+            Label letter = new Label(
+                    name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
+            letter.getStyleClass().add("product-image-letter");
+            imgBox.getChildren().add(letter);
+        }
 
         VBox body = new VBox(6);
         body.getStyleClass().add("product-card-body");
@@ -453,6 +458,52 @@ public class ProductListScreen {
         body.getChildren().addAll(catL, nameL, priceL, stockL, btn);
         card.getChildren().addAll(imgBox, body);
         return card;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  CHARGEMENT D'IMAGE — multiple fallbacks
+    // ═══════════════════════════════════════════════════════
+
+    private Image loadProductImage(String imageUrl) {
+        if (imageUrl == null || imageUrl.trim().isEmpty()) return null;
+        imageUrl = imageUrl.trim();
+
+        // 1. Classpath resource (target/classes/...)
+        try {
+            InputStream is = getClass().getResourceAsStream(imageUrl);
+            if (is != null) {
+                Image img = new Image(is);
+                if (!img.isError()) return img;
+            }
+        } catch (Exception ignored) {}
+
+        // 2. File system: src/main/resources + path
+        try {
+            File f = new File("src/main/resources" + imageUrl);
+            if (f.exists()) {
+                Image img = new Image(f.toURI().toString());
+                if (!img.isError()) return img;
+            }
+        } catch (Exception ignored) {}
+
+        // 3. Chemin absolu direct
+        try {
+            File f = new File(imageUrl);
+            if (f.exists()) {
+                Image img = new Image(f.toURI().toString());
+                if (!img.isError()) return img;
+            }
+        } catch (Exception ignored) {}
+
+        // 4. URL HTTP/HTTPS/file:
+        try {
+            if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")
+                    || imageUrl.startsWith("file:")) {
+                return new Image(imageUrl, true);
+            }
+        } catch (Exception ignored) {}
+
+        return null;
     }
 
     // ═══════════════════════════════════════════════════════
