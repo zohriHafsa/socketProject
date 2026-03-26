@@ -10,27 +10,26 @@ import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AdminService {
 
-    private final ProductDAO      productDAO      = new ProductDAO();
-    private final UserDAO         userDAO         = new UserDAO();
-    private final OrderDAO        orderDAO        = new OrderDAO();
+    private final ProductDAO productDAO = new ProductDAO();
+    private final UserDAO userDAO = new UserDAO();
+    private final OrderDAO orderDAO = new OrderDAO();
     private final NotificationDAO notificationDAO = new NotificationDAO();
 
     // ═══════════ PRODUITS ══════════════════════
 
     public Response addProduct(Request request) {
         try {
-            String name        = request.getString("name");
+            String name = request.getString("name");
             String description = request.getString("description");
-            double price       = request.getDouble("price");
-            int    stock       = request.getInt("stockQuantity");
-            int    categoryId  = request.getInt("categoryId");
-            String imageUrl    = request.getString("imageUrl");
+            double price = request.getDouble("price");
+            int stock = request.getInt("stockQuantity");
+            int categoryId = request.getInt("categoryId");
+            String imageUrl = request.getString("imageUrl");
 
             if (name == null || price <= 0)
                 return Response.error("Nom et prix (> 0) requis.");
@@ -49,13 +48,13 @@ public class AdminService {
 
     public Response editProduct(Request request) {
         try {
-            int    id          = request.getInt("productId");
-            String name        = request.getString("name");
+            int id = request.getInt("productId");
+            String name = request.getString("name");
             String description = request.getString("description");
-            double price       = request.getDouble("price");
-            int    stock       = request.getInt("stockQuantity");
-            int    categoryId  = request.getInt("categoryId");
-            String imageUrl    = request.getString("imageUrl");
+            double price = request.getDouble("price");
+            int stock = request.getInt("stockQuantity");
+            int categoryId = request.getInt("categoryId");
+            String imageUrl = request.getString("imageUrl");
 
             if (!productDAO.updateProduct(id, name, description, price,
                     stock, categoryId, imageUrl))
@@ -126,7 +125,7 @@ public class AdminService {
 
     public Response updateOrderStatus(Request request) {
         try {
-            String orderId   = request.getString("orderId");
+            String orderId = request.getString("orderId");
             String newStatus = request.getString("status");
 
             if (orderId == null || newStatus == null)
@@ -142,11 +141,13 @@ public class AdminService {
             Map<String, Object> order = orderDAO.getOrderById(orderId);
             if (order != null) {
                 int userId = ((Number) order.get("userId")).intValue();
-                UDPNotifier.getInstance()
-                        .notifyOrderStatusChange(userId, orderId, newStatus);
-                notificationDAO.createNotification(userId,
+                UDPNotifier.getInstance().notifyOrderStatusChange(
+                        userId, orderId, newStatus);
+                notificationDAO.createNotification(
+                        userId,
                         "Commande " + orderId + " → " + newStatus,
-                        "ORDER", "UDP");
+                        "ORDER",
+                        "UDP");
             }
 
             ServerLogger.info("ADMIN_UPDATE_ORDER_STATUS : "
