@@ -1,36 +1,28 @@
 package com.chrionline.server.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserDAO {
 
-    // Gets a fresh DB connection from the singleton
     private Connection conn() {
         return DBConnection.getInstance().getConnection();
     }
 
-    // Find a user by their username (used in login)
-    public Map<String, Object> findByUsername(String username) throws SQLException {
+    public Map<String, Object> getUserByUsername(String username) throws SQLException {
         String sql = "SELECT * FROM users WHERE username = ?";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
-            ps.setString(1, username);  // "?" gets replaced by the actual username
+            ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) return mapUser(rs);  // found → convert to Map
-            return null;  // not found
+            if (rs.next()) return mapUser(rs);
+            return null;
         }
     }
 
-    // Find a user by email (used in register to check duplicates)
-    public Map<String, Object> findByEmail(String email) throws SQLException {
+    public Map<String, Object> getUserByEmail(String email) throws SQLException {
         String sql = "SELECT * FROM users WHERE email = ?";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setString(1, email);
@@ -40,8 +32,7 @@ public class UserDAO {
         }
     }
 
-    // Find a user by ID
-    public Map<String, Object> findById(int userId) throws SQLException {
+    public Map<String, Object> getUserById(int userId) throws SQLException {
         String sql = "SELECT * FROM users WHERE user_id = ?";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setInt(1, userId);
@@ -51,14 +42,14 @@ public class UserDAO {
         }
     }
 
-    // Insert a new user into the DB, returns the new user_id
     public int createUser(String username, String email, String passwordHash,
                           String firstName, String lastName,
                           String address, String phone) throws SQLException {
-        String sql = "INSERT INTO users (username, email, password_hash, " +
-                "first_name, last_name, address, phone) VALUES (?,?,?,?,?,?,?)";
-        // RETURN_GENERATED_KEYS tells JDBC to give us back the auto-increment ID
-        try (PreparedStatement ps = conn().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO users (username, email, password_hash, "
+                + "first_name, last_name, address, phone, role, is_active) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, 'CLIENT', true)";
+        try (PreparedStatement ps = conn().prepareStatement(sql,
+                Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, username);
             ps.setString(2, email);
             ps.setString(3, passwordHash);
@@ -68,13 +59,38 @@ public class UserDAO {
             ps.setString(7, phone);
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) return rs.getInt(1);  // return the new ID
+            if (rs.next()) return rs.getInt(1);
             return -1;
         }
     }
 
-    // Converts a DB row (ResultSet) into a Map<String, Object>
-    // This is how Java represents a "User object" in this project
+    public List<Map<String, Object>> getAllUsers() throws SQLException {
+        String sql = "SELECT * FROM users ORDER BY user_id";
+        List<Map<String, Object>> users = new ArrayList<>();
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) users.add(mapUser(rs));
+        }
+        return users;
+    }
+
+    public boolean toggleUserActive(int userId) throws SQLException {
+        String sql = "UPDATE users SET is_active = NOT is_active WHERE user_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    public boolean updateUserRole(int userId, String role) throws SQLException {
+        String sql = "UPDATE users SET role = ? WHERE user_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setString(1, role);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
     private Map<String, Object> mapUser(ResultSet rs) throws SQLException {
         Map<String, Object> u = new HashMap<>();
         u.put("userId",       rs.getInt("user_id"));
@@ -87,6 +103,8 @@ public class UserDAO {
         u.put("phone",        rs.getString("phone"));
         u.put("role",         rs.getString("role"));
         u.put("isActive",     rs.getBoolean("is_active"));
+        u.put("createdAt",    rs.getString("created_at"));
+        u.put("updatedAt",    rs.getString("updated_at"));
         return u;
     }
 }

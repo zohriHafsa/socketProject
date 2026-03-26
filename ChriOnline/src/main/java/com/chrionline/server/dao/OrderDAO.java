@@ -42,6 +42,22 @@ public class OrderDAO {
         }
     }
 
+    public List<Map<String, Object>> getAllOrders() throws SQLException {
+        String sql = "SELECT o.*, u.username FROM orders o "
+                + "JOIN users u ON o.user_id = u.user_id "
+                + "ORDER BY o.created_at DESC";
+        List<Map<String, Object>> orders = new ArrayList<>();
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> o = mapOrder(rs);
+                o.put("username", rs.getString("username"));
+                orders.add(o);
+            }
+        }
+        return orders;
+    }
+
     public void updateOrderStatus(String orderId, String status) throws SQLException {
         String sql = "UPDATE orders SET status = ? WHERE order_id = ?";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
