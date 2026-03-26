@@ -1,327 +1,502 @@
 package com.chrionline.client.ui;
 
+import com.chrionline.client.controller.ProductController;
 import com.chrionline.client.network.ServerConnection;
-import com.chrionline.shared.dto.Request;
-import com.chrionline.shared.enums.Action;
-import javafx.animation.*;
+import com.chrionline.shared.dto.Response;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.util.Duration;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class ProductListScreen {
 
     private static final double MAX_W = 1200;
     private static final double H_PAD = 40;
 
-    private final BorderPane root;
-    private FlowPane         productsGrid;
-    private StackPane        loadingOverlay;
-    private Label            resultLabel;
+    private final ProductController productController = new ProductController();
+    private final Gson              gson              = new Gson();
 
     private List<Map<String, Object>> allProducts = new ArrayList<>();
-    private String currentCategory = "Tous";
-    private String currentSort = "default";
+    private FlowPane                  productGrid;
+    private TextField                 searchField;
+    private ComboBox<String>          categoryBox;
+    private Slider                    priceSlider;
+    private Label                     priceValueLabel;
+    private Label                     statusLabel;
 
-    public ProductListScreen() {
-        root = new BorderPane();
-        root.getStyleClass().add("page-root");
+    // badge labels — kept as fields so they can be updated
+    private Label cartCountLabel  = new Label("0");
+    private Label notifCountLabel = new Label("0");
+
+    public Node getView() {
+        BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: #F5F6FA;");
         root.setTop(buildHeader());
-
-        VBox main = new VBox(20);
-        main.setMaxWidth(MAX_W);
-        main.setPadding(new Insets(30, H_PAD, 50, H_PAD));
-        main.setAlignment(Pos.TOP_CENTER);
-
-        Label title = new Label("Catalogue complet");
-        title.getStyleClass().add("page-title");
-
-        Node filterBar = buildFilterBar();
-
-        productsGrid = new FlowPane();
-        productsGrid.setHgap(20); productsGrid.setVgap(24);
-        productsGrid.setAlignment(Pos.CENTER);
-        productsGrid.setPrefWrapLength(MAX_W - H_PAD * 2);
-
-        main.getChildren().addAll(title, filterBar, productsGrid);
-
-        StackPane centered = new StackPane(main);
-        centered.setAlignment(Pos.TOP_CENTER);
-        centered.setMinWidth(0);
-
-        ScrollPane scroll = new ScrollPane(centered);
-        scroll.setFitToWidth(true);
-        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scroll.getStyleClass().add("scroll-pane");
-
-        loadingOverlay = buildLoading();
-        root.setCenter(new StackPane(scroll, loadingOverlay));
-
-        loadProducts();
-        Platform.runLater(() -> {
-            root.setOpacity(0);
-            FadeTransition f = new FadeTransition(Duration.millis(400), root);
-            f.setToValue(1); f.play();
-        });
+        root.setLeft(buildSidebar());
+        root.setCenter(buildCenter());
+        Platform.runLater(this::loadAllProducts);
+        return root;
     }
 
-    public Node getView() { return root; }
+    // ═══════════════════════════════════════════════════════
+    //  HEADER — copie exacte de LandingPage.buildHeader()
+    //  + champ de recherche ajouté
+    // ═══════════════════════════════════════════════════════
 
     private StackPane buildHeader() {
         StackPane w = new StackPane();
-        w.getStyleClass().add("page-header-bar");
+        w.getStyleClass().add("header-bar");
         w.setMinWidth(0);
+
         HBox inner = new HBox(16);
         inner.setMaxWidth(MAX_W);
         inner.setPadding(new Insets(0, H_PAD, 0, H_PAD));
         inner.setMinHeight(70);
         inner.setAlignment(Pos.CENTER_LEFT);
 
-        Button back = new Button("\u2190 Accueil");
-        back.getStyleClass().add("page-back-btn");
-        back.setOnAction(e -> NavigationManager.showLanding());
+        // ── Logo ─────────────────────────────────────────
+        HBox logo = new HBox(8);
+        logo.setAlignment(Pos.CENTER_LEFT);
+        logo.setCursor(javafx.scene.Cursor.HAND);
+        logo.setOnMouseClicked(e -> NavigationManager.showLanding());
+        try {
+            ImageView img = new ImageView(new Image(
+                    Objects.requireNonNull(
+                            getClass().getResourceAsStream("/images/logo.png"))));
+            img.setFitHeight(34);
+            img.setPreserveRatio(true);
+            img.setSmooth(true);
+            logo.getChildren().add(img);
+        } catch (Exception ignored) {}
 
-        Label title = new Label("Tous les produits");
-        title.getStyleClass().add("page-title");
+        Label l1 = new Label("Chri");
+        l1.getStyleClass().add("header-logo-text");
+        Label l2 = new Label("Online");
+        l2.getStyleClass().add("header-logo-accent");
+        logo.getChildren().addAll(l1, l2);
 
-        Region sp = new Region(); HBox.setHgrow(sp, Priority.ALWAYS);
+        // ── Nav ──────────────────────────────────────────
+        HBox nav = new HBox(4);
+        nav.setAlignment(Pos.CENTER);
 
-        TextField search = new TextField();
-        search.setPromptText("Rechercher...");
-        search.getStyleClass().add("search-field");
-        search.setPrefWidth(220);
-        search.setOnAction(e -> {
-            String kw = search.getText().trim();
-            if (!kw.isEmpty()) searchProducts(kw);
-            else displayProducts(allProducts);
+        Button nHome   = navBtn("Accueil",   false);
+        Button nProd   = navBtn("Produits",  true);    // active
+        Button nOrders = navBtn("Commandes", false);
+        Button nAbout  = navBtn("A propos",  false);
+
+        nHome.setOnAction(e   -> NavigationManager.showLanding());
+        nProd.setOnAction(e   -> NavigationManager.showProductList());
+        nOrders.setOnAction(e -> NavigationManager.showOrders());
+        nav.getChildren().addAll(nHome, nProd, nOrders, nAbout);
+
+        // ── Search field (ajout) ──────────────────────────
+        searchField = new TextField();
+        searchField.setPromptText("Rechercher...");
+        searchField.getStyleClass().add("search-field");
+        searchField.setPrefWidth(220);
+        searchField.textProperty().addListener((obs, o, n) -> {
+            if (n.isBlank()) applyLocalFilters();
+            else searchOnServer(n.trim());
         });
 
-        Button cartBtn = new Button("Panier");
-        cartBtn.getStyleClass().add("page-back-btn");
-        cartBtn.setOnAction(e -> NavigationManager.showCart());
+        // ── Notification bell avec badge ──────────────────
+        StackPane notifStack = new StackPane();
+        Button notifBtn = new Button("\uD83D\uDD14");
+        notifBtn.getStyleClass().add("header-icon-btn");
+        notifBtn.setOnAction(e -> NavigationManager.showNotifications());
 
-        inner.getChildren().addAll(back, title, sp, search, cartBtn);
+        StackPane notifBadge = new StackPane();
+        notifBadge.getStyleClass().add("notification-badge");
+        notifBadge.setMaxSize(18, 18);
+        notifBadge.setMinSize(18, 18);
+        notifCountLabel.getStyleClass().add("notification-badge-text");
+        notifCountLabel.setStyle("-fx-font-size: 9px;");
+        notifBadge.getChildren().add(notifCountLabel);
+        notifBadge.setVisible(false);
+        StackPane.setAlignment(notifBadge, Pos.TOP_RIGHT);
+        StackPane.setMargin(notifBadge, new Insets(-4, -4, 0, 0));
+        notifStack.getChildren().addAll(notifBtn, notifBadge);
+
+        // ── Cart avec badge ───────────────────────────────
+        StackPane cartStack = new StackPane();
+        Button cartBtn2 = new Button("\uD83D\uDED2");
+        cartBtn2.getStyleClass().add("header-icon-btn");
+        cartBtn2.setOnAction(e -> NavigationManager.showCart());
+
+        StackPane cartBadge = new StackPane();
+        cartBadge.getStyleClass().add("notification-badge");
+        cartBadge.setMaxSize(18, 18);
+        cartBadge.setMinSize(18, 18);
+        cartCountLabel.getStyleClass().add("notification-badge-text");
+        cartCountLabel.setStyle("-fx-font-size: 9px;");
+        cartBadge.getChildren().add(cartCountLabel);
+        cartBadge.setVisible(false);
+        StackPane.setAlignment(cartBadge, Pos.TOP_RIGHT);
+        StackPane.setMargin(cartBadge, new Insets(-4, -4, 0, 0));
+        cartStack.getChildren().addAll(cartBtn2, cartBadge);
+
+        // ── User avatar button ────────────────────────────
+        Button userBtn = new Button();
+        userBtn.getStyleClass().add("header-user-btn");
+
+        String fn = NavigationManager.getFirstName();
+        String ln = NavigationManager.getLastName();
+        String initials = "";
+        if (fn != null && !fn.isEmpty()) initials += fn.charAt(0);
+        if (ln != null && !ln.isEmpty()) initials += ln.charAt(0);
+        if (initials.isEmpty()) initials = "U";
+
+        StackPane avatar = new StackPane();
+        avatar.getStyleClass().add("header-avatar");
+        avatar.setMinSize(32, 32);
+        avatar.setMaxSize(32, 32);
+
+        Label initLabel = new Label(initials.toUpperCase());
+        initLabel.getStyleClass().add("header-avatar-text");
+        avatar.getChildren().add(initLabel);
+
+        String displayName = (fn != null && !fn.isEmpty())
+                ? fn : NavigationManager.getUsername();
+        Label nameLabel = new Label(displayName);
+        nameLabel.getStyleClass().add("header-user-name");
+
+        HBox userContent = new HBox(8, avatar, nameLabel);
+        userContent.setAlignment(Pos.CENTER);
+        userBtn.setGraphic(userContent);
+        userBtn.setText(null);
+        userBtn.setOnAction(e -> NavigationManager.showProfile());
+
+        // ── Layout ───────────────────────────────────────
+        Region sp1 = new Region(); HBox.setHgrow(sp1, Priority.ALWAYS);
+        Region sp2 = new Region(); HBox.setHgrow(sp2, Priority.ALWAYS);
+
+        HBox actions = new HBox(10,
+                searchField, notifStack, cartStack, userBtn);
+        actions.setAlignment(Pos.CENTER_RIGHT);
+
+        inner.getChildren().addAll(logo, sp1, nav, sp2, actions);
         w.getChildren().add(inner);
         return w;
     }
 
-    private Node buildFilterBar() {
-        HBox bar = new HBox(10);
-        bar.getStyleClass().add("catalog-filter-bar");
-        bar.setAlignment(Pos.CENTER_LEFT);
-
-        // Categories
-        String[] cats = {"Tous", "Smartphones", "Laptops", "T-Shirts", "Pantalons", "Livres Tech", "Romans", "Sports"};
-        HBox catChips = new HBox(6);
-        catChips.setAlignment(Pos.CENTER_LEFT);
-
-        List<Button> catBtns = new ArrayList<>();
-        for (String cat : cats) {
-            Button chip = new Button(cat);
-            chip.getStyleClass().add("category-chip");
-            chip.setStyle("-fx-font-size:11px;-fx-padding:6 14;");
-            if ("Tous".equals(cat)) chip.getStyleClass().add("category-chip-active");
-            chip.setOnAction(e -> {
-                currentCategory = cat;
-                catBtns.forEach(b -> b.getStyleClass().remove("category-chip-active"));
-                chip.getStyleClass().add("category-chip-active");
-                filterAndSort();
-            });
-            catBtns.add(chip);
-            catChips.getChildren().add(chip);
-        }
-
-        Region sp = new Region(); HBox.setHgrow(sp, Priority.ALWAYS);
-
-        // Sort
-        HBox sortBox = new HBox(6);
-        sortBox.setAlignment(Pos.CENTER_RIGHT);
-
-        Label sortLabel = new Label("Trier :");
-        sortLabel.getStyleClass().add("page-subtitle");
-
-        String[][] sorts = {{"default", "Défaut"}, {"price-asc", "Prix \u2191"}, {"price-desc", "Prix \u2193"}, {"name", "A-Z"}};
-        List<Button> sortBtns = new ArrayList<>();
-        for (String[] s : sorts) {
-            Button sb = new Button(s[1]);
-            sb.getStyleClass().add("catalog-sort-btn");
-            if ("default".equals(s[0])) sb.getStyleClass().add("catalog-sort-active");
-            sb.setOnAction(e -> {
-                currentSort = s[0];
-                sortBtns.forEach(b -> b.getStyleClass().remove("catalog-sort-active"));
-                sb.getStyleClass().add("catalog-sort-active");
-                filterAndSort();
-            });
-            sortBtns.add(sb);
-            sortBox.getChildren().add(sb);
-        }
-        sortBox.getChildren().add(0, sortLabel);
-
-        resultLabel = new Label("");
-        resultLabel.getStyleClass().add("catalog-result-text");
-
-        bar.getChildren().addAll(catChips, sp, sortBox);
-
-        VBox wrapper = new VBox(8, bar, resultLabel);
-        return wrapper;
+    private Button navBtn(String text, boolean active) {
+        Button b = new Button(text);
+        b.getStyleClass().add("nav-link");
+        if (active) b.getStyleClass().add("nav-link-active");
+        return b;
     }
 
-    @SuppressWarnings("unchecked")
-    private void loadProducts() {
-        showLoading(true);
-        ServerConnection.getInstance()
-                .sendAsync(new Request(Action.GET_PRODUCTS, null, null))
-                .thenAccept(res -> Platform.runLater(() -> {
-                    showLoading(false);
-                    if (res.isSuccess() && res.getData() != null) {
-                        allProducts = (List<Map<String, Object>>) res.getData();
-                        filterAndSort();
-                    }
-                }))
-                .exceptionally(ex -> {
-                    Platform.runLater(() -> showLoading(false));
-                    return null;
+    // ═══════════════════════════════════════════════════════
+    //  SIDEBAR
+    // ═══════════════════════════════════════════════════════
+
+    private VBox buildSidebar() {
+        VBox side = new VBox(18);
+        side.setPrefWidth(220);
+        side.setPadding(new Insets(28, 20, 28, 20));
+        side.setStyle(
+                "-fx-background-color: white;" +
+                        "-fx-border-color: #e2e8f0;" +
+                        "-fx-border-width: 0 1 0 0;"
+        );
+
+        Label title = new Label("Filtres");
+        title.setStyle(
+                "-fx-font-size: 16;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-text-fill: #3b0764;"
+        );
+
+        Label catLbl = new Label("Categorie");
+        catLbl.setStyle("-fx-text-fill: #6b7280; -fx-font-size: 12;");
+
+        categoryBox = new ComboBox<>();
+        categoryBox.setMaxWidth(Double.MAX_VALUE);
+        categoryBox.setValue("Toutes");
+        categoryBox.setOnAction(e -> applyLocalFilters());
+
+        Label priceLbl = new Label("Prix maximum");
+        priceLbl.setStyle("-fx-text-fill: #6b7280; -fx-font-size: 12;");
+
+        priceValueLabel = new Label("Tous");
+        priceValueLabel.setStyle(
+                "-fx-text-fill: #3b0764;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 13;"
+        );
+
+        priceSlider = new Slider(0, 5000, 5000);
+        priceSlider.setBlockIncrement(100);
+        priceSlider.valueProperty().addListener((obs, o, n) -> {
+            double v = n.doubleValue();
+            priceValueLabel.setText(v >= priceSlider.getMax()
+                    ? "Tous" : String.format("<= %.0f MAD", v));
+            applyLocalFilters();
+        });
+
+        Button resetBtn = new Button("Reinitialiser");
+        resetBtn.setMaxWidth(Double.MAX_VALUE);
+        resetBtn.getStyleClass().add("nav-link");
+        resetBtn.setOnAction(e -> {
+            searchField.clear();
+            categoryBox.setValue("Toutes");
+            priceSlider.setValue(priceSlider.getMax());
+            displayProducts(allProducts);
+        });
+
+        side.getChildren().addAll(
+                title, catLbl, categoryBox,
+                priceLbl, priceValueLabel, priceSlider,
+                resetBtn
+        );
+        return side;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  CENTRE
+    // ═══════════════════════════════════════════════════════
+
+    private VBox buildCenter() {
+        VBox center = new VBox(20);
+        center.setPadding(new Insets(28));
+        center.setStyle("-fx-background-color: #F5F6FA;");
+
+        Label sectionTitle = new Label("Nos Produits");
+        sectionTitle.setStyle(
+                "-fx-font-size: 22;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-text-fill: #3b0764;"
+        );
+
+        statusLabel = new Label("Chargement des produits...");
+        statusLabel.setStyle("-fx-text-fill: #6b7280; -fx-font-size: 13;");
+
+        productGrid = new FlowPane();
+        productGrid.setHgap(24);
+        productGrid.setVgap(28);
+        productGrid.setStyle("-fx-background-color: transparent;");
+
+        ScrollPane scroll = new ScrollPane(productGrid);
+        scroll.setFitToWidth(true);
+        scroll.setStyle(
+                "-fx-background: transparent;" +
+                        "-fx-background-color: transparent;" +
+                        "-fx-border-color: transparent;"
+        );
+        VBox.setVgrow(scroll, Priority.ALWAYS);
+
+        center.getChildren().addAll(sectionTitle, statusLabel, scroll);
+        return center;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  RÉSEAU
+    // ═══════════════════════════════════════════════════════
+
+    private void loadAllProducts() {
+        new Thread(() -> {
+            if (!ServerConnection.getInstance().isConnected())
+                ServerConnection.getInstance().connect();
+
+            Response resp = productController.getAll(NavigationManager.getToken());
+
+            if (resp.isSuccess()) {
+                List<Map<String, Object>> products = castToList(resp.getData());
+
+                List<String> cats = new ArrayList<>();
+                cats.add("Toutes");
+                for (Map<String, Object> p : products) {
+                    String c = getStr(p, "categoryName");
+                    if (!c.isEmpty() && !cats.contains(c)) cats.add(c);
+                }
+
+                double maxPrice = products.stream()
+                        .mapToDouble(p -> getDbl(p, "price"))
+                        .max().orElse(5000);
+
+                allProducts = products;
+
+                Platform.runLater(() -> {
+                    categoryBox.getItems().setAll(cats);
+                    categoryBox.setValue("Toutes");
+                    priceSlider.setMax(maxPrice);
+                    priceSlider.setValue(maxPrice);
+                    statusLabel.setVisible(false);
+                    displayProducts(products);
                 });
+            } else {
+                Platform.runLater(() -> {
+                    statusLabel.setText("Erreur : " + resp.getMessage());
+                    statusLabel.setVisible(true);
+                });
+            }
+        }).start();
     }
 
-    @SuppressWarnings("unchecked")
-    private void searchProducts(String kw) {
-        showLoading(true);
-        ServerConnection.getInstance()
-                .sendAsync(new Request(Action.SEARCH_PRODUCTS, null, Map.of("keyword", kw)))
-                .thenAccept(res -> Platform.runLater(() -> {
-                    showLoading(false);
-                    if (res.isSuccess() && res.getData() != null)
-                        displayProducts((List<Map<String, Object>>) res.getData());
-                }))
-                .exceptionally(ex -> { Platform.runLater(() -> showLoading(false)); return null; });
+    private void searchOnServer(String keyword) {
+        new Thread(() -> {
+            Response resp = productController.search(
+                    NavigationManager.getToken(), keyword);
+            if (resp.isSuccess()) {
+                List<Map<String, Object>> results = castToList(resp.getData());
+                Platform.runLater(() -> displayProducts(filterByPrice(results)));
+            }
+        }).start();
     }
 
-    private void filterAndSort() {
-        List<Map<String, Object>> filtered = allProducts;
-        if (!"Tous".equals(currentCategory)) {
-            filtered = filtered.stream()
-                    .filter(p -> currentCategory.equalsIgnoreCase(str(p.get("categoryName"))))
-                    .collect(Collectors.toList());
-        }
-        switch (currentSort) {
-            case "price-asc":  filtered.sort(Comparator.comparingDouble(p -> dbl(p.get("price")))); break;
-            case "price-desc": filtered.sort((a, b) -> Double.compare(dbl(b.get("price")), dbl(a.get("price")))); break;
-            case "name":       filtered.sort(Comparator.comparing(p -> str(p.get("name")))); break;
-        }
-        displayProducts(filtered);
+    private void applyLocalFilters() {
+        if (searchField != null && !searchField.getText().isBlank()) return;
+        List<Map<String, Object>> filtered = new ArrayList<>(allProducts);
+        String cat = categoryBox.getValue();
+        if (cat != null && !cat.equals("Toutes"))
+            filtered.removeIf(p -> !cat.equals(getStr(p, "categoryName")));
+        displayProducts(filterByPrice(filtered));
     }
+
+    private List<Map<String, Object>> filterByPrice(List<Map<String, Object>> list) {
+        if (priceSlider == null || priceSlider.getValue() >= priceSlider.getMax())
+            return list;
+        double max = priceSlider.getValue();
+        List<Map<String, Object>> out = new ArrayList<>();
+        for (Map<String, Object> p : list)
+            if (getDbl(p, "price") <= max) out.add(p);
+        return out;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  CARTES — mêmes classes CSS que LandingPage
+    // ═══════════════════════════════════════════════════════
 
     private void displayProducts(List<Map<String, Object>> products) {
-        productsGrid.getChildren().clear();
-        resultLabel.setText(products.size() + " produit(s) trouvé(s)");
-
+        productGrid.getChildren().clear();
         if (products.isEmpty()) {
-            VBox e = new VBox(12); e.setAlignment(Pos.CENTER); e.setPadding(new Insets(40));
-            Label ic = new Label("\uD83D\uDCE6"); ic.getStyleClass().add("empty-state-icon");
-            Label tx = new Label("Aucun produit"); tx.getStyleClass().add("empty-state-title");
-            e.getChildren().addAll(ic, tx);
-            productsGrid.getChildren().add(e);
+            Label empty = new Label("Aucun produit trouve.");
+            empty.setStyle("-fx-text-fill: #6b7280; -fx-font-size: 14;");
+            productGrid.getChildren().add(empty);
             return;
         }
-
-        List<Node> cards = new ArrayList<>();
-        for (Map<String, Object> p : products) {
-            Node card = buildCard(p);
-            card.setOpacity(0); card.setTranslateY(30); card.setScaleX(0.95); card.setScaleY(0.95);
-            productsGrid.getChildren().add(card);
-            cards.add(card);
-        }
-
-        for (int i = 0; i < cards.size(); i++) {
-            Node c = cards.get(i); int delay = i * 50;
-            FadeTransition f = new FadeTransition(Duration.millis(400), c); f.setToValue(1); f.setDelay(Duration.millis(delay));
-            TranslateTransition s = new TranslateTransition(Duration.millis(400), c); s.setToY(0); s.setDelay(Duration.millis(delay)); s.setInterpolator(Interpolator.EASE_OUT);
-            ScaleTransition sc = new ScaleTransition(Duration.millis(400), c); sc.setToX(1); sc.setToY(1); sc.setDelay(Duration.millis(delay));
-            new ParallelTransition(f, s, sc).play();
-        }
+        for (Map<String, Object> p : products)
+            productGrid.getChildren().add(buildCard(p));
     }
 
-    private Node buildCard(Map<String, Object> p) {
-        VBox card = new VBox(0);
+    private VBox buildCard(Map<String, Object> product) {
+        int     id      = getInt(product, "productId");
+        String  name    = getStr(product, "name");
+        double  price   = getDbl(product, "price");
+        int     stock   = getInt(product, "stockQuantity");
+        String  cat     = getStr(product, "categoryName");
+        boolean inStock = stock > 0;
+
+        VBox card = new VBox(6);
         card.getStyleClass().add("product-card");
-        card.setPrefWidth(240); card.setMaxWidth(240);
+        card.setPrefWidth(240);
+        card.setMaxWidth(240);
+        card.setCursor(javafx.scene.Cursor.HAND);
+        card.setOnMouseClicked(e -> NavigationManager.showProductDetail(id));
 
-        DropShadow rest = new DropShadow(); rest.setColor(Color.rgb(0,0,0,0.05)); rest.setRadius(8); rest.setOffsetY(2);
-        DropShadow hover = new DropShadow(); hover.setColor(Color.rgb(108,52,131,0.15)); hover.setRadius(20); hover.setOffsetY(10);
-        card.setEffect(rest);
-
-        String name = str(p.get("name")); String cat = str(p.get("categoryName"));
-        double price = dbl(p.get("price")); int stock = intV(p.get("stockQuantity"));
-
+        // Image placeholder (lettre initiale) — même que LandingPage
         StackPane imgBox = new StackPane();
         imgBox.getStyleClass().add("product-card-image-container");
-        imgBox.setPrefHeight(170); imgBox.setMinHeight(170);
-        Label letter = new Label(name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
+        imgBox.setPrefHeight(160);
+        imgBox.setMinHeight(160);
+        Label letter = new Label(
+                name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
         letter.getStyleClass().add("product-image-letter");
         imgBox.getChildren().add(letter);
 
-        VBox body = new VBox(5); body.getStyleClass().add("product-card-body");
-        Label catL = new Label(cat.toUpperCase()); catL.getStyleClass().add("product-card-category");
-        Label nameL = new Label(name); nameL.getStyleClass().add("product-card-name"); nameL.setMaxWidth(210); nameL.setWrapText(true); nameL.setMaxHeight(36);
-        Label priceL = new Label(String.format("%.2f \u20AC", price)); priceL.getStyleClass().add("product-card-price");
+        VBox body = new VBox(6);
+        body.getStyleClass().add("product-card-body");
+
+        Label catL = new Label(cat.toUpperCase());
+        catL.getStyleClass().add("product-card-category");
+
+        Label nameL = new Label(name);
+        nameL.getStyleClass().add("product-card-name");
+        nameL.setWrapText(true);
+        nameL.setMaxWidth(220);
+
+        Label priceL = new Label(String.format("%.2f MAD", price));
+        priceL.getStyleClass().add("product-card-price");
 
         Label stockL = new Label();
-        if (stock > 10) { stockL.setText("En stock"); stockL.getStyleClass().add("product-card-stock"); }
-        else if (stock > 0) { stockL.setText(stock + " restant(s)"); stockL.getStyleClass().add("product-card-stock-low"); }
-        else { stockL.setText("Rupture"); stockL.getStyleClass().add("product-card-stock-out"); }
+        if (stock > 10) {
+            stockL.setText("En stock");
+            stockL.getStyleClass().add("product-card-stock");
+        } else if (stock > 0) {
+            stockL.setText("Plus que " + stock + " en stock");
+            stockL.getStyleClass().add("product-card-stock-low");
+        } else {
+            stockL.setText("Rupture de stock");
+            stockL.getStyleClass().add("product-card-stock-out");
+        }
 
-        Button viewBtn = new Button("Voir le produit");
-        viewBtn.getStyleClass().add("product-card-btn");
-        viewBtn.setMaxWidth(Double.MAX_VALUE);
-        viewBtn.setOnAction(e -> NavigationManager.showProductDetail(intV(p.get("productId"))));
+        Button btn = new Button("Voir le produit");
+        btn.getStyleClass().add("product-card-btn");
+        btn.setMaxWidth(Double.MAX_VALUE);
+        btn.setDisable(!inStock);
+        btn.setOnAction(e -> NavigationManager.showProductDetail(id));
 
-        body.getChildren().addAll(catL, nameL, priceL, stockL, viewBtn);
+        body.getChildren().addAll(catL, nameL, priceL, stockL, btn);
         card.getChildren().addAll(imgBox, body);
-
-        card.setOnMouseEntered(e -> {
-            card.setEffect(hover);
-            TranslateTransition u = new TranslateTransition(Duration.millis(200), card); u.setToY(-6); u.setInterpolator(Interpolator.EASE_OUT);
-            ScaleTransition g = new ScaleTransition(Duration.millis(200), card); g.setToX(1.02); g.setToY(1.02);
-            new ParallelTransition(u, g).play();
-        });
-        card.setOnMouseExited(e -> {
-            card.setEffect(rest);
-            TranslateTransition d = new TranslateTransition(Duration.millis(250), card); d.setToY(0);
-            ScaleTransition s = new ScaleTransition(Duration.millis(250), card); s.setToX(1); s.setToY(1);
-            new ParallelTransition(d, s).play();
-        });
-
         return card;
     }
 
-    private StackPane buildLoading() {
-        StackPane o = new StackPane(); o.getStyleClass().add("loading-modern-overlay"); o.setVisible(false);
-        VBox c = new VBox(20); c.getStyleClass().add("loading-card"); c.setAlignment(Pos.CENTER);
-        c.setMaxWidth(200); c.setMaxHeight(140);
-        ProgressIndicator pi = new ProgressIndicator(); pi.getStyleClass().add("loading-spinner"); pi.setMaxSize(40,40);
-        Label t = new Label("Chargement..."); t.getStyleClass().add("loading-text");
-        c.getChildren().addAll(pi, t); o.getChildren().add(c); return o;
+    // ═══════════════════════════════════════════════════════
+    //  LOGOUT
+    // ═══════════════════════════════════════════════════════
+
+    private void handleLogout() {
+        new Thread(() -> {
+            try {
+                new com.chrionline.client.controller.AuthController()
+                        .logout(NavigationManager.getToken());
+            } catch (Exception ignored) {}
+            ServerConnection.getInstance().disconnect();
+            NavigationManager.clearSession();
+            Platform.runLater(NavigationManager::showLanding);
+        }).start();
     }
 
-    private void showLoading(boolean b) {
-        Platform.runLater(() -> {
-            if (b) { loadingOverlay.setOpacity(0); loadingOverlay.setVisible(true);
-                FadeTransition fi = new FadeTransition(Duration.millis(200), loadingOverlay); fi.setToValue(1); fi.play();
-            } else { FadeTransition fo = new FadeTransition(Duration.millis(200), loadingOverlay);
-                fo.setToValue(0); fo.setOnFinished(e -> loadingOverlay.setVisible(false)); fo.play(); }
-        });
+    // ═══════════════════════════════════════════════════════
+    //  HELPERS
+    // ═══════════════════════════════════════════════════════
+
+    @SuppressWarnings("unchecked")
+    private List<Map<String, Object>> castToList(Object obj) {
+        if (obj == null) return new ArrayList<>();
+        if (obj instanceof List) return (List<Map<String, Object>>) obj;
+        return gson.fromJson(gson.toJson(obj),
+                new TypeToken<List<Map<String, Object>>>(){}.getType());
     }
 
-    private String str(Object o) { return o != null ? o.toString() : ""; }
-    private int intV(Object o) { if(o==null) return 0; if(o instanceof Double) return ((Double)o).intValue(); if(o instanceof Integer) return (Integer)o; try{return Integer.parseInt(o.toString());}catch(Exception e){return 0;} }
-    private double dbl(Object o) { if(o==null) return 0; if(o instanceof Double) return (Double)o; try{return Double.parseDouble(o.toString());}catch(Exception e){return 0;} }
+    private String getStr(Map<String, Object> m, String key) {
+        Object v = m.get(key); return v != null ? v.toString() : "";
+    }
+
+    private int getInt(Map<String, Object> m, String key) {
+        Object v = m.get(key);
+        if (v == null) return 0;
+        if (v instanceof Double) return ((Double) v).intValue();
+        return Integer.parseInt(v.toString());
+    }
+
+    private double getDbl(Map<String, Object> m, String key) {
+        Object v = m.get(key);
+        if (v == null) return 0.0;
+        return Double.parseDouble(v.toString());
+    }
 }

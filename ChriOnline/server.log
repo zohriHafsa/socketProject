@@ -703,3 +703,40 @@
 [2026-03-16 11:52:21.403] [INFO] [pool-2-thread-4] Response to 127.0.0.1: {"success":false,"message":"Invalid JSON: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1 path $"}
 [2026-03-16 11:52:21.403] [INFO] [pool-2-thread-4] Received from 127.0.0.1: 
 [2026-03-16 11:52:21.403] [INFO] [pool-2-thread-4] Client disconnected.
+[2026-03-25 21:26:08.374] [INFO] [com.chrionline.server.ServerMain.main()] Starting ChriOnline Server...
+[2026-03-25 21:26:50.903] [INFO] [pool-2-thread-1] Client connected: 127.0.0.1
+[2026-03-25 21:26:53.885] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"GET_PRODUCTS"}
+[2026-03-25 21:26:53.936] [INFO] [pool-2-thread-1] Routing action: GET_PRODUCTS
+[2026-03-25 21:26:54.249] [INFO] [pool-2-thread-1] GET_PRODUCTS : 18 produit(s)
+[2026-03-25 21:26:54.259] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"name":"iPhone 15 Pro","description":"...","stockQuantity":29,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"name":"Samsung Galaxy S24","description":"...","stockQuantity":45,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":150,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"V?tements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":16,"price":1299.0,"name":"V?lo de Route Carbon","description":"...","stockQuantity":8,"categoryName":"Sport","categoryId":4},{"isAvailable":true,"productId":17,"price":29.9,"name":"Tapis de Yoga","description":"...","stockQuantity":150,"categoryName":"Sport","categoryId":4},{"isAvailable":true,"productId":18,"price":149.99,"name":"Raquette de Tennis","description":"...","stockQuantity":30,"categoryName":"Sport","categoryId":4}]}
+[2026-03-25 21:27:09.981] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"LOGIN","data":{"username":"zohri","password":"Hafsa1234"}}
+[2026-03-25 21:27:09.986] [INFO] [pool-2-thread-1] Routing action: LOGIN
+[2026-03-25 21:27:10.008] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Mot de passe incorrect."}
+[2026-03-25 21:27:16.735] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"LOGIN","data":{"username":"zohri","password":"Hafsa@1234"}}
+[2026-03-25 21:27:16.737] [INFO] [pool-2-thread-1] Routing action: LOGIN
+[2026-03-25 21:27:16.743] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Mot de passe incorrect."}
+[2026-03-25 21:27:18.661] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"LOGIN","data":{"username":"zohri","password":"Hafsa@1234"}}
+[2026-03-25 21:27:18.662] [INFO] [pool-2-thread-1] Routing action: LOGIN
+[2026-03-25 21:27:18.666] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Mot de passe incorrect."}
+[2026-03-25 21:27:57.049] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"LOGIN","data":{"username":"zohri","password":"Hafsa1234"}}
+[2026-03-25 21:27:57.050] [INFO] [pool-2-thread-1] Routing action: LOGIN
+[2026-03-25 21:27:57.053] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Mot de passe incorrect."}
+[2026-03-25 21:28:07.487] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"LOGIN","data":{"username":"hafsa","password":"Hafsa1234"}}
+[2026-03-25 21:28:07.488] [INFO] [pool-2-thread-1] Routing action: LOGIN
+[2026-03-25 21:28:07.491] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Mot de passe incorrect."}
+[2026-03-25 21:28:14.164] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"LOGIN","data":{"username":"hafsa","password":"Hafsa@1234"}}
+[2026-03-25 21:28:14.165] [INFO] [pool-2-thread-1] Routing action: LOGIN
+[2026-03-25 21:28:14.169] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Mot de passe incorrect."}
+[2026-03-25 21:28:54.629] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"REGISTER","data":{"firstName":"hafsa","phone":"","username":"zohri","password":"Hafsa1234","lastName":"zohri","address":"","email":"hafsa@gmail.com"}}
+[2026-03-25 21:28:54.629] [INFO] [pool-2-thread-1] Routing action: REGISTER
+[2026-03-25 21:28:54.631] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Ce nom d\u0027utilisateur est déjà pris."}
+[2026-03-25 21:29:06.237] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"REGISTER","data":{"firstName":"hafsa","phone":"","username":"fatima","password":"Hafsa1234","lastName":"zohri","address":"","email":"hafsa@gmail.com"}}
+[2026-03-25 21:29:06.238] [INFO] [pool-2-thread-1] Routing action: REGISTER
+[2026-03-25 21:29:06.240] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":false,"message":"Cet email est déjà utilisé."}
+[2026-03-25 21:29:15.472] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"REGISTER","data":{"firstName":"hafsa","phone":"","username":"fatima","password":"Hafsa1234","lastName":"zohri","address":"","email":"fatima@gmail.com"}}
+[2026-03-25 21:29:15.474] [INFO] [pool-2-thread-1] Routing action: REGISTER
+[2026-03-25 21:29:15.488] [INFO] [pool-2-thread-1] REGISTER OK : fatima (ID:9)
+[2026-03-25 21:29:15.490] [INFO] [pool-2-thread-1] Response to 127.0.0.1: {"success":true,"message":"Inscription réussie !","data":{"userId":9,"username":"fatima"}}
+[2026-03-25 21:29:15.491] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"LOGIN","data":{"username":"fatima","password":"Hafsa1234"}}
+[2026-03-25 21:29:15.491] [INFO] [pool-2-thread-1] Routing action: LOGIN
+[2026-03-25 21:29:15.493] [INFO] [pool-2-thread-1] Client disconnected.

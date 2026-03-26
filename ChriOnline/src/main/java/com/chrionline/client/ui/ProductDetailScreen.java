@@ -1,302 +1,331 @@
 package com.chrionline.client.ui;
 
+import com.chrionline.client.controller.ProductController;
 import com.chrionline.client.network.ServerConnection;
 import com.chrionline.shared.dto.Request;
+import com.chrionline.shared.dto.Response;
 import com.chrionline.shared.enums.Action;
-import javafx.animation.*;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.util.Duration;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
-import java.util.*;
+import java.util.Map;
 
 public class ProductDetailScreen {
 
-    private static final double MAX_W = 1100;
-    private static final double H_PAD = 40;
-
-    private final BorderPane root;
-    private final StackPane  contentArea;
-    private StackPane        loadingOverlay;
-    private final int        productId;
-    private int quantity = 1;
+    private final int               productId;
+    private final ProductController productController = new ProductController();
+    private final Gson              gson              = new Gson();
 
     public ProductDetailScreen(int productId) {
         this.productId = productId;
-        root = new BorderPane();
-        root.getStyleClass().add("page-root");
-        root.setTop(buildHeader());
-
-        contentArea = new StackPane();
-        contentArea.setAlignment(Pos.TOP_CENTER);
-        contentArea.setMinWidth(0);
-
-        ScrollPane scroll = new ScrollPane(contentArea);
-        scroll.setFitToWidth(true);
-        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scroll.getStyleClass().add("scroll-pane");
-
-        loadingOverlay = buildLoading();
-        root.setCenter(new StackPane(scroll, loadingOverlay));
-
-        loadProduct();
-        Platform.runLater(() -> {
-            root.setOpacity(0);
-            FadeTransition f = new FadeTransition(Duration.millis(400), root);
-            f.setToValue(1); f.play();
-        });
     }
 
-    public Node getView() { return root; }
+    public Node getView() {
+        StackPane root = new StackPane();
+        root.setStyle("-fx-background-color: #5b0ea6;");
+        root.setAlignment(Pos.TOP_CENTER);
+        root.setPadding(new Insets(40));
 
-    private StackPane buildHeader() {
-        StackPane w = new StackPane();
-        w.getStyleClass().add("page-header-bar");
-        w.setMinWidth(0);
-        HBox inner = new HBox(16);
-        inner.setMaxWidth(MAX_W);
-        inner.setPadding(new Insets(0, H_PAD, 0, H_PAD));
-        inner.setMinHeight(70);
-        inner.setAlignment(Pos.CENTER_LEFT);
+        VBox card = new VBox(16);
+        card.setMaxWidth(700);
+        card.setPadding(new Insets(36, 40, 36, 40));
+        card.setStyle(
+                "-fx-background-color: white;" +
+                        "-fx-background-radius: 16;" +
+                        "-fx-border-color: #c4b5fd;" +
+                        "-fx-border-radius: 16;" +
+                        "-fx-border-width: 1.5;"
+        );
 
-        Button back = new Button("\u2190 Boutique");
-        back.getStyleClass().add("page-back-btn");
-        back.setOnAction(e -> NavigationManager.showLanding());
+        // Bouton retour
+        Button backBtn = new Button("<- Retour aux produits");
+        backBtn.setStyle(
+                "-fx-background-color: transparent;" +
+                        "-fx-text-fill: #6d28d9;" +
+                        "-fx-border-color: transparent;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-font-size: 13;" +
+                        "-fx-font-weight: bold;"
+        );
+        backBtn.setOnAction(e -> NavigationManager.showProductList());
 
-        Label title = new Label("Détail produit");
-        title.getStyleClass().add("page-title");
+        // Chargement
+        Label loadingLabel = new Label("Chargement du produit...");
+        loadingLabel.setStyle("-fx-text-fill: #6d28d9; -fx-font-size: 13;");
 
-        Region sp = new Region();
-        HBox.setHgrow(sp, Priority.ALWAYS);
+        // Badge
+        Label badgeLabel = new Label();
+        badgeLabel.setStyle(
+                "-fx-background-color: #6d28d9;" +
+                        "-fx-background-radius: 6;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 12;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-padding: 4 14;"
+        );
+        badgeLabel.setVisible(false);
+        badgeLabel.setManaged(false);
 
-        Button cartBtn = new Button("Panier");
-        cartBtn.getStyleClass().add("page-back-btn");
-        cartBtn.setOnAction(e -> NavigationManager.showCart());
+        // Nom
+        Label nameLabel = new Label();
+        nameLabel.setStyle(
+                "-fx-text-fill: #3b0764;" +
+                        "-fx-font-size: 26;" +
+                        "-fx-font-weight: bold;"
+        );
+        nameLabel.setWrapText(true);
+        nameLabel.setVisible(false);
+        nameLabel.setManaged(false);
 
-        inner.getChildren().addAll(back, title, sp, cartBtn);
-        w.getChildren().add(inner);
-        return w;
+        // Description
+        Label descLabel = new Label();
+        descLabel.setStyle("-fx-text-fill: #5b21b6; -fx-font-size: 14;");
+        descLabel.setWrapText(true);
+        descLabel.setVisible(false);
+        descLabel.setManaged(false);
+
+        // Prix
+        Label priceLabel = new Label();
+        priceLabel.setStyle(
+                "-fx-text-fill: #b45309;" +
+                        "-fx-font-size: 28;" +
+                        "-fx-font-weight: bold;"
+        );
+        priceLabel.setVisible(false);
+        priceLabel.setManaged(false);
+
+        // Stock
+        Label stockLabel = new Label();
+        stockLabel.setStyle("-fx-font-size: 13; -fx-font-weight: bold;");
+        stockLabel.setVisible(false);
+        stockLabel.setManaged(false);
+
+        // Séparateur
+        Region sep = new Region();
+        sep.setPrefHeight(1);
+        sep.setStyle("-fx-background-color: #e9d5ff;");
+
+        // Quantité
+        Label qtyLabel = new Label("Quantite :");
+        qtyLabel.setStyle("-fx-text-fill: #6d28d9; -fx-font-weight: bold; -fx-font-size: 13;");
+
+        Spinner<Integer> qtySpinner = new Spinner<>(1, 1, 1);
+        qtySpinner.setEditable(true);
+        qtySpinner.setPrefWidth(90);
+
+        HBox qtyRow = new HBox(12, qtyLabel, qtySpinner);
+        qtyRow.setAlignment(Pos.CENTER_LEFT);
+        qtyRow.setVisible(false);
+        qtyRow.setManaged(false);
+
+        // Feedback
+        Label feedbackLabel = new Label();
+        feedbackLabel.setStyle("-fx-font-size: 13; -fx-font-weight: bold;");
+        feedbackLabel.setWrapText(true);
+        feedbackLabel.setVisible(false);
+        feedbackLabel.setManaged(false);
+
+        // Bouton ajouter
+        Button addCartBtn = new Button("Ajouter au panier");
+        addCartBtn.setMaxWidth(Double.MAX_VALUE);
+        addCartBtn.setStyle(
+                "-fx-background-color: #f59e0b;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 15;" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-padding: 13 0;" +
+                        "-fx-cursor: hand;"
+        );
+        addCartBtn.setDisable(true);
+
+        card.getChildren().addAll(
+                backBtn, loadingLabel,
+                badgeLabel, nameLabel, descLabel,
+                priceLabel, stockLabel, sep,
+                qtyRow, feedbackLabel, addCartBtn
+        );
+
+        root.getChildren().add(card);
+
+        // Charger les détails depuis le serveur
+        new Thread(() -> {
+            if (!ServerConnection.getInstance().isConnected())
+                ServerConnection.getInstance().connect();
+
+            Response resp = productController.getDetail(
+                    NavigationManager.getToken(), productId);
+
+            Platform.runLater(() -> {
+                loadingLabel.setVisible(false);
+                loadingLabel.setManaged(false);
+
+                if (resp.isSuccess()) {
+                    // getData() = Map direct du produit (ProductDAO.mapProduct)
+                    Map<String, Object> p = castToMap(resp.getData());
+
+                    String name  = getStr(p, "name");
+                    String desc  = getStr(p, "description");
+                    double price = getDbl(p, "price");
+                    int    stock = getInt(p, "stockQuantity"); // clé exacte DAO
+                    String cat   = getStr(p, "categoryName");  // clé exacte DAO
+
+                    if (desc.isEmpty() || desc.equals("..."))
+                        desc = "Aucune description disponible.";
+
+                    badgeLabel.setText(cat.isEmpty() ? "Produit" : cat);
+                    show(badgeLabel);
+
+                    nameLabel.setText(name);
+                    show(nameLabel);
+
+                    descLabel.setText(desc);
+                    show(descLabel);
+
+                    priceLabel.setText(String.format("%.2f MAD", price));
+                    show(priceLabel);
+
+                    boolean inStock = stock > 0;
+                    stockLabel.setText(inStock
+                            ? "En stock - " + stock + " disponibles"
+                            : "Rupture de stock");
+                    stockLabel.setStyle(
+                            "-fx-font-size: 13; -fx-font-weight: bold;" +
+                                    "-fx-text-fill: " + (inStock ? "#166534" : "#991b1b") + ";"
+                    );
+                    show(stockLabel);
+
+                    qtySpinner.setValueFactory(
+                            new SpinnerValueFactory.IntegerSpinnerValueFactory(
+                                    1, Math.max(1, stock), 1));
+                    show(qtyRow);
+
+                    addCartBtn.setDisable(!inStock);
+                    addCartBtn.setOnMouseEntered(e -> {
+                        if (!addCartBtn.isDisabled())
+                            addCartBtn.setStyle(
+                                    addCartBtn.getStyle().replace("#f59e0b", "#d97706"));
+                    });
+                    addCartBtn.setOnMouseExited(e -> {
+                        if (!addCartBtn.isDisabled())
+                            addCartBtn.setStyle(
+                                    addCartBtn.getStyle().replace("#d97706", "#f59e0b"));
+                    });
+                    addCartBtn.setOnAction(e ->
+                            handleAddToCart(qtySpinner, addCartBtn, feedbackLabel));
+
+                } else {
+                    loadingLabel.setText("Erreur : " + resp.getMessage());
+                    show(loadingLabel);
+                }
+            });
+        }).start();
+
+        return root;
+    }
+
+    private void handleAddToCart(Spinner<Integer> qtySpinner,
+                                 Button addCartBtn, Label feedbackLabel) {
+        int userId   = NavigationManager.getUserId();
+        int quantity = qtySpinner.getValue();
+
+        if (userId == -1) {
+            showFeedback(feedbackLabel, "Vous devez etre connecte.", false);
+            return;
+        }
+
+        addCartBtn.setDisable(true);
+        addCartBtn.setText("Ajout en cours...");
+
+        new Thread(() -> {
+            Request req = new Request(
+                    Action.ADD_TO_CART,
+                    NavigationManager.getToken(),
+                    Map.of("userId", userId, "productId", productId, "quantity", quantity)
+            );
+            Response resp = ServerConnection.getInstance().send(req);
+
+            Platform.runLater(() -> {
+                if (resp.isSuccess()) {
+                    showFeedback(feedbackLabel, "Produit ajoute au panier !", true);
+                    addCartBtn.setText("Ajoute !");
+                    addCartBtn.setStyle(
+                            "-fx-background-color: #16a34a;" +
+                                    "-fx-text-fill: white;" +
+                                    "-fx-font-weight: bold;" +
+                                    "-fx-font-size: 15;" +
+                                    "-fx-background-radius: 10;" +
+                                    "-fx-padding: 13 0;"
+                    );
+                } else {
+                    showFeedback(feedbackLabel, resp.getMessage(), false);
+                    addCartBtn.setDisable(false);
+                    addCartBtn.setText("Ajouter au panier");
+                    addCartBtn.setStyle(
+                            "-fx-background-color: #f59e0b;" +
+                                    "-fx-text-fill: white;" +
+                                    "-fx-font-weight: bold;" +
+                                    "-fx-font-size: 15;" +
+                                    "-fx-background-radius: 10;" +
+                                    "-fx-padding: 13 0;" +
+                                    "-fx-cursor: hand;"
+                    );
+                }
+            });
+        }).start();
+    }
+
+    private void show(Node node) {
+        node.setVisible(true);
+        node.setManaged(true);
+    }
+
+    private void showFeedback(Label lbl, String msg, boolean success) {
+        lbl.setText(msg);
+        lbl.setStyle(
+                "-fx-font-size: 13; -fx-font-weight: bold;" +
+                        "-fx-text-fill: " + (success ? "#166534" : "#991b1b") + ";"
+        );
+        lbl.setVisible(true);
+        lbl.setManaged(true);
     }
 
     @SuppressWarnings("unchecked")
-    private void loadProduct() {
-        showLoading(true);
-        ServerConnection.getInstance()
-                .sendAsync(new Request(Action.GET_PRODUCT_DETAIL, NavigationManager.getToken(),
-                        Map.of("productId", productId)))
-                .thenAccept(res -> Platform.runLater(() -> {
-                    showLoading(false);
-                    if (res.isSuccess() && res.getData() != null) {
-                        renderProduct((Map<String, Object>) res.getData());
-                    } else {
-                        showError("Produit introuvable");
-                    }
-                }))
-                .exceptionally(ex -> {
-                    Platform.runLater(() -> { showLoading(false); showError("Erreur réseau"); });
-                    return null;
-                });
+    private Map<String, Object> castToMap(Object obj) {
+        if (obj == null) return Map.of();
+        if (obj instanceof Map) return (Map<String, Object>) obj;
+        return gson.fromJson(gson.toJson(obj),
+                new TypeToken<Map<String, Object>>(){}.getType());
     }
 
-    private void renderProduct(Map<String, Object> p) {
-        HBox content = new HBox(40);
-        content.setMaxWidth(MAX_W);
-        content.setPadding(new Insets(40, H_PAD, 60, H_PAD));
-        content.setAlignment(Pos.TOP_CENTER);
-
-        String name = str(p.get("name"));
-        String desc = str(p.get("description"));
-        String cat = str(p.get("categoryName"));
-        double price = dbl(p.get("price"));
-        int stock = intV(p.get("stockQuantity"));
-
-        // ── Left: image ─────────────────────────────────
-        StackPane imgBox = new StackPane();
-        imgBox.getStyleClass().add("detail-image-box");
-        imgBox.setMinWidth(420);
-        imgBox.setMaxWidth(420);
-        imgBox.setMinHeight(400);
-
-        Label letter = new Label(name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
-        letter.getStyleClass().add("detail-image-letter");
-        imgBox.getChildren().add(letter);
-
-        // ── Right: info ─────────────────────────────────
-        VBox info = new VBox(16);
-        HBox.setHgrow(info, Priority.ALWAYS);
-
-        Label catL = new Label(cat.toUpperCase());
-        catL.getStyleClass().add("detail-category");
-
-        Label nameL = new Label(name);
-        nameL.getStyleClass().add("detail-name");
-
-        Label priceL = new Label(String.format("%.2f \u20AC", price));
-        priceL.getStyleClass().add("detail-price");
-
-        Label stockL = new Label();
-        if (stock > 10) { stockL.setText("\u2713 En stock (" + stock + " disponibles)"); stockL.getStyleClass().add("detail-stock-ok"); }
-        else if (stock > 0) { stockL.setText("\u26A0 Plus que " + stock + " en stock"); stockL.getStyleClass().add("detail-stock-low"); }
-        else { stockL.setText("\u2717 Rupture de stock"); stockL.getStyleClass().add("detail-stock-out"); }
-
-        Region div = new Region();
-        div.getStyleClass().add("cart-summary-divider");
-
-        Label descTitle = new Label("Description");
-        descTitle.getStyleClass().add("checkout-section-title");
-
-        Label descL = new Label(desc.isEmpty() ? "Aucune description disponible." : desc);
-        descL.getStyleClass().add("detail-description");
-
-        Region div2 = new Region();
-        div2.getStyleClass().add("cart-summary-divider");
-
-        // Quantity selector
-        HBox qtyRow = new HBox(12);
-        qtyRow.setAlignment(Pos.CENTER_LEFT);
-
-        Label qtyTitle = new Label("Quantité :");
-        qtyTitle.getStyleClass().add("page-subtitle");
-
-        Button minusBtn = new Button("-");
-        minusBtn.getStyleClass().add("qty-btn");
-        Label qtyLabel = new Label("1");
-        qtyLabel.getStyleClass().add("qty-label");
-        Button plusBtn = new Button("+");
-        plusBtn.getStyleClass().add("qty-btn");
-
-        minusBtn.setOnAction(e -> {
-            if (quantity > 1) { quantity--; qtyLabel.setText(String.valueOf(quantity)); }
-        });
-        plusBtn.setOnAction(e -> {
-            if (quantity < stock) { quantity++; qtyLabel.setText(String.valueOf(quantity)); }
-        });
-
-        qtyRow.getChildren().addAll(qtyTitle, minusBtn, qtyLabel, plusBtn);
-
-        // Add to cart
-        Button addBtn = new Button("Ajouter au panier");
-        addBtn.getStyleClass().add("detail-add-btn");
-        addBtn.setDisable(stock <= 0);
-        addBtn.setOnAction(e -> addToCart(p));
-
-        // Info cards
-        HBox infoCards = new HBox(12);
-        infoCards.getChildren().addAll(
-                infoCard("Livraison", "Express 24-48h"),
-                infoCard("Retours", "30 jours"),
-                infoCard("Garantie", "2 ans")
-        );
-
-        info.getChildren().addAll(catL, nameL, priceL, stockL, div, descTitle, descL,
-                div2, qtyRow, addBtn, infoCards);
-
-        content.getChildren().addAll(imgBox, info);
-
-        // Animate
-        content.setOpacity(0);
-        contentArea.getChildren().setAll(content);
-
-        // Staggered animation
-        imgBox.setTranslateX(-30); imgBox.setOpacity(0);
-        info.setTranslateX(30); info.setOpacity(0);
-
-        FadeTransition f1 = new FadeTransition(Duration.millis(500), imgBox);
-        f1.setToValue(1); f1.setDelay(Duration.millis(100));
-        TranslateTransition s1 = new TranslateTransition(Duration.millis(500), imgBox);
-        s1.setToX(0); s1.setDelay(Duration.millis(100));
-        s1.setInterpolator(Interpolator.EASE_OUT);
-
-        FadeTransition f2 = new FadeTransition(Duration.millis(500), info);
-        f2.setToValue(1); f2.setDelay(Duration.millis(200));
-        TranslateTransition s2 = new TranslateTransition(Duration.millis(500), info);
-        s2.setToX(0); s2.setDelay(Duration.millis(200));
-        s2.setInterpolator(Interpolator.EASE_OUT);
-
-        content.setOpacity(1);
-        new ParallelTransition(f1, s1, f2, s2).play();
+    private String getStr(Map<String, Object> m, String key) {
+        Object v = m.get(key); return v != null ? v.toString() : "";
     }
 
-    private VBox infoCard(String title, String value) {
-        VBox c = new VBox(4);
-        c.getStyleClass().add("detail-info-card");
-        c.setAlignment(Pos.CENTER);
-        c.setPrefWidth(120);
-        Label t = new Label(title); t.getStyleClass().add("detail-info-title");
-        Label v = new Label(value); v.getStyleClass().add("detail-info-text");
-        c.getChildren().addAll(t, v);
-        HBox.setHgrow(c, Priority.ALWAYS);
-        return c;
+    private int getInt(Map<String, Object> m, String key) {
+        Object v = m.get(key);
+        if (v == null) return 0;
+        if (v instanceof Double) return ((Double) v).intValue();
+        return Integer.parseInt(v.toString());
     }
 
-    private void addToCart(Map<String, Object> product) {
-        if (!NavigationManager.isLoggedIn()) {
-            NavigationManager.showLogin();
-            return;
-        }
-        Map<String, Object> data = new HashMap<>();
-        data.put("userId", NavigationManager.getUserId());
-        data.put("productId", intV(product.get("productId")));
-        data.put("quantity", quantity);
-
-        ServerConnection.getInstance()
-                .sendAsync(new Request(Action.ADD_TO_CART, NavigationManager.getToken(), data))
-                .thenAccept(res -> Platform.runLater(() -> {
-                    if (res.isSuccess()) showToast("Ajouté au panier !");
-                    else showToast(res.getMessage());
-                }));
+    private double getDbl(Map<String, Object> m, String key) {
+        Object v = m.get(key);
+        if (v == null) return 0.0;
+        return Double.parseDouble(v.toString());
     }
-
-    private void showToast(String msg) {
-        Label t = new Label(msg);
-        t.getStyleClass().addAll("toast", "toast-text", "toast-success");
-        t.setOpacity(0); t.setTranslateY(40);
-        StackPane rs = (StackPane) root.getParent();
-        if (rs == null) return;
-        StackPane.setAlignment(t, Pos.BOTTOM_CENTER);
-        StackPane.setMargin(t, new Insets(0, 0, 50, 0));
-        rs.getChildren().add(t);
-        FadeTransition fi = new FadeTransition(Duration.millis(300), t); fi.setToValue(1);
-        TranslateTransition si = new TranslateTransition(Duration.millis(300), t); si.setToY(0); si.setInterpolator(Interpolator.EASE_OUT);
-        PauseTransition hold = new PauseTransition(Duration.seconds(3));
-        FadeTransition fo = new FadeTransition(Duration.millis(400), t); fo.setToValue(0);
-        fo.setOnFinished(e -> rs.getChildren().remove(t));
-        new SequentialTransition(new ParallelTransition(fi, si), hold, fo).play();
-    }
-
-    private void showError(String msg) {
-        VBox e = new VBox(16); e.setAlignment(Pos.CENTER); e.setPadding(new Insets(80));
-        Label tx = new Label(msg); tx.getStyleClass().add("empty-state-title");
-        Button b = new Button("Retour"); b.getStyleClass().add("btn-primary");
-        b.setStyle("-fx-font-size:13px;-fx-padding:10 24;");
-        b.setOnAction(ev -> NavigationManager.showLanding());
-        e.getChildren().addAll(tx, b);
-        contentArea.getChildren().setAll(e);
-    }
-
-    private StackPane buildLoading() {
-        StackPane o = new StackPane(); o.getStyleClass().add("loading-modern-overlay"); o.setVisible(false);
-        VBox c = new VBox(20); c.getStyleClass().add("loading-card"); c.setAlignment(Pos.CENTER);
-        c.setMaxWidth(200); c.setMaxHeight(140);
-        ProgressIndicator pi = new ProgressIndicator(); pi.getStyleClass().add("loading-spinner"); pi.setMaxSize(40, 40);
-        Label t = new Label("Chargement..."); t.getStyleClass().add("loading-text");
-        c.getChildren().addAll(pi, t); o.getChildren().add(c); return o;
-    }
-
-    private void showLoading(boolean b) {
-        Platform.runLater(() -> {
-            if (b) { loadingOverlay.setOpacity(0); loadingOverlay.setVisible(true);
-                FadeTransition fi = new FadeTransition(Duration.millis(200), loadingOverlay); fi.setToValue(1); fi.play();
-            } else { FadeTransition fo = new FadeTransition(Duration.millis(200), loadingOverlay);
-                fo.setToValue(0); fo.setOnFinished(e -> loadingOverlay.setVisible(false)); fo.play(); }
-        });
-    }
-
-    private String str(Object o) { return o != null ? o.toString() : ""; }
-    private int intV(Object o) { if (o==null) return 0; if (o instanceof Double) return ((Double)o).intValue(); if (o instanceof Integer) return (Integer)o; try{return Integer.parseInt(o.toString());}catch(Exception e){return 0;} }
-    private double dbl(Object o) { if (o==null) return 0; if (o instanceof Double) return (Double)o; try{return Double.parseDouble(o.toString());}catch(Exception e){return 0;} }
 }
