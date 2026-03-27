@@ -195,7 +195,10 @@ public class LandingPage {
         l1.getStyleClass().add("header-logo-text");
         Label l2 = new Label("Online");
         l2.getStyleClass().add("header-logo-accent");
-        logo.getChildren().addAll(l1, l2);
+        
+        HBox logoText = new HBox(0, l1, l2);
+        logoText.setAlignment(Pos.CENTER_LEFT);
+        logo.getChildren().add(logoText);
 
         boolean isAdmin = NavigationManager.isAdmin();
 
