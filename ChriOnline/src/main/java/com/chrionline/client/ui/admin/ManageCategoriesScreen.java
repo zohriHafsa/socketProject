@@ -367,17 +367,18 @@ public class ManageCategoriesScreen {
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.45);");
         overlay.setOpacity(0);
 
-        VBox dialog = new VBox(18);
+        VBox dialog = new VBox(10);
         dialog.setMaxWidth(400);
+        dialog.setMaxHeight(220);
         dialog.setAlignment(Pos.CENTER);
-        dialog.setStyle("-fx-background-color: #fff; -fx-background-radius: 14; -fx-padding: 32;");
+        dialog.setStyle("-fx-background-color: #fff; -fx-background-radius: 14; -fx-padding: 18 28;");
         DropShadow ds = new DropShadow();
         ds.setRadius(30);
         ds.setColor(Color.rgb(0, 0, 0, 0.18));
         dialog.setEffect(ds);
 
         Label icon = new Label("\u26A0");
-        icon.setStyle("-fx-font-size: 38; -fx-text-fill: #E74C3C;");
+        icon.setStyle("-fx-font-size: 24; -fx-text-fill: #E74C3C;");
 
         Label msg = new Label("Supprimer \"" + name + "\" ?");
         msg.setStyle("-fx-font-size: 16; -fx-font-weight: 700; -fx-text-fill: #1a1a2e;");

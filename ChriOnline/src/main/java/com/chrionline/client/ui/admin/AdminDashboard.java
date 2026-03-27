@@ -144,7 +144,7 @@ public class AdminDashboard {
         inner.setAlignment(Pos.CENTER_LEFT);
 
         // Logo - same style as client header
-        HBox logo = new HBox(8);
+        HBox logo = new HBox(4);
         logo.setAlignment(Pos.CENTER_LEFT);
         logo.setCursor(javafx.scene.Cursor.HAND);
         logo.setOnMouseClicked(e -> NavigationManager.showAdminDashboard());
@@ -158,15 +158,22 @@ public class AdminDashboard {
             logo.getChildren().add(img);
         } catch (Exception ignored) {
         }
-        Label l1 = new Label("Chri");
-        l1.getStyleClass().add("header-logo-text");
-        Label l2 = new Label("Online");
-        l2.getStyleClass().add("header-logo-accent");
-        logo.getChildren().addAll(l1, l2);
+        // Render as one tight label to avoid the gap
+        Label logoFull = new Label("Chri");
+        logoFull.getStyleClass().add("header-logo-text");
+        Label logoAccent = new Label("Online");
+        logoAccent.getStyleClass().add("header-logo-accent");
+        // Force zero spacing by using a single HBox with spacing 0
+        HBox logoText = new HBox(0, logoFull, logoAccent);
+        logoText.setAlignment(Pos.CENTER_LEFT);
+        logo.getChildren().add(logoText);
 
         // Admin badge next to logo
         Label adminBadge = new Label("ADMIN");
         adminBadge.getStyleClass().add("admin-header-badge");
+        adminBadge.setStyle("-fx-background-color: #6C3483; -fx-text-fill: white; "
+                + "-fx-font-size: 10px; -fx-font-weight: 700; -fx-background-radius: 4; "
+                + "-fx-padding: 2 7;");
 
         // Nav buttons - compact
         HBox nav = new HBox(2);
@@ -214,8 +221,18 @@ public class AdminDashboard {
         initLabel.getStyleClass().add("header-avatar-text");
         avatar.getChildren().add(initLabel);
 
-        Button logoutBtn = new Button("Deconnexion");
-        logoutBtn.getStyleClass().add("admin-logout-btn");
+        // Logout icon button
+        Button logoutBtn = new Button("\u23FB"); // ⏻ power/logout icon
+        logoutBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #6C3483; "
+                + "-fx-font-size: 18px; -fx-cursor: hand; -fx-padding: 4 8;"
+                + "-fx-border-color: transparent;");
+        logoutBtn.setOnMouseEntered(e -> logoutBtn.setStyle(
+                "-fx-background-color: rgba(108,52,131,0.12); -fx-text-fill: #6C3483; "
+                + "-fx-font-size: 18px; -fx-cursor: hand; -fx-padding: 4 8; "
+                + "-fx-background-radius: 6;"));
+        logoutBtn.setOnMouseExited(e -> logoutBtn.setStyle(
+                "-fx-background-color: transparent; -fx-text-fill: #6C3483; "
+                + "-fx-font-size: 18px; -fx-cursor: hand; -fx-padding: 4 8;"));
         logoutBtn.setOnAction(e -> {
             ServerConnection.getInstance().sendAsync(
                     new Request(Action.LOGOUT, NavigationManager.getToken(), null));
@@ -294,7 +311,7 @@ public class AdminDashboard {
                         String.valueOf(allOrders.size()),
                         pending + " en attente", "admin-stat-green"),
                 statCard("Revenus",
-                        String.format("%.0f EUR", revenue),
+                        String.format("%.0f MAD", revenue),
                         "commandes validees", "admin-stat-orange")
         );
         return row;
@@ -388,12 +405,12 @@ public class AdminDashboard {
         barBox.setAlignment(Pos.TOP_CENTER);
         barBox.setPadding(new Insets(20));
 
-        Label barTitle = new Label("Revenus par statut (EUR)");
+        Label barTitle = new Label("Revenus par statut (MAD)");
         barTitle.getStyleClass().add("admin-chart-title");
 
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("EUR");
+        yAxis.setLabel("MAD");
 
         BarChart<String, Number> bar = new BarChart<>(xAxis, yAxis);
         bar.setLegendVisible(false);
@@ -479,7 +496,7 @@ public class AdminDashboard {
             idL.getStyleClass().add("admin-cell-id");
             Label clientL = tCell(str(o.get("username")), 140);
             Label amtL = tCell(
-                    String.format("%.2f EUR", dbl(o.get("totalAmount"))), 110);
+                    String.format("%.2f MAD", dbl(o.get("totalAmount"))), 110);
             amtL.getStyleClass().add("admin-cell-amount");
 
             Label statusL = new Label(getStatusLabel(status));
