@@ -568,19 +568,19 @@ public class NotificationScreen {
     // ═══════════════════════════════════════════════════════
 
     private void markAsReadOnServer(int notificationId) {
-        // Uses the GET_NOTIFICATIONS action pattern
-        // but we need a custom approach since there's no
-        // dedicated MARK_READ action in the current Action enum.
-        // For now, we'll track it locally.
-        // The server already has NotificationDAO.markAsRead()
-        // but no Action route for it.
-        System.out.println("[NOTIF] Marked as read locally: ID=" + notificationId);
+        ServerConnection.getInstance().sendAsync(new Request(Action.MARK_NOTIFICATION_READ,
+                NavigationManager.getToken(),
+                Map.of("notificationId", notificationId)));
     }
 
     private void markAllAsRead() {
         // Mark all as read locally
         unreadCount = 0;
         updateBadge();
+
+        ServerConnection.getInstance().sendAsync(new Request(Action.MARK_ALL_NOTIFICATIONS_READ,
+                NavigationManager.getToken(),
+                Map.of("userId", NavigationManager.getUserId())));
 
         // Refresh display
         loadNotifications();
@@ -793,6 +793,8 @@ public class NotificationScreen {
     private boolean toBool(Object o) {
         if (o == null) return false;
         if (o instanceof Boolean) return (Boolean) o;
-        return Boolean.parseBoolean(o.toString());
+        if (o instanceof Number) return ((Number) o).intValue() == 1;
+        String s = o.toString().trim().toLowerCase();
+        return "true".equals(s) || "1".equals(s);
     }
 }

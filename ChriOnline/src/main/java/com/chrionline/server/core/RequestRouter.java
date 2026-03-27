@@ -87,6 +87,8 @@ public class RequestRouter {
 
             // Notifications
             case GET_NOTIFICATIONS: return handleGetNotifications(request);
+            case MARK_NOTIFICATION_READ: return handleMarkNotificationRead(request);
+            case MARK_ALL_NOTIFICATIONS_READ: return handleMarkAllNotificationsRead(request);
 
             // Admin
             case ADMIN_ADD_PRODUCT:          return adminService.addProduct(request);
@@ -113,6 +115,30 @@ public class RequestRouter {
             return Response.ok("Notifications récupérées.", notifs);
         } catch (SQLException e) {
             ServerLogger.error("GET_NOTIFICATIONS error : " + e.getMessage());
+            return Response.error("Erreur : " + e.getMessage());
+        }
+    }
+
+    private static Response handleMarkNotificationRead(Request request) {
+        int notifId = request.getInt("notificationId");
+        if (notifId <= 0) return Response.error("notificationId requis.");
+        try {
+            boolean success = notifDAO.markAsRead(notifId);
+            return success ? Response.ok("Notification lu.", null) : Response.error("Notification introuvable.");
+        } catch (SQLException e) {
+            ServerLogger.error("MARK_NOTIFICATION_READ error : " + e.getMessage());
+            return Response.error("Erreur : " + e.getMessage());
+        }
+    }
+
+    private static Response handleMarkAllNotificationsRead(Request request) {
+        int userId = request.getInt("userId");
+        if (userId <= 0) return Response.error("userId requis.");
+        try {
+            notifDAO.markAllAsRead(userId);
+            return Response.ok("Toutes marquées lues.", null);
+        } catch (SQLException e) {
+            ServerLogger.error("MARK_ALL_NOTIFICATIONS_READ error : " + e.getMessage());
             return Response.error("Erreur : " + e.getMessage());
         }
     }

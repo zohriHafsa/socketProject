@@ -1438,10 +1438,12 @@ public class LandingPage {
                                 (List<Map<String, Object>>) r.getData();
                         long unread = notifs.stream()
                                 .filter(n -> {
-                                    Object isRead = n.get("isRead");
-                                    if (isRead instanceof Boolean)
-                                        return !(Boolean) isRead;
-                                    return false;
+                                            Object isRead = n.get("isRead");
+                                            if (isRead == null) return true;
+                                            if (isRead instanceof Boolean) return !(Boolean) isRead;
+                                            if (isRead instanceof Number) return ((Number) isRead).intValue() == 0;
+                                            String s = isRead.toString().trim().toLowerCase();
+                                            return !("true".equals(s) || "1".equals(s));
                                 })
                                 .count();
                         notifCountLabel.setText(String.valueOf(unread));
