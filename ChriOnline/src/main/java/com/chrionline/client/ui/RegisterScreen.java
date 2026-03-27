@@ -213,7 +213,7 @@ public class RegisterScreen {
         // Particles
         Pane particles = buildParticles();
 
-        root.getChildren().addAll(particles, watermark, backLink, scroll);
+        root.getChildren().addAll(particles, watermark, scroll, backLink);
 
         // ── Entrance animation ───────────────────────────
         Platform.runLater(() -> {

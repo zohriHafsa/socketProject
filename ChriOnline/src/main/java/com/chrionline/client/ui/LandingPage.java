@@ -32,6 +32,7 @@ public class LandingPage {
     private final VBox       mainContent;
     private final ScrollPane scrollPane;
     private FlowPane         productsGrid;
+    private HBox             categoryChips;
     private StackPane        loadingOverlay;
     private Label            cartCountLabel;
     private Label            notifCountLabel;
@@ -194,7 +195,10 @@ public class LandingPage {
         l1.getStyleClass().add("header-logo-text");
         Label l2 = new Label("Online");
         l2.getStyleClass().add("header-logo-accent");
-        logo.getChildren().addAll(l1, l2);
+        
+        HBox logoText = new HBox(0, l1, l2);
+        logoText.setAlignment(Pos.CENTER_LEFT);
+        logo.getChildren().add(logoText);
 
         boolean isAdmin = NavigationManager.isAdmin();
 
@@ -597,20 +601,28 @@ public class LandingPage {
         Label s = new Label("Trouvez exactement ce que vous cherchez");
         s.getStyleClass().add("section-subtitle");
 
-        HBox chips = new HBox(10);
-        chips.setAlignment(Pos.CENTER);
-        chips.setPadding(new Insets(8, 0, 0, 0));
+        categoryChips = new HBox(10);
+        categoryChips.setAlignment(Pos.CENTER);
+        categoryChips.setPadding(new Insets(8, 0, 0, 0));
 
-        String[] cats = {"Tous", "Smartphones", "Ordinateurs", "Vêtements",
-                "Livres", "Sport", "Informatique", "Électronique"};
+        Button tousChip = new Button("Tous");
+        tousChip.getStyleClass().addAll("category-chip", "category-chip-active");
+        categoryChips.getChildren().add(tousChip);
 
-        for (String cat : cats) {
+        c.getChildren().addAll(t, d, s, categoryChips);
+        return wrap(c, "categories-section-bg");
+    }
+
+    private void updateCategories(List<String> categories) {
+        if (categoryChips == null) return;
+        categoryChips.getChildren().clear();
+        for (String cat : categories) {
             Button chip = new Button(cat);
             chip.getStyleClass().add("category-chip");
-            if ("Tous".equals(cat)) chip.getStyleClass().add("category-chip-active");
+            if (cat.equals(currentCategory)) chip.getStyleClass().add("category-chip-active");
             chip.setOnAction(e -> {
                 currentCategory = cat;
-                chips.getChildren().forEach(ch ->
+                categoryChips.getChildren().forEach(ch ->
                         ((Button) ch).getStyleClass().remove("category-chip-active"));
                 chip.getStyleClass().add("category-chip-active");
                 ScaleTransition p1 = new ScaleTransition(Duration.millis(100), chip);
@@ -622,11 +634,8 @@ public class LandingPage {
                 new SequentialTransition(p1, p2).play();
                 filterProducts(cat);
             });
-            chips.getChildren().add(chip);
+            categoryChips.getChildren().add(chip);
         }
-
-        c.getChildren().addAll(t, d, s, chips);
-        return wrap(c, "categories-section-bg");
     }
 
     // ═══════════════════════════════════════════════════════
@@ -643,16 +652,13 @@ public class LandingPage {
         t.getStyleClass().add("section-title");
         Region sp = new Region();
         HBox.setHgrow(sp, Priority.ALWAYS);
-        Label cnt = new Label("");
-        cnt.getStyleClass().add("section-subtitle");
-        cnt.setId("product-count-label");
 
         Button viewAll = new Button("Voir tout \u2192");
         viewAll.getStyleClass().add("nav-link");
         viewAll.setStyle("-fx-text-fill: #6C3483; -fx-font-weight: bold;");
         viewAll.setOnAction(e -> NavigationManager.showProductList());
 
-        titleRow.getChildren().addAll(t, sp, cnt, viewAll);
+        titleRow.getChildren().addAll(t, sp, viewAll);
 
         productsGrid = new FlowPane();
         productsGrid.setHgap(24);
@@ -693,6 +699,7 @@ public class LandingPage {
         imgBox.getStyleClass().add("product-card-image-container");
         imgBox.setPrefHeight(190);
         imgBox.setMinHeight(190);
+        imgBox.setMaxHeight(190);
         imgBox.setCursor(javafx.scene.Cursor.HAND);
         imgBox.setOnMouseClicked(e ->
                 NavigationManager.showProductDetail(intV(p.get("productId"))));
@@ -700,12 +707,24 @@ public class LandingPage {
         Image productImage = loadProductImage(imageUrl);
 
         if (productImage != null && !productImage.isError()) {
-            ImageView iv = new ImageView(productImage);
-            iv.setFitWidth(240);
-            iv.setFitHeight(170);
-            iv.setPreserveRatio(true);
-            iv.setSmooth(true);
-            imgBox.getChildren().add(iv);
+            Region imgRegion = new Region();
+            imgRegion.setPrefSize(260, 190);
+            imgRegion.setMaxSize(260, 190);
+            javafx.scene.layout.BackgroundImage bgImg = new javafx.scene.layout.BackgroundImage(
+                productImage,
+                javafx.scene.layout.BackgroundRepeat.NO_REPEAT,
+                javafx.scene.layout.BackgroundRepeat.NO_REPEAT,
+                javafx.scene.layout.BackgroundPosition.CENTER,
+                new javafx.scene.layout.BackgroundSize(javafx.scene.layout.BackgroundSize.AUTO, javafx.scene.layout.BackgroundSize.AUTO, false, false, false, true)
+            );
+            imgRegion.setBackground(new javafx.scene.layout.Background(bgImg));
+            
+            javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(260, 190);
+            clip.setArcWidth(20);
+            clip.setArcHeight(20);
+            imgRegion.setClip(clip);
+            
+            imgBox.getChildren().add(imgRegion);
         } else {
             Label letter = new Label(
                     name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
@@ -870,7 +889,7 @@ public class LandingPage {
         c.setSpacing(18);
         c.setAlignment(Pos.CENTER);
 
-        Label badge = new Label("PROJET ACADEMIQUE — E-COMMERCE");
+        Label badge = new Label("VOTRE PARTENAIRE E-COMMERCE");
         badge.getStyleClass().add("about-badge");
 
         Label title = new Label("A propos de ChriOnline");
@@ -879,7 +898,7 @@ public class LandingPage {
         Region divider = new Region();
         divider.getStyleClass().add("section-divider");
 
-        Label subtitle = new Label("Une plateforme complete : boutique, panier, commandes, paiement et notifications temps reel.");
+        Label subtitle = new Label("Une boutique en ligne moderne, concue pour rendre votre shopping simple, rapide et agreable.");
         subtitle.getStyleClass().add("section-subtitle");
         subtitle.setWrapText(true);
 
@@ -892,20 +911,19 @@ public class LandingPage {
         missionTitle.getStyleClass().add("about-card-title");
 
         Label missionText = new Label(
-                "ChriOnline est une plateforme de commerce electronique developpee dans le cadre d'un mini-projet. "
-                        + "L'objectif est de proposer une experience moderne et securisee, avec une architecture client/serveur "
-                        + "et une base de donnees MySQL.\n\n"
-                        + "Le projet couvre : produits, panier, commandes, paiement, notifications UDP et administration."
+                "ChriOnline est votre destination shopping par excellence. Notre objectif est de vous offrir une experience "
+                        + "d'achat fluide, du choix de vos produits jusqu'a la livraison chez vous.\n\n"
+                        + "Nous mettons l'accent sur la qualite de nos produits, un service client irreprochable et des prix competitifs pour tous nos clients."
         );
         missionText.getStyleClass().add("about-card-text");
         missionText.setWrapText(true);
 
         VBox points = new VBox(10);
         points.getChildren().addAll(
-                aboutPoint("✓", "Interface moderne JavaFX"),
-                aboutPoint("✓", "Client/Serveur TCP + JSON"),
-                aboutPoint("✓", "Notifications push UDP"),
-                aboutPoint("✓", "Admin: gestion produits / users / commandes")
+                aboutPoint("✓", "Large catalogue de produits certifes"),
+                aboutPoint("✓", "Paiement 100% securise et flexible"),
+                aboutPoint("✓", "Service client disponible 7j/7"),
+                aboutPoint("✓", "Livraison rapide, fiable et securisee")
         );
 
         missionCard.getChildren().addAll(missionTitle, missionText, points);
@@ -915,16 +933,16 @@ public class LandingPage {
         techCard.getStyleClass().add("about-card");
         techCard.setAlignment(Pos.TOP_LEFT);
 
-        Label techTitle = new Label("🛠️  Technologies");
+        Label techTitle = new Label("⭐ Nos Valeurs");
         techTitle.getStyleClass().add("about-card-title");
 
         VBox techList = new VBox(10);
         techList.getChildren().addAll(
-                aboutTechItem("☕", "Java 23", "Langage principal (client + serveur)"),
-                aboutTechItem("🎨", "JavaFX", "UI desktop moderne et responsive"),
-                aboutTechItem("🔌", "TCP / UDP", "Echanges + notifications temps reel"),
-                aboutTechItem("🗄️", "MySQL", "Stockage persistant des donnees"),
-                aboutTechItem("📦", "Gson", "Serialisation / deserialisation JSON")
+                aboutTechItem("💎", "Qualite Prime", "Nous selectionnons uniquement les meilleures marques et produits"),
+                aboutTechItem("🤝", "Confiance", "Des transactions transparentes et entierement securisees"),
+                aboutTechItem("⚡", "Rapidite", "Traitement express et suivi de vos commandes en temps reel"),
+                aboutTechItem("♻", "Eco-responsable", "Emballages recyclables minimisant l'impact ecologique"),
+                aboutTechItem("🎁", "Avantages", "Programme de fidelite exclusif avec des recompenses incroyables")
         );
 
         techCard.getChildren().addAll(techTitle, techList);
@@ -983,10 +1001,10 @@ public class LandingPage {
         stats.setPrefWrapLength(MAX_W - (H_PAD * 2));
 
         stats.getChildren().addAll(
-                aboutStatCard("💻", "Architecture", "Client-Serveur TCP"),
-                aboutStatCard("🔔", "Notifications", "Push UDP"),
-                aboutStatCard("🔐", "Securite", "Sessions + SHA-256"),
-                aboutStatCard("🧩", "Projet", "Mini-Projet Academique")
+                aboutStatCard("🌍", "National", "Livraison disponible partout au Maroc"),
+                aboutStatCard("🤝", "Confiance", "Plus de 50,000 clients fideles"),
+                aboutStatCard("⭐", "Qualite", "99% d'avis positifs verifes"),
+                aboutStatCard("📦", "Catalogue", "Des milliers de references a prix imbattable")
         );
 
         c.getChildren().addAll(badge, title, divider, subtitle, grid, stats);
@@ -1153,7 +1171,7 @@ public class LandingPage {
         sep.getStyleClass().add("footer-divider");
         Label copy = new Label(
                 "\u00A9 2025 ChriOnline. Tous droits reserves."
-                        + " — Projet academique TCP/UDP");
+                        + " — Votre partenaire e-commerce de confiance");
         copy.getStyleClass().add("footer-bottom-text");
 
         c.getChildren().addAll(cols, sep, copy);
@@ -1242,6 +1260,16 @@ public class LandingPage {
                     showLoading(false);
                     if (r.isSuccess() && r.getData() != null) {
                         allProducts = (List<Map<String, Object>>) r.getData();
+                        List<String> dynamicCats = new ArrayList<>();
+                        dynamicCats.add("Tous");
+                        for (Map<String, Object> p : allProducts) {
+                            String catName = str(p.get("categoryName"));
+                            if (!catName.isEmpty() && !dynamicCats.contains(catName)) {
+                                dynamicCats.add(catName);
+                            }
+                        }
+                        updateCategories(dynamicCats);
+
                         if (allProducts.isEmpty())
                             showEmpty("Aucun produit disponible", false);
                         else displayProducts(allProducts);
@@ -1262,14 +1290,21 @@ public class LandingPage {
     private void displayProducts(List<Map<String, Object>> products) {
         productsGrid.getChildren().clear();
         Label cnt = (Label) root.lookup("#product-count-label");
-        if (cnt != null) cnt.setText(products.size() + " produit(s)");
-        if (products.isEmpty()) {
+        
+        List<Map<String, Object>> displayList = new ArrayList<>(products);
+        Collections.shuffle(displayList);
+        if (displayList.size() > 8) {
+            displayList = displayList.subList(0, 8);
+        }
+
+        if (cnt != null) cnt.setText(displayList.size() + " produit(s)");
+        if (displayList.isEmpty()) {
             showEmpty("Aucun produit trouve", false);
             return;
         }
 
         List<Node> cards = new ArrayList<>();
-        for (Map<String, Object> p : products) {
+        for (Map<String, Object> p : displayList) {
             Node card = buildCard(p);
             card.setOpacity(0);
             card.setTranslateY(40);
