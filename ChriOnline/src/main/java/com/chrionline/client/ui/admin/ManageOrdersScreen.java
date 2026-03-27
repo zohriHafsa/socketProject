@@ -298,7 +298,7 @@ public class ManageOrdersScreen {
 
         Label clientL = tCell(str(order.get("username")), 120);
 
-        Label amtL = tCell(String.format("%.2f EUR", dbl(order.get("totalAmount"))), 100);
+        Label amtL = tCell(String.format("%.2f MAD", dbl(order.get("totalAmount"))), 100);
         amtL.getStyleClass().add("admin-cell-amount");
 
         Label statusL = new Label(getStatusLabel(status));
@@ -422,8 +422,8 @@ public class ManageOrdersScreen {
                     itemRow.getChildren().addAll(
                             tCell(productName, 200),
                             tCell(String.valueOf(intV(item.get("quantity"))), 60),
-                            tCell(String.format("%.2f EUR", dbl(item.get("unitPrice"))), 100),
-                            tCell(String.format("%.2f EUR", dbl(item.get("subtotal"))), 100));
+                            tCell(String.format("%.2f MAD", dbl(item.get("unitPrice"))), 100),
+                            tCell(String.format("%.2f MAD", dbl(item.get("subtotal"))), 100));
                     panel.getChildren().add(itemRow);
                 }
             }
@@ -441,7 +441,7 @@ public class ManageOrdersScreen {
             payInfo.getChildren().addAll(
                     detailField("Methode", str(pay.get("method"))),
                     detailField("Statut", payStatus),
-                    detailField("Montant", String.format("%.2f EUR", dbl(pay.get("amount")))),
+                    detailField("Montant", String.format("%.2f MAD", dbl(pay.get("amount")))),
                     detailField("Ref.", str(pay.get("transactionRef")))
             );
 

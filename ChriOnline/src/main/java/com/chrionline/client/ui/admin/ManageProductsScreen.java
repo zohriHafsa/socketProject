@@ -57,6 +57,8 @@ public class ManageProductsScreen {
     private Label resultLabel;
 
     private List<Map<String, Object>> allProducts = new ArrayList<>();
+    private List<Map<String, Object>> categoriesList = new ArrayList<>();
+    private HBox categoryChipsContainer;
     private String currentCategory = "Toutes";
     private String searchQuery = "";
 
@@ -153,31 +155,51 @@ public class ManageProductsScreen {
         Region sp = new Region();
         HBox.setHgrow(sp, Priority.ALWAYS);
 
-        String[] cats = {
-                "Toutes", "Smartphones", "Ordinateurs", "Vêtements",
-                "Livres", "Sport", "Informatique", "Électronique"
-        };
+        categoryChipsContainer = new HBox(6);
+        categoryChipsContainer.setAlignment(Pos.CENTER_RIGHT);
+        
+        updateCategoryFilters();
+        loadCategories();
 
-        HBox catChips = new HBox(6);
-        catChips.setAlignment(Pos.CENTER_RIGHT);
-        List<Button> catBtns = new ArrayList<>();
+        bar.getChildren().addAll(search, sp, categoryChipsContainer);
+        return bar;
+    }
+
+    private void loadCategories() {
+        ServerConnection.getInstance()
+                .sendAsync(new Request(Action.GET_CATEGORIES, null, null))
+                .thenAccept(res -> Platform.runLater(() -> {
+                    if (res.isSuccess() && res.getData() != null) {
+                        categoriesList = (List<Map<String, Object>>) res.getData();
+                        updateCategoryFilters();
+                    }
+                }));
+    }
+
+    private void updateCategoryFilters() {
+        if (categoryChipsContainer == null) return;
+        categoryChipsContainer.getChildren().clear();
+
+        List<String> cats = new ArrayList<>();
+        cats.add("Toutes");
+        for (Map<String, Object> c : categoriesList) {
+            cats.add(str(c.get("name")));
+        }
 
         for (String cat : cats) {
             Button chip = new Button(cat);
             chip.getStyleClass().add("admin-filter-chip");
-            if ("Toutes".equals(cat)) chip.getStyleClass().add("admin-filter-active");
+            if (cat.equals(currentCategory)) chip.getStyleClass().add("admin-filter-active");
+
             chip.setOnAction(e -> {
                 currentCategory = cat;
-                catBtns.forEach(c -> c.getStyleClass().remove("admin-filter-active"));
+                categoryChipsContainer.getChildren().forEach(n -> 
+                    n.getStyleClass().remove("admin-filter-active"));
                 chip.getStyleClass().add("admin-filter-active");
                 displayProducts();
             });
-            catBtns.add(chip);
-            catChips.getChildren().add(chip);
+            categoryChipsContainer.getChildren().add(chip);
         }
-
-        bar.getChildren().addAll(search, sp, catChips);
-        return bar;
     }
 
     // ═══════════════════════════════════════════════════════
@@ -553,15 +575,9 @@ public class ManageProductsScreen {
         Label catLabel = new Label("Categorie");
         catLabel.setStyle("-fx-font-size:12px;-fx-text-fill:#7F8C8D;-fx-font-weight:600;");
         ComboBox<String> catCombo = new ComboBox<>();
-        catCombo.getItems().addAll(
-                "1-Électronique",
-                "2-Vêtements",
-                "3-Livres",
-                "4-Sport",
-                "5-Informatique",
-                "6-Smartphones",
-                "7-Ordinateurs"
-        );
+        for (Map<String, Object> c : categoriesList) {
+            catCombo.getItems().add(intV(c.get("categoryId")) + "-" + str(c.get("name")));
+        }
         catCombo.setPromptText("Choisir une categorie");
         catCombo.getStyleClass().add("admin-status-combo");
         catCombo.setMaxWidth(Double.MAX_VALUE);
@@ -809,10 +825,11 @@ public class ManageProductsScreen {
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
         overlay.setAlignment(Pos.CENTER);
 
-        VBox card = new VBox(16);
+        VBox card = new VBox(12);
         card.getStyleClass().add("admin-form-card");
-        card.setMaxWidth(400);
-        card.setPadding(new Insets(30));
+        card.setMaxWidth(380);
+        card.setMaxHeight(170);
+        card.setPadding(new Insets(20));
         card.setAlignment(Pos.CENTER);
 
         Label title = new Label("Supprimer le produit ?");

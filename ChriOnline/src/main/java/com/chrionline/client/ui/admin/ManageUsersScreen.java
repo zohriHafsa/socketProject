@@ -463,10 +463,11 @@ public class ManageUsersScreen {
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
         overlay.setAlignment(Pos.CENTER);
 
-        VBox card = new VBox(16);
+        VBox card = new VBox(12);
         card.getStyleClass().add("admin-form-card");
-        card.setMaxWidth(400);
-        card.setPadding(new Insets(30));
+        card.setMaxWidth(380);
+        card.setMaxHeight(170);
+        card.setPadding(new Insets(20));
         card.setAlignment(Pos.CENTER);
 
         Label title = new Label(currentlyActive

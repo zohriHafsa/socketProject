@@ -48,10 +48,11 @@ public class NavigationManager {
     public static void showNotifications()       { transitionTo(new NotificationScreen().getView(), true); }
 
     // ── Admin screens ──────────────────────────────────
-    public static void showAdminDashboard()  { transitionTo(new AdminDashboard().getView(), true); }
-    public static void showManageUsers()     { transitionTo(new ManageUsersScreen().getView(), true); }
-    public static void showManageProducts()  { transitionTo(new ManageProductsScreen().getView(), true); }
-    public static void showManageOrders()    { transitionTo(new ManageOrdersScreen().getView(), true); }
+    public static void showAdminDashboard()     { transitionTo(new AdminDashboard().getView(), true); }
+    public static void showManageUsers()         { transitionTo(new ManageUsersScreen().getView(), true); }
+    public static void showManageProducts()      { transitionTo(new ManageProductsScreen().getView(), true); }
+    public static void showManageOrders()        { transitionTo(new ManageOrdersScreen().getView(), true); }
+    public static void showManageCategories()    { transitionTo(new ManageCategoriesScreen().getView(), true); }
 
     public static void navigateTo(String name) {
         Platform.runLater(() -> {
@@ -65,9 +66,10 @@ public class NavigationManager {
                 case "products":       showProductList(); break;
                 case "notifications":  showNotifications(); break;
                 case "admin":          showAdminDashboard(); break;
-                case "manageUsers":    showManageUsers(); break;
-                case "manageProducts": showManageProducts(); break;
-                case "manageOrders":   showManageOrders(); break;
+                case "manageUsers":       showManageUsers(); break;
+                case "manageProducts":    showManageProducts(); break;
+                case "manageOrders":      showManageOrders(); break;
+                case "manageCategories":  showManageCategories(); break;
                 default: System.err.println("[NAV] Unknown: " + name);
             }
         });

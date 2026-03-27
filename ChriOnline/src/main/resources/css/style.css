@@ -785,7 +785,7 @@
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-padding: 15 0;
+    -fx-padding: 15 32;
     -fx-background-radius: 12;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(108,52,131,0.3), 10, 0, 0, 4);

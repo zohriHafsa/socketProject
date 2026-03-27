@@ -48,6 +48,7 @@ public class RequestRouter {
             case GET_PRODUCTS:
             case GET_PRODUCT_DETAIL:
             case SEARCH_PRODUCTS:
+            case GET_CATEGORIES:
                 break;
             default:
                 if (!SessionManager.isValid(request.getToken())) {
@@ -70,6 +71,7 @@ public class RequestRouter {
             case GET_PRODUCTS:       return productService.getProducts(request);
             case GET_PRODUCT_DETAIL: return productService.getProductDetail(request);
             case SEARCH_PRODUCTS:    return productService.searchProducts(request);
+            case GET_CATEGORIES:     return productService.getCategories(request);
 
             // Cart
             case ADD_TO_CART:      return cartService.addToCart(request);
@@ -98,6 +100,11 @@ public class RequestRouter {
             case ADMIN_TOGGLE_USER:          return adminService.toggleUser(request);
             case ADMIN_UPDATE_ORDER_STATUS:  return adminService.updateOrderStatus(request);
             case ADMIN_GET_ALL_ORDERS:       return adminService.getAllOrders(request);
+
+            // Admin – Categories
+            case ADMIN_ADD_CATEGORY:    return productService.addCategory(request);
+            case ADMIN_EDIT_CATEGORY:   return productService.editCategory(request);
+            case ADMIN_DELETE_CATEGORY: return productService.deleteCategory(request);
 
             // UDP
             case REGISTER_UDP: return handleRegisterUdp(request, clientAddress);
