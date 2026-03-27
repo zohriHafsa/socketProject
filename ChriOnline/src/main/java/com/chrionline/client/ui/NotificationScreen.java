@@ -29,11 +29,6 @@ public class NotificationScreen {
     private StackPane        loadingOverlay;
     private String           currentFilter = "all";
 
-    // Header badges
-    private Label cartCountLabel  = new Label("0");
-    private Label notifCountLabel = new Label("0");
-    private StackPane notifBadge;
-
     // Unread count
     private int unreadCount = 0;
 
@@ -44,7 +39,7 @@ public class NotificationScreen {
     public NotificationScreen() {
         root = new BorderPane();
         root.getStyleClass().add("page-root");
-        root.setTop(buildHeader());
+        root.setTop(new HeaderComponent("notifications", null, null, null).getView());
 
         VBox main = new VBox(20);
         main.setMaxWidth(MAX_W);
@@ -109,146 +104,7 @@ public class NotificationScreen {
         return root;
     }
 
-    // ═══════════════════════════════════════════════════════
-    //  HEADER — identique aux autres pages
-    // ═══════════════════════════════════════════════════════
-
-    private StackPane buildHeader() {
-        StackPane w = new StackPane();
-        w.getStyleClass().add("header-bar");
-        w.setMinWidth(0);
-
-        HBox inner = new HBox(16);
-        inner.setMaxWidth(1200);
-        inner.setPadding(new Insets(0, H_PAD, 0, H_PAD));
-        inner.setMinHeight(70);
-        inner.setAlignment(Pos.CENTER_LEFT);
-
-        // ── Logo ─────────────────────────────────────────
-        HBox logo = new HBox(8);
-        logo.setAlignment(Pos.CENTER_LEFT);
-        logo.setCursor(javafx.scene.Cursor.HAND);
-        logo.setOnMouseClicked(e -> NavigationManager.showLanding());
-        try {
-            ImageView img = new ImageView(new Image(
-                    java.util.Objects.requireNonNull(
-                            getClass().getResourceAsStream("/images/logo.png"))));
-            img.setFitHeight(34);
-            img.setPreserveRatio(true);
-            img.setSmooth(true);
-            logo.getChildren().add(img);
-        } catch (Exception ignored) {}
-
-        Label l1 = new Label("Chri");
-        l1.getStyleClass().add("header-logo-text");
-        Label l2 = new Label("Online");
-        l2.getStyleClass().add("header-logo-accent");
-        logo.getChildren().addAll(l1, l2);
-
-        // ── Nav ──────────────────────────────────────────
-        HBox nav = new HBox(4);
-        nav.setAlignment(Pos.CENTER);
-
-        Button nHome   = navBtn("Accueil",       false);
-        Button nProd   = navBtn("Produits",      false);
-        Button nOrders = navBtn("Commandes",     false);
-        Button nAbout  = navBtn("A propos",      false);
-
-        nHome.setOnAction(e   -> NavigationManager.showLanding());
-        nProd.setOnAction(e   -> NavigationManager.showProductList());
-        nOrders.setOnAction(e -> NavigationManager.showOrders());
-        nav.getChildren().addAll(nHome, nProd, nOrders, nAbout);
-
-        // ── Notification bell (active) ────────────────────
-        StackPane notifStack = new StackPane();
-        Button notifBtn = new Button("\uD83D\uDD14");
-        notifBtn.getStyleClass().addAll("header-icon-btn", "nav-link-active");
-        notifBtn.setOnAction(e -> loadNotifications());
-
-        notifBadge = new StackPane();
-        notifBadge.getStyleClass().add("notification-badge");
-        notifBadge.setMaxSize(18, 18);
-        notifBadge.setMinSize(18, 18);
-        notifCountLabel.getStyleClass().add("notification-badge-text");
-        notifCountLabel.setStyle("-fx-font-size: 9px;");
-        notifBadge.getChildren().add(notifCountLabel);
-        notifBadge.setVisible(false);
-        StackPane.setAlignment(notifBadge, Pos.TOP_RIGHT);
-        StackPane.setMargin(notifBadge, new Insets(-4, -4, 0, 0));
-        notifStack.getChildren().addAll(notifBtn, notifBadge);
-
-        // ── Cart ──────────────────────────────────────────
-        StackPane cartStack = new StackPane();
-        Button cartBtn = new Button("\uD83D\uDED2");
-        cartBtn.getStyleClass().add("header-icon-btn");
-        cartBtn.setOnAction(e -> NavigationManager.showCart());
-
-        StackPane cartBadge = new StackPane();
-        cartBadge.getStyleClass().add("notification-badge");
-        cartBadge.setMaxSize(18, 18);
-        cartBadge.setMinSize(18, 18);
-        cartCountLabel.getStyleClass().add("notification-badge-text");
-        cartCountLabel.setStyle("-fx-font-size: 9px;");
-        cartBadge.getChildren().add(cartCountLabel);
-        cartBadge.setVisible(false);
-        StackPane.setAlignment(cartBadge, Pos.TOP_RIGHT);
-        StackPane.setMargin(cartBadge, new Insets(-4, -4, 0, 0));
-        cartStack.getChildren().addAll(cartBtn, cartBadge);
-
-        // ── User avatar ───────────────────────────────────
-        Button userBtn = new Button();
-        userBtn.getStyleClass().add("header-user-btn");
-
-        String fn = NavigationManager.getFirstName();
-        String ln = NavigationManager.getLastName();
-        String initials = "";
-        if (fn != null && !fn.isEmpty()) initials += fn.charAt(0);
-        if (ln != null && !ln.isEmpty()) initials += ln.charAt(0);
-        if (initials.isEmpty()) initials = "U";
-
-        StackPane avatar = new StackPane();
-        avatar.getStyleClass().add("header-avatar");
-        avatar.setMinSize(32, 32);
-        avatar.setMaxSize(32, 32);
-
-        Label initLabel = new Label(initials.toUpperCase());
-        initLabel.getStyleClass().add("header-avatar-text");
-        avatar.getChildren().add(initLabel);
-
-        String displayName = (fn != null && !fn.isEmpty())
-                ? fn : NavigationManager.getUsername();
-        Label nameLabel = new Label(displayName);
-        nameLabel.getStyleClass().add("header-user-name");
-
-        HBox userContent = new HBox(8, avatar, nameLabel);
-        userContent.setAlignment(Pos.CENTER);
-        userBtn.setGraphic(userContent);
-        userBtn.setText(null);
-        userBtn.setOnAction(e -> NavigationManager.showProfile());
-
-        // ── Layout ───────────────────────────────────────
-        Region sp1 = new Region();
-        HBox.setHgrow(sp1, Priority.ALWAYS);
-        Region sp2 = new Region();
-        HBox.setHgrow(sp2, Priority.ALWAYS);
-
-        HBox actions = new HBox(10, notifStack, cartStack, userBtn);
-        actions.setAlignment(Pos.CENTER_RIGHT);
-
-        inner.getChildren().addAll(logo, sp1, nav, sp2, actions);
-        w.getChildren().add(inner);
-        return w;
-    }
-
-    private Button navBtn(String text, boolean active) {
-        Button b = new Button(text);
-        b.getStyleClass().add("nav-link");
-        if (active) b.getStyleClass().add("nav-link-active");
-        return b;
-    }
-
-    // ═══════════════════════════════════════════════════════
-    //  TABS
+    // TABS
     // ═══════════════════════════════════════════════════════
 
     private HBox buildTabs() {
@@ -302,7 +158,6 @@ public class NotificationScreen {
                         unreadCount = (int) notifs.stream()
                                 .filter(n -> !toBool(n.get("isRead")))
                                 .count();
-                        updateBadge();
 
                         renderNotifications(filterNotifs(notifs));
                     } else {
@@ -330,30 +185,6 @@ public class NotificationScreen {
                 .collect(Collectors.toList());
     }
 
-    // ═══════════════════════════════════════════════════════
-    //  UPDATE BADGE
-    // ═══════════════════════════════════════════════════════
-
-    private void updateBadge() {
-        if (unreadCount > 0) {
-            notifCountLabel.setText(String.valueOf(unreadCount));
-            notifBadge.setVisible(true);
-
-            // Pulse animation on badge
-            ScaleTransition pulse = new ScaleTransition(
-                    Duration.millis(300), notifBadge);
-            pulse.setFromX(0.6);
-            pulse.setFromY(0.6);
-            pulse.setToX(1.0);
-            pulse.setToY(1.0);
-            pulse.setInterpolator(Interpolator.EASE_OUT);
-            pulse.play();
-        } else {
-            notifBadge.setVisible(false);
-        }
-    }
-
-    // ═══════════════════════════════════════════════════════
     //  RENDER NOTIFICATIONS
     // ═══════════════════════════════════════════════════════
 
@@ -541,7 +372,6 @@ public class NotificationScreen {
 
             // Update local count
             unreadCount = Math.max(0, unreadCount - 1);
-            updateBadge();
 
             // Mark as read on server (fire and forget)
             int notifId = intV(notif.get("notificationId"));
@@ -568,19 +398,18 @@ public class NotificationScreen {
     // ═══════════════════════════════════════════════════════
 
     private void markAsReadOnServer(int notificationId) {
-        // Uses the GET_NOTIFICATIONS action pattern
-        // but we need a custom approach since there's no
-        // dedicated MARK_READ action in the current Action enum.
-        // For now, we'll track it locally.
-        // The server already has NotificationDAO.markAsRead()
-        // but no Action route for it.
-        System.out.println("[NOTIF] Marked as read locally: ID=" + notificationId);
+        ServerConnection.getInstance().sendAsync(new Request(Action.MARK_NOTIFICATION_READ,
+                NavigationManager.getToken(),
+                Map.of("notificationId", notificationId)));
     }
 
     private void markAllAsRead() {
         // Mark all as read locally
         unreadCount = 0;
-        updateBadge();
+
+        ServerConnection.getInstance().sendAsync(new Request(Action.MARK_ALL_NOTIFICATIONS_READ,
+                NavigationManager.getToken(),
+                Map.of("userId", NavigationManager.getUserId())));
 
         // Refresh display
         loadNotifications();
@@ -793,6 +622,8 @@ public class NotificationScreen {
     private boolean toBool(Object o) {
         if (o == null) return false;
         if (o instanceof Boolean) return (Boolean) o;
-        return Boolean.parseBoolean(o.toString());
+        if (o instanceof Number) return ((Number) o).intValue() == 1;
+        String s = o.toString().trim().toLowerCase();
+        return "true".equals(s) || "1".equals(s);
     }
 }
