@@ -45,7 +45,12 @@ public class ProductListScreen {
     public Node getView() {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #F5F6FA;");
-        root.setTop(buildHeader());
+        searchField = new TextField();
+        root.setTop(new HeaderComponent("products", query -> {
+            searchField.setText(query);
+            if (query.isBlank()) applyLocalFilters();
+            else searchOnServer(query);
+        }, null, null).getView());
         root.setLeft(buildSidebar());
         root.setCenter(buildCenter());
         Platform.runLater(this::loadAllProducts);

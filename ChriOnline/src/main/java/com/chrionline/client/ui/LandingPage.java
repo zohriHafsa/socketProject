@@ -53,16 +53,16 @@ public class LandingPage {
         root = new BorderPane();
         root.setStyle("-fx-background-color: #F5F6FA;");
 
-        cartCountLabel  = new Label("0");
-        notifCountLabel = new Label("0");
-        headerWrapper   = buildHeader();
-        root.setTop(headerWrapper);
-
         mainContent = new VBox(0);
         mainContent.setAlignment(Pos.TOP_CENTER);
         mainContent.setFillWidth(true);
 
         scrollPane = new ScrollPane(mainContent);
+
+        cartCountLabel  = new Label("0");
+        notifCountLabel = new Label("0");
+        headerWrapper = new HeaderComponent("home", this::searchProducts, () -> scrollPane.setVvalue(0), () -> smoothScroll(aboutSectionRef)).getView();
+        root.setTop(headerWrapper);
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);

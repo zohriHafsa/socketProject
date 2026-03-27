@@ -46,7 +46,7 @@ public class CartScreen {
     public CartScreen() {
         root = new BorderPane();
         root.getStyleClass().add("page-root");
-        root.setTop(buildHeader());
+        root.setTop(new HeaderComponent("cart", null, null, null).getView());
 
         contentArea = new StackPane();
         contentArea.setAlignment(Pos.TOP_CENTER);
