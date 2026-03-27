@@ -47,6 +47,7 @@ public class LandingPage {
     private StackPane notifBadgePane;
 
     private List<Map<String, Object>> allProducts = new ArrayList<>();
+    private List<Map<String, Object>> categoriesList = new ArrayList<>();
     private String currentCategory = "Tous";
 
     public LandingPage() {
@@ -84,6 +85,7 @@ public class LandingPage {
         root.setCenter(body);
 
         setupScrollShadow();
+        loadCategories();
         loadProducts();
         if (NavigationManager.isLoggedIn()) {
             updateBadge();
@@ -1285,6 +1287,22 @@ public class LandingPage {
                     });
                     return null;
                 });
+    }
+
+    private void loadCategories() {
+        ServerConnection.getInstance()
+                .sendAsync(new Request(Action.GET_CATEGORIES, null, null))
+                .thenAccept(res -> Platform.runLater(() -> {
+                    if (res.isSuccess() && res.getData() != null) {
+                        categoriesList = (List<Map<String, Object>>) res.getData();
+                        List<String> cats = new ArrayList<>();
+                        cats.add("Tous");
+                        for (Map<String, Object> c : categoriesList) {
+                            cats.add(str(c.get("name")));
+                        }
+                        updateCategories(cats);
+                    }
+                }));
     }
 
     private void displayProducts(List<Map<String, Object>> products) {

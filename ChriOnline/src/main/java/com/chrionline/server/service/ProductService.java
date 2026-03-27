@@ -15,7 +15,14 @@ public class ProductService {
 
     public Response getProducts(Request request) {
         try {
-            List<Map<String, Object>> products = productDAO.getAllProducts();
+            String token = request.getToken();
+            String role = (token != null) ? SessionManager.getRole(token) : null;
+            List<Map<String, Object>> products;
+            if ("ADMIN".equals(role)) {
+                products = productDAO.getAllProductsAdmin();
+            } else {
+                products = productDAO.getAllProducts();
+            }
             ServerLogger.info("GET_PRODUCTS : " + products.size() + " produit(s)");
             return Response.ok("Produits récupérés.", products);
         } catch (SQLException e) {
@@ -45,12 +52,29 @@ public class ProductService {
         if (keyword == null || keyword.isEmpty())
             return Response.error("Mot-clé de recherche requis.");
         try {
-            List<Map<String, Object>> results = productDAO.searchProducts(keyword);
+            String token = request.getToken();
+            String role = (token != null) ? SessionManager.getRole(token) : null;
+            List<Map<String, Object>> results;
+            if ("ADMIN".equals(role)) {
+                results = productDAO.searchProductsAdmin(keyword);
+            } else {
+                results = productDAO.searchProducts(keyword);
+            }
             ServerLogger.info("SEARCH_PRODUCTS '" + keyword + "' : "
                     + results.size() + " résultat(s)");
             return Response.ok("Résultats de recherche.", results);
         } catch (SQLException e) {
             ServerLogger.error("SEARCH_PRODUCTS error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
+        }
+    }
+    public Response getCategories(Request request) {
+        try {
+            List<Map<String, Object>> cats = new com.chrionline.server.dao.CategoryDAO().getAllCategories();
+            ServerLogger.info("GET_CATEGORIES : " + cats.size() + " categorie(s)");
+            return Response.ok("Categories récupérées.", cats);
+        } catch (SQLException e) {
+            ServerLogger.error("GET_CATEGORIES error : " + e.getMessage());
             return Response.error("Erreur serveur : " + e.getMessage());
         }
     }

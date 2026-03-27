@@ -48,6 +48,7 @@ public class RequestRouter {
             case GET_PRODUCTS:
             case GET_PRODUCT_DETAIL:
             case SEARCH_PRODUCTS:
+            case GET_CATEGORIES:
                 break;
             default:
                 if (!SessionManager.isValid(request.getToken())) {
@@ -70,6 +71,7 @@ public class RequestRouter {
             case GET_PRODUCTS:       return productService.getProducts(request);
             case GET_PRODUCT_DETAIL: return productService.getProductDetail(request);
             case SEARCH_PRODUCTS:    return productService.searchProducts(request);
+            case GET_CATEGORIES:     return productService.getCategories(request);
 
             // Cart
             case ADD_TO_CART:      return cartService.addToCart(request);
