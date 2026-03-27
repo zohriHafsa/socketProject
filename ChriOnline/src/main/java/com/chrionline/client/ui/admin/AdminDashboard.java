@@ -184,7 +184,10 @@ public class AdminDashboard {
         Button nOrders = adminNavButton("Commandes", "Commandes".equals(currentPage));
         nOrders.setOnAction(e -> NavigationManager.showManageOrders());
 
-        nav.getChildren().addAll(nDash, nProd, nUsers, nOrders);
+        Button nCats = adminNavButton("Categories", "Categories".equals(currentPage));
+        nCats.setOnAction(e -> NavigationManager.showManageCategories());
+
+        nav.getChildren().addAll(nDash, nProd, nUsers, nOrders, nCats);
 
         Region sp1 = new Region();
         HBox.setHgrow(sp1, Priority.ALWAYS);
@@ -192,7 +195,7 @@ public class AdminDashboard {
         HBox.setHgrow(sp2, Priority.ALWAYS);
 
         // Right side: shop link + user + logout
-        Button shopBtn = new Button("Voir boutique");
+        Button shopBtn = new Button("Boutique");
         shopBtn.getStyleClass().add("admin-shop-link");
         shopBtn.setOnAction(e -> NavigationManager.showLanding());
 
@@ -523,7 +526,11 @@ public class AdminDashboard {
                 actionCard("Gerer les commandes",
                         "Suivre et mettre a jour",
                         allOrders.size() + " commande(s)",
-                        e -> NavigationManager.showManageOrders())
+                        e -> NavigationManager.showManageOrders()),
+                actionCard("Gerer les categories",
+                        "Ajouter, modifier, supprimer",
+                        "Categories de produits",
+                        e -> NavigationManager.showManageCategories())
         );
         return new VBox(14, title, cards);
     }

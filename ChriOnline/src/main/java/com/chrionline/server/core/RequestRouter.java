@@ -101,6 +101,11 @@ public class RequestRouter {
             case ADMIN_UPDATE_ORDER_STATUS:  return adminService.updateOrderStatus(request);
             case ADMIN_GET_ALL_ORDERS:       return adminService.getAllOrders(request);
 
+            // Admin – Categories
+            case ADMIN_ADD_CATEGORY:    return productService.addCategory(request);
+            case ADMIN_EDIT_CATEGORY:   return productService.editCategory(request);
+            case ADMIN_DELETE_CATEGORY: return productService.deleteCategory(request);
+
             // UDP
             case REGISTER_UDP: return handleRegisterUdp(request, clientAddress);
 
