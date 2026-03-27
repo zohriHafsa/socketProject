@@ -32,6 +32,7 @@ public class LandingPage {
     private final VBox       mainContent;
     private final ScrollPane scrollPane;
     private FlowPane         productsGrid;
+    private HBox             categoryChips;
     private StackPane        loadingOverlay;
     private Label            cartCountLabel;
     private Label            notifCountLabel;
@@ -597,20 +598,28 @@ public class LandingPage {
         Label s = new Label("Trouvez exactement ce que vous cherchez");
         s.getStyleClass().add("section-subtitle");
 
-        HBox chips = new HBox(10);
-        chips.setAlignment(Pos.CENTER);
-        chips.setPadding(new Insets(8, 0, 0, 0));
+        categoryChips = new HBox(10);
+        categoryChips.setAlignment(Pos.CENTER);
+        categoryChips.setPadding(new Insets(8, 0, 0, 0));
 
-        String[] cats = {"Tous", "Smartphones", "Ordinateurs", "Vêtements",
-                "Livres", "Sport", "Informatique", "Électronique"};
+        Button tousChip = new Button("Tous");
+        tousChip.getStyleClass().addAll("category-chip", "category-chip-active");
+        categoryChips.getChildren().add(tousChip);
 
-        for (String cat : cats) {
+        c.getChildren().addAll(t, d, s, categoryChips);
+        return wrap(c, "categories-section-bg");
+    }
+
+    private void updateCategories(List<String> categories) {
+        if (categoryChips == null) return;
+        categoryChips.getChildren().clear();
+        for (String cat : categories) {
             Button chip = new Button(cat);
             chip.getStyleClass().add("category-chip");
-            if ("Tous".equals(cat)) chip.getStyleClass().add("category-chip-active");
+            if (cat.equals(currentCategory)) chip.getStyleClass().add("category-chip-active");
             chip.setOnAction(e -> {
                 currentCategory = cat;
-                chips.getChildren().forEach(ch ->
+                categoryChips.getChildren().forEach(ch ->
                         ((Button) ch).getStyleClass().remove("category-chip-active"));
                 chip.getStyleClass().add("category-chip-active");
                 ScaleTransition p1 = new ScaleTransition(Duration.millis(100), chip);
@@ -622,11 +631,8 @@ public class LandingPage {
                 new SequentialTransition(p1, p2).play();
                 filterProducts(cat);
             });
-            chips.getChildren().add(chip);
+            categoryChips.getChildren().add(chip);
         }
-
-        c.getChildren().addAll(t, d, s, chips);
-        return wrap(c, "categories-section-bg");
     }
 
     // ═══════════════════════════════════════════════════════
@@ -1252,6 +1258,16 @@ public class LandingPage {
                     showLoading(false);
                     if (r.isSuccess() && r.getData() != null) {
                         allProducts = (List<Map<String, Object>>) r.getData();
+                        List<String> dynamicCats = new ArrayList<>();
+                        dynamicCats.add("Tous");
+                        for (Map<String, Object> p : allProducts) {
+                            String catName = str(p.get("categoryName"));
+                            if (!catName.isEmpty() && !dynamicCats.contains(catName)) {
+                                dynamicCats.add(catName);
+                            }
+                        }
+                        updateCategories(dynamicCats);
+
                         if (allProducts.isEmpty())
                             showEmpty("Aucun produit disponible", false);
                         else displayProducts(allProducts);
