@@ -78,7 +78,7 @@ public class LoginScreen {
         Label userLabel = new Label("Nom d'utilisateur");
         userLabel.getStyleClass().add("auth-field-label");
         TextField usernameField = new TextField();
-        usernameField.setPromptText("ex : jean_dupont");
+        usernameField.setPromptText("ex : Hafsa_zohri");
         usernameField.getStyleClass().add("auth-field");
         VBox userGroup = new VBox(5, userLabel, usernameField);
 
@@ -86,9 +86,10 @@ public class LoginScreen {
         Label passLabel = new Label("Mot de passe");
         passLabel.getStyleClass().add("auth-field-label");
         PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Votre mot de passe");
+        passwordField.setPromptText("Mot de passe");
         passwordField.getStyleClass().add("auth-password-field");
-        VBox passGroup = new VBox(5, passLabel, passwordField);
+        StackPane passWrapper = wrapWithToggle(passwordField);
+        VBox passGroup = new VBox(5, passLabel, passWrapper);
 
         // Error box (hidden by default)
         HBox errorBox = new HBox(8);
@@ -309,6 +310,7 @@ public class LoginScreen {
 
                 if (response.isSuccess()) {
                     Map<String, Object> data = castToMap(response.getData());
+                    System.out.println("ROLE RECU : " + getStr(data, "role"));
 
                     NavigationManager.setSession(
                             getStr(data, "token"),
@@ -319,7 +321,14 @@ public class LoginScreen {
                             getStr(data, "lastName")
                     );
 
-                    NavigationManager.showLanding();
+                    // APRÈS — redirige selon le rôle
+                    String role = getStr(data, "role");
+
+                    if ("ADMIN".equals(role) || "SUPER_ADMIN".equals(role)) {
+                        NavigationManager.showAdminDashboard();  // ← admin va au dashboard
+                    } else {
+                        NavigationManager.showLanding();         // ← client va à l'accueil
+                    }
 
                 } else {
                     showError(errorBox, errorText, response.getMessage());
@@ -385,5 +394,52 @@ public class LoginScreen {
         if (v == null) return -1;
         if (v instanceof Double) return ((Double) v).intValue();
         return Integer.parseInt(v.toString());
+    }
+    private StackPane wrapWithToggle(PasswordField pf) {
+        TextField visibleField = new TextField();
+        visibleField.setPromptText(pf.getPromptText());
+        visibleField.getStyleClass().addAll(pf.getStyleClass());
+        visibleField.setVisible(false);
+        visibleField.setManaged(false);
+
+        pf.textProperty().addListener((obs, o, n) -> {
+            if (!visibleField.isFocused()) visibleField.setText(n);
+        });
+        visibleField.textProperty().addListener((obs, o, n) -> {
+            if (!pf.isFocused()) pf.setText(n);
+        });
+
+        Button eyeBtn = new Button("\uD83D\uDC41");
+        eyeBtn.setStyle(
+                "-fx-background-color: transparent;" +
+                        "-fx-border-color: transparent;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-padding: 0 10 0 0;"
+        );
+        StackPane.setAlignment(eyeBtn, Pos.CENTER_RIGHT);
+
+        eyeBtn.setOnAction(e -> {
+            boolean showing = visibleField.isVisible();
+            if (showing) {
+                pf.setText(visibleField.getText());
+                pf.setVisible(true);
+                pf.setManaged(true);
+                visibleField.setVisible(false);
+                visibleField.setManaged(false);
+                eyeBtn.setText("\uD83D\uDC41");
+            } else {
+                visibleField.setText(pf.getText());
+                visibleField.setVisible(true);
+                visibleField.setManaged(true);
+                pf.setVisible(false);
+                pf.setManaged(false);
+                eyeBtn.setText("\u00D8");
+            }
+        });
+
+        StackPane wrapper = new StackPane(pf, visibleField, eyeBtn);
+        wrapper.setAlignment(Pos.CENTER_LEFT);
+        return wrapper;
     }
 }

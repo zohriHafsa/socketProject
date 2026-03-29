@@ -15,7 +15,6 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
 
 public class NavigationManager {
 
@@ -47,29 +46,36 @@ public class NavigationManager {
     public static void showProductList()         { transitionTo(new ProductListScreen().getView(), true); }
     public static void showNotifications()       { transitionTo(new NotificationScreen().getView(), true); }
 
+    // ── Email verification ─────────────────────────────
+    public static void showEmailVerification(int uid, String email) {
+        transitionTo(new EmailVerificationScreen(uid, email).getView(), true);
+    }
+
     // ── Admin screens ──────────────────────────────────
-    public static void showAdminDashboard()     { transitionTo(new AdminDashboard().getView(), true); }
-    public static void showManageUsers()         { transitionTo(new ManageUsersScreen().getView(), true); }
-    public static void showManageProducts()      { transitionTo(new ManageProductsScreen().getView(), true); }
-    public static void showManageOrders()        { transitionTo(new ManageOrdersScreen().getView(), true); }
-    public static void showManageCategories()    { transitionTo(new ManageCategoriesScreen().getView(), true); }
+    public static void showAdminDashboard()  { transitionTo(new AdminDashboard().getView(), true); }
+    public static void showManageUsers()     { transitionTo(new ManageUsersScreen().getView(), true); }
+    public static void showManageProducts()  { transitionTo(new ManageProductsScreen().getView(), true); }
+    public static void showManageOrders()    { transitionTo(new ManageOrdersScreen().getView(), true); }
+    public static void showManageCategories(){ transitionTo(new ManageOrdersScreen().getView(), true); }
+    public static void showManageAdmins()    { transitionTo(new ManageAdminsScreen().getView(), true); }
 
     public static void navigateTo(String name) {
         Platform.runLater(() -> {
             switch (name) {
-                case "landing":        showLanding(); break;
-                case "login":          showLogin(); break;
-                case "register":       showRegister(); break;
-                case "cart":           showCart(); break;
-                case "orders":         showOrders(); break;
-                case "profile":        showProfile(); break;
-                case "products":       showProductList(); break;
-                case "notifications":  showNotifications(); break;
-                case "admin":          showAdminDashboard(); break;
-                case "manageUsers":       showManageUsers(); break;
-                case "manageProducts":    showManageProducts(); break;
-                case "manageOrders":      showManageOrders(); break;
-                case "manageCategories":  showManageCategories(); break;
+                case "landing":          showLanding();          break;
+                case "login":            showLogin();            break;
+                case "register":         showRegister();         break;
+                case "cart":             showCart();             break;
+                case "orders":           showOrders();           break;
+                case "profile":          showProfile();          break;
+                case "products":         showProductList();      break;
+                case "notifications":    showNotifications();    break;
+                case "admin":            showAdminDashboard();   break;
+                case "manageUsers":      showManageUsers();      break;
+                case "manageProducts":   showManageProducts();   break;
+                case "manageOrders":     showManageOrders();     break;
+                case "manageCategories": showManageCategories(); break;
+                case "manageAdmins":     showManageAdmins();     break;
                 default: System.err.println("[NAV] Unknown: " + name);
             }
         });
@@ -100,14 +106,11 @@ public class NavigationManager {
             fadeOut.setOnFinished(e -> {
                 rootContainer.getChildren().remove(old);
                 refreshSceneStyles();
-
                 FadeTransition fadeIn = new FadeTransition(Duration.millis(350), newView);
                 fadeIn.setToValue(1);
-
                 ScaleTransition scaleIn = new ScaleTransition(Duration.millis(350), newView);
                 scaleIn.setToX(1);
                 scaleIn.setToY(1);
-
                 fadeIn.play();
                 scaleIn.play();
             });
@@ -116,49 +119,30 @@ public class NavigationManager {
         });
     }
 
-    // ── Refresh CSS robuste ────────────────────────────
     private static void refreshSceneStyles() {
         if (scene == null) return;
-
         String cssUrl = resolveStylesheetUrl();
-        if (cssUrl == null) {
-            System.err.println("[NAV] style.css introuvable.");
-            return;
-        }
-
+        if (cssUrl == null) { System.err.println("[NAV] style.css introuvable."); return; }
         scene.getStylesheets().setAll(cssUrl);
-
-        if (scene.getRoot() != null) {
-            scene.getRoot().applyCss();
-            scene.getRoot().layout();
-        }
+        if (scene.getRoot() != null) { scene.getRoot().applyCss(); scene.getRoot().layout(); }
     }
 
     private static String resolveStylesheetUrl() {
         try {
-            // 1) Mode développement IntelliJ → copie du CSS source vers temp
             File sourceCss = new File("src/main/resources/css/style.css");
-            if (sourceCss.exists()) {
-                return copyToTempAndGetUrl(sourceCss.toPath());
-            }
-
-            // 2) Fallback classpath → copie vers temp aussi
+            if (sourceCss.exists()) return copyToTempAndGetUrl(sourceCss.toPath());
             URL resource = NavigationManager.class.getResource("/css/style.css");
             if (resource != null) {
                 Path tempFile = Files.createTempFile("chrionline-style-", ".css");
                 tempFile.toFile().deleteOnExit();
-
                 try (var in = resource.openStream()) {
                     Files.copy(in, tempFile, StandardCopyOption.REPLACE_EXISTING);
                 }
-
                 return tempFile.toUri().toString();
             }
-
         } catch (Exception e) {
             System.err.println("[NAV] Erreur chargement CSS : " + e.getMessage());
         }
-
         return null;
     }
 
@@ -169,27 +153,20 @@ public class NavigationManager {
         return tempFile.toUri().toString();
     }
 
-    // ── Session ────────────────────────────────────────
-    public static void setSession(String tk, int uid, String un, String rl, String fn, String ln) {
-        token = tk;
-        userId = uid;
-        username = un;
-        role = rl;
-        firstName = fn;
-        lastName = ln;
+    public static void setSession(String tk, int uid, String un,
+                                  String rl, String fn, String ln) {
+        token = tk; userId = uid; username = un;
+        role = rl; firstName = fn; lastName = ln;
     }
 
     public static void clearSession() {
-        token = null;
-        userId = -1;
-        username = null;
-        role = null;
-        firstName = null;
-        lastName = null;
+        token = null; userId = -1; username = null;
+        role = null; firstName = null; lastName = null;
     }
 
     public static boolean isLoggedIn()   { return token != null; }
-    public static boolean isAdmin()      { return "ADMIN".equals(role); }
+    public static boolean isAdmin()      { return "ADMIN".equals(role) || "SUPER_ADMIN".equals(role); }
+    public static boolean isSuperAdmin() { return "SUPER_ADMIN".equals(role); }
     public static String  getToken()     { return token; }
     public static int     getUserId()    { return userId; }
     public static String  getUsername()  { return username; }

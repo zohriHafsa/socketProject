@@ -103,8 +103,45 @@ public class UserDAO {
         u.put("phone",        rs.getString("phone"));
         u.put("role",         rs.getString("role"));
         u.put("isActive",     rs.getBoolean("is_active"));
+        u.put("isVerified",   rs.getBoolean("is_verified"));
         u.put("createdAt",    rs.getString("created_at"));
         u.put("updatedAt",    rs.getString("updated_at"));
         return u;
+    }
+    // Sauvegarder le code de vérification
+    public void saveVerifyCode(int userId, String code) throws SQLException {
+        String sql = "UPDATE users SET verify_code = ?, " +
+                "verify_expires = DATE_ADD(NOW(), INTERVAL 10 MINUTE) " +
+                "WHERE user_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setString(1, code);
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+        }
+    }
+
+    // Vérifier le code
+    public boolean verifyCode(int userId, String code) throws SQLException {
+        String sql = "SELECT verify_code FROM users " +
+                "WHERE user_id = ? " +
+                "AND verify_code = ? " +
+                "AND verify_expires > NOW() " +
+                "AND is_verified = 0";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setString(2, code);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                // Marquer comme vérifié
+                String update = "UPDATE users SET is_verified = 1, " +
+                        "verify_code = NULL WHERE user_id = ?";
+                try (PreparedStatement ps2 = conn().prepareStatement(update)) {
+                    ps2.setInt(1, userId);
+                    ps2.executeUpdate();
+                }
+                return true;
+            }
+            return false;
+        }
     }
 }
