@@ -443,7 +443,7 @@ public class AdminDashboard {
         header.setPadding(new Insets(10, 16, 10, 16));
         header.getChildren().addAll(
                 tCol("No Commande", 180), tCol("Client", 140),
-                tCol("Montant", 110), tCol("Statut", 130), tCol("Date", 180));
+                tCol("Montant", 130), tCol("Statut", 140), tCol("Date", 180));
 
         VBox rows = new VBox(0);
         List<Map<String, Object>> recent = allOrders.stream()
@@ -460,18 +460,23 @@ public class AdminDashboard {
             Label idL = tCell(str(o.get("orderId")), 180);
             idL.getStyleClass().add("admin-cell-id");
             Label clientL = tCell(str(o.get("username")), 140);
-            Label amtL = tCell(String.format("%.2f MAD", dbl(o.get("totalAmount"))), 110);
+            Label amtL = tCell(String.format("%.2f MAD", dbl(o.get("totalAmount"))), 130);
             amtL.getStyleClass().add("admin-cell-amount");
             Label statusL = new Label(getStatusLabel(status));
             statusL.getStyleClass().addAll("admin-status-badge",
                     "admin-status-" + status.toLowerCase());
-            statusL.setMinWidth(120);
+            
+            HBox statusBox = new HBox(statusL);
+            statusBox.setAlignment(Pos.CENTER_LEFT);
+            statusBox.setMinWidth(140);
+            statusBox.setMaxWidth(140);
+            
             String date = str(o.get("createdAt"));
             if (date.length() > 16) date = date.substring(0, 16);
             Label dateL = tCell(date, 180);
             dateL.getStyleClass().add("admin-cell-date");
 
-            tableRow.getChildren().addAll(idL, clientL, amtL, statusL, dateL);
+            tableRow.getChildren().addAll(idL, clientL, amtL, statusBox, dateL);
             rows.getChildren().add(tableRow);
         }
         if (recent.isEmpty()) rows.getChildren().add(emptyLabel("Aucune commande"));

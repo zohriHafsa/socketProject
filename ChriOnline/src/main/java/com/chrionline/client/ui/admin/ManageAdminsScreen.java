@@ -323,10 +323,10 @@ public class ManageAdminsScreen {
                 tCol("Username",   140),
                 tCol("Email",      200),
                 tCol("Nom complet",160),
-                tCol("Type",       100),
-                tCol("Statut",     100),
-                tCol("Cree le",    120),
-                tCol("Action",     140)
+                tCol("Type",       120),
+                tCol("Statut",     120),
+                tCol("Cree le",    140),
+                tCol("Action",     160)
         );
         adminsContainer.getChildren().add(header);
 
@@ -407,22 +407,30 @@ public class ManageAdminsScreen {
         Label typeL = new Label(isSuper ? "SUPER" : "ADMIN");
         typeL.getStyleClass().add("admin-status-badge");
         typeL.getStyleClass().add(isSuper ? "admin-status-annulee" : "admin-status-expediee");
-        typeL.setMinWidth(90);
+        
+        HBox typeBox = new HBox(typeL);
+        typeBox.setAlignment(Pos.CENTER_LEFT);
+        typeBox.setMinWidth(120);
+        typeBox.setMaxWidth(120);
 
         // Badge statut
         Label statusL = new Label(isActive ? "Actif" : "Desactive");
         statusL.getStyleClass().add("admin-status-badge");
         statusL.getStyleClass().add(isActive ? "admin-status-livree" : "admin-status-annulee");
-        statusL.setMinWidth(90);
+        
+        HBox statusBox = new HBox(statusL);
+        statusBox.setAlignment(Pos.CENTER_LEFT);
+        statusBox.setMinWidth(120);
+        statusBox.setMaxWidth(120);
 
         String dateStr = createdAt.length() > 10 ? createdAt.substring(0, 10) : createdAt;
-        Label dateL = tCell(dateStr, 120);
+        Label dateL = tCell(dateStr, 140);
         dateL.getStyleClass().add("admin-cell-date");
 
         // Actions
         HBox actionBox = new HBox(8);
         actionBox.setAlignment(Pos.CENTER_LEFT);
-        actionBox.setMinWidth(140);
+        actionBox.setMinWidth(160);
 
         boolean isSelf = adminId == NavigationManager.getUserId();
 
@@ -445,7 +453,7 @@ public class ManageAdminsScreen {
         }
 
         row.getChildren().addAll(idL, userCell, emailL, nameL,
-                typeL, statusL, dateL, actionBox);
+                typeBox, statusBox, dateL, actionBox);
         return row;
     }
 
