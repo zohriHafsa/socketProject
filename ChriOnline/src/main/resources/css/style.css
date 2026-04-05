@@ -1142,7 +1142,7 @@
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-padding: 14 0;
+    -fx-padding: 14 6;
     -fx-background-radius: 10;
     -fx-cursor: hand;
     -fx-max-width: 1.7976931348623157E308;
@@ -1159,7 +1159,7 @@
     -fx-text-fill: #6C3483;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-padding: 10 0;
+    -fx-padding: 10 4;
     -fx-cursor: hand;
     -fx-max-width: 1.7976931348623157E308;
     -fx-border-color: #6C3483;

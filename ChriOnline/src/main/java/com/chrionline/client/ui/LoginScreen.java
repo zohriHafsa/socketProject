@@ -59,9 +59,9 @@ public class LoginScreen {
 
         // Title
         HBox titleRow = new HBox(10);
-        titleRow.setAlignment(Pos.CENTER_LEFT);
+        titleRow.setAlignment(Pos.CENTER);
         Label lockIcon = new Label("\uD83D\uDD12");
-        lockIcon.setStyle("-fx-font-size: 22px;");
+        lockIcon.setStyle("-fx-font-size: 22px; -fx-text-fill: #2C3E50;");
         Label title = new Label("Connexion");
         title.getStyleClass().add("auth-title");
         title.setStyle("-fx-font-size: 22px;");
@@ -78,7 +78,7 @@ public class LoginScreen {
         Label userLabel = new Label("Nom d'utilisateur");
         userLabel.getStyleClass().add("auth-field-label");
         TextField usernameField = new TextField();
-        usernameField.setPromptText("ex : Hafsa_zohri");
+        usernameField.setPromptText("ex : mon_pseudo");
         usernameField.getStyleClass().add("auth-field");
         VBox userGroup = new VBox(5, userLabel, usernameField);
 
@@ -97,8 +97,8 @@ public class LoginScreen {
         errorBox.setVisible(false);
         errorBox.setManaged(false);
         errorBox.setAlignment(Pos.CENTER_LEFT);
-        Label errorIcon = new Label("\u26A0\uFE0F");
-        errorIcon.setStyle("-fx-font-size: 14px;");
+        Label errorIcon = new Label("\u26A0");
+        errorIcon.setStyle("-fx-font-size: 14px; -fx-text-fill: #E74C3C;");
         Label errorText = new Label();
         errorText.getStyleClass().add("auth-error-text");
         errorText.setWrapText(true);
@@ -114,9 +114,6 @@ public class LoginScreen {
         passwordField.setOnAction(e ->
                 handleLogin(usernameField, passwordField, loginBtn,
                         errorBox, errorText));
-
-        // "ou" divider
-        HBox orDivider = buildOrDivider();
 
         // Register link
         HBox registerRow = new HBox(4);
@@ -134,7 +131,6 @@ public class LoginScreen {
                 userGroup, passGroup,
                 errorBox,
                 loginBtn,
-                orDivider,
                 registerRow
         );
 
@@ -210,30 +206,6 @@ public class LoginScreen {
 
         branding.getChildren().addAll(nameRow, tagline);
         return branding;
-    }
-
-    // ═══════════════════════════════════════════════════════
-    //  "OU" DIVIDER
-    // ═══════════════════════════════════════════════════════
-
-    private HBox buildOrDivider() {
-        HBox box = new HBox(12);
-        box.setAlignment(Pos.CENTER);
-        box.setPadding(new Insets(2, 0, 2, 0));
-
-        Region line1 = new Region();
-        line1.setStyle("-fx-background-color: #E8E8E8; -fx-pref-height: 1;");
-        HBox.setHgrow(line1, Priority.ALWAYS);
-
-        Label text = new Label("ou");
-        text.setStyle("-fx-font-size: 12px; -fx-text-fill: #BDC3C7;");
-
-        Region line2 = new Region();
-        line2.setStyle("-fx-background-color: #E8E8E8; -fx-pref-height: 1;");
-        HBox.setHgrow(line2, Priority.ALWAYS);
-
-        box.getChildren().addAll(line1, text, line2);
-        return box;
     }
 
     // ═══════════════════════════════════════════════════════
