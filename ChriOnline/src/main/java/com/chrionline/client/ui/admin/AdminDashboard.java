@@ -159,8 +159,7 @@ public class AdminDashboard {
         Label adminBadge = new Label(
                 NavigationManager.isSuperAdmin() ? "SUPER ADMIN" : "ADMIN");
         adminBadge.setStyle(
-                "-fx-background-color: " +
-                        (NavigationManager.isSuperAdmin() ? "#E74C3C" : "#6C3483") + ";" +
+                "-fx-background-color: #6C3483;" +
                         "-fx-text-fill: white;" +
                         "-fx-font-size: 10px;" +
                         "-fx-font-weight: 700;" +
@@ -189,14 +188,6 @@ public class AdminDashboard {
         // ── Bouton Admins — visible SEULEMENT pour SUPER_ADMIN ──
         if (NavigationManager.isSuperAdmin()) {
             Button nAdmins = adminNavButton("Admins", "Admins".equals(currentPage));
-            nAdmins.setStyle(
-                    "-fx-text-fill: #E74C3C;" +
-                            "-fx-font-weight: bold;" +
-                            "-fx-background-color: transparent;" +
-                            "-fx-border-color: transparent;" +
-                            "-fx-cursor: hand;" +
-                            "-fx-padding: 6 12;"
-            );
             nAdmins.setOnAction(e -> NavigationManager.showManageAdmins());
             nav.getChildren().add(nAdmins);
         }

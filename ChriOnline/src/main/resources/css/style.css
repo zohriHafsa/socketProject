@@ -1142,7 +1142,7 @@
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-padding: 14 6;
+    -fx-padding: 14 10;
     -fx-background-radius: 10;
     -fx-cursor: hand;
     -fx-max-width: 1.7976931348623157E308;
@@ -1159,7 +1159,7 @@
     -fx-text-fill: #6C3483;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-padding: 10 4;
+    -fx-padding: 10 8;
     -fx-cursor: hand;
     -fx-max-width: 1.7976931348623157E308;
     -fx-border-color: #6C3483;
@@ -2090,7 +2090,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 .admin-add-btn {
-    -fx-background-color: linear-gradient(to right, #27AE60, #2ECC71);
+    -fx-background-color: linear-gradient(to right, #6C3483, #8E44AD);
     -fx-text-fill: white;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
@@ -2099,7 +2099,7 @@
     -fx-cursor: hand;
 }
 .admin-add-btn:hover {
-    -fx-background-color: linear-gradient(to right, #2ECC71, #27AE60);
+    -fx-background-color: linear-gradient(to right, #7D3C98, #9B59B6);
 }
 
 /* ═══════════════════════════════════════════════════════════
