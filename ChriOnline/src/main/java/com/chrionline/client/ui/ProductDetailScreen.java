@@ -573,6 +573,7 @@ public class ProductDetailScreen {
         HBox.setHgrow(card, Priority.ALWAYS);
 
         Label ico = new Label(icon);
+        ico.getStyleClass().add("detail-info-icon");
         ico.setStyle("-fx-font-size: 20px;");
         Label ttl = new Label(title);
         ttl.getStyleClass().add("detail-info-title");

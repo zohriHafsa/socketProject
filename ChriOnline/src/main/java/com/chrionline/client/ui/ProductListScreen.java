@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -399,28 +400,57 @@ public class ProductListScreen {
         String  imageUrl = getStr(product, "imageUrl");
         boolean inStock  = stock > 0;
 
-        VBox card = new VBox(6);
+        // ── Fixed size card ──────────────────────────────
+        VBox card = new VBox(0);
         card.getStyleClass().add("product-card");
         card.setPrefWidth(240);
+        card.setMinWidth(240);
         card.setMaxWidth(240);
+        card.setPrefHeight(340);
+        card.setMinHeight(340);
+        card.setMaxHeight(340);
         card.setCursor(javafx.scene.Cursor.HAND);
         card.setOnMouseClicked(e -> NavigationManager.showProductDetail(id));
 
-        // ── Image ou lettre placeholder ──────────────────
+        // ── Image — fills 240x160, cropped like object-fit:cover ──
         StackPane imgBox = new StackPane();
         imgBox.getStyleClass().add("product-card-image-container");
         imgBox.setPrefHeight(160);
         imgBox.setMinHeight(160);
+        imgBox.setMaxHeight(160);
+        imgBox.setPrefWidth(240);
+        imgBox.setMinWidth(240);
+        imgBox.setMaxWidth(240);
+        imgBox.setStyle("-fx-background-color: transparent;");
+
+        // Clip so nothing overflows the image box
+        Rectangle clip = new Rectangle(240, 160);
+        clip.setArcWidth(12);
+        clip.setArcHeight(12);
+        imgBox.setClip(clip);
 
         Image productImage = loadProductImage(imageUrl);
 
         if (productImage != null && !productImage.isError()) {
-            ImageView iv = new ImageView(productImage);
-            iv.setFitWidth(220);
-            iv.setFitHeight(140);
-            iv.setPreserveRatio(true);
-            iv.setSmooth(true);
-            imgBox.getChildren().add(iv);
+            Region imgRegion = new Region();
+            imgRegion.setPrefSize(240, 160);
+            imgRegion.setMaxSize(240, 160);
+            
+            BackgroundImage bgImg = new BackgroundImage(
+                productImage,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true)
+            );
+            imgRegion.setBackground(new Background(bgImg));
+            
+            Rectangle imgClip = new Rectangle(240, 160);
+            imgClip.setArcWidth(12);
+            imgClip.setArcHeight(12);
+            imgRegion.setClip(imgClip);
+            
+            imgBox.getChildren().add(imgRegion);
         } else {
             Label letter = new Label(
                     name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
@@ -428,8 +458,13 @@ public class ProductListScreen {
             imgBox.getChildren().add(letter);
         }
 
+        // ── Body — fixed height to keep card static ──────
         VBox body = new VBox(6);
         body.getStyleClass().add("product-card-body");
+        body.setPrefHeight(180);
+        body.setMinHeight(180);
+        body.setMaxHeight(180);
+        VBox.setVgrow(body, Priority.ALWAYS);
 
         Label catL = new Label(cat.toUpperCase());
         catL.getStyleClass().add("product-card-category");
@@ -438,6 +473,7 @@ public class ProductListScreen {
         nameL.getStyleClass().add("product-card-name");
         nameL.setWrapText(true);
         nameL.setMaxWidth(220);
+        nameL.setMaxHeight(40);
 
         Label priceL = new Label(String.format("%.2f MAD", price));
         priceL.getStyleClass().add("product-card-price");
@@ -454,13 +490,17 @@ public class ProductListScreen {
             stockL.getStyleClass().add("product-card-stock-out");
         }
 
+        // Spacer to push button to the bottom
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
         Button btn = new Button("Voir le produit");
         btn.getStyleClass().add("product-card-btn");
         btn.setMaxWidth(Double.MAX_VALUE);
         btn.setDisable(!inStock);
         btn.setOnAction(e -> NavigationManager.showProductDetail(id));
 
-        body.getChildren().addAll(catL, nameL, priceL, stockL, btn);
+        body.getChildren().addAll(catL, nameL, priceL, stockL, spacer, btn);
         card.getChildren().addAll(imgBox, body);
         return card;
     }
