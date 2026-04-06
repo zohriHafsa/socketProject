@@ -89,7 +89,7 @@ public class AuthService {
 
     // ── LOGIN ──────────────────────────────────────────────
     @SuppressWarnings("unchecked")
-    public Response login(Request request) {
+    public Response login(Request request, java.net.InetAddress clientAddress) {
         String username = request.getString("username");
         String password = request.getString("password");
 
@@ -101,6 +101,12 @@ public class AuthService {
             Map<String, Object> admin = adminDAO.getAdminByUsername(username);
 
             if (admin != null) {
+                String ip = clientAddress != null ? clientAddress.getHostAddress() : "127.0.0.1";
+                if (!isInternalIp(ip)) {
+                    ServerLogger.warn("SECURITY ALERT: Tentative de connexion admin hors réseau interne (IP: " + ip + ")");
+                    return Response.error("Acces refuse. Les administrateurs peuvent se connecter uniquement via le reseau interne.");
+                }
+
                 if (!verifyPassword(password, (String) admin.get("passwordHash")))
                     return Response.error("Mot de passe incorrect.");
 
@@ -277,5 +283,22 @@ public class AuthService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("SHA-256 not available", e);
         }
+    }
+
+    private boolean isInternalIp(String ip) {
+        if (ip == null) return false;
+        if (ip.equals("127.0.0.1") || ip.equals("0:0:0:0:0:0:0:1") || ip.equals("::1")) return true;
+        if (ip.startsWith("10.")) return true;
+        if (ip.startsWith("192.168.")) return true;
+        if (ip.startsWith("172.")) {
+            try {
+                String[] parts = ip.split("\\.");
+                int second = Integer.parseInt(parts[1]);
+                if (second >= 16 && second <= 31) return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return false;
     }
 }

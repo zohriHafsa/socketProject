@@ -65,11 +65,11 @@ public class RequestRouter {
         switch (request.getAction()) {
 
             // Auth
-            case LOGIN:        return authService.login(request);
+            case LOGIN:        return authService.login(request, clientAddress);
             case REGISTER:     return authService.register(request);
             case LOGOUT:       return authService.logout(request);
             case VERIFY_EMAIL: return authService.verifyEmail(request);
-            case VERIFY_2FA:   return authService.verify2FA(request); // ← nouveau
+            case VERIFY_2FA:   return authService.verify2FA(request);
 
             // Products (public)
             case GET_PRODUCTS:       return productService.getProducts(request);
