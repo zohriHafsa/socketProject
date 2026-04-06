@@ -186,11 +186,9 @@ public class RegisterScreen {
         HBox passHint = new HBox(8);
         passHint.setAlignment(Pos.CENTER_LEFT);
         passHint.setPadding(new Insets(0, 0, 0, 2));
-        Label hintIcon = new Label("\u2139");
-        hintIcon.setStyle("-fx-font-size: 11px; -fx-text-fill: #BDC3C7;");
-        Label hintText = new Label("Min. 8 caracteres, doit contenir une majuscule");
+        Label hintText = new Label("• Min 8 caractères, 1 majuscule, 1 chiffre, 1 spécial\n• Ne doit inclure ni votre prénom, ni votre nom");
         hintText.setStyle("-fx-font-size: 11px; -fx-text-fill: #BDC3C7;");
-        passHint.getChildren().addAll(hintIcon, hintText);
+        passHint.getChildren().addAll(hintText);
 
         card.getChildren().addAll(
                 titleRow, subtitle, div,

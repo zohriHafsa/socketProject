@@ -197,6 +197,21 @@ public class AdminService {
         if (password.length() < 8)
             return Response.error("Mot de passe trop court (min 8 caractères).");
 
+        if (!password.matches(".*[A-Z].*"))
+            return Response.error("Le mot de passe doit contenir au moins une lettre majuscule.");
+
+        if (!password.matches(".*\\d.*"))
+            return Response.error("Le mot de passe doit contenir au moins un chiffre.");
+
+        if (!password.matches(".*[^a-zA-Z0-9\\s].*"))
+            return Response.error("Le mot de passe doit contenir au moins un caractère spécial.");
+
+        if (firstName != null && !firstName.isBlank() && password.toLowerCase().contains(firstName.toLowerCase()))
+            return Response.error("Le mot de passe ne doit pas inclure votre prénom.");
+
+        if (lastName != null && !lastName.isBlank() && password.toLowerCase().contains(lastName.toLowerCase()))
+            return Response.error("Le mot de passe ne doit pas inclure votre nom de famille.");
+
         try {
             if (adminDAO.usernameExists(username))
                 return Response.error("Ce nom d'utilisateur est déjà pris.");
