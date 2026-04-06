@@ -10,11 +10,13 @@ import com.chrionline.server.dao.UserDAO;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
 
 public class AdminService {
 
@@ -202,7 +204,7 @@ public class AdminService {
             if (adminDAO.emailExists(email))
                 return Response.error("Cet email est déjà utilisé.");
 
-            String hash    = hashSHA256(password);
+            String hash    = hashPassword(password);
             int    adminId = adminDAO.createAdmin(username, email, hash,
                     firstName, lastName);
             if (adminId < 0)
@@ -242,15 +244,13 @@ public class AdminService {
 
     // ═══════════ HASH ══════════════════════════
 
-    private String hashSHA256(String input) {
+    private String hashPassword(String rawPassword) {
+        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+        char[] passwordArray = rawPassword.toCharArray();
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
-            StringBuilder hex = new StringBuilder();
-            for (byte b : hash) hex.append(String.format("%02x", b));
-            return hex.toString();
-        } catch (Exception e) {
-            throw new RuntimeException("SHA-256 not available", e);
+            return argon2.hash(3, 65536, 1, passwordArray);
+        } finally {
+            argon2.wipeArray(passwordArray);
         }
     }
 }
