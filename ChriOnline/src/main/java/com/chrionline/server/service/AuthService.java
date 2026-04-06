@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
+
 public class AuthService {
 
     private final UserDAO  userDAO  = new UserDAO();
@@ -32,14 +35,22 @@ public class AuthService {
             return Response.error("Champs obligatoires manquants (username, email, password).");
 
         if (password.length() < 8)
-            return Response.error("Le mot de passe doit contenir au moins 8 caracteres.");
+            return Response.error("Le mot de passe doit contenir au moins 8 caractères.");
 
-        boolean hasUpperCase = false;
-        for (char c : password.toCharArray()) {
-            if (Character.isUpperCase(c)) { hasUpperCase = true; break; }
-        }
-        if (!hasUpperCase)
-            return Response.error("Le mot de passe doit contenir au moins une majuscule.");
+        if (!password.matches(".*[A-Z].*"))
+            return Response.error("Le mot de passe doit contenir au moins une lettre majuscule.");
+
+        if (!password.matches(".*\\d.*"))
+            return Response.error("Le mot de passe doit contenir au moins un chiffre.");
+
+        if (!password.matches(".*[^a-zA-Z0-9\\s].*"))
+            return Response.error("Le mot de passe doit contenir au moins un caractère spécial.");
+
+        if (firstName != null && !firstName.isBlank() && password.toLowerCase().contains(firstName.toLowerCase()))
+            return Response.error("Le mot de passe ne doit pas inclure votre prénom.");
+
+        if (lastName != null && !lastName.isBlank() && password.toLowerCase().contains(lastName.toLowerCase()))
+            return Response.error("Le mot de passe ne doit pas inclure votre nom de famille.");
 
         try {
             if (userDAO.getUserByUsername(username) != null)
@@ -48,7 +59,7 @@ public class AuthService {
             if (userDAO.getUserByEmail(email) != null)
                 return Response.error("Cet email est deja utilise.");
 
-            String hash   = hashSHA256(password);
+            String hash   = hashPassword(password);
             int    userId = userDAO.createUser(username, email, hash,
                     firstName, lastName, address, phone);
             if (userId < 0)
@@ -85,14 +96,12 @@ public class AuthService {
         if (username == null || password == null)
             return Response.error("Username et password requis.");
 
-        String hash = hashSHA256(password);
-
         try {
             // 1. Cherche dans ADMINS d'abord
             Map<String, Object> admin = adminDAO.getAdminByUsername(username);
 
             if (admin != null) {
-                if (!hash.equals(admin.get("passwordHash")))
+                if (!verifyPassword(password, (String) admin.get("passwordHash")))
                     return Response.error("Mot de passe incorrect.");
 
                 if (!(boolean) admin.get("isActive"))
@@ -125,7 +134,7 @@ public class AuthService {
             if (!(boolean) user.get("isActive"))
                 return Response.error("Ce compte est desactive.");
 
-            if (!hash.equals(user.get("passwordHash")))
+            if (!verifyPassword(password, (String) user.get("passwordHash")))
                 return Response.error("Mot de passe incorrect.");
 
             // ── Vérification email obligatoire ──────────────
@@ -196,7 +205,26 @@ public class AuthService {
         return Response.error("Session introuvable ou deja expiree.");
     }
 
-    // ── Hash SHA-256 ───────────────────────────────────────
+    // ── Hashing (Argon2id + legacy SHA-256 fallback) ───────
+    private String hashPassword(String rawPassword) {
+        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+        char[] passwordArray = rawPassword.toCharArray();
+        try {
+            return argon2.hash(3, 65536, 1, passwordArray);
+        } finally {
+            argon2.wipeArray(passwordArray);
+        }
+    }
+
+    private boolean verifyPassword(String rawPassword, String storedHash) {
+        if (storedHash != null && storedHash.startsWith("$argon2id$")) {
+            Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+            return argon2.verify(storedHash, rawPassword.toCharArray());
+        } else {
+            return hashSHA256(rawPassword).equals(storedHash);
+        }
+    }
+
     private String hashSHA256(String input) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

@@ -174,12 +174,38 @@ public class ManageAdminsScreen {
         HBox.setHgrow(cpGroup, Priority.ALWAYS);
         HBox row3 = new HBox(14, pwGroup, cpGroup);
 
-        // Feedback
-        Label feedbackLabel = new Label();
-        feedbackLabel.setWrapText(true);
-        feedbackLabel.setStyle("-fx-font-size: 12px;");
-        feedbackLabel.setVisible(false);
-        feedbackLabel.setManaged(false);
+        // Hint Mot de passe
+        HBox passHint = new HBox(8);
+        passHint.setAlignment(Pos.CENTER_LEFT);
+        Label hintText = new Label("• Min 8 caractères, 1 majuscule, 1 chiffre, 1 spécial\n• Ne doit inclure ni le prénom, ni le nom");
+        hintText.setStyle("-fx-font-size: 11px; -fx-text-fill: #95A5A6;");
+        passHint.getChildren().addAll(hintText);
+
+        HBox errorBox = new HBox(8);
+        errorBox.getStyleClass().add("auth-error");
+        errorBox.setVisible(false);
+        errorBox.setManaged(false);
+        errorBox.setAlignment(Pos.CENTER_LEFT);
+        Label errorIcon = new Label("\u26A0");
+        errorIcon.setStyle("-fx-font-size: 14px; -fx-text-fill: #E74C3C;");
+        Label errorText = new Label();
+        errorText.getStyleClass().add("auth-error-text");
+        errorText.setWrapText(true);
+        HBox.setHgrow(errorText, Priority.ALWAYS);
+        errorBox.getChildren().addAll(errorIcon, errorText);
+
+        HBox successBox = new HBox(8);
+        successBox.getStyleClass().add("auth-success");
+        successBox.setVisible(false);
+        successBox.setManaged(false);
+        successBox.setAlignment(Pos.CENTER_LEFT);
+        Label successIcon = new Label("\u2705");
+        successIcon.setStyle("-fx-font-size: 14px;");
+        Label successText = new Label();
+        successText.getStyleClass().add("auth-success-text");
+        successText.setWrapText(true);
+        HBox.setHgrow(successText, Priority.ALWAYS);
+        successBox.getChildren().addAll(successIcon, successText);
 
         // Bouton
         Button createBtn = new Button("Creer l'administrateur");
@@ -199,19 +225,19 @@ public class ManageAdminsScreen {
 
         createBtn.setOnAction(e -> handleCreateAdmin(
                 usernameField, emailField, firstNameField, lastNameField,
-                passField, confirmField, feedbackLabel, createBtn,
+                passField, confirmField, errorBox, errorText, successBox, successText, createBtn,
                 usernameField, emailField, firstNameField, lastNameField,
                 passField, confirmField
         ));
 
-        form.getChildren().addAll(formTitle, row1, row2, row3, feedbackLabel, createBtn);
+        form.getChildren().addAll(formTitle, row1, row2, row3, passHint, errorBox, successBox, createBtn);
         return form;
     }
 
     private void handleCreateAdmin(TextField usernameField, TextField emailField,
                                    TextField firstNameField, TextField lastNameField,
                                    PasswordField passField, PasswordField confirmField,
-                                   Label feedbackLabel, Button createBtn,
+                                   HBox errorBox, Label errorText, HBox successBox, Label successText, Button createBtn,
                                    TextField u, TextField em, TextField fn,
                                    TextField ln, PasswordField p, PasswordField c) {
 
@@ -222,19 +248,22 @@ public class ManageAdminsScreen {
         String password  = passField.getText();
         String confirm   = confirmField.getText();
 
+        hideError(errorBox);
+        hideError(successBox);
+
         // Validation locale
         if (username.isEmpty() || email.isEmpty() || firstName.isEmpty()
                 || lastName.isEmpty() || password.isEmpty()) {
-            showFeedback(feedbackLabel, "Tous les champs sont obligatoires.", false);
-            return;
+            showError(errorBox, errorText, "Tous les champs sont obligatoires.");
+            shakeNode(errorBox); return;
         }
         if (password.length() < 8) {
-            showFeedback(feedbackLabel, "Le mot de passe doit contenir au moins 8 caracteres.", false);
-            return;
+            showError(errorBox, errorText, "Le mot de passe doit contenir au moins 8 caracteres.");
+            shakeNode(errorBox); return;
         }
         if (!password.equals(confirm)) {
-            showFeedback(feedbackLabel, "Les mots de passe ne correspondent pas.", false);
-            return;
+            showError(errorBox, errorText, "Les mots de passe ne correspondent pas.");
+            shakeNode(errorBox); return;
         }
 
         createBtn.setDisable(true);
@@ -255,16 +284,15 @@ public class ManageAdminsScreen {
                     createBtn.setText("Creer l'administrateur");
 
                     if (resp.isSuccess()) {
-                        showFeedback(feedbackLabel,
-                                "Administrateur '" + username + "' cree avec succes !", true);
+                        showError(successBox, successText, "Administrateur '" + username + "' cree avec succes !");
                         // Vider les champs
                         u.clear(); em.clear(); fn.clear(); ln.clear();
                         p.clear(); c.clear();
                         // Recharger la liste
                         loadAdmins();
                     } else {
-                        showFeedback(feedbackLabel,
-                                resp.getMessage() != null ? resp.getMessage() : "Erreur.", false);
+                        showError(errorBox, errorText, resp.getMessage() != null ? resp.getMessage() : "Erreur.");
+                        shakeNode(errorBox);
                     }
                 }));
     }
@@ -521,17 +549,15 @@ public class ManageAdminsScreen {
 
     // ── Helpers UI ────────────────────────────────────────
 
-    private void showFeedback(Label lbl, String msg, boolean success) {
-        lbl.setText(msg);
-        lbl.setStyle("-fx-font-size: 12px; -fx-text-fill: " +
-                (success ? "#166534" : "#991b1b") + ";");
-        lbl.setVisible(true);
-        lbl.setManaged(true);
-
-        FadeTransition ft = new FadeTransition(Duration.millis(250), lbl);
-        ft.setFromValue(0);
-        ft.setToValue(1);
-        ft.play();
+    private void showError(HBox box, Label text, String msg) {
+        text.setText(msg); box.setVisible(true); box.setManaged(true); box.setOpacity(0);
+        FadeTransition ft = new FadeTransition(Duration.millis(250), box); ft.setToValue(1); ft.play();
+    }
+    private void hideError(HBox box) { box.setVisible(false); box.setManaged(false); }
+    private void shakeNode(Node node) {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(50), node);
+        tt.setFromX(0); tt.setByX(8); tt.setCycleCount(6); tt.setAutoReverse(true);
+        tt.setOnFinished(e -> node.setTranslateX(0)); tt.play();
     }
 
     private TextField styledField(String prompt) {
