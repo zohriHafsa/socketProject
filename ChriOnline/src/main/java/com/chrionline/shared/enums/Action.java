@@ -29,6 +29,7 @@ public enum Action {
     ADMIN_CREATE_ADMIN,
     ADMIN_TOGGLE_ADMIN,
     VERIFY_EMAIL,
+    VERIFY_2FA,
     // UDP
     REGISTER_UDP
 }

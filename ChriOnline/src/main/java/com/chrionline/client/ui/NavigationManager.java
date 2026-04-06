@@ -50,6 +50,9 @@ public class NavigationManager {
     public static void showEmailVerification(int uid, String email) {
         transitionTo(new EmailVerificationScreen(uid, email).getView(), true);
     }
+    public static void showTwoFactor(int uid, String email) {
+        transitionTo(new TwoFactorScreen(uid, email).getView(), true);
+    }
 
     // ── Admin screens ──────────────────────────────────
     public static void showAdminDashboard()  { transitionTo(new AdminDashboard().getView(), true); }

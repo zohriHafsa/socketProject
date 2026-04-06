@@ -46,6 +46,7 @@ public class RequestRouter {
             case LOGIN:
             case REGISTER:
             case VERIFY_EMAIL:          // ← pas besoin de token
+            case VERIFY_2FA:
             case GET_PRODUCTS:
             case GET_PRODUCT_DETAIL:
             case SEARCH_PRODUCTS:
@@ -67,7 +68,8 @@ public class RequestRouter {
             case LOGIN:        return authService.login(request);
             case REGISTER:     return authService.register(request);
             case LOGOUT:       return authService.logout(request);
-            case VERIFY_EMAIL: return authService.verifyEmail(request); // ← nouveau
+            case VERIFY_EMAIL: return authService.verifyEmail(request);
+            case VERIFY_2FA:   return authService.verify2FA(request); // ← nouveau
 
             // Products (public)
             case GET_PRODUCTS:       return productService.getProducts(request);

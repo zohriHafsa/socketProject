@@ -149,23 +149,65 @@ public class AuthService {
                         "Veuillez verifier votre email avant de vous connecter.");
 
             int    userId = (int)   user.get("userId");
-            String role   = "CLIENT";
-            String token  = SessionManager.createSession(userId, username, role);
+            String userEmail = (String) user.get("email");
 
-            ServerLogger.info("LOGIN CLIENT OK : " + username
-                    + " (ID:" + userId + ", role=" + role + ")");
+            if (userDAO.hasActiveOtp(userId)) {
+                Map<String, Object> result = new HashMap<>();
+                result.put("userId", userId);
+                result.put("email",  userEmail);
+                result.put("2fa_required", true);
+                ServerLogger.info("LOGIN 2FA RE-TRIGGERED (SPAM PREVENTED) : " + username);
+                return Response.ok("Un code 2FA a deja ete envoye a votre email.", result);
+            }
+
+            String code = EmailService.generateCode();
+            userDAO.saveVerifyCode(userId, code);
+            EmailService.sendVerificationCode(userEmail, code);
 
             Map<String, Object> result = new HashMap<>();
-            result.put("token",     token);
-            result.put("userId",    userId);
-            result.put("username",  username);
-            result.put("role",      role);
-            result.put("firstName", user.get("firstName"));
-            result.put("lastName",  user.get("lastName"));
-            return Response.ok("Connexion reussie !", result);
+            result.put("userId", userId);
+            result.put("email",  userEmail);
+            result.put("2fa_required", true);
+            ServerLogger.info("LOGIN 2FA TRIGGERED (NEW CODE) : " + username);
+            return Response.ok("Code 2FA envoye a votre email.", result);
 
         } catch (SQLException e) {
             ServerLogger.error("LOGIN SQL error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
+        }
+    }
+
+    // ── 2FA VERIFY ─────────────────────────────────────────
+    public Response verify2FA(Request request) {
+        int    userId = request.getInt("userId");
+        String code   = request.getString("code");
+
+        if (userId <= 0 || code == null)
+            return Response.error("userId et code requis.");
+
+        try {
+            boolean ok = userDAO.verifyOtp(userId, code);
+            if (ok) {
+                Map<String, Object> user = userDAO.getUserById(userId);
+                String username = (String) user.get("username");
+                String role   = "CLIENT";
+                String token  = SessionManager.createSession(userId, username, role);
+
+                ServerLogger.info("LOGIN CLIENT (2FA PASSED) OK : " + username
+                        + " (ID:" + userId + ", role=" + role + ")");
+
+                Map<String, Object> result = new HashMap<>();
+                result.put("token",     token);
+                result.put("userId",    userId);
+                result.put("username",  username);
+                result.put("role",      role);
+                result.put("firstName", user.get("firstName"));
+                result.put("lastName",  user.get("lastName"));
+                return Response.ok("Connexion reussie !", result);
+            }
+            return Response.error("Code incorrect ou expire.");
+        } catch (SQLException e) {
+            ServerLogger.error("VERIFY_2FA error : " + e.getMessage());
             return Response.error("Erreur serveur : " + e.getMessage());
         }
     }

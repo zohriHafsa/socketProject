@@ -284,6 +284,11 @@ public class LoginScreen {
                     Map<String, Object> data = castToMap(response.getData());
                     System.out.println("ROLE RECU : " + getStr(data, "role"));
 
+                    if (Boolean.TRUE.equals(data.get("2fa_required"))) {
+                        NavigationManager.showTwoFactor(getInt(data, "userId"), getStr(data, "email"));
+                        return;
+                    }
+
                     NavigationManager.setSession(
                             getStr(data, "token"),
                             getInt(data, "userId"),
