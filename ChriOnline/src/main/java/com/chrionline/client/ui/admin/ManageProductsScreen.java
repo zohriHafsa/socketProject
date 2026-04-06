@@ -286,12 +286,12 @@ public class ManageProductsScreen {
         header.getChildren().addAll(
                 tCol("", 44),
                 tCol("ID", 46),
-                tCol("Nom", 180),
+                tCol("Nom", 200),
                 tCol("Categorie", 110),
-                tCol("Prix", 90),
-                tCol("Stock", 70),
-                tCol("Statut", 90),
-                tCol("Actions", 170)
+                tCol("Prix", 130),
+                tCol("Stock", 90),
+                tCol("Statut", 140),
+                tCol("Actions", 180)
         );
         productsContainer.getChildren().add(header);
 
@@ -355,16 +355,16 @@ public class ManageProductsScreen {
         Label idL = tCell(String.valueOf(pid), 46);
         idL.getStyleClass().add("admin-cell-id");
 
-        Label nameL = tCell(name.length() > 24 ? name.substring(0, 22) + ".." : name, 180);
+        Label nameL = tCell(name.length() > 24 ? name.substring(0, 22) + ".." : name, 200);
         nameL.setStyle("-fx-font-weight:600;");
 
         Label catL = tCell(cat, 110);
         catL.getStyleClass().add("admin-cell-date");
 
-        Label priceL = tCell(String.format("%.2f MAD", price), 90);
+        Label priceL = tCell(String.format("%.2f MAD", price), 130);
         priceL.getStyleClass().add("admin-cell-amount");
 
-        Label stockL = tCell(String.valueOf(stock), 70);
+        Label stockL = tCell(String.valueOf(stock), 90);
         if (stock <= 0) {
             stockL.setStyle("-fx-text-fill:#E74C3C;-fx-font-weight:bold;");
         } else if (stock <= 10) {
@@ -376,11 +376,16 @@ public class ManageProductsScreen {
         Label statusL = new Label(stock > 0 ? "Disponible" : "Indisponible");
         statusL.getStyleClass().add("admin-status-badge");
         statusL.getStyleClass().add(stock > 0 ? "admin-status-validee" : "admin-status-annulee");
-        statusL.setMinWidth(90);
+
+        HBox statusBox = new HBox(statusL);
+        statusBox.setAlignment(Pos.CENTER_LEFT);
+        statusBox.setMinWidth(140);
+        statusBox.setMaxWidth(140);
 
         HBox actions = new HBox(6);
         actions.setAlignment(Pos.CENTER_LEFT);
-        actions.setMinWidth(170);
+        actions.setMinWidth(180);
+        actions.setMaxWidth(180);
 
         Button editBtn = new Button("Modifier");
         editBtn.getStyleClass().add("admin-edit-btn");
@@ -392,7 +397,7 @@ public class ManageProductsScreen {
 
         actions.getChildren().addAll(editBtn, deleteBtn);
 
-        row.getChildren().addAll(thumb, idL, nameL, catL, priceL, stockL, statusL, actions);
+        row.getChildren().addAll(thumb, idL, nameL, catL, priceL, stockL, statusBox, actions);
         return row;
     }
 

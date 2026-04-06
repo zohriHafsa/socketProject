@@ -56,7 +56,7 @@ public class NavigationManager {
     public static void showManageUsers()     { transitionTo(new ManageUsersScreen().getView(), true); }
     public static void showManageProducts()  { transitionTo(new ManageProductsScreen().getView(), true); }
     public static void showManageOrders()    { transitionTo(new ManageOrdersScreen().getView(), true); }
-    public static void showManageCategories(){ transitionTo(new ManageOrdersScreen().getView(), true); }
+    public static void showManageCategories(){ transitionTo(new ManageCategoriesScreen().getView(), true); }
     public static void showManageAdmins()    { transitionTo(new ManageAdminsScreen().getView(), true); }
 
     public static void navigateTo(String name) {

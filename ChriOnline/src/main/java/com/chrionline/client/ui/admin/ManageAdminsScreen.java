@@ -53,29 +53,18 @@ public class ManageAdminsScreen {
             return;
         }
 
-        root.setTop(AdminDashboard.buildAdminHeader("Dashboard"));
+        root.setTop(AdminDashboard.buildAdminHeader("Admins"));
 
         VBox mainContent = new VBox(24);
         mainContent.setMaxWidth(MAX_W);
         mainContent.setPadding(new Insets(25, H_PAD, 50, H_PAD));
         mainContent.setAlignment(Pos.TOP_CENTER);
 
-        // Titre de la page
         HBox titleRow = new HBox(16);
         titleRow.setAlignment(Pos.CENTER_LEFT);
 
         Label pageTitle = new Label("Gestion des Administrateurs");
         pageTitle.getStyleClass().add("admin-page-title");
-
-        Label superBadge = new Label("SUPER ADMIN");
-        superBadge.setStyle(
-                "-fx-background-color: #E74C3C;" +
-                        "-fx-text-fill: white;" +
-                        "-fx-font-size: 10px;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-background-radius: 4;" +
-                        "-fx-padding: 3 8;"
-        );
 
         Region sp = new Region();
         HBox.setHgrow(sp, Priority.ALWAYS);
@@ -85,7 +74,8 @@ public class ManageAdminsScreen {
         refreshBtn.setStyle("-fx-font-size:12px;-fx-padding:8 16;");
         refreshBtn.setOnAction(e -> loadAdmins());
 
-        titleRow.getChildren().addAll(pageTitle, superBadge, sp, refreshBtn);
+        titleRow.getChildren().addAll(pageTitle, sp, refreshBtn);
+
 
         // Séparateur
         Region sep1 = new Region();
@@ -140,14 +130,14 @@ public class ManageAdminsScreen {
         form.setStyle(
                 "-fx-background-color: white;" +
                         "-fx-background-radius: 12;" +
-                        "-fx-border-color: #c4b5fd;" +
+                        "-fx-border-color: #8E44AD;" +
                         "-fx-border-radius: 12;" +
                         "-fx-border-width: 1;"
         );
 
         Label formTitle = new Label("Ajouter un nouvel administrateur");
         formTitle.getStyleClass().add("admin-section-title");
-        formTitle.setStyle("-fx-text-fill: #6d28d9; -fx-font-size: 15px;" +
+        formTitle.setStyle("-fx-text-fill: #8E44AD; -fx-font-size: 15px;" +
                 "-fx-font-weight: bold;");
 
         // Row 1 — username + email
@@ -194,7 +184,7 @@ public class ManageAdminsScreen {
         // Bouton
         Button createBtn = new Button("Creer l'administrateur");
         createBtn.setStyle(
-                "-fx-background-color: #6d28d9;" +
+                "-fx-background-color: linear-gradient(to right, #6C3483, #8E44AD);" +
                         "-fx-text-fill: white;" +
                         "-fx-font-weight: bold;" +
                         "-fx-background-radius: 9;" +
@@ -203,9 +193,9 @@ public class ManageAdminsScreen {
                         "-fx-font-size: 13px;"
         );
         createBtn.setOnMouseEntered(e ->
-                createBtn.setStyle(createBtn.getStyle().replace("#6d28d9", "#5b21b6")));
+                createBtn.setStyle(createBtn.getStyle().replace("#6C3483, #8E44AD", "#7D3C98, #9B59B6")));
         createBtn.setOnMouseExited(e ->
-                createBtn.setStyle(createBtn.getStyle().replace("#5b21b6", "#6d28d9")));
+                createBtn.setStyle(createBtn.getStyle().replace("#7D3C98, #9B59B6", "#6C3483, #8E44AD")));
 
         createBtn.setOnAction(e -> handleCreateAdmin(
                 usernameField, emailField, firstNameField, lastNameField,
@@ -323,10 +313,10 @@ public class ManageAdminsScreen {
                 tCol("Username",   140),
                 tCol("Email",      200),
                 tCol("Nom complet",160),
-                tCol("Type",       100),
-                tCol("Statut",     100),
-                tCol("Cree le",    120),
-                tCol("Action",     140)
+                tCol("Type",       120),
+                tCol("Statut",     120),
+                tCol("Cree le",    140),
+                tCol("Action",     160)
         );
         adminsContainer.getChildren().add(header);
 
@@ -407,22 +397,30 @@ public class ManageAdminsScreen {
         Label typeL = new Label(isSuper ? "SUPER" : "ADMIN");
         typeL.getStyleClass().add("admin-status-badge");
         typeL.getStyleClass().add(isSuper ? "admin-status-annulee" : "admin-status-expediee");
-        typeL.setMinWidth(90);
+        
+        HBox typeBox = new HBox(typeL);
+        typeBox.setAlignment(Pos.CENTER_LEFT);
+        typeBox.setMinWidth(120);
+        typeBox.setMaxWidth(120);
 
         // Badge statut
         Label statusL = new Label(isActive ? "Actif" : "Desactive");
         statusL.getStyleClass().add("admin-status-badge");
         statusL.getStyleClass().add(isActive ? "admin-status-livree" : "admin-status-annulee");
-        statusL.setMinWidth(90);
+        
+        HBox statusBox = new HBox(statusL);
+        statusBox.setAlignment(Pos.CENTER_LEFT);
+        statusBox.setMinWidth(120);
+        statusBox.setMaxWidth(120);
 
         String dateStr = createdAt.length() > 10 ? createdAt.substring(0, 10) : createdAt;
-        Label dateL = tCell(dateStr, 120);
+        Label dateL = tCell(dateStr, 140);
         dateL.getStyleClass().add("admin-cell-date");
 
         // Actions
         HBox actionBox = new HBox(8);
         actionBox.setAlignment(Pos.CENTER_LEFT);
-        actionBox.setMinWidth(140);
+        actionBox.setMinWidth(160);
 
         boolean isSelf = adminId == NavigationManager.getUserId();
 
@@ -445,7 +443,7 @@ public class ManageAdminsScreen {
         }
 
         row.getChildren().addAll(idL, userCell, emailL, nameL,
-                typeL, statusL, dateL, actionBox);
+                typeBox, statusBox, dateL, actionBox);
         return row;
     }
 

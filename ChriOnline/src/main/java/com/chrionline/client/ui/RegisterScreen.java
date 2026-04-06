@@ -47,7 +47,7 @@ public class RegisterScreen {
         VBox centerBox = new VBox(24);
         centerBox.setAlignment(Pos.CENTER);
         centerBox.setPadding(new Insets(30, 40, 40, 40));
-        centerBox.setMaxWidth(500);
+        centerBox.setMaxWidth(700);
 
         VBox branding = buildBranding();
 
@@ -55,12 +55,12 @@ public class RegisterScreen {
         card.getStyleClass().add("auth-card");
         card.setPadding(new Insets(28, 36, 24, 36));
         card.setAlignment(Pos.CENTER);
-        card.setMaxWidth(460);
+        card.setMaxWidth(640);
 
         HBox titleRow = new HBox(10);
-        titleRow.setAlignment(Pos.CENTER_LEFT);
-        Label userIcon = new Label("\uD83D\uDC64");
-        userIcon.setStyle("-fx-font-size: 22px;");
+        titleRow.setAlignment(Pos.CENTER);
+        Label userIcon = new Label("\uD83D\uDCDD");
+        userIcon.setStyle("-fx-font-size: 22px; -fx-text-fill: #2C3E50;");
         Label title = new Label("Creer un compte");
         title.getStyleClass().add("auth-title");
         title.setStyle("-fx-font-size: 22px;");
@@ -75,16 +75,24 @@ public class RegisterScreen {
         Label userLabel = new Label("Nom d'utilisateur *");
         userLabel.getStyleClass().add("auth-field-label");
         TextField usernameField = new TextField();
-        usernameField.setPromptText("ex : Hafsa_zohri");
+        usernameField.setPromptText("ex : mon_pseudo");
         usernameField.getStyleClass().add("auth-field");
         VBox userGroup = new VBox(5, userLabel, usernameField);
 
         Label emailLabel = new Label("Adresse e-mail *");
         emailLabel.getStyleClass().add("auth-field-label");
         TextField emailField = new TextField();
-        emailField.setPromptText("ex : hafsa@email.com");
+        emailField.setPromptText("ex : contact@email.com");
         emailField.getStyleClass().add("auth-field");
         VBox emailGroup = new VBox(5, emailLabel, emailField);
+
+        GridPane row1 = new GridPane();
+        row1.setHgap(12);
+        ColumnConstraints c1_1 = new ColumnConstraints(); c1_1.setPercentWidth(35);
+        ColumnConstraints c1_2 = new ColumnConstraints(); c1_2.setPercentWidth(65);
+        row1.getColumnConstraints().addAll(c1_1, c1_2);
+        row1.add(userGroup, 0, 0);
+        row1.add(emailGroup, 1, 0);
 
         Label fnLabel = new Label("Prenom *");
         fnLabel.getStyleClass().add("auth-field-label");
@@ -92,7 +100,6 @@ public class RegisterScreen {
         firstNameField.setPromptText("Prenom");
         firstNameField.getStyleClass().add("auth-field");
         VBox fnGroup = new VBox(5, fnLabel, firstNameField);
-        HBox.setHgrow(fnGroup, Priority.ALWAYS);
 
         Label lnLabel = new Label("Nom de famille *");
         lnLabel.getStyleClass().add("auth-field-label");
@@ -100,10 +107,14 @@ public class RegisterScreen {
         lastNameField.setPromptText("Nom");
         lastNameField.getStyleClass().add("auth-field");
         VBox lnGroup = new VBox(5, lnLabel, lastNameField);
-        HBox.setHgrow(lnGroup, Priority.ALWAYS);
 
-        HBox nameRow = new HBox(12, fnGroup, lnGroup);
-        nameRow.getStyleClass().add("auth-field-row");
+        GridPane row2 = new GridPane();
+        row2.setHgap(12);
+        ColumnConstraints c2_1 = new ColumnConstraints(); c2_1.setPercentWidth(50);
+        ColumnConstraints c2_2 = new ColumnConstraints(); c2_2.setPercentWidth(50);
+        row2.getColumnConstraints().addAll(c2_1, c2_2);
+        row2.add(fnGroup, 0, 0);
+        row2.add(lnGroup, 1, 0);
 
         Label passLabel = new Label("Mot de passe *");
         passLabel.getStyleClass().add("auth-field-label");
@@ -121,13 +132,21 @@ public class RegisterScreen {
         StackPane passWrapper2 = wrapWithToggle(confirmField);
         VBox confirmGroup = new VBox(5, confirmLabel, passWrapper2);
 
+        GridPane row3 = new GridPane();
+        row3.setHgap(12);
+        ColumnConstraints c3_1 = new ColumnConstraints(); c3_1.setPercentWidth(50);
+        ColumnConstraints c3_2 = new ColumnConstraints(); c3_2.setPercentWidth(50);
+        row3.getColumnConstraints().addAll(c3_1, c3_2);
+        row3.add(passGroup, 0, 0);
+        row3.add(confirmGroup, 1, 0);
+
         HBox errorBox = new HBox(8);
         errorBox.getStyleClass().add("auth-error");
         errorBox.setVisible(false);
         errorBox.setManaged(false);
         errorBox.setAlignment(Pos.CENTER_LEFT);
-        Label errorIcon = new Label("\u26A0\uFE0F");
-        errorIcon.setStyle("-fx-font-size: 14px;");
+        Label errorIcon = new Label("\u26A0");
+        errorIcon.setStyle("-fx-font-size: 14px; -fx-text-fill: #E74C3C;");
         Label errorText = new Label();
         errorText.getStyleClass().add("auth-error-text");
         errorText.setWrapText(true);
@@ -155,8 +174,6 @@ public class RegisterScreen {
                 errorBox, errorText, successBox, successText
         ));
 
-        HBox orDivider = buildOrDivider();
-
         HBox loginRow = new HBox(4);
         loginRow.setAlignment(Pos.CENTER);
         Label hasAccount = new Label("Deja un compte ?");
@@ -169,18 +186,18 @@ public class RegisterScreen {
         HBox passHint = new HBox(8);
         passHint.setAlignment(Pos.CENTER_LEFT);
         passHint.setPadding(new Insets(0, 0, 0, 2));
-        Label hintIcon = new Label("\u2139\uFE0F");
-        hintIcon.setStyle("-fx-font-size: 11px;");
+        Label hintIcon = new Label("\u2139");
+        hintIcon.setStyle("-fx-font-size: 11px; -fx-text-fill: #BDC3C7;");
         Label hintText = new Label("Min. 8 caracteres, doit contenir une majuscule");
         hintText.setStyle("-fx-font-size: 11px; -fx-text-fill: #BDC3C7;");
         passHint.getChildren().addAll(hintIcon, hintText);
 
         card.getChildren().addAll(
                 titleRow, subtitle, div,
-                userGroup, emailGroup, nameRow,
-                passGroup, passHint, confirmGroup,
+                row1, row2,
+                row3, passHint,
                 errorBox, successBox,
-                registerBtn, orDivider, loginRow
+                registerBtn, loginRow
         );
 
         centerBox.getChildren().addAll(branding, card);
@@ -352,14 +369,7 @@ public class RegisterScreen {
         return branding;
     }
 
-    private HBox buildOrDivider() {
-        HBox box = new HBox(12); box.setAlignment(Pos.CENTER); box.setPadding(new Insets(2, 0, 2, 0));
-        Region line1 = new Region(); line1.setStyle("-fx-background-color: #E8E8E8; -fx-pref-height: 1;"); HBox.setHgrow(line1, Priority.ALWAYS);
-        Label text = new Label("ou"); text.setStyle("-fx-font-size: 12px; -fx-text-fill: #BDC3C7;");
-        Region line2 = new Region(); line2.setStyle("-fx-background-color: #E8E8E8; -fx-pref-height: 1;"); HBox.setHgrow(line2, Priority.ALWAYS);
-        box.getChildren().addAll(line1, text, line2);
-        return box;
-    }
+
 
     private Pane buildParticles() {
         Pane layer = new Pane(); layer.getStyleClass().add("auth-particles"); layer.setMouseTransparent(true);
