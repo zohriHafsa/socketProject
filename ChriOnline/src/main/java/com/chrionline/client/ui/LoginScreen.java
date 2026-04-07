@@ -89,18 +89,7 @@ public class LoginScreen {
         passwordField.setPromptText("Mot de passe");
         passwordField.getStyleClass().add("auth-password-field");
         StackPane passWrapper = wrapWithToggle(passwordField);
-
-        // Forgot password link
-        HBox forgotPwdRow = new HBox();
-        forgotPwdRow.setAlignment(Pos.CENTER_RIGHT);
-        Button forgotPwdLink = new Button("Mot de passe oublie ?");
-        forgotPwdLink.setStyle("-fx-background-color: transparent; -fx-font-size: 12px; -fx-text-fill: #9B59B6;" +
-                " -fx-cursor: hand; -fx-padding: 0;");
-        forgotPwdLink.setOnAction(e -> NavigationManager.navigateTo("forgotPassword"));
-        forgotPwdRow.getChildren().add(forgotPwdLink);
-
-        VBox passGroup = new VBox(3); // tighter spacing
-        passGroup.getChildren().addAll(passLabel, passWrapper, forgotPwdRow);
+        VBox passGroup = new VBox(5, passLabel, passWrapper);
 
         // Error box (hidden by default)
         HBox errorBox = new HBox(8);
