@@ -69,7 +69,7 @@ public class AuthService {
             String code = EmailService.generateCode();
             userDAO.saveVerifyCode(userId, code);
 
-            boolean sent = EmailService.sendVerificationCode(email, code);
+            boolean sent = EmailService.sendRegistrationEmail(email, code);
             if (!sent)
                 return Response.error("Compte cree mais email non envoye. Contactez le support.");
 
@@ -168,7 +168,7 @@ public class AuthService {
 
             String code = EmailService.generateCode();
             userDAO.saveVerifyCode(userId, code);
-            EmailService.sendVerificationCode(userEmail, code);
+            EmailService.send2faEmail(userEmail, code);
 
             Map<String, Object> result = new HashMap<>();
             result.put("userId", userId);
@@ -268,7 +268,7 @@ public class AuthService {
             int userId = (int) user.get("userId");
             String code = EmailService.generateCode();
             userDAO.saveVerifyCode(userId, code);
-            EmailService.sendVerificationCode(email, code); // For now using the same template
+            EmailService.sendResetPasswordEmail(email, code);
             return Response.ok("Code de reinitialisation envoye a votre email.", null);
         } catch (SQLException e) {
             ServerLogger.error("FORGOT_PASSWORD error : " + e.getMessage());
