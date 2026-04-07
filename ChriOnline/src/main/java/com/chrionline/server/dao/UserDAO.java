@@ -120,7 +120,36 @@ public class UserDAO {
         }
     }
 
-    // Vérifier le code
+    // Checking if user has an active, unexpired OTP for Spam Prevention
+    public boolean hasActiveOtp(int userId) throws SQLException {
+        String sql = "SELECT 1 FROM users WHERE user_id = ? AND verify_code IS NOT NULL AND verify_expires > NOW()";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        }
+    }
+
+    // Verify code for 2FA / Login
+    public boolean verifyOtp(int userId, String code) throws SQLException {
+        String sql = "SELECT 1 FROM users WHERE user_id = ? AND verify_code = ? AND verify_expires > NOW()";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setString(2, code);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String update = "UPDATE users SET verify_code = NULL WHERE user_id = ?";
+                try (PreparedStatement ps2 = conn().prepareStatement(update)) {
+                    ps2.setInt(1, userId);
+                    ps2.executeUpdate();
+                }
+                return true;
+            }
+            return false;
+        }
+    }
+
+    // Vérifier le code pour l'inscription
     public boolean verifyCode(int userId, String code) throws SQLException {
         String sql = "SELECT verify_code FROM users " +
                 "WHERE user_id = ? " +
@@ -142,6 +171,15 @@ public class UserDAO {
                 return true;
             }
             return false;
+        }
+    }
+
+    public boolean updatePassword(int userId, String newHash) throws SQLException {
+        String sql = "UPDATE users SET password_hash = ? WHERE user_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setString(1, newHash);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
         }
     }
 }

@@ -50,6 +50,15 @@ public class NavigationManager {
     public static void showEmailVerification(int uid, String email) {
         transitionTo(new EmailVerificationScreen(uid, email).getView(), true);
     }
+    public static void showTwoFactor(int uid, String email) {
+        transitionTo(new TwoFactorScreen(uid, email).getView(), true);
+    }
+    public static void showForgotPassword() {
+        transitionTo(new ForgotPasswordScreen().getView(), true);
+    }
+    public static void showResetPassword(String email) {
+        transitionTo(new ResetPasswordScreen(email).getView(), true);
+    }
 
     // ── Admin screens ──────────────────────────────────
     public static void showAdminDashboard()  { transitionTo(new AdminDashboard().getView(), true); }
@@ -76,6 +85,7 @@ public class NavigationManager {
                 case "manageOrders":     showManageOrders();     break;
                 case "manageCategories": showManageCategories(); break;
                 case "manageAdmins":     showManageAdmins();     break;
+                case "forgotPassword":   showForgotPassword();   break;
                 default: System.err.println("[NAV] Unknown: " + name);
             }
         });

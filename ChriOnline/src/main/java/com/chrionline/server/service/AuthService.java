@@ -69,7 +69,7 @@ public class AuthService {
             String code = EmailService.generateCode();
             userDAO.saveVerifyCode(userId, code);
 
-            boolean sent = EmailService.sendVerificationCode(email, code);
+            boolean sent = EmailService.sendRegistrationEmail(email, code);
             if (!sent)
                 return Response.error("Compte cree mais email non envoye. Contactez le support.");
 
@@ -89,7 +89,7 @@ public class AuthService {
 
     // ── LOGIN ──────────────────────────────────────────────
     @SuppressWarnings("unchecked")
-    public Response login(Request request) {
+    public Response login(Request request, java.net.InetAddress clientAddress) {
         String username = request.getString("username");
         String password = request.getString("password");
 
@@ -101,6 +101,12 @@ public class AuthService {
             Map<String, Object> admin = adminDAO.getAdminByUsername(username);
 
             if (admin != null) {
+                String ip = clientAddress != null ? clientAddress.getHostAddress() : "127.0.0.1";
+                if (!isInternalIp(ip)) {
+                    ServerLogger.warn("SECURITY ALERT: Tentative de connexion admin hors réseau interne (IP: " + ip + ")");
+                    return Response.error("Acces refuse. Les administrateurs peuvent se connecter uniquement via le reseau interne.");
+                }
+
                 if (!verifyPassword(password, (String) admin.get("passwordHash")))
                     return Response.error("Mot de passe incorrect.");
 
@@ -149,23 +155,65 @@ public class AuthService {
                         "Veuillez verifier votre email avant de vous connecter.");
 
             int    userId = (int)   user.get("userId");
-            String role   = "CLIENT";
-            String token  = SessionManager.createSession(userId, username, role);
+            String userEmail = (String) user.get("email");
 
-            ServerLogger.info("LOGIN CLIENT OK : " + username
-                    + " (ID:" + userId + ", role=" + role + ")");
+            if (userDAO.hasActiveOtp(userId)) {
+                Map<String, Object> result = new HashMap<>();
+                result.put("userId", userId);
+                result.put("email",  userEmail);
+                result.put("2fa_required", true);
+                ServerLogger.info("LOGIN 2FA RE-TRIGGERED (SPAM PREVENTED) : " + username);
+                return Response.ok("Un code 2FA a deja ete envoye a votre email.", result);
+            }
+
+            String code = EmailService.generateCode();
+            userDAO.saveVerifyCode(userId, code);
+            EmailService.send2faEmail(userEmail, code);
 
             Map<String, Object> result = new HashMap<>();
-            result.put("token",     token);
-            result.put("userId",    userId);
-            result.put("username",  username);
-            result.put("role",      role);
-            result.put("firstName", user.get("firstName"));
-            result.put("lastName",  user.get("lastName"));
-            return Response.ok("Connexion reussie !", result);
+            result.put("userId", userId);
+            result.put("email",  userEmail);
+            result.put("2fa_required", true);
+            ServerLogger.info("LOGIN 2FA TRIGGERED (NEW CODE) : " + username);
+            return Response.ok("Code 2FA envoye a votre email.", result);
 
         } catch (SQLException e) {
             ServerLogger.error("LOGIN SQL error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
+        }
+    }
+
+    // ── 2FA VERIFY ─────────────────────────────────────────
+    public Response verify2FA(Request request) {
+        int    userId = request.getInt("userId");
+        String code   = request.getString("code");
+
+        if (userId <= 0 || code == null)
+            return Response.error("userId et code requis.");
+
+        try {
+            boolean ok = userDAO.verifyOtp(userId, code);
+            if (ok) {
+                Map<String, Object> user = userDAO.getUserById(userId);
+                String username = (String) user.get("username");
+                String role   = "CLIENT";
+                String token  = SessionManager.createSession(userId, username, role);
+
+                ServerLogger.info("LOGIN CLIENT (2FA PASSED) OK : " + username
+                        + " (ID:" + userId + ", role=" + role + ")");
+
+                Map<String, Object> result = new HashMap<>();
+                result.put("token",     token);
+                result.put("userId",    userId);
+                result.put("username",  username);
+                result.put("role",      role);
+                result.put("firstName", user.get("firstName"));
+                result.put("lastName",  user.get("lastName"));
+                return Response.ok("Connexion reussie !", result);
+            }
+            return Response.error("Code incorrect ou expire.");
+        } catch (SQLException e) {
+            ServerLogger.error("VERIFY_2FA error : " + e.getMessage());
             return Response.error("Erreur serveur : " + e.getMessage());
         }
     }
@@ -205,6 +253,73 @@ public class AuthService {
         return Response.error("Session introuvable ou deja expiree.");
     }
 
+    // ── FORGOT PASSWORD ───────────────────────────────────────
+    public Response forgotPasswordRequest(Request request) {
+        String email = request.getString("email");
+        if (email == null || email.isBlank())
+            return Response.error("L'email est requis.");
+        
+        try {
+            Map<String, Object> user = userDAO.getUserByEmail(email);
+            if (user == null) {
+                // Return success anyway to prevent email enumeration attacks
+                return Response.ok("Si un compte correspond a cet email, un code de reinitialisation a ete envoye.", null);
+            }
+            int userId = (int) user.get("userId");
+            String code = EmailService.generateCode();
+            userDAO.saveVerifyCode(userId, code);
+            EmailService.sendResetPasswordEmail(email, code);
+            return Response.ok("Code de reinitialisation envoye a votre email.", null);
+        } catch (SQLException e) {
+            ServerLogger.error("FORGOT_PASSWORD error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
+        }
+    }
+
+    public Response resetPassword(Request request) {
+        String email = request.getString("email");
+        String code = request.getString("code");
+        String newPassword = request.getString("newPassword");
+        
+        if (email == null || code == null || newPassword == null)
+            return Response.error("Informations manquantes.");
+        
+        if (newPassword.length() < 8)
+            return Response.error("Le mot de passe doit contenir au moins 8 caracteres.");
+        if (!newPassword.matches(".*[A-Z].*"))
+            return Response.error("Le mot de passe doit contenir au moins une lettre majuscule.");
+        if (!newPassword.matches(".*\\d.*"))
+            return Response.error("Le mot de passe doit contenir au moins un chiffre.");
+        if (!newPassword.matches(".*[^a-zA-Z0-9\\s].*"))
+            return Response.error("Le mot de passe doit contenir au moins un caractere special.");
+            
+        try {
+            Map<String, Object> user = userDAO.getUserByEmail(email);
+            if (user == null) return Response.error("Utilisateur introuvable.");
+            
+            String firstName = (String) user.get("firstName");
+            String lastName  = (String) user.get("lastName");
+
+            if (firstName != null && !firstName.isBlank() && newPassword.toLowerCase().contains(firstName.toLowerCase()))
+                return Response.error("Le mot de passe ne doit pas inclure votre prenom.");
+
+            if (lastName != null && !lastName.isBlank() && newPassword.toLowerCase().contains(lastName.toLowerCase()))
+                return Response.error("Le mot de passe ne doit pas inclure votre nom de famille.");
+            
+            int userId = (int) user.get("userId");
+            if (userDAO.verifyOtp(userId, code)) {
+                String hash = hashPassword(newPassword);
+                userDAO.updatePassword(userId, hash);
+                return Response.ok("Mot de passe mis a jour avec succes.", null);
+            } else {
+                return Response.error("Code incorrect ou expire.");
+            }
+        } catch (SQLException e) {
+            ServerLogger.error("RESET_PASSWORD error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
+        }
+    }
+
     // ── Hashing (Argon2id + legacy SHA-256 fallback) ───────
     private String hashPassword(String rawPassword) {
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
@@ -235,5 +350,22 @@ public class AuthService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("SHA-256 not available", e);
         }
+    }
+
+    private boolean isInternalIp(String ip) {
+        if (ip == null) return false;
+        if (ip.equals("127.0.0.1") || ip.equals("0:0:0:0:0:0:0:1") || ip.equals("::1")) return true;
+        if (ip.startsWith("10.")) return true;
+        if (ip.startsWith("192.168.")) return true;
+        if (ip.startsWith("172.")) {
+            try {
+                String[] parts = ip.split("\\.");
+                int second = Integer.parseInt(parts[1]);
+                if (second >= 16 && second <= 31) return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return false;
     }
 }

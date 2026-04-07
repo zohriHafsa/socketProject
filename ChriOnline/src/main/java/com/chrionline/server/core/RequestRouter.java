@@ -46,6 +46,9 @@ public class RequestRouter {
             case LOGIN:
             case REGISTER:
             case VERIFY_EMAIL:          // ← pas besoin de token
+            case VERIFY_2FA:
+            case FORGOT_PASSWORD_REQUEST:
+            case RESET_PASSWORD:
             case GET_PRODUCTS:
             case GET_PRODUCT_DETAIL:
             case SEARCH_PRODUCTS:
@@ -64,10 +67,13 @@ public class RequestRouter {
         switch (request.getAction()) {
 
             // Auth
-            case LOGIN:        return authService.login(request);
+            case LOGIN:        return authService.login(request, clientAddress);
             case REGISTER:     return authService.register(request);
             case LOGOUT:       return authService.logout(request);
-            case VERIFY_EMAIL: return authService.verifyEmail(request); // ← nouveau
+            case VERIFY_EMAIL: return authService.verifyEmail(request);
+            case VERIFY_2FA:   return authService.verify2FA(request);
+            case FORGOT_PASSWORD_REQUEST: return authService.forgotPasswordRequest(request);
+            case RESET_PASSWORD: return authService.resetPassword(request);
 
             // Products (public)
             case GET_PRODUCTS:       return productService.getProducts(request);

@@ -89,7 +89,18 @@ public class LoginScreen {
         passwordField.setPromptText("Mot de passe");
         passwordField.getStyleClass().add("auth-password-field");
         StackPane passWrapper = wrapWithToggle(passwordField);
-        VBox passGroup = new VBox(5, passLabel, passWrapper);
+
+        // Forgot password link
+        HBox forgotPwdRow = new HBox();
+        forgotPwdRow.setAlignment(Pos.CENTER_RIGHT);
+        Button forgotPwdLink = new Button("Mot de passe oublie ?");
+        forgotPwdLink.setStyle("-fx-background-color: transparent; -fx-font-size: 12px; -fx-text-fill: #9B59B6;" +
+                " -fx-cursor: hand; -fx-padding: 0;");
+        forgotPwdLink.setOnAction(e -> NavigationManager.navigateTo("forgotPassword"));
+        forgotPwdRow.getChildren().add(forgotPwdLink);
+
+        VBox passGroup = new VBox(3); // tighter spacing
+        passGroup.getChildren().addAll(passLabel, passWrapper, forgotPwdRow);
 
         // Error box (hidden by default)
         HBox errorBox = new HBox(8);
@@ -125,7 +136,6 @@ public class LoginScreen {
         registerLink.setOnAction(e -> NavigationManager.showRegister());
         registerRow.getChildren().addAll(noAccount, registerLink);
 
-        // Assemble card
         card.getChildren().addAll(
                 titleRow, subtitle, div,
                 userGroup, passGroup,
@@ -283,6 +293,11 @@ public class LoginScreen {
                 if (response.isSuccess()) {
                     Map<String, Object> data = castToMap(response.getData());
                     System.out.println("ROLE RECU : " + getStr(data, "role"));
+
+                    if (Boolean.TRUE.equals(data.get("2fa_required"))) {
+                        NavigationManager.showTwoFactor(getInt(data, "userId"), getStr(data, "email"));
+                        return;
+                    }
 
                     NavigationManager.setSession(
                             getStr(data, "token"),
