@@ -297,6 +297,15 @@ public class AuthService {
             Map<String, Object> user = userDAO.getUserByEmail(email);
             if (user == null) return Response.error("Utilisateur introuvable.");
             
+            String firstName = (String) user.get("firstName");
+            String lastName  = (String) user.get("lastName");
+
+            if (firstName != null && !firstName.isBlank() && newPassword.toLowerCase().contains(firstName.toLowerCase()))
+                return Response.error("Le mot de passe ne doit pas inclure votre prenom.");
+
+            if (lastName != null && !lastName.isBlank() && newPassword.toLowerCase().contains(lastName.toLowerCase()))
+                return Response.error("Le mot de passe ne doit pas inclure votre nom de famille.");
+            
             int userId = (int) user.get("userId");
             if (userDAO.verifyOtp(userId, code)) {
                 String hash = hashPassword(newPassword);

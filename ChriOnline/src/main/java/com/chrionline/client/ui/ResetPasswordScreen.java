@@ -67,9 +67,10 @@ public class ResetPasswordScreen {
         title.setStyle("-fx-font-size: 22px;");
         titleRow.getChildren().addAll(lockIcon, title);
 
-        Label subtitle = new Label("Entrez le code recu sur " + email + "\net votre nouveau mot de passe.");
+        Label subtitle = new Label("Entrez le code recu sur " + email + " et votre nouveau mot de passe.");
         subtitle.getStyleClass().add("auth-subtitle");
         subtitle.setWrapText(true);
+        subtitle.setMinHeight(Region.USE_PREF_SIZE);
         subtitle.setStyle("-fx-text-alignment: center;");
 
         // Divider
@@ -125,6 +126,7 @@ public class ResetPasswordScreen {
         Label fbText = new Label();
         fbText.getStyleClass().add("auth-error-text");
         fbText.setWrapText(true);
+        fbText.setMinHeight(Region.USE_PREF_SIZE);
         HBox.setHgrow(fbText, Priority.ALWAYS);
         fbBox.getChildren().addAll(fbIcon, fbText);
 
