@@ -253,6 +253,64 @@ public class AuthService {
         return Response.error("Session introuvable ou deja expiree.");
     }
 
+    // ── FORGOT PASSWORD ───────────────────────────────────────
+    public Response forgotPasswordRequest(Request request) {
+        String email = request.getString("email");
+        if (email == null || email.isBlank())
+            return Response.error("L'email est requis.");
+        
+        try {
+            Map<String, Object> user = userDAO.getUserByEmail(email);
+            if (user == null) {
+                // Return success anyway to prevent email enumeration attacks
+                return Response.ok("Si un compte correspond a cet email, un code de reinitialisation a ete envoye.", null);
+            }
+            int userId = (int) user.get("userId");
+            String code = EmailService.generateCode();
+            userDAO.saveVerifyCode(userId, code);
+            EmailService.sendVerificationCode(email, code); // For now using the same template
+            return Response.ok("Code de reinitialisation envoye a votre email.", null);
+        } catch (SQLException e) {
+            ServerLogger.error("FORGOT_PASSWORD error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
+        }
+    }
+
+    public Response resetPassword(Request request) {
+        String email = request.getString("email");
+        String code = request.getString("code");
+        String newPassword = request.getString("newPassword");
+        
+        if (email == null || code == null || newPassword == null)
+            return Response.error("Informations manquantes.");
+        
+        if (newPassword.length() < 8)
+            return Response.error("Le mot de passe doit contenir au moins 8 caracteres.");
+        if (!newPassword.matches(".*[A-Z].*"))
+            return Response.error("Le mot de passe doit contenir au moins une lettre majuscule.");
+        if (!newPassword.matches(".*\\d.*"))
+            return Response.error("Le mot de passe doit contenir au moins un chiffre.");
+        if (!newPassword.matches(".*[^a-zA-Z0-9\\s].*"))
+            return Response.error("Le mot de passe doit contenir au moins un caractere special.");
+            
+        try {
+            Map<String, Object> user = userDAO.getUserByEmail(email);
+            if (user == null) return Response.error("Utilisateur introuvable.");
+            
+            int userId = (int) user.get("userId");
+            if (userDAO.verifyOtp(userId, code)) {
+                String hash = hashPassword(newPassword);
+                userDAO.updatePassword(userId, hash);
+                return Response.ok("Mot de passe mis a jour avec succes.", null);
+            } else {
+                return Response.error("Code incorrect ou expire.");
+            }
+        } catch (SQLException e) {
+            ServerLogger.error("RESET_PASSWORD error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
+        }
+    }
+
     // ── Hashing (Argon2id + legacy SHA-256 fallback) ───────
     private String hashPassword(String rawPassword) {
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);

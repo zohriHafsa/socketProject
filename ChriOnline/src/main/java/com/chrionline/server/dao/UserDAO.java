@@ -173,4 +173,13 @@ public class UserDAO {
             return false;
         }
     }
+
+    public boolean updatePassword(int userId, String newHash) throws SQLException {
+        String sql = "UPDATE users SET password_hash = ? WHERE user_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setString(1, newHash);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        }
+    }
 }

@@ -37,6 +37,20 @@ public class AuthController {
         return conn.send(new Request(Action.LOGOUT, token, null));
     }
 
+    public Response forgotPasswordRequest(String email) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("email", email);
+        return conn.send(new Request(Action.FORGOT_PASSWORD_REQUEST, null, data));
+    }
+
+    public Response resetPassword(String email, String code, String newPassword) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("email", email);
+        data.put("code", code);
+        data.put("newPassword", newPassword);
+        return conn.send(new Request(Action.RESET_PASSWORD, null, data));
+    }
+
     /**
      * Enregistre le port UDP du client auprès du serveur
      * pour recevoir les notifications push.
