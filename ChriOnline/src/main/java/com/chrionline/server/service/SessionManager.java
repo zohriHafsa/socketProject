@@ -89,4 +89,18 @@ public class SessionManager {
     }
 
     public static int getActiveCount() { return sessions.size(); }
+
+    public static void invalidateAllForUser(int userId) {
+        sessions.entrySet().removeIf(entry -> {
+            if (entry.getValue().userId == userId) {
+                ServerLogger.info("Session force-invalidated for userId=" + userId
+                        + " (password reset)");
+                return true;
+            }
+            return false;
+        });
+    }
+
+
+
 }

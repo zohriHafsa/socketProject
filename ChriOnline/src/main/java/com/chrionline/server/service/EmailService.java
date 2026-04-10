@@ -1,5 +1,6 @@
 package com.chrionline.server.service;
 
+import com.chrionline.server.core.ServerLogger;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import java.util.Properties;
@@ -76,17 +77,36 @@ public class EmailService {
             code);
     }
 
-    public static boolean sendResetPasswordEmail(String toEmail, String code) {
-        return sendEmail(toEmail, 
-            "ChriOnline - Reinitialisation de votre mot de passe", 
-            "Recuperation de compte", 
-            "Nous avons recu une demande de reinitialisation de mot de passe pour votre compte. Veuillez utiliser le code de securite ci-dessous pour modifier votre mot de passe :", 
-            code);
-    }
+//    public static boolean sendResetPasswordEmail(String toEmail, String code) {
+//        return sendEmail(toEmail,
+//            "ChriOnline - Reinitialisation de votre mot de passe",
+//            "Recuperation de compte",
+//            "Nous avons recu une demande de reinitialisation de mot de passe pour votre compte. Veuillez utiliser le code de securite ci-dessous pour modifier votre mot de passe :",
+//            code);
+//    }
 
     public static String generateCode() {
         // Génère un code 6 chiffres
         int code = (int)(Math.random() * 900000) + 100000;
         return String.valueOf(code);
+    }
+
+    // ─────────────────────────────────────────────────────────────
+//  Add this method to your existing EmailService.java
+// ─────────────────────────────────────────────────────────────
+
+    /**
+     * Sends a password reset email with a 6-digit code.
+     * Matches the same style as sendRegistrationEmail() and send2faEmail().
+     */
+
+    public static boolean sendResetPasswordEmail(String toEmail, String code) {
+        return sendEmail(
+                toEmail,
+                "ChriOnline - Reinitialisation de votre mot de passe",
+                "Recuperation de compte",
+                "Nous avons recu une demande de reinitialisation de mot de passe...",
+                code
+        );
     }
 }

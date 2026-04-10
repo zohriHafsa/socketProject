@@ -110,9 +110,10 @@ public class UserDAO {
     }
     // Sauvegarder le code de vérification
     public void saveVerifyCode(int userId, String code) throws SQLException {
-        String sql = "UPDATE users SET verify_code = ?, " +
-                "verify_expires = DATE_ADD(NOW(), INTERVAL 10 MINUTE) " +
-                "WHERE user_id = ?";
+        String sql = """
+        UPDATE users SET verify_code = ?, verify_expires = DATE_ADD(NOW(), INTERVAL 30 MINUTE)
+        WHERE user_id = ?
+        """;
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setString(1, code);
             ps.setInt(2, userId);
@@ -132,20 +133,21 @@ public class UserDAO {
 
     // Verify code for 2FA / Login
     public boolean verifyOtp(int userId, String code) throws SQLException {
-        String sql = "SELECT 1 FROM users WHERE user_id = ? AND verify_code = ? AND verify_expires > NOW()";
+        String sql = """
+        SELECT 1 FROM users
+        WHERE user_id = ? AND verify_code = ? AND verify_expires > NOW()
+        """;
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setInt(1, userId);
             ps.setString(2, code);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                String update = "UPDATE users SET verify_code = NULL WHERE user_id = ?";
-                try (PreparedStatement ps2 = conn().prepareStatement(update)) {
-                    ps2.setInt(1, userId);
-                    ps2.executeUpdate();
-                }
-                return true;
+            boolean valid = ps.executeQuery().next();
+            if (valid) {
+                PreparedStatement clear = conn().prepareStatement(
+                        "UPDATE users SET verify_code = NULL, verify_expires = NULL WHERE user_id = ?");
+                clear.setInt(1, userId);
+                clear.executeUpdate();
             }
-            return false;
+            return valid;
         }
     }
 
@@ -174,12 +176,82 @@ public class UserDAO {
         }
     }
 
-    public boolean updatePassword(int userId, String newHash) throws SQLException {
+//    public boolean updatePassword(int userId, String newHash) throws SQLException {
+//        String sql = "UPDATE users SET password_hash = ? WHERE user_id = ?";
+//        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+//            ps.setString(1, newHash);
+//            ps.setInt(2, userId);
+//            return ps.executeUpdate() > 0;
+//        }
+//    }
+
+    // ─────────────────────────────────────────────────────────────
+//  Add these methods to your existing UserDAO.java
+// ─────────────────────────────────────────────────────────────
+
+    /**
+     * Saves a password reset token for a user.
+     * Deletes any previous unused tokens for that user first.
+     */
+    public void saveResetToken(int userId, String token) throws SQLException {
+        // Delete old tokens for this user first
+        String deleteSql = "DELETE FROM password_reset_tokens WHERE user_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(deleteSql)) {
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+        }
+
+        // Insert new token with 30-minute expiry
+        String insertSql = """
+            INSERT INTO password_reset_tokens (token, user_id, expires_at)
+            VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 30 MINUTE))
+            """;
+        try (PreparedStatement ps = conn().prepareStatement(insertSql)) {
+            ps.setString(1, token);
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+        }
+    }
+
+    /**
+     * Validates a reset token: must exist, not used, and not expired.
+     * Returns the userId if valid, or -1 if invalid/expired.
+     */
+    public int validateResetToken(String token) throws SQLException {
+        String sql = """
+            SELECT user_id FROM password_reset_tokens
+            WHERE token = ?
+              AND used = 0
+              AND expires_at > NOW()
+            """;
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setString(1, token);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt("user_id");
+        }
+        return -1; // invalid or expired
+    }
+
+    /**
+     * Marks a reset token as used so it can't be reused.
+     */
+    public void markTokenUsed(String token) throws SQLException {
+        String sql = "UPDATE password_reset_tokens SET used = 1 WHERE token = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setString(1, token);
+            ps.executeUpdate();
+        }
+    }
+
+    /**
+     * Updates the user's password hash.
+     */
+    public void updatePassword(int userId, String newHash) throws SQLException {
         String sql = "UPDATE users SET password_hash = ? WHERE user_id = ?";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setString(1, newHash);
             ps.setInt(2, userId);
-            return ps.executeUpdate() > 0;
+            ps.executeUpdate();
         }
     }
 }

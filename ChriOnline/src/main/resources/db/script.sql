@@ -291,6 +291,8 @@ INSERT INTO notifications (user_id, message, type, is_read, protocol) VALUES
                                                                           (5, 'Votre commande #ORD-0005-2026 a été annulée.',             'ORDER',   0, 'UDP'),
                                                                           (5, 'Remboursement effectué pour la commande #ORD-0005-2026.',  'PAYMENT', 0, 'TCP');
 
+
+
 -- =============================================================
 --  FIN DU SCRIPT
 -- =============================================================

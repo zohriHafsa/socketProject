@@ -91,6 +91,11 @@ public class LoginScreen {
         StackPane passWrapper = wrapWithToggle(passwordField);
         VBox passGroup = new VBox(5, passLabel, passWrapper);
 
+        //forgot password
+        Button forgotLink = new Button("Mot de passe oublié ?");
+        forgotLink.getStyleClass().add("auth-link");
+        forgotLink.setOnAction(e -> NavigationManager.showForgotPassword());
+
         // Error box (hidden by default)
         HBox errorBox = new HBox(8);
         errorBox.getStyleClass().add("auth-error");
@@ -128,6 +133,7 @@ public class LoginScreen {
         card.getChildren().addAll(
                 titleRow, subtitle, div,
                 userGroup, passGroup,
+                forgotLink,
                 errorBox,
                 loginBtn,
                 registerRow

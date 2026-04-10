@@ -30,6 +30,10 @@ public enum Action {
     ADMIN_TOGGLE_ADMIN,
     VERIFY_EMAIL,
     VERIFY_2FA,
+    VERIFY_RESET_TOKEN,
+
+    RESET_PASSWORD,
+    FORGOT_PASSWORD,
     // UDP
     REGISTER_UDP
 }

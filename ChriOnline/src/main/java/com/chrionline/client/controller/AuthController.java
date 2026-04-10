@@ -47,4 +47,18 @@ public class AuthController {
         data.put("udpPort", udpPort);
         return conn.send(new Request(Action.REGISTER_UDP, token, data));
     }
+
+    public Response forgotPassword(String username) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("username", username);
+        return conn.send(new Request(Action.FORGOT_PASSWORD, null, data));
+    }
+
+    public Response verifyResetToken(Map<String, Object> data) {
+        return conn.send(new Request(Action.VERIFY_RESET_TOKEN, null, data));
+    }
+
+    public Response resetPassword(Map<String, Object> data) {
+        return conn.send(new Request(Action.RESET_PASSWORD, null, data));
+    }
 }

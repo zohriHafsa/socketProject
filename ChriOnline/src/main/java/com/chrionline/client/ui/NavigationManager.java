@@ -1,5 +1,6 @@
 package com.chrionline.client.ui;
 
+import com.chrionline.client.controller.AuthController;
 import com.chrionline.client.ui.admin.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -79,6 +80,7 @@ public class NavigationManager {
                 case "manageOrders":     showManageOrders();     break;
                 case "manageCategories": showManageCategories(); break;
                 case "manageAdmins":     showManageAdmins();     break;
+                case "forgotPassword": showForgotPassword(); break;
                 default: System.err.println("[NAV] Unknown: " + name);
             }
         });
@@ -177,4 +179,17 @@ public class NavigationManager {
     public static String  getFirstName() { return firstName; }
     public static String  getLastName()  { return lastName; }
     public static Scene   getScene()     { return scene; }
+    public static void showForgotPassword() {
+        transitionTo(new ForgotPasswordScreen().getView(), true);
+    }
+
+    // After ForgotPassword succeeds → show code entry screen
+    public static void showEnterCode(String username) {
+        transitionTo(new EnterCodeScreen(new AuthController(), username).getView(), true);
+    }
+
+    public static void showResetPassword(String username, String token) {
+        transitionTo(new ResetPasswordScreen(new AuthController(), username, token).getView(), true);
+    }
+
 }
