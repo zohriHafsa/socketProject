@@ -29,6 +29,12 @@ public class ClientHandler implements Runnable {
             while ((message = in.readLine()) != null) {
                 ServerLogger.info("Received from " + clientAddr + ": " + message);
 
+                if (!RateLimiter.getInstance().allowRequest(clientAddr)) {
+                    ServerLogger.warn("Rate limit exceeded for: " + clientAddr);
+                    out.println(Response.error("Too many requests.").toJson());
+                    continue;
+                }
+
                 // ── Passe l'adresse IP au routeur pour REGISTER_UDP ──
                 Response response = RequestRouter.route(message,
                         socket.getInetAddress());
