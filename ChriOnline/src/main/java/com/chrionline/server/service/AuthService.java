@@ -139,11 +139,49 @@ public class AuthService {
             if (user == null)
                 return Response.error("Utilisateur introuvable.");
 
-            if (!(boolean) user.get("isActive"))
-                return Response.error("Ce compte est desactive.");
+            int userId = (int) user.get("userId");
 
-            if (!verifyPassword(password, (String) user.get("passwordHash")))
-                return Response.error("Mot de passe incorrect.");
+// ── Check if account is locked ──────────────────
+            if (!(boolean) user.get("isActive")) {
+                Object lockedUntil = user.get("lockedUntil");
+
+                if (lockedUntil == null) {
+                    // locked_until is NULL → permanent ban by admin
+                    return Response.error("Ce compte est desactive.");
+                }
+
+                // Temporary lockout → check if time has passed
+                boolean stillLocked = userDAO.checkAndUnlockIfExpired(userId);
+                if (stillLocked) {
+                    return Response.error(
+                            "Compte bloque. Reessayez dans quelques minutes.");
+                }
+// Time passed → account just got unlocked → reload fresh user from DB
+                user = userDAO.getUserByUsername(username);
+            }
+
+// ── Wrong password ───────────────────────────────
+            if (!verifyPassword(password, (String) user.get("passwordHash"))) {
+                userDAO.recordFailedAttempt(userId);
+
+                // Get updated attempts count to give a helpful message
+                Map<String, Object> updated = userDAO.getUserById(userId);
+                int attempts = 0;
+                Object att = updated.get("failedAttempts");
+                if (att != null) attempts = ((Number) att).intValue();
+
+                if (attempts == 3)
+                    return Response.error("Mot de passe incorrect. Compte bloque 15 minutes.");
+                else if (attempts == 4)
+                    return Response.error("Mot de passe incorrect. Compte bloque 30 minutes.");
+                else if (attempts >= 5)
+                    return Response.error("Mot de passe incorrect. Compte bloque 1 heure.");
+                else
+                    return Response.error("Mot de passe incorrect. ");
+            }
+
+// ── Password correct → reset failed attempts ─────
+            userDAO.resetFailedAttempts(userId);
 
             // ── Vérification email obligatoire ──────────────
             Object verified = user.get("isVerified");
@@ -156,7 +194,7 @@ public class AuthService {
                 return Response.error(
                         "Veuillez verifier votre email avant de vous connecter.");
 
-            int    userId = (int)   user.get("userId");
+            userId = (int)   user.get("userId");
             String userEmail = (String) user.get("email");
 
             if (userDAO.hasActiveOtp(userId)) {

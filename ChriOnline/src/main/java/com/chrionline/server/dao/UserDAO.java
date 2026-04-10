@@ -106,6 +106,8 @@ public class UserDAO {
         u.put("isVerified",   rs.getBoolean("is_verified"));
         u.put("createdAt",    rs.getString("created_at"));
         u.put("updatedAt",    rs.getString("updated_at"));
+        u.put("failedAttempts", rs.getInt("failed_attempts"));
+        u.put("lockedUntil",    rs.getTimestamp("locked_until"));
         return u;
     }
     // Sauvegarder le code de vérification
@@ -253,5 +255,92 @@ public class UserDAO {
             ps.setInt(2, userId);
             ps.executeUpdate();
         }
+    }
+
+    // ── BRUTE FORCE PROTECTION ─────────────────────────
+
+    /**
+     * Increments failed attempts and locks the account if threshold reached.
+     * 3 fails → 15 min, 4 fails → 30 min, 5+ fails → 1 hour
+     */
+    public void recordFailedAttempt(int userId) throws SQLException {
+        // First increment the counter
+        String increment = "UPDATE users SET failed_attempts = failed_attempts + 1 WHERE user_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(increment)) {
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+        }
+
+        // Get the new count
+        String getCount = "SELECT failed_attempts FROM users WHERE user_id = ?";
+        int attempts = 0;
+        try (PreparedStatement ps = conn().prepareStatement(getCount)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) attempts = rs.getInt("failed_attempts");
+        }
+
+        // Lock based on attempts
+        if (attempts >= 3) {
+            String lockDuration;
+            if      (attempts == 3) lockDuration = "2 MINUTE";
+            else if (attempts == 4) lockDuration = "3 MINUTE";
+            else                    lockDuration = "3 Minute";
+
+            String lock = "UPDATE users SET is_active = 0, " +
+                    "locked_until = DATE_ADD(NOW(), INTERVAL " + lockDuration + ") " +
+                    "WHERE user_id = ?";
+            try (PreparedStatement ps = conn().prepareStatement(lock)) {
+                ps.setInt(1, userId);
+                ps.executeUpdate();
+            }
+        }
+    }
+
+    /**
+     * Resets failed attempts and unlocks account on successful login.
+     */
+    public void resetFailedAttempts(int userId) throws SQLException {
+        String sql = "UPDATE users SET failed_attempts = 0, " +
+                "locked_until = NULL, is_active = 1 WHERE user_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+        }
+    }
+
+    /**
+     * Checks if lock time has passed → unlocks automatically.
+     * Returns true if account is still locked, false if free to login.
+     */
+    public boolean checkAndUnlockIfExpired(int userId) throws SQLException {
+        String sql = "SELECT locked_until, " +
+                "locked_until < NOW() AS is_expired " +
+                "FROM users WHERE user_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                java.sql.Timestamp lockedUntil = rs.getTimestamp("locked_until");
+
+                // locked_until is NULL → permanent ban by admin
+                if (lockedUntil == null) return true;
+
+                boolean isExpired = rs.getBoolean("is_expired");
+                if (isExpired) {
+                    // Let MySQL itself do the unlock
+                    String unlock = "UPDATE users SET is_active = 1, " +
+                            "failed_attempts = 0, locked_until = NULL " +
+                            "WHERE user_id = ? AND locked_until < NOW()";
+                    try (PreparedStatement ps2 = conn().prepareStatement(unlock)) {
+                        ps2.setInt(1, userId);
+                        ps2.executeUpdate();
+                    }
+                    return false; // unlocked
+                }
+                return true; // still locked
+            }
+        }
+        return false;
     }
 }

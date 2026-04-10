@@ -740,3 +740,892 @@
 [2026-03-25 21:29:15.491] [INFO] [pool-2-thread-1] Received from 127.0.0.1: {"action":"LOGIN","data":{"username":"fatima","password":"Hafsa1234"}}
 [2026-03-25 21:29:15.491] [INFO] [pool-2-thread-1] Routing action: LOGIN
 [2026-03-25 21:29:15.493] [INFO] [pool-2-thread-1] Client disconnected.
+  16:08:46.958  🚀 [INFO   ] Starting ChriOnline Server...
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                  ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:09:20.740  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:09:20.857  ⚡ [ROUTE] GET_CATEGORIES
+  16:09:21.267  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:09:21.277  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:09:21.294  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:09:21.295  ⚡ [ROUTE] GET_PRODUCTS
+  16:09:21.303  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:09:21.306  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:10:22.182  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"hafsa12","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:10:22.185  ⚡ [ROUTE] LOGIN
+  16:10:22.192  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Ce compte est desactive."}
+              └───────────────────────────────────────────────────────
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                         ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                         ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:11:02.887  🚀 [INFO   ] Starting ChriOnline Server...
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                  ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:11:15.404  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:11:15.491  ⚡ [ROUTE] GET_CATEGORIES
+  16:11:15.837  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:11:15.847  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:11:15.860  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:11:15.861  ⚡ [ROUTE] GET_PRODUCTS
+  16:11:15.871  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:11:15.873  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:12:09.028  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"hafsa","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:12:09.032  ⚡ [ROUTE] LOGIN
+  16:12:09.586  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect. 2 tentative(s) restante(s) avant blocage."}
+              └───────────────────────────────────────────────────────
+
+
+  16:12:28.174  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"fatima","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:12:28.176  ⚡ [ROUTE] LOGIN
+  16:12:28.366  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect. 1 tentative(s) restante(s) avant blocage."}
+              └───────────────────────────────────────────────────────
+
+
+  16:12:35.040  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"test","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:12:35.042  ⚡ [ROUTE] LOGIN
+  16:12:35.265  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect. Compte bloque 15 minutes."}
+              └───────────────────────────────────────────────────────
+
+
+  16:12:55.455  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"Hafsa@123","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:12:55.457  ⚡ [ROUTE] LOGIN
+  16:12:55.461  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Compte temporairement bloque. Reessayez dans quelques minutes."}
+              └───────────────────────────────────────────────────────
+
+
+  16:14:51.170  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"Hafsa@123","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:14:51.171  ⚡ [ROUTE] LOGIN
+  16:14:51.175  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Compte temporairement bloque. Reessayez dans quelques minutes."}
+              └───────────────────────────────────────────────────────
+
+
+  16:16:02.645  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"Hafsa@123","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:16:02.646  ⚡ [ROUTE] LOGIN
+  16:16:02.650  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Compte temporairement bloque. Reessayez dans quelques minutes."}
+              └───────────────────────────────────────────────────────
+
+
+  16:16:10.013  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── FORGOT_PASSWORD ──────
+              │ {"action":"FORGOT_PASSWORD","data":{"username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:16:10.014  ⚡ [ROUTE] FORGOT_PASSWORD
+  16:16:12.811  ℹ  [INFO   ] FORGOT_PASSWORD OK : zohri (userId=13)
+  16:16:12.813  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Si ce compte existe, un email a ete envoye."}
+              └───────────────────────────────────────────────────────
+
+
+  16:16:42.228  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── VERIFY_RESET_TOKEN ───
+              │ {"action":"VERIFY_RESET_TOKEN","data":{"username":"zohri","token":"829438"}}
+              └───────────────────────────────────────────────────────
+  16:16:42.229  ⚡ [ROUTE] VERIFY_RESET_TOKEN
+  16:16:42.238  ℹ  [INFO   ] VERIFY_RESET_TOKEN OK : username=zohri
+  16:16:42.239  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Code valide."}
+              └───────────────────────────────────────────────────────
+
+
+  16:17:04.492  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── RESET_PASSWORD ───────
+              │ {"action":"RESET_PASSWORD","data":{"password":"H@fs@1234","username":"zohri","token":"829438"}}
+              └───────────────────────────────────────────────────────
+  16:17:04.493  ⚡ [ROUTE] RESET_PASSWORD
+  16:17:04.781  ℹ  [INFO   ] RESET_PASSWORD OK : userId=13
+  16:17:04.781  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Mot de passe modifie avec succes. Vous pouvez vous connecter."}
+              └───────────────────────────────────────────────────────
+
+
+  16:17:21.159  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"H@fs@1234","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:17:21.160  ⚡ [ROUTE] LOGIN
+  16:17:21.164  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Compte temporairement bloque. Reessayez dans quelques minutes."}
+              └───────────────────────────────────────────────────────
+
+  16:20:45.676  🚀 [INFO   ] Starting ChriOnline Server...
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                  ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:21:04.449  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:21:04.531  ⚡ [ROUTE] GET_CATEGORIES
+  16:21:04.867  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:21:04.877  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:21:04.894  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:21:04.895  ⚡ [ROUTE] GET_PRODUCTS
+  16:21:04.901  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:21:04.904  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:22:13.878  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"H@fs@1234","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:22:13.884  ⚡ [ROUTE] LOGIN
+  16:22:13.889  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Compte temporairement bloque. Reessayez dans quelques minutes."}
+              └───────────────────────────────────────────────────────
+
+  16:28:31.809  🚀 [INFO   ] Starting ChriOnline Server...
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                  ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:28:45.494  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:28:45.587  ⚡ [ROUTE] GET_CATEGORIES
+  16:28:45.897  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:28:45.908  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:28:45.925  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:28:45.926  ⚡ [ROUTE] GET_PRODUCTS
+  16:28:45.931  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:28:45.933  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+  16:29:13.346  🚀 [INFO   ] Starting ChriOnline Server...
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                  ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:29:31.835  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:29:31.995  ⚡ [ROUTE] GET_CATEGORIES
+  16:29:32.638  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:29:32.656  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:29:32.687  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:29:32.690  ⚡ [ROUTE] GET_PRODUCTS
+  16:29:32.695  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:29:32.698  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:29:55.288  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"hbadad","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:29:55.292  ⚡ [ROUTE] LOGIN
+  16:29:55.759  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect. Compte bloque 30 minutes."}
+              └───────────────────────────────────────────────────────
+
+
+  16:33:33.180  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"H@fs@1234","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:33:33.181  ⚡ [ROUTE] LOGIN
+  16:33:33.186  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Compte temporairement bloque. Reessayez dans quelques minutes."}
+              └───────────────────────────────────────────────────────
+
+  16:39:25.744  🚀 [INFO   ] Starting ChriOnline Server...
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                  ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:39:42.093  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:39:42.258  ⚡ [ROUTE] GET_CATEGORIES
+  16:39:43.076  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:39:43.091  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:39:43.114  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:39:43.116  ⚡ [ROUTE] GET_PRODUCTS
+  16:39:43.122  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:39:43.124  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+  16:41:28.960  🚀 [INFO   ] Starting ChriOnline Server...
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                  ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:42:06.719  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:42:06.803  ⚡ [ROUTE] GET_CATEGORIES
+  16:42:07.154  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:42:07.162  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:42:07.178  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:42:07.180  ⚡ [ROUTE] GET_PRODUCTS
+  16:42:07.184  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:42:07.187  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:42:23.399  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"H@fs@1234","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:42:23.403  ⚡ [ROUTE] LOGIN
+  16:42:26.008  🔑 [LOGIN   ] LOGIN 2FA TRIGGERED (NEW CODE) : zohri
+  16:42:26.009  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Code 2FA envoye a votre email.","data":{"2fa_required":true,"userId":13,"email":"hafsazohri0@gmail.com"}}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:07.464  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── VERIFY_2FA ───────────
+              │ {"action":"VERIFY_2FA","data":{"code":"356726","userId":13}}
+              └───────────────────────────────────────────────────────
+  16:43:07.466  ⚡ [ROUTE] VERIFY_2FA
+  16:43:07.483  🔑 [SESSION+] Session created for 'zohri' (ID:13) token=c501af41...
+  16:43:07.484  🔑 [LOGIN   ] LOGIN CLIENT (2FA PASSED) OK : zohri (ID:13, role=CLIENT)
+  16:43:07.485  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Connexion reussie !","data":{"firstName":"zohri","lastName":"zohri","role":"CLIENT","userId":13,"token":"c501af41-aadc-45d3-9346-2011cbbade2a","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:09.003  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"c501af41-aadc-45d3-9346-2011cbbade2a","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:43:09.004  ⚡ [ROUTE] GET_CART
+  16:43:09.025  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:43:09.028  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:09.030  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_NOTIFICATIONS ────
+              │ {"action":"GET_NOTIFICATIONS","token":"c501af41-aadc-45d3-9346-2011cbbade2a","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:43:09.031  ⚡ [ROUTE] GET_NOTIFICATIONS
+  16:43:09.036  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total :... (241 chars)
+              │ [FULL] {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total : 1234.98 €","type":"ORDER","userId":13}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:09.039  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:43:09.040  ⚡ [ROUTE] GET_CATEGORIES
+  16:43:09.044  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:43:09.045  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:09.049  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:43:09.050  ⚡ [ROUTE] GET_PRODUCTS
+  16:43:09.057  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:43:09.059  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:09.062  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"c501af41-aadc-45d3-9346-2011cbbade2a","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:43:09.064  ⚡ [ROUTE] GET_CART
+  16:43:09.068  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:43:09.069  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:09.070  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_NOTIFICATIONS ────
+              │ {"action":"GET_NOTIFICATIONS","token":"c501af41-aadc-45d3-9346-2011cbbade2a","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:43:09.074  ⚡ [ROUTE] GET_NOTIFICATIONS
+  16:43:09.077  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total :... (241 chars)
+              │ [FULL] {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total : 1234.98 €","type":"ORDER","userId":13}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:11.656  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"c501af41-aadc-45d3-9346-2011cbbade2a","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:43:11.657  ⚡ [ROUTE] GET_CART
+  16:43:11.661  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:43:11.661  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:11.663  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_NOTIFICATIONS ────
+              │ {"action":"GET_NOTIFICATIONS","token":"c501af41-aadc-45d3-9346-2011cbbade2a","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:43:11.664  ⚡ [ROUTE] GET_NOTIFICATIONS
+  16:43:11.665  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total :... (241 chars)
+              │ [FULL] {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total : 1234.98 €","type":"ORDER","userId":13}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:11.668  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_ORDER_HISTORY ────
+              │ {"action":"GET_ORDER_HISTORY","token":"c501af41-aadc-45d3-9346-2011cbbade2a","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:43:11.669  ⚡ [ROUTE] GET_ORDER_HISTORY
+  16:43:11.678  📋 [ORDER   ] GET_ORDER_HISTORY userId=13 count=1
+  16:43:11.679  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Historique des commandes.","data":[{"totalAmount":1234.98,"createdAt":"2026-04-09 20:25:44","orderId":"ORD-E2C7D986","shippingAddress":"test test, casa 7263","userId":13,"st... (252 chars)
+              │ [FULL] {"success":true,"message":"Historique des commandes.","data":[{"totalAmount":1234.98,"createdAt":"2026-04-09 20:25:44","orderId":"ORD-E2C7D986","shippingAddress":"test test, casa 7263","userId":13,"status":"VALIDEE","updatedAt":"2026-04-09 20:25:44"}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:11.681  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"c501af41-aadc-45d3-9346-2011cbbade2a","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:43:11.682  ⚡ [ROUTE] GET_CART
+  16:43:11.684  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:43:11.685  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:14.033  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGOUT ───────────────
+              │ {"action":"LOGOUT","token":"c501af41-aadc-45d3-9346-2011cbbade2a"}
+              └───────────────────────────────────────────────────────
+  16:43:14.034  ⚡ [ROUTE] LOGOUT
+  16:43:14.035  🔒 [SESSION-] Session invalidated for 'zohri'
+  16:43:14.035  🚪 [LOGOUT  ] LOGOUT OK
+  16:43:14.036  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Deconnexion reussie."}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:14.048  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:43:14.051  ⚡ [ROUTE] GET_CATEGORIES
+  16:43:14.055  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:43:14.055  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:14.057  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:43:14.058  ⚡ [ROUTE] GET_PRODUCTS
+  16:43:14.060  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:43:14.061  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                         ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                         ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:43:37.385  🚀 [INFO   ] Starting ChriOnline Server...
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                  ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:43:50.851  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:43:50.934  ⚡ [ROUTE] GET_CATEGORIES
+  16:43:51.280  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:43:51.289  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:43:51.306  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:43:51.308  ⚡ [ROUTE] GET_PRODUCTS
+  16:43:51.312  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:43:51.314  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:44:01.896  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"hafcd","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:44:01.900  ⚡ [ROUTE] LOGIN
+  16:44:02.455  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect. 2 tentative(s) restante(s) avant blocage."}
+              └───────────────────────────────────────────────────────
+
+
+  16:44:08.309  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"62882","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:44:08.311  ⚡ [ROUTE] LOGIN
+  16:44:08.515  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect. 1 tentative(s) restante(s) avant blocage."}
+              └───────────────────────────────────────────────────────
+
+
+  16:44:14.242  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"628qw","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:44:14.244  ⚡ [ROUTE] LOGIN
+  16:44:14.458  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect. Compte bloque 15 minutes."}
+              └───────────────────────────────────────────────────────
+
+
+  16:49:07.877  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"H@fs@1234","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:49:07.879  ⚡ [ROUTE] LOGIN
+  16:49:09.936  🔑 [LOGIN   ] LOGIN 2FA TRIGGERED (NEW CODE) : zohri
+  16:49:09.937  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Code 2FA envoye a votre email.","data":{"2fa_required":true,"userId":13,"email":"hafsazohri0@gmail.com"}}
+              └───────────────────────────────────────────────────────
+
+
+  16:49:40.825  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── VERIFY_2FA ───────────
+              │ {"action":"VERIFY_2FA","data":{"userId":13,"code":"637821"}}
+              └───────────────────────────────────────────────────────
+  16:49:40.827  ⚡ [ROUTE] VERIFY_2FA
+  16:49:40.845  🔑 [SESSION+] Session created for 'zohri' (ID:13) token=d3073088...
+  16:49:40.846  🔑 [LOGIN   ] LOGIN CLIENT (2FA PASSED) OK : zohri (ID:13, role=CLIENT)
+  16:49:40.847  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Connexion reussie !","data":{"firstName":"zohri","lastName":"zohri","role":"CLIENT","userId":13,"token":"d3073088-8ed8-4bc5-99e3-d09afeacb9e2","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+
+
+  16:49:42.360  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"d3073088-8ed8-4bc5-99e3-d09afeacb9e2","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:49:42.362  ⚡ [ROUTE] GET_CART
+  16:49:42.378  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:49:42.380  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  16:49:42.381  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_NOTIFICATIONS ────
+              │ {"action":"GET_NOTIFICATIONS","token":"d3073088-8ed8-4bc5-99e3-d09afeacb9e2","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:49:42.382  ⚡ [ROUTE] GET_NOTIFICATIONS
+  16:49:42.385  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total :... (241 chars)
+              │ [FULL] {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total : 1234.98 €","type":"ORDER","userId":13}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:49:42.388  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:49:42.391  ⚡ [ROUTE] GET_CATEGORIES
+  16:49:42.399  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:49:42.400  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:49:42.403  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:49:42.404  ⚡ [ROUTE] GET_PRODUCTS
+  16:49:42.411  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:49:42.412  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:49:42.415  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"d3073088-8ed8-4bc5-99e3-d09afeacb9e2","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:49:42.415  ⚡ [ROUTE] GET_CART
+  16:49:42.418  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:49:42.418  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  16:49:42.422  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_NOTIFICATIONS ────
+              │ {"action":"GET_NOTIFICATIONS","token":"d3073088-8ed8-4bc5-99e3-d09afeacb9e2","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:49:42.423  ⚡ [ROUTE] GET_NOTIFICATIONS
+  16:49:42.425  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total :... (241 chars)
+              │ [FULL] {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total : 1234.98 €","type":"ORDER","userId":13}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:50:50.961  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"d3073088-8ed8-4bc5-99e3-d09afeacb9e2","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:50:50.962  ⚡ [ROUTE] GET_CART
+  16:50:50.966  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:50:50.967  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  16:50:50.970  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_NOTIFICATIONS ────
+              │ {"action":"GET_NOTIFICATIONS","token":"d3073088-8ed8-4bc5-99e3-d09afeacb9e2","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:50:50.972  ⚡ [ROUTE] GET_NOTIFICATIONS
+  16:50:50.975  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total :... (241 chars)
+              │ [FULL] {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total : 1234.98 €","type":"ORDER","userId":13}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:50:50.976  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_ORDER_HISTORY ────
+              │ {"action":"GET_ORDER_HISTORY","token":"d3073088-8ed8-4bc5-99e3-d09afeacb9e2","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:50:50.977  ⚡ [ROUTE] GET_ORDER_HISTORY
+  16:50:50.980  📋 [ORDER   ] GET_ORDER_HISTORY userId=13 count=1
+  16:50:50.981  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Historique des commandes.","data":[{"totalAmount":1234.98,"createdAt":"2026-04-09 20:25:44","orderId":"ORD-E2C7D986","shippingAddress":"test test, casa 7263","userId":13,"st... (252 chars)
+              │ [FULL] {"success":true,"message":"Historique des commandes.","data":[{"totalAmount":1234.98,"createdAt":"2026-04-09 20:25:44","orderId":"ORD-E2C7D986","shippingAddress":"test test, casa 7263","userId":13,"status":"VALIDEE","updatedAt":"2026-04-09 20:25:44"}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:50:50.983  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"d3073088-8ed8-4bc5-99e3-d09afeacb9e2","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:50:50.984  ⚡ [ROUTE] GET_CART
+  16:50:50.991  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:50:50.991  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  16:50:53.373  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGOUT ───────────────
+              │ {"action":"LOGOUT","token":"d3073088-8ed8-4bc5-99e3-d09afeacb9e2"}
+              └───────────────────────────────────────────────────────
+  16:50:53.374  ⚡ [ROUTE] LOGOUT
+  16:50:53.374  🔒 [SESSION-] Session invalidated for 'zohri'
+  16:50:53.375  🚪 [LOGOUT  ] LOGOUT OK
+  16:50:53.375  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Deconnexion reussie."}
+              └───────────────────────────────────────────────────────
+
+
+  16:50:53.385  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:50:53.386  ⚡ [ROUTE] GET_CATEGORIES
+  16:50:53.388  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:50:53.390  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:50:53.392  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:50:53.394  ⚡ [ROUTE] GET_PRODUCTS
+  16:50:53.395  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:50:53.396  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:51:04.104  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"hdxad","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:51:04.105  ⚡ [ROUTE] LOGIN
+  16:51:04.388  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect. 2 tentative(s) restante(s) avant blocage."}
+              └───────────────────────────────────────────────────────
+
+  16:52:43.435  🚀 [INFO   ] Starting ChriOnline Server...
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                  ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:53:04.946  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:53:05.038  ⚡ [ROUTE] GET_CATEGORIES
+  16:53:05.352  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:53:05.361  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:53:05.375  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:53:05.376  ⚡ [ROUTE] GET_PRODUCTS
+  16:53:05.381  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:53:05.383  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:53:14.014  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"jsssssssssss","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:53:14.017  ⚡ [ROUTE] LOGIN
+  16:53:14.473  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect. "}
+              └───────────────────────────────────────────────────────
+
+
+  16:53:33.263  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"nnc","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:53:33.264  ⚡ [ROUTE] LOGIN
+  16:53:33.467  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect. Compte bloque 15 minutes."}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:11.848  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"H@fs@1234","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+  16:58:11.850  ⚡ [ROUTE] LOGIN
+  16:58:14.056  🔑 [LOGIN   ] LOGIN 2FA TRIGGERED (NEW CODE) : zohri
+  16:58:14.059  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Code 2FA envoye a votre email.","data":{"2fa_required":true,"userId":13,"email":"hafsazohri0@gmail.com"}}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:30.316  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── VERIFY_2FA ───────────
+              │ {"action":"VERIFY_2FA","data":{"userId":13,"code":"632099"}}
+              └───────────────────────────────────────────────────────
+  16:58:30.318  ⚡ [ROUTE] VERIFY_2FA
+  16:58:30.332  🔑 [SESSION+] Session created for 'zohri' (ID:13) token=613031ed...
+  16:58:30.333  🔑 [LOGIN   ] LOGIN CLIENT (2FA PASSED) OK : zohri (ID:13, role=CLIENT)
+  16:58:30.335  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Connexion reussie !","data":{"firstName":"zohri","lastName":"zohri","role":"CLIENT","userId":13,"token":"613031ed-062b-4c6d-9978-8434a4931fc0","username":"zohri"}}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:31.854  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"613031ed-062b-4c6d-9978-8434a4931fc0","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:58:31.855  ⚡ [ROUTE] GET_CART
+  16:58:31.868  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:58:31.869  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:31.871  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_NOTIFICATIONS ────
+              │ {"action":"GET_NOTIFICATIONS","token":"613031ed-062b-4c6d-9978-8434a4931fc0","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:58:31.872  ⚡ [ROUTE] GET_NOTIFICATIONS
+  16:58:31.883  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total :... (241 chars)
+              │ [FULL] {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total : 1234.98 €","type":"ORDER","userId":13}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:31.886  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES"}
+              └───────────────────────────────────────────────────────
+  16:58:31.887  ⚡ [ROUTE] GET_CATEGORIES
+  16:58:31.896  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:58:31.898  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"electronique","description":"Appareils ?lectroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"?quipement et v?tements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"T?l?phones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:31.901  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS"}
+              └───────────────────────────────────────────────────────
+  16:58:31.902  ⚡ [ROUTE] GET_PRODUCTS
+  16:58:31.907  📦 [PRODUCT ] GET_PRODUCTS : 16 produit(s)
+  16:58:31.908  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u00... (4179 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Samsung Galaxy S24","description":"...","stockQuantity":44,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"https://images.unsplash.com/photo-1598327105666-5b89351aff97?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"https://images.unsplash.com/photo-1586790170083-2f9ceadc732d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"https://images.unsplash.com/photo-1542272604-787c3835535d?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w\u003d400\u0026h\u003d400\u0026fit\u003dcrop","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0132350882-L.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/0201633612-L.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"https://covers.openlibrary.org/b/isbn/1260440230-L.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/2070408507-L.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"imageUrl":"https://covers.openlibrary.org/b/isbn/0451524934-L.jpg","name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":19,"price":15000.0,"imageUrl":"/images/products/1774537209526_ip17pro-max-o-.jpg","name":"iphone17-proMax","description":"test test test","stockQuantity":39,"categoryName":"Smartphones","categoryId":6}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:31.911  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"613031ed-062b-4c6d-9978-8434a4931fc0","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:58:31.912  ⚡ [ROUTE] GET_CART
+  16:58:31.918  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:58:31.919  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:31.921  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_NOTIFICATIONS ────
+              │ {"action":"GET_NOTIFICATIONS","token":"613031ed-062b-4c6d-9978-8434a4931fc0","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:58:31.922  ⚡ [ROUTE] GET_NOTIFICATIONS
+  16:58:31.927  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total :... (241 chars)
+              │ [FULL] {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total : 1234.98 €","type":"ORDER","userId":13}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:34.581  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"613031ed-062b-4c6d-9978-8434a4931fc0","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:58:34.582  ⚡ [ROUTE] GET_CART
+  16:58:34.585  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:58:34.586  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:34.588  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_NOTIFICATIONS ────
+              │ {"action":"GET_NOTIFICATIONS","token":"613031ed-062b-4c6d-9978-8434a4931fc0","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:58:34.589  ⚡ [ROUTE] GET_NOTIFICATIONS
+  16:58:34.591  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total :... (241 chars)
+              │ [FULL] {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-04-09 20:25:44","protocol":"UDP","isRead":false,"notificationId":9,"message":"Commande ORD-E2C7D986 confirmée ! Total : 1234.98 €","type":"ORDER","userId":13}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:34.594  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_ORDER_HISTORY ────
+              │ {"action":"GET_ORDER_HISTORY","token":"613031ed-062b-4c6d-9978-8434a4931fc0","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:58:34.595  ⚡ [ROUTE] GET_ORDER_HISTORY
+  16:58:34.597  📋 [ORDER   ] GET_ORDER_HISTORY userId=13 count=1
+  16:58:34.598  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Historique des commandes.","data":[{"totalAmount":1234.98,"createdAt":"2026-04-09 20:25:44","orderId":"ORD-E2C7D986","shippingAddress":"test test, casa 7263","userId":13,"st... (252 chars)
+              │ [FULL] {"success":true,"message":"Historique des commandes.","data":[{"totalAmount":1234.98,"createdAt":"2026-04-09 20:25:44","orderId":"ORD-E2C7D986","shippingAddress":"test test, casa 7263","userId":13,"status":"VALIDEE","updatedAt":"2026-04-09 20:25:44"}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:58:34.600  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CART ─────────────
+              │ {"action":"GET_CART","token":"613031ed-062b-4c6d-9978-8434a4931fc0","data":{"userId":13}}
+              └───────────────────────────────────────────────────────
+  16:58:34.601  ⚡ [ROUTE] GET_CART
+  16:58:34.604  ℹ  [INFO   ] GET_CART userId=13 items=0
+  16:58:34.605  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
