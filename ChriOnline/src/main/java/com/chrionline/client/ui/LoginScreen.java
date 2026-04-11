@@ -2,6 +2,7 @@ package com.chrionline.client.ui;
 
 import com.chrionline.client.controller.AuthController;
 import com.chrionline.client.network.ServerConnection;
+import com.chrionline.client.network.UDPHeartbeatSender;
 import com.chrionline.shared.dto.Response;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -302,6 +303,13 @@ public class LoginScreen {
                             getStr(data, "firstName"),
                             getStr(data, "lastName")
                     );
+                    // ── Start UDP heartbeat sender ───────────────
+                    int uid = getInt(data, "userId");
+                    UDPHeartbeatSender heartbeat = new UDPHeartbeatSender(uid);
+                    Thread heartbeatThread = new Thread(heartbeat);
+                    heartbeatThread.setDaemon(true);
+                    heartbeatThread.setName("udp-heartbeat-" + uid);
+                    heartbeatThread.start();
 
                     // APRÈS — redirige selon le rôle
                     String role = getStr(data, "role");
