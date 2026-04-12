@@ -10,13 +10,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.*;
 
 public class ProfileScreen {
 
-    private static final double MAX_W = 900;
+    private static final double MAX_W = 860;
     private static final double H_PAD = 40;
     private final BorderPane root;
 
@@ -37,117 +39,140 @@ public class ProfileScreen {
 
     public Node getView() { return root; }
 
-    private StackPane buildHeader() {
-        StackPane w = new StackPane();
-        w.getStyleClass().add("page-header-bar");
-        w.setMinWidth(0);
-        HBox inner = new HBox(16);
-        inner.setMaxWidth(MAX_W);
-        inner.setPadding(new Insets(0, H_PAD, 0, H_PAD));
-        inner.setMinHeight(70);
-        inner.setAlignment(Pos.CENTER_LEFT);
-
-        Button back = new Button("\u2190 Boutique");
-        back.getStyleClass().add("page-back-btn");
-        back.setOnAction(e -> NavigationManager.showLanding());
-        Label title = new Label("Mon Profil");
-        title.getStyleClass().add("page-title");
-        inner.getChildren().addAll(back, title);
-        w.getChildren().add(inner);
-        return w;
-    }
-
     @SuppressWarnings("unchecked")
     private void buildContent() {
+        String fn       = orEmpty(NavigationManager.getFirstName());
+        String ln       = orEmpty(NavigationManager.getLastName());
+        String username = orEmpty(NavigationManager.getUsername());
+        String role     = orEmpty(NavigationManager.getRole());
+
+        String fullName = (fn + " " + ln).trim();
+        String displayName = fullName.isEmpty() ? username : fullName;
+
+        String initials = "";
+        if (!fn.isEmpty()) initials += fn.substring(0, 1).toUpperCase();
+        if (!ln.isEmpty()) initials += ln.substring(0, 1).toUpperCase();
+        if (initials.isEmpty() && !username.isEmpty()) initials = username.substring(0, 1).toUpperCase();
+
         VBox container = new VBox(20);
         container.setMaxWidth(MAX_W);
-        container.setPadding(new Insets(30, H_PAD, 50, H_PAD));
+        container.setPadding(new Insets(30, H_PAD, 60, H_PAD));
         container.setAlignment(Pos.TOP_CENTER);
 
-        // ── Avatar + Info card ──────────────────────────
-        HBox topCard = new HBox(24);
-        topCard.getStyleClass().add("profile-card");
-        topCard.setAlignment(Pos.CENTER_LEFT);
+        // ── Page title ───────────────────────────────────────
+        Label pageTitle = new Label("Mon Profil");
+        pageTitle.getStyleClass().add("page-title");
+        pageTitle.setAlignment(Pos.CENTER_LEFT);
 
+        // ════════════════════════════════════════════════════
+        //  HERO CARD — avatar + name + role + username
+        // ════════════════════════════════════════════════════
+        HBox heroCard = new HBox(20);
+        heroCard.getStyleClass().add("profile-hero-card");
+        heroCard.setAlignment(Pos.CENTER_LEFT);
+        heroCard.setPadding(new Insets(24, 28, 24, 28));
+
+        // Avatar
         StackPane avatar = new StackPane();
-        avatar.getStyleClass().add("profile-avatar");
-        String initials = "";
-        String fn = NavigationManager.getFirstName();
-        String ln = NavigationManager.getLastName();
-        if (fn != null && !fn.isEmpty()) initials += fn.substring(0, 1).toUpperCase();
-        if (ln != null && !ln.isEmpty()) initials += ln.substring(0, 1).toUpperCase();
-        if (initials.isEmpty()) initials = "?";
-        Label avatarText = new Label(initials);
-        avatarText.getStyleClass().add("profile-avatar-text");
-        avatar.getChildren().add(avatarText);
+        avatar.getStyleClass().add("profile-avatar-lg");
+        Label avatarLabel = new Label(initials);
+        avatarLabel.getStyleClass().add("profile-avatar-text-lg");
+        avatar.getChildren().add(avatarLabel);
 
-        VBox nameBox = new VBox(6);
-        HBox.setHgrow(nameBox, Priority.ALWAYS);
-        String fullName = ((fn != null ? fn : "") + " " + (ln != null ? ln : "")).trim();
-        Label nameL = new Label(fullName.isEmpty() ? NavigationManager.getUsername() : fullName);
-        nameL.getStyleClass().add("profile-name");
-        Label userL = new Label("@" + NavigationManager.getUsername());
-        userL.getStyleClass().add("profile-info-label");
-        Label roleL = new Label(NavigationManager.getRole());
-        roleL.getStyleClass().add("profile-role-badge");
-        nameBox.getChildren().addAll(nameL, userL, roleL);
+        VBox heroText = new VBox(5);
+        heroText.setAlignment(Pos.CENTER_LEFT);
+        HBox.setHgrow(heroText, Priority.ALWAYS);
 
-        topCard.getChildren().addAll(avatar, nameBox);
+        Label nameLabel = new Label(displayName);
+        nameLabel.getStyleClass().add("profile-hero-name");
 
-        // ── Stats row ───────────────────────────────────
-        HBox statsRow = new HBox(16);
-        statsRow.setAlignment(Pos.CENTER);
+        Label usernameLabel = new Label("@" + username);
+        usernameLabel.getStyleClass().add("profile-hero-username");
 
-        VBox statOrders = statCard("—", "Commandes");
-        VBox statCart = statCard("—", "Articles panier");
-        VBox statId = statCard(String.valueOf(NavigationManager.getUserId()), "ID Utilisateur");
+        Label roleBadge = new Label(fmtRole(role));
+        roleBadge.getStyleClass().addAll("order-status-badge", "profile-badge-client");
 
-        statsRow.getChildren().addAll(statOrders, statCart, statId);
-        HBox.setHgrow(statOrders, Priority.ALWAYS);
-        HBox.setHgrow(statCart, Priority.ALWAYS);
-        HBox.setHgrow(statId, Priority.ALWAYS);
+        // ── Orders chip (loaded async) ─────────────────────
+        Label ordersChip = new Label("●  — commandes");
+        ordersChip.getStyleClass().add("profile-orders-chip");
 
-        loadStats(statOrders, statCart);
+        heroText.getChildren().addAll(nameLabel, usernameLabel, roleBadge);
 
-        // ── Info card ───────────────────────────────────
-        VBox infoCard = new VBox(14);
-        infoCard.getStyleClass().add("profile-card");
+        // ── Orders stat — right side of hero ──────────────
+        VBox ordersBox = new VBox(4);
+        ordersBox.setAlignment(Pos.CENTER);
+        ordersBox.setPadding(new Insets(8, 12, 8, 12));
+        ordersBox.getStyleClass().add("profile-orders-box");
 
-        Label infoTitle = new Label("Informations du compte");
+        Label ordersIcon = new Label("📦");
+        ordersIcon.setStyle("-fx-font-size: 22px; -fx-text-fill: #6C3483;");
+
+        Label ordersCount = new Label("—");
+        ordersCount.getStyleClass().add("profile-orders-count");
+
+        Label ordersLabel = new Label("commandes");
+        ordersLabel.getStyleClass().add("profile-orders-label");
+
+        ordersBox.getChildren().addAll(ordersIcon, ordersCount, ordersLabel);
+        heroCard.getChildren().addAll(avatar, heroText, ordersBox);
+
+        loadOrdersCount(ordersCount);
+
+        // ════════════════════════════════════════════════════
+        //  INFO CARD — two-column grid
+        // ════════════════════════════════════════════════════
+        VBox infoCard = new VBox(16);
+        infoCard.getStyleClass().add("profile-info-card");
+
+        Label infoTitle = new Label("Informations personnelles");
         infoTitle.getStyleClass().add("profile-section-title");
-        infoCard.getChildren().addAll(infoTitle,
-                infoRow("Identifiant", String.valueOf(NavigationManager.getUserId())),
-                infoRow("Utilisateur", NavigationManager.getUsername()),
-                infoRow("Rôle", NavigationManager.getRole()),
-                infoRow("Prénom", fn != null ? fn : "—"),
-                infoRow("Nom", ln != null ? ln : "—")
-        );
 
-        // ── Quick actions ───────────────────────────────
+        Region divider = new Region();
+        divider.setStyle("-fx-background-color: #F0EEF6; -fx-pref-height: 1;");
+
+        GridPane infoGrid = new GridPane();
+        infoGrid.setHgap(24);
+        infoGrid.setVgap(14);
+        ColumnConstraints c1 = new ColumnConstraints(); c1.setPercentWidth(50);
+        ColumnConstraints c2 = new ColumnConstraints(); c2.setPercentWidth(50);
+        infoGrid.getColumnConstraints().addAll(c1, c2);
+
+        infoGrid.add(infoField("Prénom",           fn.isEmpty()       ? "—" : fn),       0, 0);
+        infoGrid.add(infoField("Nom de famille",    ln.isEmpty()       ? "—" : ln),       1, 0);
+        infoGrid.add(infoField("Nom d'utilisateur", username.isEmpty() ? "—" : "@" + username), 0, 1);
+        infoGrid.add(infoField("Rôle",              fmtRole(role)),                        1, 1);
+
+        infoCard.getChildren().addAll(infoTitle, divider, infoGrid);
+
+        // ════════════════════════════════════════════════════
+        //  ACTIONS
+        // ════════════════════════════════════════════════════
         HBox actions = new HBox(12);
-        actions.setAlignment(Pos.CENTER);
+        actions.setAlignment(Pos.CENTER_LEFT);
 
-        Button ordersBtn = new Button("Mes commandes");
+        Button ordersBtn = new Button("📦  Mes commandes");
         ordersBtn.getStyleClass().add("btn-primary");
-        ordersBtn.setStyle("-fx-font-size:13px;-fx-padding:10 20;");
+        ordersBtn.setStyle("-fx-font-size:13px;-fx-padding:11 22;");
         ordersBtn.setOnAction(e -> NavigationManager.showOrders());
 
-        Button cartBtn = new Button("Mon panier");
+        Button cartBtn = new Button("🛒  Mon panier");
         cartBtn.getStyleClass().add("btn-secondary");
-        cartBtn.setStyle("-fx-font-size:13px;-fx-padding:10 20;");
+        cartBtn.setStyle("-fx-font-size:13px;-fx-padding:11 22;");
         cartBtn.setOnAction(e -> NavigationManager.showCart());
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Button logoutBtn = new Button("Se déconnecter");
         logoutBtn.getStyleClass().add("profile-logout-btn");
         logoutBtn.setOnAction(e -> doLogout());
 
-        actions.getChildren().addAll(ordersBtn, cartBtn, logoutBtn);
+        actions.getChildren().addAll(ordersBtn, cartBtn, spacer, logoutBtn);
 
-        container.getChildren().addAll(topCard, statsRow, infoCard, actions);
+        container.getChildren().addAll(pageTitle, heroCard, infoCard, actions);
 
         StackPane centered = new StackPane(container);
         centered.setAlignment(Pos.TOP_CENTER);
-        centered.setMinWidth(0);
 
         ScrollPane scroll = new ScrollPane(centered);
         scroll.setFitToWidth(true);
@@ -156,60 +181,65 @@ public class ProfileScreen {
 
         root.setCenter(scroll);
 
-        // Animate cards
+        // Staggered entrance
         Platform.runLater(() -> {
-            Node[] nodes = {topCard, statsRow, infoCard, actions};
+            Node[] nodes = {heroCard, infoCard, actions};
             for (int i = 0; i < nodes.length; i++) {
-                Node n = nodes[i]; n.setOpacity(0); n.setTranslateY(20);
-                FadeTransition f = new FadeTransition(Duration.millis(450), n);
-                f.setToValue(1); f.setDelay(Duration.millis(100 + i * 100));
-                TranslateTransition s = new TranslateTransition(Duration.millis(450), n);
-                s.setToY(0); s.setDelay(Duration.millis(100 + i * 100));
+                Node n = nodes[i]; n.setOpacity(0); n.setTranslateY(18);
+                FadeTransition f = new FadeTransition(Duration.millis(420), n);
+                f.setToValue(1); f.setDelay(Duration.millis(80 + i * 90));
+                TranslateTransition s = new TranslateTransition(Duration.millis(420), n);
+                s.setToY(0); s.setDelay(Duration.millis(80 + i * 90));
                 s.setInterpolator(Interpolator.EASE_OUT);
                 new ParallelTransition(f, s).play();
             }
         });
     }
 
-    private HBox infoRow(String label, String value) {
-        HBox r = new HBox(); r.setAlignment(Pos.CENTER_LEFT);
-        Label l = new Label(label); l.getStyleClass().add("profile-info-label"); l.setMinWidth(140);
-        Region sp = new Region(); HBox.setHgrow(sp, Priority.ALWAYS);
-        Label v = new Label(value != null ? value : "—"); v.getStyleClass().add("profile-info-value");
-        r.getChildren().addAll(l, sp, v); return r;
+    // ── Info field (label + value stacked) ────────────────
+    private VBox infoField(String label, String value) {
+        VBox box = new VBox(4);
+        box.getStyleClass().add("profile-info-field");
+
+        Label l = new Label(label);
+        l.getStyleClass().add("profile-field-label");
+
+        Label v = new Label(value != null && !value.isEmpty() ? value : "—");
+        v.getStyleClass().add("profile-field-value");
+        v.setWrapText(true);
+
+        box.getChildren().addAll(l, v);
+        return box;
     }
 
-    private VBox statCard(String value, String label) {
-        VBox c = new VBox(4); c.getStyleClass().add("profile-stat-card"); c.setAlignment(Pos.CENTER);
-        Label v = new Label(value); v.getStyleClass().add("profile-stat-value");
-        Label l = new Label(label); l.getStyleClass().add("profile-stat-label");
-        c.getChildren().addAll(v, l); return c;
+    // ── Stat card (icon + number + label) ─────────────────
+    private VBox statCard(String number, String label, String icon) {
+        VBox c = new VBox(6);
+        c.getStyleClass().add("profile-stat-card");
+        c.setAlignment(Pos.CENTER);
+        c.setPadding(new Insets(20));
+
+        Label iconL = new Label(icon);
+        iconL.setStyle("-fx-font-size: 22px; -fx-text-fill: #2C3E50;");
+
+        Label numL = new Label(number);
+        numL.getStyleClass().add("profile-stat-value");
+
+        Label lblL = new Label(label);
+        lblL.getStyleClass().add("profile-stat-label");
+
+        c.getChildren().addAll(iconL, numL, lblL);
+        return c;
     }
 
     @SuppressWarnings("unchecked")
-    private void loadStats(VBox ordersCard, VBox cartCard) {
+    private void loadOrdersCount(Label countLabel) {
         ServerConnection.getInstance()
                 .sendAsync(new Request(Action.GET_ORDER_HISTORY, NavigationManager.getToken(),
                         Map.of("userId", NavigationManager.getUserId())))
                 .thenAccept(res -> Platform.runLater(() -> {
-                    if (res.isSuccess() && res.getData() != null) {
-                        ((Label) ordersCard.getChildren().get(0)).setText(
-                                String.valueOf(((List<?>) res.getData()).size()));
-                    }
-                }));
-
-        ServerConnection.getInstance()
-                .sendAsync(new Request(Action.GET_CART, NavigationManager.getToken(),
-                        Map.of("userId", NavigationManager.getUserId())))
-                .thenAccept(res -> Platform.runLater(() -> {
-                    if (res.isSuccess() && res.getData() != null) {
-                        Map<String, Object> cart = (Map<String, Object>) res.getData();
-                        Object ic = cart.get("itemCount");
-                        int count = 0;
-                        if (ic instanceof Double) count = ((Double) ic).intValue();
-                        else if (ic instanceof Integer) count = (Integer) ic;
-                        ((Label) cartCard.getChildren().get(0)).setText(String.valueOf(count));
-                    }
+                    if (res.isSuccess() && res.getData() != null)
+                        countLabel.setText(String.valueOf(((List<?>) res.getData()).size()));
                 }));
     }
 
@@ -231,5 +261,16 @@ public class ProfileScreen {
         btn.setOnAction(e -> NavigationManager.showLogin());
         b.getChildren().addAll(t, btn);
         root.setCenter(b);
+    }
+
+    private String orEmpty(String s) { return s != null ? s : ""; }
+
+    private String fmtRole(String role) {
+        if (role == null) return "Client";
+        switch (role) {
+            case "SUPER_ADMIN": return "Super Admin";
+            case "ADMIN":       return "Administrateur";
+            default:            return "Client";
+        }
     }
 }

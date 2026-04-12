@@ -161,7 +161,7 @@ public class HeaderComponent {
         notifBadgePane.getChildren().add(notifCountLabel);
         notifBadgePane.setVisible(false);
         StackPane.setAlignment(notifBadgePane, Pos.TOP_RIGHT);
-        StackPane.setMargin(notifBadgePane, new Insets(-4, -4, 0, 0));
+        StackPane.setMargin(notifBadgePane, new Insets(2, -4, 0, 0));
         notifStack.getChildren().addAll(notifBtn, notifBadgePane);
         notifStack.setVisible(NavigationManager.isLoggedIn() && !isAdmin);
         notifStack.setManaged(NavigationManager.isLoggedIn() && !isAdmin);
@@ -188,7 +188,7 @@ public class HeaderComponent {
         cartBadgePane.getChildren().add(cartCountLabel);
         cartBadgePane.setVisible(false);
         StackPane.setAlignment(cartBadgePane, Pos.TOP_RIGHT);
-        StackPane.setMargin(cartBadgePane, new Insets(-4, -4, 0, 0));
+        StackPane.setMargin(cartBadgePane, new Insets(2, -4, 0, 0));
         cartStack.getChildren().addAll(cartBtn, cartBadgePane);
         cartStack.setVisible(!isAdmin);
         cartStack.setManaged(!isAdmin);

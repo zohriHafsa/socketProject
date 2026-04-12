@@ -2583,3 +2583,161 @@
     -fx-font-weight: 600;
     -fx-text-fill: #2C3E50;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   PROFILE — REDESIGNED
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Hero card ───────────────────────────────────────────── */
+.profile-hero-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 12, 0, 0, 3);
+    -fx-border-color: #EDEDF0;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+}
+
+.profile-hero-banner {
+    -fx-background-color: linear-gradient(to right, #6C3483, #9B59B6);
+    -fx-background-radius: 16 16 0 0;
+}
+
+.profile-avatar-lg {
+    -fx-background-color: linear-gradient(to bottom right, #6C3483, #8E44AD);
+    -fx-background-radius: 50;
+    -fx-min-width: 72;
+    -fx-min-height: 72;
+    -fx-max-width: 72;
+    -fx-max-height: 72;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(108,52,131,0.3), 10, 0, 0, 3);
+}
+
+.profile-avatar-inner {
+    -fx-background-color: linear-gradient(to bottom right, #6C3483, #8E44AD);
+    -fx-background-radius: 50;
+    -fx-min-width: 66;
+    -fx-min-height: 66;
+    -fx-max-width: 66;
+    -fx-max-height: 66;
+    -fx-alignment: center;
+}
+
+.profile-avatar-text-lg {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.profile-hero-name {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+.profile-hero-username {
+    -fx-font-size: 13px;
+    -fx-text-fill: #95A5A6;
+}
+
+.profile-badge-client {
+    -fx-background-color: rgba(108,52,131,0.1);
+    -fx-text-fill: #6C3483;
+}
+
+/* ── Orders stat box (right side of hero) ────────────────── */
+.profile-orders-box {
+    -fx-background-color: rgba(108,52,131,0.07);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(108,52,131,0.15);
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-min-width: 90;
+}
+
+.profile-orders-count {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+.profile-orders-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #2C3E50;
+}
+
+/* ── Info card ───────────────────────────────────────────── */
+.profile-info-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16;
+    -fx-padding: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0, 0, 3);
+    -fx-border-color: #EDEDF0;
+    -fx-border-radius: 16;
+    -fx-border-width: 1;
+}
+
+.profile-section-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+/* ── Info field (stacked label + value) ──────────────────── */
+.profile-info-field {
+    -fx-background-color: #F8F6FB;
+    -fx-background-radius: 10;
+    -fx-padding: 12 16;
+}
+
+.profile-field-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #95A5A6;
+}
+
+.profile-field-value {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
+/* ── Stat cards ──────────────────────────────────────────── */
+.profile-stat-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+    -fx-border-color: #EDEDF0;
+    -fx-border-radius: 14;
+    -fx-border-width: 1;
+}
+
+.profile-stat-value {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6C3483;
+}
+
+.profile-stat-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7F8C8D;
+}
+
+/* ── Logout button ───────────────────────────────────────── */
+.profile-logout-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #E74C3C;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 22;
+    -fx-cursor: hand;
+    -fx-border-color: #E74C3C;
+    -fx-border-radius: 10;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 10;
+}
+
+.profile-logout-btn:hover {
+    -fx-background-color: rgba(231,76,60,0.07);
+}
