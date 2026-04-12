@@ -139,11 +139,49 @@ public class AuthService {
             if (user == null)
                 return Response.error("Utilisateur introuvable.");
 
-            if (!(boolean) user.get("isActive"))
-                return Response.error("Ce compte est desactive.");
+            int userId = (int) user.get("userId");
 
-            if (!verifyPassword(password, (String) user.get("passwordHash")))
-                return Response.error("Mot de passe incorrect.");
+// ── Check if account is locked ──────────────────
+            if (!(boolean) user.get("isActive")) {
+                Object lockedUntil = user.get("lockedUntil");
+
+                if (lockedUntil == null) {
+                    // locked_until is NULL → permanent ban by admin
+                    return Response.error("Ce compte est desactive.");
+                }
+
+                // Temporary lockout → check if time has passed
+                boolean stillLocked = userDAO.checkAndUnlockIfExpired(userId);
+                if (stillLocked) {
+                    return Response.error(
+                            "Compte bloque. Reessayez dans quelques minutes.");
+                }
+// Time passed → account just got unlocked → reload fresh user from DB
+                user = userDAO.getUserByUsername(username);
+            }
+
+// ── Wrong password ───────────────────────────────
+            if (!verifyPassword(password, (String) user.get("passwordHash"))) {
+                userDAO.recordFailedAttempt(userId);
+
+                // Get updated attempts count to give a helpful message
+                Map<String, Object> updated = userDAO.getUserById(userId);
+                int attempts = 0;
+                Object att = updated.get("failedAttempts");
+                if (att != null) attempts = ((Number) att).intValue();
+
+                if (attempts == 3)
+                    return Response.error("Mot de passe incorrect. Compte bloque 15 minutes.");
+                else if (attempts == 4)
+                    return Response.error("Mot de passe incorrect. Compte bloque 30 minutes.");
+                else if (attempts >= 5)
+                    return Response.error("Mot de passe incorrect. Compte bloque 1 heure.");
+                else
+                    return Response.error("Mot de passe incorrect. ");
+            }
+
+// ── Password correct → reset failed attempts ─────
+            userDAO.resetFailedAttempts(userId);
 
             // ── Vérification email obligatoire ──────────────
             Object verified = user.get("isVerified");
@@ -156,7 +194,7 @@ public class AuthService {
                 return Response.error(
                         "Veuillez verifier votre email avant de vous connecter.");
 
-            int    userId = (int)   user.get("userId");
+            userId = (int)   user.get("userId");
             String userEmail = (String) user.get("email");
 
             if (userDAO.hasActiveOtp(userId)) {
@@ -418,6 +456,46 @@ public class AuthService {
             ServerLogger.error("VERIFY_RESET_TOKEN SQL error : " + e.getMessage());
             e.printStackTrace();
             return Response.error("Erreur serveur.");
+        }
+    }
+
+    public Response verifyCaptcha(Request request) {
+        String token = request.getString("captchaToken");
+        if (token == null || token.isBlank())
+            return Response.error("Token CAPTCHA manquant.");
+
+        try {
+            // Call Google's verification API
+            String secretKey = "YOUR_SECRET_KEY_HERE"; // ← replace this
+            String url = "https://www.google.com/recaptcha/api/siteverify"
+                    + "?secret=" + secretKey
+                    + "&response=" + token;
+
+            java.net.URL apiUrl = new java.net.URL(url);
+            java.net.HttpURLConnection conn =
+                    (java.net.HttpURLConnection) apiUrl.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setConnectTimeout(5000);
+
+            java.util.Scanner scanner = new java.util.Scanner(
+                    conn.getInputStream()).useDelimiter("\\A");
+            String jsonResponse = scanner.hasNext() ? scanner.next() : "";
+
+            // Parse "success": true/false from Google's JSON response
+            boolean success = jsonResponse.contains("\"success\": true")
+                    || jsonResponse.contains("\"success\":true");
+
+            if (success) {
+                ServerLogger.info("CAPTCHA verified OK");
+                return Response.ok("CAPTCHA valide.", null);
+            } else {
+                ServerLogger.warn("CAPTCHA failed: " + jsonResponse);
+                return Response.error("CAPTCHA invalide.");
+            }
+
+        } catch (Exception e) {
+            ServerLogger.error("CAPTCHA verify error: " + e.getMessage());
+            return Response.error("Erreur vérification CAPTCHA.");
         }
     }
 

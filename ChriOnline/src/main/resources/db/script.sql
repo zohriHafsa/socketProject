@@ -40,6 +40,10 @@ INSERT INTO users (username, email, password_hash, first_name, last_name, role, 
                                                                                                     ('tnoir',   'thomas.noir@mail.com',  SHA2('password123',  256), 'Thomas', 'Noir',   'CLIENT', '22 Rue de Rivoli, Paris',       '0644444444');
 
 
+
+ALTER TABLE users
+    ADD COLUMN failed_attempts INT NOT NULL DEFAULT 0,
+ADD COLUMN locked_until DATETIME DEFAULT NULL;
 -- -------------------------------------------------------------
 --  TABLE : sessions
 -- -------------------------------------------------------------
