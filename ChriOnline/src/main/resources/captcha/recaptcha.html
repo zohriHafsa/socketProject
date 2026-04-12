@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 8px;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            font-family: sans-serif;
+        }
+    </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+<div class="g-recaptcha"
+     data-sitekey="6LcIHrEsAAAAAAoLx-cjhPKG0zWOr922BwCPrG0O"
+     data-callback="onCaptchaSolved"
+     data-expired-callback="onCaptchaExpired">
+</div>
+
+<script>
+    // Called by Google when user checks the box successfully
+    function onCaptchaSolved(token) {
+        // Send the token to JavaFX via the bridge object
+        if (window.javaBridge) {
+            window.javaBridge.onTokenReceived(token);
+        }
+    }
+
+    // Called when the token expires (2 minutes of inactivity)
+    function onCaptchaExpired() {
+        if (window.javaBridge) {
+            window.javaBridge.onTokenExpired();
+        }
+    }
+
+    // Called by JavaFX to get the current token
+    function getToken() {
+        return grecaptcha.getResponse();
+    }
+
+    // Called by JavaFX to reset the widget
+    function resetCaptcha() {
+        grecaptcha.reset();
+    }
+</script>
+</body>
+</html>

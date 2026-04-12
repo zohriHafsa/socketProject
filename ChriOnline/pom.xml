@@ -49,6 +49,12 @@
             <artifactId>argon2-jvm</artifactId>
             <version>2.11</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>21</version>  <!-- use the same version as your other javafx dependencies -->
+        </dependency>
     </dependencies>
 
     <build>
