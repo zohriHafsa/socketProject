@@ -91,14 +91,13 @@ public class ResetPasswordScreen {
         StackPane confirmWrapper = wrapWithToggle(confirmField);
         VBox confirmGroup = new VBox(5, confirmLabel, confirmWrapper);
 
-        // Strength indicator
-        ProgressBar strengthBar = new ProgressBar(0);
-        strengthBar.setMaxWidth(Double.MAX_VALUE);
-        strengthBar.setStyle("-fx-accent: #E74C3C;");
-        Label strengthLabel = new Label("");
-        strengthLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #888;");
-        newPassField.textProperty().addListener((obs, o, n) ->
-                updateStrength(n, strengthBar, strengthLabel));
+        // Password hint
+        HBox passHint = new HBox(8);
+        passHint.setAlignment(Pos.CENTER_LEFT);
+        passHint.setPadding(new Insets(0, 0, 6, 2));
+        Label hintText = new Label("• Min 8 caractères, 1 majuscule, 1 chiffre, 1 spécial\n• Ne doit inclure ni votre prénom, ni votre nom");
+        hintText.setStyle("-fx-font-size: 11px; -fx-text-fill: #BDC3C7;");
+        passHint.getChildren().add(hintText);
 
         // Error box
         HBox errorBox = new HBox(8);
@@ -114,20 +113,34 @@ public class ResetPasswordScreen {
         HBox.setHgrow(errorText, Priority.ALWAYS);
         errorBox.getChildren().addAll(errorIcon, errorText);
 
+        // Success box (hidden by default, shown inline on success)
+        HBox successBox = new HBox(8);
+        successBox.getStyleClass().add("auth-success");
+        successBox.setVisible(false);
+        successBox.setManaged(false);
+        successBox.setAlignment(Pos.CENTER_LEFT);
+        Label successIcon = new Label("\u2705");
+        successIcon.setStyle("-fx-font-size: 14px;");
+        Label successText = new Label();
+        successText.getStyleClass().add("auth-success-text");
+        successText.setWrapText(true);
+        HBox.setHgrow(successText, Priority.ALWAYS);
+        successBox.getChildren().addAll(successIcon, successText);
+
         // Submit button
         Button saveBtn = new Button("Enregistrer le mot de passe");
         saveBtn.getStyleClass().add("auth-btn-primary");
         saveBtn.setOnAction(e ->
-                handleReset(newPassField, confirmField, saveBtn, errorBox, errorText, card));
+                handleReset(newPassField, confirmField, saveBtn, errorBox, errorText, successBox, successText));
         confirmField.setOnAction(e ->
-                handleReset(newPassField, confirmField, saveBtn, errorBox, errorText, card));
+                handleReset(newPassField, confirmField, saveBtn, errorBox, errorText, successBox, successText));
 
         card.getChildren().addAll(
                 titleRow, subtitle, div,
                 newPassGroup,
-                strengthBar, strengthLabel,
                 confirmGroup,
-                errorBox,
+                passHint,
+                errorBox, successBox,
                 saveBtn
         );
 
@@ -163,12 +176,13 @@ public class ResetPasswordScreen {
     // ═══════════════════════════════════════════════════════
 
     private void handleReset(PasswordField newPassField, PasswordField confirmField,
-                             Button saveBtn, HBox errorBox, Label errorText, VBox card) {
+                             Button saveBtn, HBox errorBox, Label errorText,
+                             HBox successBox, Label successText) {
 
+        String newPass = newPassField.getText();
+        String confirm = confirmField.getText();
 
-
-        String newPass  = newPassField.getText();
-        String confirm  = confirmField.getText();
+        hideError(successBox);
 
         if (newPass.length() < 8) {
             showError(errorBox, errorText, "Le mot de passe doit contenir au moins 8 caractères.");
@@ -195,7 +209,18 @@ public class ResetPasswordScreen {
                 saveBtn.setText("Enregistrer le mot de passe");
 
                 if (response.isSuccess()) {
-                    buildSuccessState(card);
+                    hideError(errorBox);
+                    successText.setText("✓  Mot de passe modifié ! Redirection vers la connexion...");
+                    successBox.setVisible(true);
+                    successBox.setManaged(true);
+                    successBox.setOpacity(0);
+                    FadeTransition ft = new FadeTransition(Duration.millis(300), successBox);
+                    ft.setToValue(1);
+                    ft.play();
+                    saveBtn.setDisable(true);
+                    PauseTransition pause = new PauseTransition(Duration.millis(1500));
+                    pause.setOnFinished(e -> NavigationManager.showLogin());
+                    pause.play();
                 } else {
                     showError(errorBox, errorText,
                             response.getMessage() != null
@@ -207,67 +232,7 @@ public class ResetPasswordScreen {
         }).start();
     }
 
-    private void buildSuccessState(VBox card) {
-        card.getChildren().clear();
 
-        Label checkIcon = new Label("\u2705");
-        checkIcon.setStyle("-fx-font-size: 52px;");
-
-        Label title = new Label("Mot de passe modifié !");
-        title.getStyleClass().add("auth-title");
-        title.setStyle("-fx-font-size: 22px;");
-
-        Label msg = new Label("Votre mot de passe a été mis à jour avec succès.\nVous pouvez maintenant vous connecter.");
-        msg.getStyleClass().add("auth-subtitle");
-        msg.setWrapText(true);
-        msg.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-
-        Button loginBtn = new Button("Se connecter");
-        loginBtn.getStyleClass().add("auth-btn-primary");
-        loginBtn.setOnAction(e -> NavigationManager.showLogin());
-
-        card.getChildren().addAll(checkIcon, title, msg, loginBtn);
-        card.setAlignment(Pos.CENTER);
-
-        card.setOpacity(0);
-        FadeTransition ft = new FadeTransition(Duration.millis(400), card);
-        ft.setToValue(1);
-        ft.play();
-
-        ScaleTransition st = new ScaleTransition(Duration.millis(500), checkIcon);
-        st.setFromX(0.5); st.setFromY(0.5);
-        st.setToX(1.0);   st.setToY(1.0);
-        st.setInterpolator(Interpolator.EASE_OUT);
-        st.setDelay(Duration.millis(200));
-        st.play();
-    }
-
-    // ═══════════════════════════════════════════════════════
-    //  PASSWORD STRENGTH
-    // ═══════════════════════════════════════════════════════
-
-    private void updateStrength(String pass, ProgressBar bar, Label label) {
-        int score = 0;
-        if (pass.length() >= 8)                          score++;
-        if (pass.length() >= 12)                         score++;
-        if (pass.matches(".*[A-Z].*"))                   score++;
-        if (pass.matches(".*[0-9].*"))                   score++;
-        if (pass.matches(".*[^A-Za-z0-9].*"))            score++;
-
-        double progress = score / 5.0;
-        bar.setProgress(progress);
-
-        String color, text;
-        if      (score <= 1) { color = "#E74C3C"; text = "Très faible"; }
-        else if (score == 2) { color = "#E67E22"; text = "Faible"; }
-        else if (score == 3) { color = "#F1C40F"; text = "Moyen"; }
-        else if (score == 4) { color = "#2ECC71"; text = "Fort"; }
-        else                 { color = "#27AE60"; text = "Très fort"; }
-
-        bar.setStyle("-fx-accent: " + color + ";");
-        label.setText(text);
-        label.setStyle("-fx-font-size: 11px; -fx-text-fill: " + color + ";");
-    }
 
     // ═══════════════════════════════════════════════════════
     //  PASSWORD TOGGLE — same helper as LoginScreen
