@@ -21,6 +21,8 @@ public class AuthService {
     private final UserDAO  userDAO  = new UserDAO();
     private final AdminDAO adminDAO = new AdminDAO();
 
+
+
     // ── REGISTER ───────────────────────────────────────────
     public Response register(Request request) {
         String username  = request.getString("username");
@@ -137,11 +139,49 @@ public class AuthService {
             if (user == null)
                 return Response.error("Utilisateur introuvable.");
 
-            if (!(boolean) user.get("isActive"))
-                return Response.error("Ce compte est desactive.");
+            int userId = (int) user.get("userId");
 
-            if (!verifyPassword(password, (String) user.get("passwordHash")))
-                return Response.error("Mot de passe incorrect.");
+// ── Check if account is locked ──────────────────
+            if (!(boolean) user.get("isActive")) {
+                Object lockedUntil = user.get("lockedUntil");
+
+                if (lockedUntil == null) {
+                    // locked_until is NULL → permanent ban by admin
+                    return Response.error("Ce compte est desactive.");
+                }
+
+                // Temporary lockout → check if time has passed
+                boolean stillLocked = userDAO.checkAndUnlockIfExpired(userId);
+                if (stillLocked) {
+                    return Response.error(
+                            "Compte bloque. Reessayez dans quelques minutes.");
+                }
+// Time passed → account just got unlocked → reload fresh user from DB
+                user = userDAO.getUserByUsername(username);
+            }
+
+// ── Wrong password ───────────────────────────────
+            if (!verifyPassword(password, (String) user.get("passwordHash"))) {
+                userDAO.recordFailedAttempt(userId);
+
+                // Get updated attempts count to give a helpful message
+                Map<String, Object> updated = userDAO.getUserById(userId);
+                int attempts = 0;
+                Object att = updated.get("failedAttempts");
+                if (att != null) attempts = ((Number) att).intValue();
+
+                if (attempts == 3)
+                    return Response.error("Mot de passe incorrect. Compte bloque 15 minutes.");
+                else if (attempts == 4)
+                    return Response.error("Mot de passe incorrect. Compte bloque 30 minutes.");
+                else if (attempts >= 5)
+                    return Response.error("Mot de passe incorrect. Compte bloque 1 heure.");
+                else
+                    return Response.error("Mot de passe incorrect. ");
+            }
+
+// ── Password correct → reset failed attempts ─────
+            userDAO.resetFailedAttempts(userId);
 
             // ── Vérification email obligatoire ──────────────
             Object verified = user.get("isVerified");
@@ -154,7 +194,7 @@ public class AuthService {
                 return Response.error(
                         "Veuillez verifier votre email avant de vous connecter.");
 
-            int    userId = (int)   user.get("userId");
+            userId = (int)   user.get("userId");
             String userEmail = (String) user.get("email");
 
             if (userDAO.hasActiveOtp(userId)) {
@@ -240,6 +280,93 @@ public class AuthService {
         }
     }
 
+    // ─────────────────────────────────────────────────────────────
+//  Add these two methods to your existing AuthService.java
+//  Place them after the verifyEmail() method
+// ─────────────────────────────────────────────────────────────
+
+    // ── FORGOT PASSWORD ────────────────────────────────────
+    public Response forgotPassword(Request request) {
+        String username = request.getString("username");
+
+        if (username == null || username.isBlank())
+            return Response.error("Nom d'utilisateur requis.");
+
+        try {
+            Map<String, Object> user = userDAO.getUserByUsername(username);
+
+            // SECURITY: always return the same response whether user exists or not
+            // This prevents attackers from knowing which usernames are registered
+            if (user == null) {
+                ServerLogger.warn("FORGOT_PASSWORD : username inconnu = " + username);
+                return Response.ok("Si ce compte existe, un email a ete envoye.", null);
+            }
+
+            int    userId = (int)    user.get("userId");
+            String email  = (String) user.get("email");
+
+            // Generate a 6-digit code (same style as your OTP)
+            String token = EmailService.generateCode();
+
+            // Save token in DB with 30-minute expiry
+            userDAO.saveVerifyCode(userId, token);
+            // Send the email
+            boolean sent = EmailService.sendResetPasswordEmail(email, token);
+            if (!sent) {
+                ServerLogger.error("FORGOT_PASSWORD : email non envoye pour userId=" + userId);
+                return Response.error("Erreur lors de l'envoi de l'email. Reessayez plus tard.");
+            }
+
+            ServerLogger.info("FORGOT_PASSWORD OK : " + username + " (userId=" + userId + ")");
+            return Response.ok("Si ce compte existe, un email a ete envoye.", null);
+
+        } catch (SQLException e) {
+            ServerLogger.error("FORGOT_PASSWORD SQL error : " + e.getMessage());
+            return Response.error("Erreur serveur.");
+        }
+    }
+
+    // ── RESET PASSWORD ─────────────────────────────────────
+    public Response resetPassword(Request request) {
+        String username    = request.getString("username");
+        String token       = request.getString("token");
+        String newPassword = request.getString("password");
+
+        if (token == null || newPassword == null || username == null)
+            return Response.error("Token et nouveau mot de passe requis.");
+
+        if (newPassword.length() < 8)
+            return Response.error("Le mot de passe doit contenir au moins 8 caracteres.");
+        if (!newPassword.matches(".*[A-Z].*"))
+            return Response.error("Le mot de passe doit contenir au moins une majuscule.");
+        if (!newPassword.matches(".*\\d.*"))
+            return Response.error("Le mot de passe doit contenir au moins un chiffre.");
+        if (!newPassword.matches(".*[^a-zA-Z0-9\\s].*"))
+            return Response.error("Le mot de passe doit contenir au moins un caractere special.");
+
+        try {
+            Map<String, Object> user = userDAO.getUserByUsername(username);
+            if (user == null)
+                return Response.error("Utilisateur introuvable.");
+
+            int userId = (int) user.get("userId");
+
+            // Token already verified and consumed in verifyResetToken step
+            // Just update the password directly
+            String newHash = hashPassword(newPassword);
+            userDAO.updatePassword(userId, newHash);
+
+            SessionManager.invalidateAllForUser(userId);
+
+            ServerLogger.info("RESET_PASSWORD OK : userId=" + userId);
+            return Response.ok("Mot de passe modifie avec succes. Vous pouvez vous connecter.", null);
+
+        } catch (SQLException e) {
+            ServerLogger.error("RESET_PASSWORD SQL error : " + e.getMessage());
+            return Response.error("Erreur serveur.");
+        }
+    }
+
     // ── LOGOUT ─────────────────────────────────────────────
     public Response logout(Request request) {
         String token = request.getToken();
@@ -301,4 +428,35 @@ public class AuthService {
         }
         return false;
     }
+
+    // ── VERIFY RESET TOKEN ─────────────────────────────────
+    public Response verifyResetToken(Request request) {
+        String username = request.getString("username");
+        String token    = request.getString("token");
+
+        if (username == null || token == null)
+            return Response.error("Username et token requis.");
+
+        try {
+            Map<String, Object> user = userDAO.getUserByUsername(username);
+            if (user == null)
+                return Response.error("Code invalide ou expiré.");
+
+            int userId = (int) user.get("userId");
+
+            // Reuse the same OTP verify method you already have
+            boolean ok = userDAO.verifyOtp(userId, token);
+            if (!ok)
+                return Response.error("Code invalide ou expiré. Faites une nouvelle demande.");
+
+            ServerLogger.info("VERIFY_RESET_TOKEN OK : username=" + username);
+            return Response.ok("Code valide.", null);
+
+        } catch (SQLException e) {
+            ServerLogger.error("VERIFY_RESET_TOKEN SQL error : " + e.getMessage());
+            e.printStackTrace();
+            return Response.error("Erreur serveur.");
+        }
+    }
+
 }

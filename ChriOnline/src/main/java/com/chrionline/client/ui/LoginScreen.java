@@ -2,6 +2,7 @@ package com.chrionline.client.ui;
 
 import com.chrionline.client.controller.AuthController;
 import com.chrionline.client.network.ServerConnection;
+import com.chrionline.client.network.UDPHeartbeatSender;
 import com.chrionline.shared.dto.Response;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -91,6 +92,11 @@ public class LoginScreen {
         StackPane passWrapper = wrapWithToggle(passwordField);
         VBox passGroup = new VBox(5, passLabel, passWrapper);
 
+        //forgot password
+        Button forgotLink = new Button("Mot de passe oublié ?");
+        forgotLink.getStyleClass().add("auth-link");
+        forgotLink.setOnAction(e -> NavigationManager.showForgotPassword());
+
         // Error box (hidden by default)
         HBox errorBox = new HBox(8);
         errorBox.getStyleClass().add("auth-error");
@@ -128,6 +134,7 @@ public class LoginScreen {
         card.getChildren().addAll(
                 titleRow, subtitle, div,
                 userGroup, passGroup,
+                forgotLink,
                 errorBox,
                 loginBtn,
                 registerRow
@@ -296,6 +303,13 @@ public class LoginScreen {
                             getStr(data, "firstName"),
                             getStr(data, "lastName")
                     );
+                    // ── Start UDP heartbeat sender ───────────────
+                    int uid = getInt(data, "userId");
+                    UDPHeartbeatSender heartbeat = new UDPHeartbeatSender(uid);
+                    Thread heartbeatThread = new Thread(heartbeat);
+                    heartbeatThread.setDaemon(true);
+                    heartbeatThread.setName("udp-heartbeat-" + uid);
+                    heartbeatThread.start();
 
                     // APRÈS — redirige selon le rôle
                     String role = getStr(data, "role");
