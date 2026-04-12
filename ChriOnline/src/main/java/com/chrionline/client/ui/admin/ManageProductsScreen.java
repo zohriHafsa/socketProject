@@ -22,14 +22,23 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +57,8 @@ public class ManageProductsScreen {
     private Label resultLabel;
 
     private List<Map<String, Object>> allProducts = new ArrayList<>();
+    private List<Map<String, Object>> categoriesList = new ArrayList<>();
+    private HBox categoryChipsContainer;
     private String currentCategory = "Toutes";
     private String searchQuery = "";
 
@@ -124,6 +135,10 @@ public class ManageProductsScreen {
         return root;
     }
 
+    // ═══════════════════════════════════════════════════════
+    //  TOOLBAR
+    // ═══════════════════════════════════════════════════════
+
     private Node buildToolbar() {
         HBox bar = new HBox(10);
         bar.setAlignment(Pos.CENTER_LEFT);
@@ -140,32 +155,56 @@ public class ManageProductsScreen {
         Region sp = new Region();
         HBox.setHgrow(sp, Priority.ALWAYS);
 
-        String[] cats = {
-                "Toutes", "Smartphones", "Laptops", "T-Shirts",
-                "Pantalons", "Livres Tech", "Romans", "Sports"
-        };
+        categoryChipsContainer = new HBox(6);
+        categoryChipsContainer.setAlignment(Pos.CENTER_RIGHT);
+        
+        updateCategoryFilters();
+        loadCategories();
 
-        HBox catChips = new HBox(6);
-        catChips.setAlignment(Pos.CENTER_RIGHT);
-        List<Button> catBtns = new ArrayList<>();
+        bar.getChildren().addAll(search, sp, categoryChipsContainer);
+        return bar;
+    }
+
+    private void loadCategories() {
+        ServerConnection.getInstance()
+                .sendAsync(new Request(Action.GET_CATEGORIES, null, null))
+                .thenAccept(res -> Platform.runLater(() -> {
+                    if (res.isSuccess() && res.getData() != null) {
+                        categoriesList = (List<Map<String, Object>>) res.getData();
+                        updateCategoryFilters();
+                    }
+                }));
+    }
+
+    private void updateCategoryFilters() {
+        if (categoryChipsContainer == null) return;
+        categoryChipsContainer.getChildren().clear();
+
+        List<String> cats = new ArrayList<>();
+        cats.add("Toutes");
+        for (Map<String, Object> c : categoriesList) {
+            cats.add(str(c.get("name")));
+        }
 
         for (String cat : cats) {
             Button chip = new Button(cat);
             chip.getStyleClass().add("admin-filter-chip");
-            if ("Toutes".equals(cat)) chip.getStyleClass().add("admin-filter-active");
+            if (cat.equals(currentCategory)) chip.getStyleClass().add("admin-filter-active");
+
             chip.setOnAction(e -> {
                 currentCategory = cat;
-                catBtns.forEach(c -> c.getStyleClass().remove("admin-filter-active"));
+                categoryChipsContainer.getChildren().forEach(n -> 
+                    n.getStyleClass().remove("admin-filter-active"));
                 chip.getStyleClass().add("admin-filter-active");
                 displayProducts();
             });
-            catBtns.add(chip);
-            catChips.getChildren().add(chip);
+            categoryChipsContainer.getChildren().add(chip);
         }
-
-        bar.getChildren().addAll(search, sp, catChips);
-        return bar;
     }
+
+    // ═══════════════════════════════════════════════════════
+    //  STATS
+    // ═══════════════════════════════════════════════════════
 
     private void rebuildStats() {
         statsRow.getChildren().clear();
@@ -190,7 +229,7 @@ public class ManageProductsScreen {
                 miniStat("En stock", String.valueOf(inStock), "#27AE60"),
                 miniStat("Stock faible", String.valueOf(lowStock), "#F39C12"),
                 miniStat("Rupture", String.valueOf(outStock), "#E74C3C"),
-                miniStat("Valeur stock", String.format("%.0f EUR", totalValue), "#3498DB")
+                miniStat("Valeur stock", String.format("%.0f MAD", totalValue), "#3498DB")
         );
     }
 
@@ -210,6 +249,10 @@ public class ManageProductsScreen {
         box.getChildren().addAll(val, lbl);
         return box;
     }
+
+    // ═══════════════════════════════════════════════════════
+    //  AFFICHAGE TABLEAU
+    // ═══════════════════════════════════════════════════════
 
     private void displayProducts() {
         productsContainer.getChildren().clear();
@@ -241,12 +284,13 @@ public class ManageProductsScreen {
         header.getStyleClass().add("admin-table-header");
         header.setPadding(new Insets(10, 16, 10, 16));
         header.getChildren().addAll(
-                tCol("ID", 50),
+                tCol("", 44),
+                tCol("ID", 46),
                 tCol("Nom", 200),
-                tCol("Categorie", 120),
-                tCol("Prix", 90),
-                tCol("Stock", 80),
-                tCol("Statut", 100),
+                tCol("Categorie", 110),
+                tCol("Prix", 130),
+                tCol("Stock", 90),
+                tCol("Statut", 140),
                 tCol("Actions", 180)
         );
         productsContainer.getChildren().add(header);
@@ -255,6 +299,7 @@ public class ManageProductsScreen {
             productsContainer.getChildren().add(buildProductRow(filtered.get(i), i));
         }
 
+        // Animations d'entrée
         for (int i = 1; i < productsContainer.getChildren().size(); i++) {
             Node n = productsContainer.getChildren().get(i);
             n.setOpacity(0);
@@ -278,25 +323,48 @@ public class ManageProductsScreen {
         row.setPadding(new Insets(10, 16, 10, 16));
         row.setAlignment(Pos.CENTER_LEFT);
 
-        int pid = intV(product.get("productId"));
-        String name = str(product.get("name"));
-        String cat = str(product.get("categoryName"));
+        int    pid   = intV(product.get("productId"));
+        String name  = str(product.get("name"));
+        String cat   = str(product.get("categoryName"));
         double price = dbl(product.get("price"));
-        int stock = intV(product.get("stockQuantity"));
+        int    stock = intV(product.get("stockQuantity"));
+        String imgUrl = str(product.get("imageUrl"));
 
-        Label idL = tCell(String.valueOf(pid), 50);
+        // ── Miniature image ──────────────────────────────
+        StackPane thumb = new StackPane();
+        thumb.setMinSize(36, 36);
+        thumb.setMaxSize(36, 36);
+        thumb.setStyle("-fx-background-color: #F8F9FA; -fx-background-radius: 8;");
+
+        Image thumbImg = loadProductImage(imgUrl);
+        if (thumbImg != null && !thumbImg.isError()) {
+            ImageView iv = new ImageView(thumbImg);
+            iv.setFitWidth(32);
+            iv.setFitHeight(32);
+            iv.setPreserveRatio(true);
+            iv.setSmooth(true);
+            thumb.getChildren().add(iv);
+        } else {
+            Label letter = new Label(name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
+            letter.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: rgba(108,52,131,0.2);");
+            thumb.getChildren().add(letter);
+        }
+        thumb.setMinWidth(44);
+        thumb.setMaxWidth(44);
+
+        Label idL = tCell(String.valueOf(pid), 46);
         idL.getStyleClass().add("admin-cell-id");
 
-        Label nameL = tCell(name.length() > 28 ? name.substring(0, 26) + ".." : name, 200);
+        Label nameL = tCell(name.length() > 24 ? name.substring(0, 22) + ".." : name, 200);
         nameL.setStyle("-fx-font-weight:600;");
 
-        Label catL = tCell(cat, 120);
+        Label catL = tCell(cat, 110);
         catL.getStyleClass().add("admin-cell-date");
 
-        Label priceL = tCell(String.format("%.2f EUR", price), 90);
+        Label priceL = tCell(String.format("%.2f MAD", price), 130);
         priceL.getStyleClass().add("admin-cell-amount");
 
-        Label stockL = tCell(String.valueOf(stock), 80);
+        Label stockL = tCell(String.valueOf(stock), 90);
         if (stock <= 0) {
             stockL.setStyle("-fx-text-fill:#E74C3C;-fx-font-weight:bold;");
         } else if (stock <= 10) {
@@ -308,11 +376,16 @@ public class ManageProductsScreen {
         Label statusL = new Label(stock > 0 ? "Disponible" : "Indisponible");
         statusL.getStyleClass().add("admin-status-badge");
         statusL.getStyleClass().add(stock > 0 ? "admin-status-validee" : "admin-status-annulee");
-        statusL.setMinWidth(90);
+
+        HBox statusBox = new HBox(statusL);
+        statusBox.setAlignment(Pos.CENTER_LEFT);
+        statusBox.setMinWidth(140);
+        statusBox.setMaxWidth(140);
 
         HBox actions = new HBox(6);
         actions.setAlignment(Pos.CENTER_LEFT);
         actions.setMinWidth(180);
+        actions.setMaxWidth(180);
 
         Button editBtn = new Button("Modifier");
         editBtn.getStyleClass().add("admin-edit-btn");
@@ -324,9 +397,13 @@ public class ManageProductsScreen {
 
         actions.getChildren().addAll(editBtn, deleteBtn);
 
-        row.getChildren().addAll(idL, nameL, catL, priceL, stockL, statusL, actions);
+        row.getChildren().addAll(thumb, idL, nameL, catL, priceL, stockL, statusBox, actions);
         return row;
     }
+
+    // ═══════════════════════════════════════════════════════
+    //  FORMULAIRE — avec upload d'image
+    // ═══════════════════════════════════════════════════════
 
     private void showProductForm(Map<String, Object> existing) {
         boolean isEdit = existing != null;
@@ -335,71 +412,192 @@ public class ManageProductsScreen {
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
         overlay.setAlignment(Pos.CENTER);
 
-        VBox card = new VBox(16);
+        VBox card = new VBox(14);
         card.getStyleClass().add("admin-form-card");
-        card.setMaxWidth(520);
-        card.setPadding(new Insets(30));
+        card.setMaxWidth(540);
+        card.setPadding(new Insets(28));
         card.setAlignment(Pos.TOP_CENTER);
 
         Label title = new Label(isEdit ? "Modifier le produit" : "Nouveau produit");
         title.getStyleClass().add("admin-section-title");
 
+        // ── Zone de prévisualisation d'image ─────────────
+        final String[] selectedImagePath = {isEdit ? str(existing.get("imageUrl")) : ""};
+
+        StackPane imagePreview = new StackPane();
+        imagePreview.setStyle(
+                "-fx-background-color: #F8F9FA;"
+                        + "-fx-background-radius: 12;"
+                        + "-fx-border-color: #E8E8E8;"
+                        + "-fx-border-radius: 12;"
+                        + "-fx-border-width: 1.5;"
+                        + "-fx-border-style: dashed;"
+                        + "-fx-cursor: hand;"
+        );
+        imagePreview.setPrefSize(490, 160);
+        imagePreview.setMaxSize(490, 160);
+
+        ImageView previewIv = new ImageView();
+        previewIv.setFitWidth(470);
+        previewIv.setFitHeight(140);
+        previewIv.setPreserveRatio(true);
+        previewIv.setSmooth(true);
+        previewIv.setVisible(false);
+
+        VBox placeholderContent = new VBox(6);
+        placeholderContent.setAlignment(Pos.CENTER);
+        Label uploadIcon = new Label("\uD83D\uDCC1");
+        uploadIcon.setStyle("-fx-font-size: 28px;");
+        Label uploadText = new Label("Cliquer pour choisir une image");
+        uploadText.setStyle("-fx-text-fill: #95A5A6; -fx-font-size: 13px; -fx-font-weight: 600;");
+        Label uploadHint = new Label("PNG, JPG, JPEG, GIF, WEBP");
+        uploadHint.setStyle("-fx-text-fill: #BDC3C7; -fx-font-size: 11px;");
+        placeholderContent.getChildren().addAll(uploadIcon, uploadText, uploadHint);
+
+        imagePreview.getChildren().addAll(placeholderContent, previewIv);
+
+        // Charger l'image existante si modification
+        if (isEdit && !selectedImagePath[0].isEmpty()) {
+            Image existImg = loadProductImage(selectedImagePath[0]);
+            if (existImg != null && !existImg.isError()) {
+                previewIv.setImage(existImg);
+                previewIv.setVisible(true);
+                placeholderContent.setVisible(false);
+            }
+        }
+
+        // Label d'erreur (déclaré tôt pour usage dans les handlers)
+        Label errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill:#E74C3C;-fx-font-size:12px;-fx-font-weight:bold;");
+        errorLabel.setVisible(false);
+        errorLabel.setWrapText(true);
+
+        // Click sur la zone pour choisir un fichier
+        imagePreview.setOnMouseClicked(ev -> {
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Choisir une image produit");
+            fc.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter(
+                            "Images", "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp"));
+            File file = fc.showOpenDialog(root.getScene().getWindow());
+            if (file != null) {
+                // Vérifier la taille (max 5 MB)
+                if (file.length() > 5 * 1024 * 1024) {
+                    errorLabel.setText("L'image ne doit pas depasser 5 MB.");
+                    errorLabel.setVisible(true);
+                    return;
+                }
+                String newPath = copyImageToResources(file);
+                if (newPath != null) {
+                    selectedImagePath[0] = newPath;
+                    Image img = new Image(file.toURI().toString());
+                    previewIv.setImage(img);
+                    previewIv.setVisible(true);
+                    placeholderContent.setVisible(false);
+                    errorLabel.setVisible(false);
+
+                    // Animation de confirmation
+                    imagePreview.setStyle(
+                            "-fx-background-color: #F8F9FA;"
+                                    + "-fx-background-radius: 12;"
+                                    + "-fx-border-color: #27AE60;"
+                                    + "-fx-border-radius: 12;"
+                                    + "-fx-border-width: 2;"
+                                    + "-fx-border-style: solid;"
+                                    + "-fx-cursor: hand;"
+                    );
+                } else {
+                    errorLabel.setText("Erreur lors de la copie de l'image.");
+                    errorLabel.setVisible(true);
+                }
+            }
+        });
+
+        // Bouton retirer l'image
+        Button removeImgBtn = new Button("✕ Retirer l'image");
+        removeImgBtn.setStyle(
+                "-fx-background-color: transparent;"
+                        + "-fx-text-fill: #E74C3C;"
+                        + "-fx-font-size: 11px;"
+                        + "-fx-cursor: hand;"
+                        + "-fx-padding: 4 8;"
+        );
+        removeImgBtn.setOnAction(ev -> {
+            selectedImagePath[0] = "";
+            previewIv.setImage(null);
+            previewIv.setVisible(false);
+            placeholderContent.setVisible(true);
+            imagePreview.setStyle(
+                    "-fx-background-color: #F8F9FA;"
+                            + "-fx-background-radius: 12;"
+                            + "-fx-border-color: #E8E8E8;"
+                            + "-fx-border-radius: 12;"
+                            + "-fx-border-width: 1.5;"
+                            + "-fx-border-style: dashed;"
+                            + "-fx-cursor: hand;"
+            );
+        });
+
+        HBox imgActions = new HBox(12);
+        imgActions.setAlignment(Pos.CENTER_LEFT);
+
+        Label imgPathLabel = new Label();
+        imgPathLabel.setStyle("-fx-text-fill: #95A5A6; -fx-font-size: 11px;");
+        if (!selectedImagePath[0].isEmpty()) {
+            imgPathLabel.setText(selectedImagePath[0]);
+        }
+
+        imgActions.getChildren().addAll(removeImgBtn, imgPathLabel);
+
+        // ── Champs du formulaire ─────────────────────────
         TextField nameField = formField("Nom du produit",
                 isEdit ? str(existing.get("name")) : "");
 
+        VBox descGroup = new VBox(4);
+        Label descLabel = new Label("Description");
+        descLabel.setStyle("-fx-font-size:12px;-fx-text-fill:#7F8C8D;-fx-font-weight:600;");
         TextArea descField = new TextArea(isEdit ? str(existing.get("description")) : "");
         descField.setPromptText("Description du produit");
         descField.getStyleClass().add("admin-form-textarea");
         descField.setPrefRowCount(3);
         descField.setMaxWidth(Double.MAX_VALUE);
+        descGroup.getChildren().addAll(descLabel, descField);
 
         HBox row1 = new HBox(12);
-        TextField priceField = formField("Prix (EUR)",
+        TextField priceField = formField("Prix (MAD)",
                 isEdit ? String.valueOf(dbl(existing.get("price"))) : "");
         priceField.setPrefWidth(200);
+        HBox.setHgrow(priceField, Priority.ALWAYS);
 
         TextField stockField = formField("Stock",
                 isEdit ? String.valueOf(intV(existing.get("stockQuantity"))) : "0");
         stockField.setPrefWidth(200);
+        HBox.setHgrow(stockField, Priority.ALWAYS);
         row1.getChildren().addAll(priceField, stockField);
 
-        HBox row2 = new HBox(12);
+        // Catégorie
+        VBox catGroup = new VBox(4);
+        Label catLabel = new Label("Categorie");
+        catLabel.setStyle("-fx-font-size:12px;-fx-text-fill:#7F8C8D;-fx-font-weight:600;");
         ComboBox<String> catCombo = new ComboBox<>();
-        catCombo.getItems().addAll(
-                "1-Smartphones",
-                "2-Laptops",
-                "3-T-Shirts",
-                "4-Pantalons",
-                "5-Livres Tech",
-                "6-Romans",
-                "7-Sports"
-        );
-        catCombo.setPromptText("Categorie");
+        for (Map<String, Object> c : categoriesList) {
+            catCombo.getItems().add(intV(c.get("categoryId")) + "-" + str(c.get("name")));
+        }
+        catCombo.setPromptText("Choisir une categorie");
         catCombo.getStyleClass().add("admin-status-combo");
-        catCombo.setPrefWidth(200);
+        catCombo.setMaxWidth(Double.MAX_VALUE);
 
         if (isEdit) {
             int catId = intV(existing.get("categoryId"));
             String catName = str(existing.get("categoryName"));
             catCombo.setValue(catId + "-" + catName);
         }
+        catGroup.getChildren().addAll(catLabel, catCombo);
 
-        TextField imageField = formField("URL image (optionnel)",
-                isEdit ? str(existing.get("imageUrl")) : "");
-        imageField.setPrefWidth(280);
-
-        row2.getChildren().addAll(catCombo, imageField);
-
-        Label infoLabel = new Label("Image: utilise une URL https://... ou file:///C:/.../image.png");
-        infoLabel.setStyle("-fx-text-fill:#7F8C8D;-fx-font-size:11px;");
-
-        Label errorLabel = new Label();
-        errorLabel.setStyle("-fx-text-fill:#E74C3C;-fx-font-size:12px;-fx-font-weight:bold;");
-        errorLabel.setVisible(false);
-
+        // ── Boutons ──────────────────────────────────────
         HBox buttons = new HBox(12);
         buttons.setAlignment(Pos.CENTER_RIGHT);
-        buttons.setPadding(new Insets(10, 0, 0, 0));
+        buttons.setPadding(new Insets(8, 0, 0, 0));
 
         Button cancelBtn = new Button("Annuler");
         cancelBtn.getStyleClass().add("admin-cancel-btn");
@@ -416,31 +614,31 @@ public class ManageProductsScreen {
         spinner.setVisible(false);
 
         saveBtn.setOnAction(e -> {
-            String name = nameField.getText().trim();
-            String desc = descField.getText().trim();
+            String pName    = nameField.getText().trim();
+            String pDesc    = descField.getText().trim();
             String priceStr = priceField.getText().trim();
             String stockStr = stockField.getText().trim();
             String catValue = catCombo.getValue();
-            String imageUrl = imageField.getText().trim();
+            String imageUrl = selectedImagePath[0];
 
-            if (name.isEmpty()) {
+            if (pName.isEmpty()) {
                 errorLabel.setText("Le nom est requis.");
                 errorLabel.setVisible(true);
                 return;
             }
 
-            double price;
-            int stock;
+            double pPrice;
+            int pStock;
             try {
-                price = Double.parseDouble(priceStr);
-                stock = Integer.parseInt(stockStr);
+                pPrice = Double.parseDouble(priceStr);
+                pStock = Integer.parseInt(stockStr);
             } catch (NumberFormatException ex) {
                 errorLabel.setText("Prix et stock doivent etre numeriques.");
                 errorLabel.setVisible(true);
                 return;
             }
 
-            if (price <= 0) {
+            if (pPrice <= 0) {
                 errorLabel.setText("Le prix doit etre positif.");
                 errorLabel.setVisible(true);
                 return;
@@ -450,8 +648,7 @@ public class ManageProductsScreen {
             if (catValue != null && catValue.contains("-")) {
                 try {
                     categoryId = Integer.parseInt(catValue.split("-")[0]);
-                } catch (NumberFormatException ignored) {
-                }
+                } catch (NumberFormatException ignored) {}
             }
 
             errorLabel.setVisible(false);
@@ -460,10 +657,10 @@ public class ManageProductsScreen {
             saveBtn.setGraphic(spinner);
 
             Map<String, Object> data = new HashMap<>();
-            data.put("name", name);
-            data.put("description", desc);
-            data.put("price", price);
-            data.put("stockQuantity", stock);
+            data.put("name", pName);
+            data.put("description", pDesc);
+            data.put("price", pPrice);
+            data.put("stockQuantity", pStock);
             data.put("categoryId", categoryId);
             data.put("imageUrl", imageUrl.isEmpty() ? null : imageUrl);
 
@@ -497,13 +694,15 @@ public class ManageProductsScreen {
 
         buttons.getChildren().addAll(cancelBtn, saveBtn);
 
-        VBox descGroup = new VBox(4);
-        Label descLabel = new Label("Description");
-        descLabel.setStyle("-fx-font-size:12px;-fx-text-fill:#7F8C8D;-fx-font-weight:600;");
-        descGroup.getChildren().addAll(descLabel, descField);
+        // ── Assemblage ───────────────────────────────────
+        card.getChildren().addAll(
+                title,
+                imagePreview, imgActions,
+                nameField, descGroup, row1, catGroup,
+                errorLabel, buttons
+        );
 
-        card.getChildren().addAll(title, nameField, descGroup, row1, row2, infoLabel, errorLabel, buttons);
-
+        // ── Overlay logic ────────────────────────────────
         overlay.setOnMouseClicked(e -> {
             if (e.getTarget() == overlay) {
                 StackPane parent = (StackPane) root.getCenter();
@@ -529,6 +728,92 @@ public class ManageProductsScreen {
         new ParallelTransition(fi, si).play();
     }
 
+    // ═══════════════════════════════════════════════════════
+    //  COPIE D'IMAGE vers resources + target
+    // ═══════════════════════════════════════════════════════
+
+    private String copyImageToResources(File sourceFile) {
+        try {
+            // Nom unique : timestamp + nom original nettoyé
+            String safeName = sourceFile.getName().replaceAll("[^a-zA-Z0-9._-]", "_");
+            String uniqueName = System.currentTimeMillis() + "_" + safeName;
+
+            // 1. Copier vers src/main/resources/images/products/
+            Path srcDir = Paths.get("src", "main", "resources", "images", "products");
+            Files.createDirectories(srcDir);
+            Path destSrc = srcDir.resolve(uniqueName);
+            Files.copy(sourceFile.toPath(), destSrc, StandardCopyOption.REPLACE_EXISTING);
+
+            // 2. Copier aussi vers target/classes/images/products/
+            //    pour disponibilité immédiate via classpath
+            try {
+                Path targetDir = Paths.get("target", "classes", "images", "products");
+                Files.createDirectories(targetDir);
+                Path destTarget = targetDir.resolve(uniqueName);
+                Files.copy(sourceFile.toPath(), destTarget, StandardCopyOption.REPLACE_EXISTING);
+            } catch (Exception ignored) {
+                // Pas critique si target n'existe pas
+            }
+
+            System.out.println("[IMAGE] Copié : " + destSrc.toAbsolutePath());
+            return "/images/products/" + uniqueName;
+
+        } catch (Exception e) {
+            System.err.println("[IMAGE] Erreur copie : " + e.getMessage());
+            return null;
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  CHARGEMENT D'IMAGE — multiple fallbacks
+    // ═══════════════════════════════════════════════════════
+
+    private Image loadProductImage(String imageUrl) {
+        if (imageUrl == null || imageUrl.trim().isEmpty()) return null;
+        imageUrl = imageUrl.trim();
+
+        // 1. Classpath resource
+        try {
+            InputStream is = getClass().getResourceAsStream(imageUrl);
+            if (is != null) {
+                Image img = new Image(is);
+                if (!img.isError()) return img;
+            }
+        } catch (Exception ignored) {}
+
+        // 2. File system : src/main/resources + path
+        try {
+            File f = new File("src/main/resources" + imageUrl);
+            if (f.exists()) {
+                Image img = new Image(f.toURI().toString());
+                if (!img.isError()) return img;
+            }
+        } catch (Exception ignored) {}
+
+        // 3. Chemin absolu
+        try {
+            File f = new File(imageUrl);
+            if (f.exists()) {
+                Image img = new Image(f.toURI().toString());
+                if (!img.isError()) return img;
+            }
+        } catch (Exception ignored) {}
+
+        // 4. URL HTTP/HTTPS/file:
+        try {
+            if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")
+                    || imageUrl.startsWith("file:")) {
+                return new Image(imageUrl, true);
+            }
+        } catch (Exception ignored) {}
+
+        return null;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  FORM FIELD HELPER
+    // ═══════════════════════════════════════════════════════
+
     private TextField formField(String label, String value) {
         TextField field = new TextField(value);
         field.setPromptText(label);
@@ -536,15 +821,20 @@ public class ManageProductsScreen {
         return field;
     }
 
+    // ═══════════════════════════════════════════════════════
+    //  CONFIRMATION SUPPRESSION
+    // ═══════════════════════════════════════════════════════
+
     private void confirmDelete(int productId, String productName) {
         StackPane overlay = new StackPane();
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
         overlay.setAlignment(Pos.CENTER);
 
-        VBox card = new VBox(16);
+        VBox card = new VBox(12);
         card.getStyleClass().add("admin-form-card");
-        card.setMaxWidth(400);
-        card.setPadding(new Insets(30));
+        card.setMaxWidth(380);
+        card.setMaxHeight(170);
+        card.setPadding(new Insets(20));
         card.setAlignment(Pos.CENTER);
 
         Label title = new Label("Supprimer le produit ?");
@@ -615,6 +905,10 @@ public class ManageProductsScreen {
                 }));
     }
 
+    // ═══════════════════════════════════════════════════════
+    //  CHARGEMENT DONNÉES
+    // ═══════════════════════════════════════════════════════
+
     @SuppressWarnings("unchecked")
     private void loadProducts() {
         showLoading(true);
@@ -636,6 +930,10 @@ public class ManageProductsScreen {
                     return null;
                 });
     }
+
+    // ═══════════════════════════════════════════════════════
+    //  UTILITAIRES UI
+    // ═══════════════════════════════════════════════════════
 
     private Node accessDenied() {
         VBox b = new VBox(16);
@@ -681,8 +979,8 @@ public class ManageProductsScreen {
         t.getStyleClass().addAll("toast", "toast-text");
         switch (type) {
             case "success": t.getStyleClass().add("toast-success"); break;
-            case "error": t.getStyleClass().add("toast-error"); break;
-            default: t.getStyleClass().add("toast-info"); break;
+            case "error":   t.getStyleClass().add("toast-error");   break;
+            default:        t.getStyleClass().add("toast-info");    break;
         }
         t.setOpacity(0);
         t.setTranslateY(40);
@@ -748,11 +1046,15 @@ public class ManageProductsScreen {
         });
     }
 
+    // ═══════════════════════════════════════════════════════
+    //  HELPERS
+    // ═══════════════════════════════════════════════════════
+
     private String str(Object o) { return o != null ? o.toString() : ""; }
 
     private int intV(Object o) {
         if (o == null) return 0;
-        if (o instanceof Double) return ((Double) o).intValue();
+        if (o instanceof Double)  return ((Double) o).intValue();
         if (o instanceof Integer) return (Integer) o;
         try { return Integer.parseInt(o.toString()); }
         catch (Exception e) { return 0; }

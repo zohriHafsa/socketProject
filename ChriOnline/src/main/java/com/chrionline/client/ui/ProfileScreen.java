@@ -23,7 +23,7 @@ public class ProfileScreen {
     public ProfileScreen() {
         root = new BorderPane();
         root.getStyleClass().add("page-root");
-        root.setTop(buildHeader());
+        root.setTop(new HeaderComponent(null, null, null, null).getView());
 
         if (!NavigationManager.isLoggedIn()) showLoginRequired();
         else buildContent();

@@ -38,18 +38,44 @@ public class ProductDAO {
         return list;
     }
 
+    public List<Map<String, Object>> getAllProductsAdmin() throws SQLException {
+        String sql = "SELECT p.*, c.name AS category_name FROM products p "
+                + "LEFT JOIN categories c ON p.category_id = c.category_id "
+                + "ORDER BY p.product_id";
+        List<Map<String, Object>> list = new ArrayList<>();
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(mapProduct(rs));
+        }
+        return list;
+    }
+
     public List<Map<String, Object>> searchProducts(String keyword) throws SQLException {
         String sql = "SELECT p.*, c.name AS category_name FROM products p "
                 + "LEFT JOIN categories c ON p.category_id = c.category_id "
-                + "WHERE p.is_available = true "
-                + "AND (p.name LIKE ? OR p.description LIKE ? OR c.name LIKE ?) "
+                + "WHERE p.is_available = true AND (p.name LIKE ? OR p.description LIKE ?) "
                 + "ORDER BY p.product_id";
         List<Map<String, Object>> list = new ArrayList<>();
-        String like = "%" + keyword + "%";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
-            ps.setString(1, like);
-            ps.setString(2, like);
-            ps.setString(3, like);
+            String k = "%" + keyword + "%";
+            ps.setString(1, k);
+            ps.setString(2, k);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(mapProduct(rs));
+        }
+        return list;
+    }
+
+    public List<Map<String, Object>> searchProductsAdmin(String keyword) throws SQLException {
+        String sql = "SELECT p.*, c.name AS category_name FROM products p "
+                + "LEFT JOIN categories c ON p.category_id = c.category_id "
+                + "WHERE (p.name LIKE ? OR p.description LIKE ?) "
+                + "ORDER BY p.product_id";
+        List<Map<String, Object>> list = new ArrayList<>();
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            String k = "%" + keyword + "%";
+            ps.setString(1, k);
+            ps.setString(2, k);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) list.add(mapProduct(rs));
         }

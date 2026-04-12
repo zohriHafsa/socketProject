@@ -2,47 +2,24 @@ package com.chrionline.client.ui;
 
 import com.chrionline.client.controller.AuthController;
 import com.chrionline.client.network.ServerConnection;
+import com.chrionline.client.network.UDPHeartbeatSender;
 import com.chrionline.shared.dto.Response;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.util.Duration;
 
 import java.util.Map;
+import java.util.Objects;
 
-/**
- * TÂCHE 2 — LoginScreen
- * ═════════════════════
- * Utilise AuthController.login() pour envoyer la requête LOGIN.
- *
- * STRUCTURE DE LA RÉPONSE LOGIN (AuthService.java) :
- *   getData() retourne un Map PLAT — pas de sous-objet "user" :
- *   {
- *     "token":     "sess-xxxx",
- *     "userId":    2,
- *     "username":  "jdupont",
- *     "role":      "CLIENT",
- *     "firstName": "Jean",
- *     "lastName":  "Dupont"
- *   }
- *
- * APRÈS LOGIN → NavigationManager.showLanding()
- *   La LandingPage est la vraie page d'accueil (avec logo, menu, etc.)
- *   Elle détecte NavigationManager.isLoggedIn() pour adapter l'affichage.
- */
 public class LoginScreen {
 
     private final AuthController authController = new AuthController();
@@ -50,94 +27,271 @@ public class LoginScreen {
 
     public Node getView() {
         StackPane root = new StackPane();
-        root.setStyle("-fx-background-color: linear-gradient(to bottom right, #0f0728, #3b1278, #6d28d9);");
+        root.getStyleClass().add("auth-root");
+        CaptchaWebView captchaView = new CaptchaWebView();
 
-        VBox card = new VBox(20);
-        card.setMaxWidth(440);
-        card.setPadding(new Insets(48, 50, 48, 50));
-        card.setAlignment(Pos.CENTER_LEFT);
-        card.setStyle(
-                "-fx-background-color: rgba(255,255,255,0.07);" +
-                        "-fx-background-radius: 20;" +
-                        "-fx-border-color: rgba(255,255,255,0.13);" +
-                        "-fx-border-radius: 20;" +
-                        "-fx-border-width: 1;"
-        );
 
-        Label brand    = lbl("ChriOnline", 26, FontWeight.BOLD, Color.WHITE);
-        Label title    = lbl("Connexion",   22, FontWeight.BOLD, Color.rgb(220, 200, 255));
-        Label subtitle = lbl("Accédez à votre compte", 13, FontWeight.NORMAL, Color.rgb(180, 155, 230));
 
-        TextField     usernameField = styledField("Nom d'utilisateur");
-        PasswordField passwordField = styledPassword("Mot de passe");
+        // ── Watermark background ─────────────────────────
+        Label watermark = new Label("ChriOnline");
+        watermark.getStyleClass().add("auth-brand-watermark");
+        watermark.setMouseTransparent(true);
+        StackPane.setAlignment(watermark, Pos.CENTER);
 
-        // Erreur inline — invisible par défaut
-        Label errorLabel = new Label();
-        errorLabel.setTextFill(Color.rgb(252, 129, 129));
-        errorLabel.setFont(Font.font(12));
-        errorLabel.setWrapText(true);
-        errorLabel.setVisible(false);
-        errorLabel.setManaged(false);
-
-        Button loginBtn = new Button("Se connecter");
-        loginBtn.setMaxWidth(Double.MAX_VALUE);
-        loginBtn.setFont(Font.font("System", FontWeight.BOLD, 14));
-        loginBtn.setStyle(btnStyle("#f59e0b"));
-        loginBtn.setOnMouseEntered(e -> loginBtn.setStyle(btnStyle("#d97706")));
-        loginBtn.setOnMouseExited(e  -> loginBtn.setStyle(btnStyle("#f59e0b")));
-        loginBtn.setOnAction(e ->
-                handleLogin(usernameField, passwordField, loginBtn, errorLabel));
-        passwordField.setOnAction(e ->
-                handleLogin(usernameField, passwordField, loginBtn, errorLabel));
-
-        Hyperlink registerLink = new Hyperlink("Pas encore de compte ? S'inscrire");
-        registerLink.setTextFill(Color.rgb(167, 139, 250));
-        registerLink.setStyle("-fx-border-color: transparent;");
-        registerLink.setOnAction(e -> NavigationManager.showRegister());
-
-        Hyperlink backLink = new Hyperlink("← Retour à l'accueil");
-        backLink.setTextFill(Color.rgb(140, 120, 200));
-        backLink.setStyle("-fx-border-color: transparent; -fx-font-size: 11;");
+        // ── Back to home — top left ──────────────────────
+        Button backLink = new Button("\u2190  Retour a l'accueil");
+        backLink.getStyleClass().add("auth-back-link");
         backLink.setOnAction(e -> NavigationManager.showLanding());
+        StackPane.setAlignment(backLink, Pos.TOP_LEFT);
+        StackPane.setMargin(backLink, new Insets(24, 0, 0, 24));
 
-        Region sep = new Region();
-        sep.setPrefHeight(1);
-        sep.setStyle("-fx-background-color: rgba(255,255,255,0.1);");
+        // ── Center content ───────────────────────────────
+        VBox centerBox = new VBox(28);
+        centerBox.setAlignment(Pos.CENTER);
+        centerBox.setPadding(new Insets(40, 40, 40, 40));
+        centerBox.setMaxWidth(440);
+
+        // ── Branding (outside the card) ──────────────────
+        VBox branding = buildBranding();
+
+        // ── White card (compact) ─────────────────────────
+        VBox card = new VBox(14);
+        card.getStyleClass().add("auth-card");
+        card.setPadding(new Insets(28, 36, 24, 36));
+        card.setAlignment(Pos.CENTER);
+        card.setMaxWidth(400);
+
+        // Title
+        HBox titleRow = new HBox(10);
+        titleRow.setAlignment(Pos.CENTER);
+        Label lockIcon = new Label("\uD83D\uDD12");
+        lockIcon.setStyle("-fx-font-size: 22px; -fx-text-fill: #2C3E50;");
+        Label title = new Label("Connexion");
+        title.getStyleClass().add("auth-title");
+        title.setStyle("-fx-font-size: 22px;");
+        titleRow.getChildren().addAll(lockIcon, title);
+
+        Label subtitle = new Label("Entrez vos identifiants pour continuer");
+        subtitle.getStyleClass().add("auth-subtitle");
+
+        // Divider
+        Region div = new Region();
+        div.setStyle("-fx-background-color: #E8E8E8; -fx-pref-height: 1;");
+
+        // Username field
+        Label userLabel = new Label("Nom d'utilisateur");
+        userLabel.getStyleClass().add("auth-field-label");
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("ex : mon_pseudo");
+        usernameField.getStyleClass().add("auth-field");
+        VBox userGroup = new VBox(5, userLabel, usernameField);
+
+        // Password field
+        Label passLabel = new Label("Mot de passe");
+        passLabel.getStyleClass().add("auth-field-label");
+        PasswordField passwordField = new PasswordField();
+        passwordField.setPromptText("Mot de passe");
+        passwordField.getStyleClass().add("auth-password-field");
+        StackPane passWrapper = wrapWithToggle(passwordField);
+        VBox passGroup = new VBox(5, passLabel, passWrapper);
+
+        //forgot password
+        Button forgotLink = new Button("Mot de passe oublié ?");
+        forgotLink.getStyleClass().add("auth-link");
+        forgotLink.setOnAction(e -> NavigationManager.showForgotPassword());
+
+        // Error box (hidden by default)
+        HBox errorBox = new HBox(8);
+        errorBox.getStyleClass().add("auth-error");
+        errorBox.setVisible(false);
+        errorBox.setManaged(false);
+        errorBox.setAlignment(Pos.CENTER_LEFT);
+        Label errorIcon = new Label("\u26A0");
+        errorIcon.setStyle("-fx-font-size: 14px; -fx-text-fill: #E74C3C;");
+        Label errorText = new Label();
+        errorText.getStyleClass().add("auth-error-text");
+        errorText.setWrapText(true);
+        HBox.setHgrow(errorText, Priority.ALWAYS);
+        errorBox.getChildren().addAll(errorIcon, errorText);
+
+
+        // Login button
+        Button loginBtn = new Button("Se connecter");
+        loginBtn.getStyleClass().add("auth-btn-primary");
+        loginBtn.setDisable(true); // disabled until captcha solved
+
+// Captcha
+        captchaView.setOnSolved(() -> loginBtn.setDisable(false));
+
+// Wire the actions
+        loginBtn.setOnAction(e ->
+                handleLogin(usernameField, passwordField, loginBtn,
+                        errorBox, errorText, captchaView));
+        passwordField.setOnAction(e ->
+                handleLogin(usernameField, passwordField, loginBtn,
+                        errorBox, errorText, captchaView));
+
+        // Register link
+        HBox registerRow = new HBox(4);
+        registerRow.setAlignment(Pos.CENTER);
+        Label noAccount = new Label("Pas encore de compte ?");
+        noAccount.getStyleClass().add("auth-secondary-text");
+        Button registerLink = new Button("S'inscrire");
+        registerLink.getStyleClass().add("auth-link");
+        registerLink.setOnAction(e -> NavigationManager.showRegister());
+        registerRow.getChildren().addAll(noAccount, registerLink);
 
         card.getChildren().addAll(
-                brand, title, subtitle, sep,
-                fieldGroup("Nom d'utilisateur", usernameField),
-                fieldGroup("Mot de passe",       passwordField),
-                errorLabel, loginBtn, registerLink, backLink
+                titleRow, subtitle, div,
+                userGroup, passGroup,
+                forgotLink,
+                captchaView,
+                errorBox,
+                loginBtn,
+                registerRow
         );
 
-        root.getChildren().add(card);
+        centerBox.getChildren().addAll(branding, card);
+
+        // ── Particles layer ──────────────────────────────
+        Pane particles = buildParticles();
+
+        root.getChildren().addAll(particles, watermark, backLink, centerBox);
+
+        // ── Entrance animation ───────────────────────────
+        Platform.runLater(() -> {
+            branding.setOpacity(0);
+            branding.setTranslateY(-15);
+            card.setOpacity(0);
+            card.setTranslateY(20);
+
+            FadeTransition fb = new FadeTransition(Duration.millis(500), branding);
+            fb.setToValue(1);
+            TranslateTransition tb = new TranslateTransition(Duration.millis(500), branding);
+            tb.setToY(0);
+            tb.setInterpolator(Interpolator.EASE_OUT);
+
+            FadeTransition fc = new FadeTransition(Duration.millis(600), card);
+            fc.setToValue(1);
+            fc.setDelay(Duration.millis(150));
+            TranslateTransition tc = new TranslateTransition(Duration.millis(600), card);
+            tc.setToY(0);
+            tc.setDelay(Duration.millis(150));
+            tc.setInterpolator(Interpolator.EASE_OUT);
+
+            new ParallelTransition(fb, tb, fc, tc).play();
+        });
+
         return root;
     }
 
-    // ── Logique LOGIN ─────────────────────────────────────────────────────────
+    // ═══════════════════════════════════════════════════════
+    //  BRANDING — above the card
+    // ═══════════════════════════════════════════════════════
+
+    private VBox buildBranding() {
+        VBox branding = new VBox(6);
+        branding.setAlignment(Pos.CENTER);
+
+        // Logo
+        try {
+            ImageView logo = new ImageView(new Image(
+                    Objects.requireNonNull(
+                            getClass().getResourceAsStream("/images/logo.png"))));
+            logo.setFitHeight(52);
+            logo.setPreserveRatio(true);
+            logo.setSmooth(true);
+            branding.getChildren().add(logo);
+        } catch (Exception ignored) {}
+
+        // Name
+        HBox nameRow = new HBox(0);
+        nameRow.setAlignment(Pos.CENTER);
+        Label l1 = new Label("Chri");
+        l1.setStyle(
+                "-fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: #FFFFFF;"
+                        + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 2);");
+        Label l2 = new Label("Online");
+        l2.setStyle(
+                "-fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: #D2B4DE;"
+                        + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 2);");
+        nameRow.getChildren().addAll(l1, l2);
+
+        // Tagline
+        Label tagline = new Label("Votre boutique en ligne premium");
+        tagline.setStyle("-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.6);");
+
+        branding.getChildren().addAll(nameRow, tagline);
+        return branding;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  FLOATING PARTICLES
+    // ═══════════════════════════════════════════════════════
+
+    private Pane buildParticles() {
+        Pane layer = new Pane();
+        layer.getStyleClass().add("auth-particles");
+        layer.setMouseTransparent(true);
+
+        java.util.Random rand = new java.util.Random();
+        for (int i = 0; i < 12; i++) {
+            javafx.scene.shape.Circle dot = new javafx.scene.shape.Circle(
+                    rand.nextDouble() * 2 + 1.5);
+            dot.setFill(javafx.scene.paint.Color.rgb(255, 255, 255,
+                    0.04 + rand.nextDouble() * 0.06));
+            dot.setLayoutX(rand.nextDouble() * 1400);
+            dot.setLayoutY(rand.nextDouble() * 900);
+            layer.getChildren().add(dot);
+
+            TranslateTransition tt = new TranslateTransition(
+                    Duration.seconds(8 + rand.nextDouble() * 12), dot);
+            tt.setByY(-40 - rand.nextDouble() * 60);
+            tt.setByX((rand.nextDouble() - 0.5) * 40);
+            tt.setCycleCount(Animation.INDEFINITE);
+            tt.setAutoReverse(true);
+            tt.setInterpolator(Interpolator.EASE_BOTH);
+            tt.play();
+        }
+
+        return layer;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  LOGIN LOGIC
+    // ═══════════════════════════════════════════════════════
 
     private void handleLogin(TextField usernameField, PasswordField passwordField,
-                             Button loginBtn, Label errorLabel) {
+                             Button loginBtn, HBox errorBox, Label errorText , CaptchaWebView captchaView) {
 
         String username = usernameField.getText().trim();
         String password = passwordField.getText();
 
         if (username.isEmpty() || password.isEmpty()) {
-            showError(errorLabel, "Veuillez remplir tous les champs.");
+            showError(errorBox, errorText,
+                    "Veuillez remplir tous les champs.");
             return;
         }
 
+        if (!captchaView.isSolved()) {
+            showError(errorBox, errorText, "Veuillez compléter le CAPTCHA.");
+            shakeNode(errorBox);
+            return;
+        }
+        String captchaToken = captchaView.getToken();
+
+        hideError(errorBox);
         loginBtn.setDisable(true);
         loginBtn.setText("Connexion en cours...");
 
         new Thread(() -> {
-            // Connexion TCP si pas encore établie
+            Response captchaResponse = authController.verifyCaptcha(captchaToken);
             if (!ServerConnection.getInstance().isConnected()) {
                 boolean ok = ServerConnection.getInstance().connect();
                 if (!ok) {
                     Platform.runLater(() -> {
-                        showError(errorLabel, "Serveur inaccessible. Vérifiez qu'il est démarré sur le port 9090.");
+                        showError(errorBox, errorText,
+                                "Serveur inaccessible. Verifiez qu'il est demarre sur le port 9090.");
                         loginBtn.setDisable(false);
                         loginBtn.setText("Se connecter");
                     });
@@ -145,7 +299,6 @@ public class LoginScreen {
                 }
             }
 
-            // AuthController.login() → Request(LOGIN, null, {username, password})
             Response response = authController.login(username, password);
 
             Platform.runLater(() -> {
@@ -153,32 +306,82 @@ public class LoginScreen {
                 loginBtn.setText("Se connecter");
 
                 if (response.isSuccess()) {
-                    // ── getData() retourne un Map PLAT (pas de sous-objet "user") ──
-                    // Structure : { token, userId, username, role, firstName, lastName }
                     Map<String, Object> data = castToMap(response.getData());
+                    System.out.println("ROLE RECU : " + getStr(data, "role"));
 
-                    String token     = getStr(data, "token");
-                    int    userId    = getInt(data, "userId");
-                    String un        = getStr(data, "username");
-                    String role      = getStr(data, "role");
-                    String firstName = getStr(data, "firstName");
-                    String lastName  = getStr(data, "lastName");
+                    if (Boolean.TRUE.equals(data.get("2fa_required"))) {
+                        NavigationManager.showTwoFactor(getInt(data, "userId"), getStr(data, "email"));
+                        return;
+                    }
 
-                    // Stocker la session dans NavigationManager
-                    // (accessible depuis tous les écrans)
-                    NavigationManager.setSession(token, userId, un, role, firstName, lastName);
+                    NavigationManager.setSession(
+                            getStr(data, "token"),
+                            getInt(data, "userId"),
+                            getStr(data, "username"),
+                            getStr(data, "role"),
+                            getStr(data, "firstName"),
+                            getStr(data, "lastName")
+                    );
+                    // ── Start UDP heartbeat sender ───────────────
+                    int uid = getInt(data, "userId");
+                    UDPHeartbeatSender heartbeat = new UDPHeartbeatSender(uid);
+                    Thread heartbeatThread = new Thread(heartbeat);
+                    heartbeatThread.setDaemon(true);
+                    heartbeatThread.setName("udp-heartbeat-" + uid);
+                    heartbeatThread.start();
 
-                    // Aller vers LandingPage (la vraie page d'accueil du projet)
-                    NavigationManager.showLanding();
+                    // APRÈS — redirige selon le rôle
+                    String role = getStr(data, "role");
+
+                    if ("ADMIN".equals(role) || "SUPER_ADMIN".equals(role)) {
+                        NavigationManager.showAdminDashboard();  // ← admin va au dashboard
+                    } else {
+                        NavigationManager.showLanding();         // ← client va à l'accueil
+                    }
 
                 } else {
-                    showError(errorLabel, response.getMessage());
+                    showError(errorBox, errorText, response.getMessage());
+
+                    // Shake animation on error
+                    shakeNode(errorBox);
                 }
             });
         }).start();
     }
 
-    // ── Helpers désérialisation ───────────────────────────────────────────────
+    // ═══════════════════════════════════════════════════════
+    //  ERROR HELPERS
+    // ═══════════════════════════════════════════════════════
+
+    private void showError(HBox errorBox, Label errorText, String msg) {
+        errorText.setText(msg);
+        errorBox.setVisible(true);
+        errorBox.setManaged(true);
+
+        errorBox.setOpacity(0);
+        FadeTransition ft = new FadeTransition(Duration.millis(250), errorBox);
+        ft.setToValue(1);
+        ft.play();
+    }
+
+    private void hideError(HBox errorBox) {
+        errorBox.setVisible(false);
+        errorBox.setManaged(false);
+    }
+
+    private void shakeNode(Node node) {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(50), node);
+        tt.setFromX(0);
+        tt.setByX(8);
+        tt.setCycleCount(6);
+        tt.setAutoReverse(true);
+        tt.setOnFinished(e -> node.setTranslateX(0));
+        tt.play();
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  HELPERS
+    // ═══════════════════════════════════════════════════════
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> castToMap(Object obj) {
@@ -190,7 +393,8 @@ public class LoginScreen {
 
     private String getStr(Map<String, Object> m, String key) {
         if (m == null) return "";
-        Object v = m.get(key); return v != null ? v.toString() : "";
+        Object v = m.get(key);
+        return v != null ? v.toString() : "";
     }
 
     private int getInt(Map<String, Object> m, String key) {
@@ -200,54 +404,51 @@ public class LoginScreen {
         if (v instanceof Double) return ((Double) v).intValue();
         return Integer.parseInt(v.toString());
     }
+    private StackPane wrapWithToggle(PasswordField pf) {
+        TextField visibleField = new TextField();
+        visibleField.setPromptText(pf.getPromptText());
+        visibleField.getStyleClass().addAll(pf.getStyleClass());
+        visibleField.setVisible(false);
+        visibleField.setManaged(false);
 
-    // ── Helpers UI ────────────────────────────────────────────────────────────
+        pf.textProperty().addListener((obs, o, n) -> {
+            if (!visibleField.isFocused()) visibleField.setText(n);
+        });
+        visibleField.textProperty().addListener((obs, o, n) -> {
+            if (!pf.isFocused()) pf.setText(n);
+        });
 
-    private void showError(Label lbl, String msg) {
-        lbl.setText(msg); lbl.setVisible(true); lbl.setManaged(true);
-    }
+        Button eyeBtn = new Button("\uD83D\uDC41");
+        eyeBtn.setStyle(
+                "-fx-background-color: transparent;" +
+                        "-fx-border-color: transparent;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-padding: 0 10 0 0;"
+        );
+        StackPane.setAlignment(eyeBtn, Pos.CENTER_RIGHT);
 
-    private VBox fieldGroup(String labelText, javafx.scene.control.Control field) {
-        Label l = new Label(labelText);
-        l.setTextFill(Color.rgb(200, 180, 240));
-        l.setFont(Font.font(12));
-        return new VBox(6, l, field);
-    }
+        eyeBtn.setOnAction(e -> {
+            boolean showing = visibleField.isVisible();
+            if (showing) {
+                pf.setText(visibleField.getText());
+                pf.setVisible(true);
+                pf.setManaged(true);
+                visibleField.setVisible(false);
+                visibleField.setManaged(false);
+                eyeBtn.setText("\uD83D\uDC41");
+            } else {
+                visibleField.setText(pf.getText());
+                visibleField.setVisible(true);
+                visibleField.setManaged(true);
+                pf.setVisible(false);
+                pf.setManaged(false);
+                eyeBtn.setText("\u00D8");
+            }
+        });
 
-    private Label lbl(String text, int size, FontWeight weight, Color color) {
-        Label l = new Label(text);
-        l.setFont(Font.font("System", weight, size));
-        l.setTextFill(color);
-        return l;
-    }
-
-    private TextField styledField(String prompt) {
-        TextField tf = new TextField();
-        tf.setPromptText(prompt);
-        tf.setStyle(inputStyle());
-        return tf;
-    }
-
-    private PasswordField styledPassword(String prompt) {
-        PasswordField pf = new PasswordField();
-        pf.setPromptText(prompt);
-        pf.setStyle(inputStyle());
-        return pf;
-    }
-
-    private String inputStyle() {
-        return "-fx-background-color: rgba(255,255,255,0.09);" +
-                "-fx-text-fill: white;" +
-                "-fx-prompt-text-fill: rgba(200,180,255,0.5);" +
-                "-fx-background-radius: 9;" +
-                "-fx-border-color: rgba(255,255,255,0.15);" +
-                "-fx-border-radius: 9;" +
-                "-fx-padding: 11 14;" +
-                "-fx-font-size: 13;";
-    }
-
-    private String btnStyle(String color) {
-        return "-fx-background-color:" + color + ";-fx-text-fill:white;" +
-                "-fx-background-radius:9;-fx-padding:12 0;-fx-cursor:hand;";
+        StackPane wrapper = new StackPane(pf, visibleField, eyeBtn);
+        wrapper.setAlignment(Pos.CENTER_LEFT);
+        return wrapper;
     }
 }

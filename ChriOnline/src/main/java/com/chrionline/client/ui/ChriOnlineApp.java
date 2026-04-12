@@ -1,12 +1,18 @@
 package com.chrionline.client.ui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 public class ChriOnlineApp extends Application {
@@ -20,10 +26,14 @@ public class ChriOnlineApp extends Application {
         StackPane root = new StackPane();
         Scene scene = new Scene(root, 1280, 800);
 
-        // Chargement du CSS
-        String css = Objects.requireNonNull(
-                getClass().getResource("/css/style.css")).toExternalForm();
-        scene.getStylesheets().add(css);
+        // Chargement robuste du CSS
+        String css = resolveStylesheetUrl();
+        if (css != null) {
+            System.out.println("[CSS] Charge depuis : " + css);
+            scene.getStylesheets().setAll(css);
+        } else {
+            System.err.println("[UI] style.css introuvable.");
+        }
 
         // Icône
         try {
@@ -47,6 +57,49 @@ public class ChriOnlineApp extends Application {
         NavigationManager.showSplash();
 
         stage.show();
+
+        // Forcer application CSS après affichage
+        Platform.runLater(() -> {
+            if (scene.getRoot() != null) {
+                scene.getRoot().applyCss();
+                scene.getRoot().layout();
+            }
+        });
+    }
+
+    private String resolveStylesheetUrl() {
+        try {
+            // 1) Mode développement IntelliJ : CSS source → temp file
+            File sourceCss = new File("src/main/resources/css/style.css");
+            if (sourceCss.exists()) {
+                return copyToTempAndGetUrl(sourceCss.toPath());
+            }
+
+            // 2) Fallback classpath → temp file
+            URL resource = getClass().getResource("/css/style.css");
+            if (resource != null) {
+                Path tempFile = Files.createTempFile("chrionline-style-", ".css");
+                tempFile.toFile().deleteOnExit();
+
+                try (var in = resource.openStream()) {
+                    Files.copy(in, tempFile, StandardCopyOption.REPLACE_EXISTING);
+                }
+
+                return tempFile.toUri().toString();
+            }
+
+        } catch (Exception e) {
+            System.err.println("[UI] Erreur chargement CSS : " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    private String copyToTempAndGetUrl(Path source) throws IOException {
+        Path tempFile = Files.createTempFile("chrionline-style-", ".css");
+        tempFile.toFile().deleteOnExit();
+        Files.copy(source, tempFile, StandardCopyOption.REPLACE_EXISTING);
+        return tempFile.toUri().toString();
     }
 
     public static Stage getPrimaryStage() {

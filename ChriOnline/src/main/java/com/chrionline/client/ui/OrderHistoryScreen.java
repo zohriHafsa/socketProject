@@ -29,7 +29,7 @@ public class OrderHistoryScreen {
     public OrderHistoryScreen() {
         root = new BorderPane();
         root.getStyleClass().add("page-root");
-        root.setTop(buildHeader());
+        root.setTop(new HeaderComponent("orders", null, null, null).getView());
 
         VBox main = new VBox(20);
         main.setMaxWidth(MAX_W);

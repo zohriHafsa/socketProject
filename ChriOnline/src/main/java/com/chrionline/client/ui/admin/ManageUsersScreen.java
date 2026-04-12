@@ -335,13 +335,13 @@ public class ManageUsersScreen {
         header.setPadding(new Insets(10, 16, 10, 16));
         header.getChildren().addAll(
                 tCol("ID", 50),
-                tCol("Utilisateur", 140),
+                tCol("Utilisateur", 160),
                 tCol("Email", 200),
                 tCol("Nom complet", 160),
-                tCol("Role", 80),
-                tCol("Statut", 100),
-                tCol("Inscrit le", 120),
-                tCol("Action", 120)
+                tCol("Role", 110),
+                tCol("Statut", 130),
+                tCol("Inscrit le", 140),
+                tCol("Action", 140)
         );
         usersContainer.getChildren().add(header);
 
@@ -386,8 +386,8 @@ public class ManageUsersScreen {
 
         HBox userCell = new HBox(8);
         userCell.setAlignment(Pos.CENTER_LEFT);
-        userCell.setMinWidth(140);
-        userCell.setMaxWidth(140);
+        userCell.setMinWidth(160);
+        userCell.setMaxWidth(160);
 
         StackPane avatar = new StackPane();
         avatar.getStyleClass().add("admin-user-avatar");
@@ -422,20 +422,28 @@ public class ManageUsersScreen {
         Label roleL = new Label(role);
         roleL.getStyleClass().add("admin-status-badge");
         roleL.getStyleClass().add("ADMIN".equals(role) ? "admin-status-expediee" : "admin-status-validee");
-        roleL.setMinWidth(70);
+        
+        HBox roleBox = new HBox(roleL);
+        roleBox.setAlignment(Pos.CENTER_LEFT);
+        roleBox.setMinWidth(110);
+        roleBox.setMaxWidth(110);
 
         Label statusL = new Label(active ? "Actif" : "Inactif");
         statusL.getStyleClass().add("admin-status-badge");
         statusL.getStyleClass().add(active ? "admin-status-livree" : "admin-status-annulee");
-        statusL.setMinWidth(90);
+        
+        HBox statusBox = new HBox(statusL);
+        statusBox.setAlignment(Pos.CENTER_LEFT);
+        statusBox.setMinWidth(130);
+        statusBox.setMaxWidth(130);
 
         String dateStr = createdAt.length() > 10 ? createdAt.substring(0, 10) : createdAt;
-        Label dateL = tCell(dateStr, 120);
+        Label dateL = tCell(dateStr, 140);
         dateL.getStyleClass().add("admin-cell-date");
 
         HBox actionBox = new HBox(6);
         actionBox.setAlignment(Pos.CENTER_LEFT);
-        actionBox.setMinWidth(120);
+        actionBox.setMinWidth(140);
 
         boolean isSelf = userId == NavigationManager.getUserId();
 
@@ -454,7 +462,7 @@ public class ManageUsersScreen {
 
         actionBox.getChildren().add(toggleBtn);
 
-        row.getChildren().addAll(idL, userCell, emailL, nameL, roleL, statusL, dateL, actionBox);
+        row.getChildren().addAll(idL, userCell, emailL, nameL, roleBox, statusBox, dateL, actionBox);
         return row;
     }
 
@@ -463,10 +471,11 @@ public class ManageUsersScreen {
         overlay.setStyle("-fx-background-color: rgba(0,0,0,0.5);");
         overlay.setAlignment(Pos.CENTER);
 
-        VBox card = new VBox(16);
+        VBox card = new VBox(12);
         card.getStyleClass().add("admin-form-card");
-        card.setMaxWidth(400);
-        card.setPadding(new Insets(30));
+        card.setMaxWidth(380);
+        card.setMaxHeight(170);
+        card.setPadding(new Insets(20));
         card.setAlignment(Pos.CENTER);
 
         Label title = new Label(currentlyActive

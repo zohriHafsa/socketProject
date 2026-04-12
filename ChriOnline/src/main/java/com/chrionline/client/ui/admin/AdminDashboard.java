@@ -24,7 +24,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Separator;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -49,41 +48,33 @@ public class AdminDashboard {
     private static final double H_PAD = 40;
 
     private static final String ST_EN_ATTENTE = "EN_ATTENTE";
-    private static final String ST_VALIDEE = "VALIDEE";
-    private static final String ST_EXPEDIEE = "EXPEDIEE";
-    private static final String ST_LIVREE = "LIVREE";
-    private static final String ST_ANNULEE = "ANNULEE";
+    private static final String ST_VALIDEE    = "VALIDEE";
+    private static final String ST_EXPEDIEE   = "EXPEDIEE";
+    private static final String ST_LIVREE     = "LIVREE";
+    private static final String ST_ANNULEE    = "ANNULEE";
 
     private static final String LB_EN_ATTENTE = "En attente";
-    private static final String LB_VALIDEE = "Validee";
-    private static final String LB_EXPEDIEE = "Expediee";
-    private static final String LB_LIVREE = "Livree";
-    private static final String LB_ANNULEE = "Annulee";
+    private static final String LB_VALIDEE    = "Validee";
+    private static final String LB_EXPEDIEE   = "Expediee";
+    private static final String LB_LIVREE     = "Livree";
+    private static final String LB_ANNULEE    = "Annulee";
 
     private static final String CL_EN_ATTENTE = "#F39C12";
-    private static final String CL_VALIDEE = "#3498DB";
-    private static final String CL_EXPEDIEE = "#1ABC9C";
-    private static final String CL_LIVREE = "#27AE60";
-    private static final String CL_ANNULEE = "#E74C3C";
+    private static final String CL_VALIDEE    = "#3498DB";
+    private static final String CL_EXPEDIEE   = "#1ABC9C";
+    private static final String CL_LIVREE     = "#27AE60";
+    private static final String CL_ANNULEE    = "#E74C3C";
 
-    private static String[] statuses() {
-        return new String[]{ST_EN_ATTENTE, ST_VALIDEE, ST_EXPEDIEE, ST_LIVREE, ST_ANNULEE};
-    }
-
-    private static String[] statusLabels() {
-        return new String[]{LB_EN_ATTENTE, LB_VALIDEE, LB_EXPEDIEE, LB_LIVREE, LB_ANNULEE};
-    }
-
-    private static String[] statusColors() {
-        return new String[]{CL_EN_ATTENTE, CL_VALIDEE, CL_EXPEDIEE, CL_LIVREE, CL_ANNULEE};
-    }
+    private static String[] statuses()      { return new String[]{ST_EN_ATTENTE, ST_VALIDEE, ST_EXPEDIEE, ST_LIVREE, ST_ANNULEE}; }
+    private static String[] statusLabels()  { return new String[]{LB_EN_ATTENTE, LB_VALIDEE, LB_EXPEDIEE, LB_LIVREE, LB_ANNULEE}; }
+    private static String[] statusColors()  { return new String[]{CL_EN_ATTENTE, CL_VALIDEE, CL_EXPEDIEE, CL_LIVREE, CL_ANNULEE}; }
 
     private final BorderPane root;
-    private VBox contentArea;
-    private StackPane loadingOverlay;
+    private VBox             contentArea;
+    private StackPane        loadingOverlay;
 
-    private List<Map<String, Object>> allOrders = new ArrayList<>();
-    private List<Map<String, Object>> allUsers = new ArrayList<>();
+    private List<Map<String, Object>> allOrders   = new ArrayList<>();
+    private List<Map<String, Object>> allUsers    = new ArrayList<>();
     private List<Map<String, Object>> allProducts = new ArrayList<>();
 
     public AdminDashboard() {
@@ -124,12 +115,10 @@ public class AdminDashboard {
         });
     }
 
-    public Node getView() {
-        return root;
-    }
+    public Node getView() { return root; }
 
     // ================================================================
-    //  SHARED ADMIN HEADER - used by all admin screens
+    //  SHARED ADMIN HEADER
     // ================================================================
 
     public static StackPane buildAdminHeader(String currentPage) {
@@ -143,8 +132,8 @@ public class AdminDashboard {
         inner.setMinHeight(70);
         inner.setAlignment(Pos.CENTER_LEFT);
 
-        // Logo - same style as client header
-        HBox logo = new HBox(8);
+        // ── Logo ─────────────────────────────────────────
+        HBox logo = new HBox(4);
         logo.setAlignment(Pos.CENTER_LEFT);
         logo.setCursor(javafx.scene.Cursor.HAND);
         logo.setOnMouseClicked(e -> NavigationManager.showAdminDashboard());
@@ -156,47 +145,61 @@ public class AdminDashboard {
             img.setPreserveRatio(true);
             img.setSmooth(true);
             logo.getChildren().add(img);
-        } catch (Exception ignored) {
-        }
-        Label l1 = new Label("Chri");
-        l1.getStyleClass().add("header-logo-text");
-        Label l2 = new Label("Online");
-        l2.getStyleClass().add("header-logo-accent");
-        logo.getChildren().addAll(l1, l2);
+        } catch (Exception ignored) {}
 
-        // Admin badge next to logo
-        Label adminBadge = new Label("ADMIN");
-        adminBadge.getStyleClass().add("admin-header-badge");
+        Label logoFull   = new Label("Chri");
+        logoFull.getStyleClass().add("header-logo-text");
+        Label logoAccent = new Label("Online");
+        logoAccent.getStyleClass().add("header-logo-accent");
+        HBox logoText = new HBox(0, logoFull, logoAccent);
+        logoText.setAlignment(Pos.CENTER_LEFT);
+        logo.getChildren().add(logoText);
 
-        // Nav buttons - compact
+        // ── Admin badge ───────────────────────────────────
+        Label adminBadge = new Label(
+                NavigationManager.isSuperAdmin() ? "SUPER ADMIN" : "ADMIN");
+        adminBadge.setStyle(
+                "-fx-background-color: #6C3483;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-font-size: 10px;" +
+                        "-fx-font-weight: 700;" +
+                        "-fx-background-radius: 4;" +
+                        "-fx-padding: 2 7;"
+        );
+
+        // ── Nav buttons ───────────────────────────────────
         HBox nav = new HBox(2);
         nav.setAlignment(Pos.CENTER);
 
-        Button nDash = adminNavButton("Dashboard", "Dashboard".equals(currentPage));
-        nDash.setOnAction(e -> NavigationManager.showAdminDashboard());
+        Button nDash = adminNavButton("Dashboard",    "Dashboard".equals(currentPage));
+        Button nProd = adminNavButton("Produits",     "Produits".equals(currentPage));
+        Button nUsers = adminNavButton("Utilisateurs","Utilisateurs".equals(currentPage));
+        Button nOrders = adminNavButton("Commandes",  "Commandes".equals(currentPage));
+        Button nCats = adminNavButton("Categories",   "Categories".equals(currentPage));
 
-        Button nProd = adminNavButton("Produits", "Produits".equals(currentPage));
-        nProd.setOnAction(e -> NavigationManager.showManageProducts());
-
-        Button nUsers = adminNavButton("Utilisateurs", "Utilisateurs".equals(currentPage));
-        nUsers.setOnAction(e -> NavigationManager.showManageUsers());
-
-        Button nOrders = adminNavButton("Commandes", "Commandes".equals(currentPage));
+        nDash.setOnAction(e   -> NavigationManager.showAdminDashboard());
+        nProd.setOnAction(e   -> NavigationManager.showManageProducts());
+        nUsers.setOnAction(e  -> NavigationManager.showManageUsers());
         nOrders.setOnAction(e -> NavigationManager.showManageOrders());
+        nCats.setOnAction(e   -> NavigationManager.showManageCategories());
 
-        nav.getChildren().addAll(nDash, nProd, nUsers, nOrders);
+        nav.getChildren().addAll(nDash, nProd, nUsers, nOrders, nCats);
 
-        Region sp1 = new Region();
-        HBox.setHgrow(sp1, Priority.ALWAYS);
-        Region sp2 = new Region();
-        HBox.setHgrow(sp2, Priority.ALWAYS);
+        // ── Bouton Admins — visible SEULEMENT pour SUPER_ADMIN ──
+        if (NavigationManager.isSuperAdmin()) {
+            Button nAdmins = adminNavButton("Admins", "Admins".equals(currentPage));
+            nAdmins.setOnAction(e -> NavigationManager.showManageAdmins());
+            nav.getChildren().add(nAdmins);
+        }
 
-        // Right side: shop link + user + logout
-        Button shopBtn = new Button("Voir boutique");
+        Region sp1 = new Region(); HBox.setHgrow(sp1, Priority.ALWAYS);
+        Region sp2 = new Region(); HBox.setHgrow(sp2, Priority.ALWAYS);
+
+        // ── Right side ────────────────────────────────────
+        Button shopBtn = new Button("Boutique");
         shopBtn.getStyleClass().add("admin-shop-link");
         shopBtn.setOnAction(e -> NavigationManager.showLanding());
 
-        // User avatar
         StackPane avatar = new StackPane();
         avatar.getStyleClass().add("header-avatar");
         avatar.setMinSize(32, 32);
@@ -211,8 +214,18 @@ public class AdminDashboard {
         initLabel.getStyleClass().add("header-avatar-text");
         avatar.getChildren().add(initLabel);
 
-        Button logoutBtn = new Button("Deconnexion");
-        logoutBtn.getStyleClass().add("admin-logout-btn");
+        Button logoutBtn = new Button("\u23FB");
+        logoutBtn.setStyle(
+                "-fx-background-color: transparent; -fx-text-fill: #6C3483;" +
+                        "-fx-font-size: 18px; -fx-cursor: hand; -fx-padding: 4 8;" +
+                        "-fx-border-color: transparent;");
+        logoutBtn.setOnMouseEntered(e -> logoutBtn.setStyle(
+                "-fx-background-color: rgba(108,52,131,0.12); -fx-text-fill: #6C3483;" +
+                        "-fx-font-size: 18px; -fx-cursor: hand; -fx-padding: 4 8;" +
+                        "-fx-background-radius: 6;"));
+        logoutBtn.setOnMouseExited(e -> logoutBtn.setStyle(
+                "-fx-background-color: transparent; -fx-text-fill: #6C3483;" +
+                        "-fx-font-size: 18px; -fx-cursor: hand; -fx-padding: 4 8;"));
         logoutBtn.setOnAction(e -> {
             ServerConnection.getInstance().sendAsync(
                     new Request(Action.LOGOUT, NavigationManager.getToken(), null));
@@ -231,9 +244,7 @@ public class AdminDashboard {
     private static Button adminNavButton(String text, boolean active) {
         Button b = new Button(text);
         b.getStyleClass().add("nav-link");
-        if (active) {
-            b.getStyleClass().add("nav-link-active");
-        }
+        if (active) b.getStyleClass().add("nav-link-active");
         return b;
     }
 
@@ -281,41 +292,31 @@ public class AdminDashboard {
         HBox row = new HBox(18);
         row.setAlignment(Pos.CENTER);
         row.getChildren().addAll(
-                statCard("Utilisateurs",
-                        String.valueOf(allUsers.size()),
+                statCard("Utilisateurs", String.valueOf(allUsers.size()),
                         activeUsers + " actif(s)", "admin-stat-blue"),
-                statCard("Produits",
-                        String.valueOf(allProducts.size()),
+                statCard("Produits", String.valueOf(allProducts.size()),
                         inStock + " en stock", "admin-stat-purple"),
-                statCard("Commandes",
-                        String.valueOf(allOrders.size()),
+                statCard("Commandes", String.valueOf(allOrders.size()),
                         pending + " en attente", "admin-stat-green"),
-                statCard("Revenus",
-                        String.format("%.0f EUR", revenue),
+                statCard("Revenus", String.format("%.0f MAD", revenue),
                         "commandes validees", "admin-stat-orange")
         );
         return row;
     }
 
-    private VBox statCard(String title, String value,
-                          String subtitle, String styleClass) {
+    private VBox statCard(String title, String value, String subtitle, String styleClass) {
         VBox card = new VBox(6);
         card.getStyleClass().addAll("admin-stat-card", styleClass);
         card.setAlignment(Pos.CENTER_LEFT);
         card.setPadding(new Insets(22));
         card.setMinWidth(0);
         HBox.setHgrow(card, Priority.ALWAYS);
-
-        Label ti = new Label(title);
-        ti.getStyleClass().add("admin-stat-card-title");
-        Label va = new Label(value);
-        va.getStyleClass().add("admin-stat-card-value");
-        Label su = new Label(subtitle);
-        su.getStyleClass().add("admin-stat-card-subtitle");
+        Label ti = new Label(title); ti.getStyleClass().add("admin-stat-card-title");
+        Label va = new Label(value); va.getStyleClass().add("admin-stat-card-value");
+        Label su = new Label(subtitle); su.getStyleClass().add("admin-stat-card-subtitle");
         card.getChildren().addAll(ti, va, su);
-
         card.setOnMouseEntered(e -> scaleAnim(card, 1.03));
-        card.setOnMouseExited(e -> scaleAnim(card, 1.0));
+        card.setOnMouseExited(e  -> scaleAnim(card, 1.0));
         return card;
     }
 
@@ -325,7 +326,6 @@ public class AdminDashboard {
 
         String[] sts = statuses();
         String[] lbs = statusLabels();
-        String[] cls = statusColors();
 
         // PieChart
         VBox pieBox = new VBox(12);
@@ -333,13 +333,11 @@ public class AdminDashboard {
         HBox.setHgrow(pieBox, Priority.ALWAYS);
         pieBox.setAlignment(Pos.TOP_CENTER);
         pieBox.setPadding(new Insets(20));
-
         Label pieTitle = new Label("Repartition des commandes");
         pieTitle.getStyleClass().add("admin-chart-title");
 
         Map<String, Long> statusCounts = allOrders.stream()
-                .collect(Collectors.groupingBy(
-                        o -> str(o.get("status")), Collectors.counting()));
+                .collect(Collectors.groupingBy(o -> str(o.get("status")), Collectors.counting()));
 
         PieChart pie = new PieChart();
         pie.setLegendSide(Side.BOTTOM);
@@ -349,34 +347,24 @@ public class AdminDashboard {
 
         for (int i = 0; i < sts.length; i++) {
             long count = statusCounts.getOrDefault(sts[i], 0L);
-            if (count > 0) {
-                pie.getData().add(new PieChart.Data(
-                        lbs[i] + " (" + count + ")", count));
-            }
+            if (count > 0)
+                pie.getData().add(new PieChart.Data(lbs[i] + " (" + count + ")", count));
         }
 
         Platform.runLater(() -> {
-            String[] labels = statusLabels();
             String[] colors = statusColors();
             for (PieChart.Data data : pie.getData()) {
-                for (int i = 0; i < labels.length; i++) {
-                    if (data.getName().startsWith(labels[i])) {
-                        if (data.getNode() != null) {
-                            data.getNode().setStyle(
-                                    "-fx-pie-color: " + colors[i] + ";");
-                        }
+                for (int i = 0; i < lbs.length; i++) {
+                    if (data.getName().startsWith(lbs[i]) && data.getNode() != null) {
+                        data.getNode().setStyle("-fx-pie-color: " + colors[i] + ";");
                         break;
                     }
                 }
             }
         });
 
-        if (pie.getData().isEmpty()) {
-            pieBox.getChildren().addAll(pieTitle,
-                    emptyLabel("Aucune commande"));
-        } else {
-            pieBox.getChildren().addAll(pieTitle, pie);
-        }
+        pieBox.getChildren().addAll(pieTitle,
+                pie.getData().isEmpty() ? emptyLabel("Aucune commande") : pie);
 
         // BarChart
         VBox barBox = new VBox(12);
@@ -384,14 +372,12 @@ public class AdminDashboard {
         HBox.setHgrow(barBox, Priority.ALWAYS);
         barBox.setAlignment(Pos.TOP_CENTER);
         barBox.setPadding(new Insets(20));
-
-        Label barTitle = new Label("Revenus par statut (EUR)");
+        Label barTitle = new Label("Revenus par statut (MAD)");
         barTitle.getStyleClass().add("admin-chart-title");
 
         CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("EUR");
-
+        NumberAxis   yAxis = new NumberAxis();
+        yAxis.setLabel("MAD");
         BarChart<String, Number> bar = new BarChart<>(xAxis, yAxis);
         bar.setLegendVisible(false);
         bar.setMaxHeight(280);
@@ -410,14 +396,12 @@ public class AdminDashboard {
         bar.getData().add(series);
 
         Platform.runLater(() -> {
-            String[] labels = statusLabels();
             String[] colors = statusColors();
             for (XYChart.Data<String, Number> d : series.getData()) {
                 if (d.getNode() != null) {
-                    for (int i = 0; i < labels.length; i++) {
-                        if (d.getXValue().equals(labels[i])) {
-                            d.getNode().setStyle(
-                                    "-fx-bar-fill: " + colors[i] + ";");
+                    for (int i = 0; i < lbs.length; i++) {
+                        if (d.getXValue().equals(lbs[i])) {
+                            d.getNode().setStyle("-fx-bar-fill: " + colors[i] + ";");
                             break;
                         }
                     }
@@ -439,8 +423,7 @@ public class AdminDashboard {
         titleRow.setAlignment(Pos.CENTER_LEFT);
         Label title = new Label("Commandes recentes");
         title.getStyleClass().add("admin-section-title");
-        Region sp = new Region();
-        HBox.setHgrow(sp, Priority.ALWAYS);
+        Region sp = new Region(); HBox.setHgrow(sp, Priority.ALWAYS);
         Button viewAll = new Button("Voir toutes ->");
         viewAll.getStyleClass().add("admin-link-btn");
         viewAll.setOnAction(e -> NavigationManager.showManageOrders());
@@ -450,12 +433,8 @@ public class AdminDashboard {
         header.getStyleClass().add("admin-table-header");
         header.setPadding(new Insets(10, 16, 10, 16));
         header.getChildren().addAll(
-                tCol("No Commande", 180),
-                tCol("Client", 140),
-                tCol("Montant", 110),
-                tCol("Statut", 130),
-                tCol("Date", 180)
-        );
+                tCol("No Commande", 180), tCol("Client", 140),
+                tCol("Montant", 130), tCol("Statut", 140), tCol("Date", 180));
 
         VBox rows = new VBox(0);
         List<Map<String, Object>> recent = allOrders.stream()
@@ -464,42 +443,34 @@ public class AdminDashboard {
         for (int i = 0; i < recent.size(); i++) {
             Map<String, Object> o = recent.get(i);
             String status = str(o.get("status"));
-
             HBox tableRow = new HBox();
             tableRow.getStyleClass().add("admin-table-row");
-            if (i % 2 == 0) {
-                tableRow.getStyleClass().add("admin-table-row-alt");
-            }
+            if (i % 2 == 0) tableRow.getStyleClass().add("admin-table-row-alt");
             tableRow.setPadding(new Insets(11, 16, 11, 16));
 
             Label idL = tCell(str(o.get("orderId")), 180);
             idL.getStyleClass().add("admin-cell-id");
             Label clientL = tCell(str(o.get("username")), 140);
-            Label amtL = tCell(
-                    String.format("%.2f EUR", dbl(o.get("totalAmount"))), 110);
+            Label amtL = tCell(String.format("%.2f MAD", dbl(o.get("totalAmount"))), 130);
             amtL.getStyleClass().add("admin-cell-amount");
-
             Label statusL = new Label(getStatusLabel(status));
-            statusL.getStyleClass().add("admin-status-badge");
-            statusL.getStyleClass().add(
+            statusL.getStyleClass().addAll("admin-status-badge",
                     "admin-status-" + status.toLowerCase());
-            statusL.setMinWidth(120);
-
+            
+            HBox statusBox = new HBox(statusL);
+            statusBox.setAlignment(Pos.CENTER_LEFT);
+            statusBox.setMinWidth(140);
+            statusBox.setMaxWidth(140);
+            
             String date = str(o.get("createdAt"));
-            if (date.length() > 16) {
-                date = date.substring(0, 16);
-            }
+            if (date.length() > 16) date = date.substring(0, 16);
             Label dateL = tCell(date, 180);
             dateL.getStyleClass().add("admin-cell-date");
 
-            tableRow.getChildren().addAll(
-                    idL, clientL, amtL, statusL, dateL);
+            tableRow.getChildren().addAll(idL, clientL, amtL, statusBox, dateL);
             rows.getChildren().add(tableRow);
         }
-
-        if (recent.isEmpty()) {
-            rows.getChildren().add(emptyLabel("Aucune commande"));
-        }
+        if (recent.isEmpty()) rows.getChildren().add(emptyLabel("Aucune commande"));
 
         section.getChildren().addAll(titleRow, header, rows);
         return section;
@@ -512,19 +483,29 @@ public class AdminDashboard {
         HBox cards = new HBox(20);
         cards.setAlignment(Pos.CENTER);
         cards.getChildren().addAll(
-                actionCard("Gerer les produits",
-                        "Ajouter, modifier, supprimer",
+                actionCard("Gerer les produits", "Ajouter, modifier, supprimer",
                         allProducts.size() + " produit(s)",
                         e -> NavigationManager.showManageProducts()),
-                actionCard("Gerer les utilisateurs",
-                        "Activer, desactiver les comptes",
+                actionCard("Gerer les utilisateurs", "Activer, desactiver les comptes",
                         allUsers.size() + " utilisateur(s)",
                         e -> NavigationManager.showManageUsers()),
-                actionCard("Gerer les commandes",
-                        "Suivre et mettre a jour",
+                actionCard("Gerer les commandes", "Suivre et mettre a jour",
                         allOrders.size() + " commande(s)",
-                        e -> NavigationManager.showManageOrders())
+                        e -> NavigationManager.showManageOrders()),
+                actionCard("Gerer les categories", "Ajouter, modifier, supprimer",
+                        "Categories de produits",
+                        e -> NavigationManager.showManageCategories())
         );
+
+        // Carte spéciale SUPER_ADMIN
+        if (NavigationManager.isSuperAdmin()) {
+            cards.getChildren().add(
+                    actionCard("Gerer les admins", "Ajouter, activer, desactiver",
+                            "Super Admin seulement",
+                            e -> NavigationManager.showManageAdmins())
+            );
+        }
+
         return new VBox(14, title, cards);
     }
 
@@ -537,29 +518,20 @@ public class AdminDashboard {
         HBox.setHgrow(card, Priority.ALWAYS);
         card.setCursor(javafx.scene.Cursor.HAND);
 
-        Label ti = new Label(title);
-        ti.getStyleClass().add("admin-action-title");
-        Label de = new Label(desc);
-        de.getStyleClass().add("admin-action-desc");
-        Label ct = new Label(count);
-        ct.getStyleClass().add("admin-action-count");
+        Label ti = new Label(title); ti.getStyleClass().add("admin-action-title");
+        Label de = new Label(desc);  de.getStyleClass().add("admin-action-desc");
+        Label ct = new Label(count); ct.getStyleClass().add("admin-action-count");
         Button btn = new Button("Acceder ->");
         btn.getStyleClass().add("admin-action-btn");
         btn.setOnAction(action);
         card.getChildren().addAll(ti, de, ct, btn);
 
-        DropShadow rest = makeShadow(0.06, 10, 3);
+        DropShadow rest  = makeShadow(0.06, 10, 3);
         DropShadow hover = makeShadow(0.15, 20, 8);
         hover.setColor(Color.rgb(108, 52, 131, 0.15));
         card.setEffect(rest);
-        card.setOnMouseEntered(e -> {
-            card.setEffect(hover);
-            scaleAnim(card, 1.03);
-        });
-        card.setOnMouseExited(e -> {
-            card.setEffect(rest);
-            scaleAnim(card, 1.0);
-        });
+        card.setOnMouseEntered(e -> { card.setEffect(hover); scaleAnim(card, 1.03); });
+        card.setOnMouseExited(e  -> { card.setEffect(rest);  scaleAnim(card, 1.0);  });
         return card;
     }
 
@@ -573,24 +545,18 @@ public class AdminDashboard {
         Thread loader = new Thread(() -> {
             ServerConnection conn = ServerConnection.getInstance();
             String token = NavigationManager.getToken();
-            Response rOrders = conn.send(
-                    new Request(Action.ADMIN_GET_ALL_ORDERS, token, null));
-            Response rUsers = conn.send(
-                    new Request(Action.ADMIN_GET_USERS, token, null));
-            Response rProducts = conn.send(
-                    new Request(Action.GET_PRODUCTS, token, null));
+            Response rOrders   = conn.send(new Request(Action.ADMIN_GET_ALL_ORDERS, token, null));
+            Response rUsers    = conn.send(new Request(Action.ADMIN_GET_USERS, token, null));
+            Response rProducts = conn.send(new Request(Action.GET_PRODUCTS, token, null));
 
             Platform.runLater(() -> {
                 showLoading(false);
-                if (rOrders.isSuccess() && rOrders.getData() != null) {
-                    allOrders = (List<Map<String, Object>>) rOrders.getData();
-                }
-                if (rUsers.isSuccess() && rUsers.getData() != null) {
-                    allUsers = (List<Map<String, Object>>) rUsers.getData();
-                }
-                if (rProducts.isSuccess() && rProducts.getData() != null) {
+                if (rOrders.isSuccess()   && rOrders.getData()   != null)
+                    allOrders   = (List<Map<String, Object>>) rOrders.getData();
+                if (rUsers.isSuccess()    && rUsers.getData()    != null)
+                    allUsers    = (List<Map<String, Object>>) rUsers.getData();
+                if (rProducts.isSuccess() && rProducts.getData() != null)
                     allProducts = (List<Map<String, Object>>) rProducts.getData();
-                }
                 buildDashboard();
             });
         }, "AdminLoader");
@@ -620,16 +586,14 @@ public class AdminDashboard {
     private Label tCol(String text, double w) {
         Label l = new Label(text);
         l.getStyleClass().add("admin-table-col-header");
-        l.setMinWidth(w);
-        l.setMaxWidth(w);
+        l.setMinWidth(w); l.setMaxWidth(w);
         return l;
     }
 
     private Label tCell(String text, double w) {
         Label l = new Label(text);
         l.getStyleClass().add("admin-table-cell");
-        l.setMinWidth(w);
-        l.setMaxWidth(w);
+        l.setMinWidth(w); l.setMaxWidth(w);
         return l;
     }
 
@@ -643,16 +607,12 @@ public class AdminDashboard {
     private String getStatusLabel(String s) {
         String[] sts = statuses();
         String[] lbs = statusLabels();
-        for (int i = 0; i < sts.length; i++) {
-            if (sts[i].equals(s)) {
-                return lbs[i];
-            }
-        }
+        for (int i = 0; i < sts.length; i++)
+            if (sts[i].equals(s)) return lbs[i];
         return s;
     }
 
-    private DropShadow makeShadow(double opacity,
-                                  double radius, double offsetY) {
+    private DropShadow makeShadow(double opacity, double radius, double offsetY) {
         DropShadow ds = new DropShadow();
         ds.setColor(Color.rgb(0, 0, 0, opacity));
         ds.setRadius(radius);
@@ -662,24 +622,18 @@ public class AdminDashboard {
 
     private void scaleAnim(Node n, double to) {
         ScaleTransition s = new ScaleTransition(Duration.millis(200), n);
-        s.setToX(to);
-        s.setToY(to);
-        s.play();
+        s.setToX(to); s.setToY(to); s.play();
     }
 
     private void animateContent() {
         for (int i = 0; i < contentArea.getChildren().size(); i++) {
             Node n = contentArea.getChildren().get(i);
-            n.setOpacity(0);
-            n.setTranslateY(25);
+            n.setOpacity(0); n.setTranslateY(25);
             int delay = i * 80;
             FadeTransition f = new FadeTransition(Duration.millis(450), n);
-            f.setToValue(1);
-            f.setDelay(Duration.millis(delay));
-            TranslateTransition s = new TranslateTransition(
-                    Duration.millis(450), n);
-            s.setToY(0);
-            s.setDelay(Duration.millis(delay));
+            f.setToValue(1); f.setDelay(Duration.millis(delay));
+            TranslateTransition s = new TranslateTransition(Duration.millis(450), n);
+            s.setToY(0); s.setDelay(Duration.millis(delay));
             s.setInterpolator(Interpolator.EASE_OUT);
             new ParallelTransition(f, s).play();
         }
@@ -689,18 +643,12 @@ public class AdminDashboard {
         StackPane o = new StackPane();
         o.getStyleClass().add("loading-modern-overlay");
         o.setVisible(false);
-        VBox c = new VBox(20);
-        c.getStyleClass().add("loading-card");
-        c.setAlignment(Pos.CENTER);
-        c.setMaxWidth(200);
-        c.setMaxHeight(140);
+        VBox c = new VBox(20); c.getStyleClass().add("loading-card");
+        c.setAlignment(Pos.CENTER); c.setMaxWidth(200); c.setMaxHeight(140);
         ProgressIndicator pi = new ProgressIndicator();
-        pi.getStyleClass().add("loading-spinner");
-        pi.setMaxSize(40, 40);
-        Label t = new Label("Chargement...");
-        t.getStyleClass().add("loading-text");
-        c.getChildren().addAll(pi, t);
-        o.getChildren().add(c);
+        pi.getStyleClass().add("loading-spinner"); pi.setMaxSize(40, 40);
+        Label t = new Label("Chargement..."); t.getStyleClass().add("loading-text");
+        c.getChildren().addAll(pi, t); o.getChildren().add(c);
         return o;
     }
 
@@ -709,13 +657,10 @@ public class AdminDashboard {
             if (b) {
                 loadingOverlay.setOpacity(0);
                 loadingOverlay.setVisible(true);
-                FadeTransition fi = new FadeTransition(
-                        Duration.millis(200), loadingOverlay);
-                fi.setToValue(1);
-                fi.play();
+                FadeTransition fi = new FadeTransition(Duration.millis(200), loadingOverlay);
+                fi.setToValue(1); fi.play();
             } else {
-                FadeTransition fo = new FadeTransition(
-                        Duration.millis(200), loadingOverlay);
+                FadeTransition fo = new FadeTransition(Duration.millis(200), loadingOverlay);
                 fo.setToValue(0);
                 fo.setOnFinished(e -> loadingOverlay.setVisible(false));
                 fo.play();
@@ -723,29 +668,16 @@ public class AdminDashboard {
         });
     }
 
-    private String str(Object o) {
-        if (o == null) return "";
-        return o.toString();
-    }
-
+    private String str(Object o) { return o != null ? o.toString() : ""; }
     private int intV(Object o) {
         if (o == null) return 0;
         if (o instanceof Double) return ((Double) o).intValue();
         if (o instanceof Integer) return (Integer) o;
-        try {
-            return Integer.parseInt(o.toString());
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+        try { return Integer.parseInt(o.toString()); } catch (Exception e) { return 0; }
     }
-
     private double dbl(Object o) {
         if (o == null) return 0;
         if (o instanceof Double) return (Double) o;
-        try {
-            return Double.parseDouble(o.toString());
-        } catch (NumberFormatException e) {
-            return 0;
-        }
+        try { return Double.parseDouble(o.toString()); } catch (Exception e) { return 0; }
     }
 }

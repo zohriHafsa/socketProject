@@ -13,10 +13,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,14 +40,18 @@ public class ProductListScreen {
     private Label                     priceValueLabel;
     private Label                     statusLabel;
 
-    // badge labels — kept as fields so they can be updated
     private Label cartCountLabel  = new Label("0");
     private Label notifCountLabel = new Label("0");
 
     public Node getView() {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: #F5F6FA;");
-        root.setTop(buildHeader());
+        searchField = new TextField();
+        root.setTop(new HeaderComponent("products", query -> {
+            searchField.setText(query);
+            if (query.isBlank()) applyLocalFilters();
+            else searchOnServer(query);
+        }, null, null).getView());
         root.setLeft(buildSidebar());
         root.setCenter(buildCenter());
         Platform.runLater(this::loadAllProducts);
@@ -53,8 +59,7 @@ public class ProductListScreen {
     }
 
     // ═══════════════════════════════════════════════════════
-    //  HEADER — copie exacte de LandingPage.buildHeader()
-    //  + champ de recherche ajouté
+    //  HEADER
     // ═══════════════════════════════════════════════════════
 
     private StackPane buildHeader() {
@@ -68,7 +73,6 @@ public class ProductListScreen {
         inner.setMinHeight(70);
         inner.setAlignment(Pos.CENTER_LEFT);
 
-        // ── Logo ─────────────────────────────────────────
         HBox logo = new HBox(8);
         logo.setAlignment(Pos.CENTER_LEFT);
         logo.setCursor(javafx.scene.Cursor.HAND);
@@ -89,12 +93,11 @@ public class ProductListScreen {
         l2.getStyleClass().add("header-logo-accent");
         logo.getChildren().addAll(l1, l2);
 
-        // ── Nav ──────────────────────────────────────────
         HBox nav = new HBox(4);
         nav.setAlignment(Pos.CENTER);
 
         Button nHome   = navBtn("Accueil",   false);
-        Button nProd   = navBtn("Produits",  true);    // active
+        Button nProd   = navBtn("Produits",  true);
         Button nOrders = navBtn("Commandes", false);
         Button nAbout  = navBtn("A propos",  false);
 
@@ -103,7 +106,6 @@ public class ProductListScreen {
         nOrders.setOnAction(e -> NavigationManager.showOrders());
         nav.getChildren().addAll(nHome, nProd, nOrders, nAbout);
 
-        // ── Search field (ajout) ──────────────────────────
         searchField = new TextField();
         searchField.setPromptText("Rechercher...");
         searchField.getStyleClass().add("search-field");
@@ -113,7 +115,6 @@ public class ProductListScreen {
             else searchOnServer(n.trim());
         });
 
-        // ── Notification bell avec badge ──────────────────
         StackPane notifStack = new StackPane();
         Button notifBtn = new Button("\uD83D\uDD14");
         notifBtn.getStyleClass().add("header-icon-btn");
@@ -131,7 +132,6 @@ public class ProductListScreen {
         StackPane.setMargin(notifBadge, new Insets(-4, -4, 0, 0));
         notifStack.getChildren().addAll(notifBtn, notifBadge);
 
-        // ── Cart avec badge ───────────────────────────────
         StackPane cartStack = new StackPane();
         Button cartBtn2 = new Button("\uD83D\uDED2");
         cartBtn2.getStyleClass().add("header-icon-btn");
@@ -149,7 +149,6 @@ public class ProductListScreen {
         StackPane.setMargin(cartBadge, new Insets(-4, -4, 0, 0));
         cartStack.getChildren().addAll(cartBtn2, cartBadge);
 
-        // ── User avatar button ────────────────────────────
         Button userBtn = new Button();
         userBtn.getStyleClass().add("header-user-btn");
 
@@ -180,7 +179,6 @@ public class ProductListScreen {
         userBtn.setText(null);
         userBtn.setOnAction(e -> NavigationManager.showProfile());
 
-        // ── Layout ───────────────────────────────────────
         Region sp1 = new Region(); HBox.setHgrow(sp1, Priority.ALWAYS);
         Region sp2 = new Region(); HBox.setHgrow(sp2, Priority.ALWAYS);
 
@@ -378,7 +376,7 @@ public class ProductListScreen {
     }
 
     // ═══════════════════════════════════════════════════════
-    //  CARTES — mêmes classes CSS que LandingPage
+    //  CARTES PRODUIT — avec affichage réel des images
     // ═══════════════════════════════════════════════════════
 
     private void displayProducts(List<Map<String, Object>> products) {
@@ -394,32 +392,79 @@ public class ProductListScreen {
     }
 
     private VBox buildCard(Map<String, Object> product) {
-        int     id      = getInt(product, "productId");
-        String  name    = getStr(product, "name");
-        double  price   = getDbl(product, "price");
-        int     stock   = getInt(product, "stockQuantity");
-        String  cat     = getStr(product, "categoryName");
-        boolean inStock = stock > 0;
+        int     id       = getInt(product, "productId");
+        String  name     = getStr(product, "name");
+        double  price    = getDbl(product, "price");
+        int     stock    = getInt(product, "stockQuantity");
+        String  cat      = getStr(product, "categoryName");
+        String  imageUrl = getStr(product, "imageUrl");
+        boolean inStock  = stock > 0;
 
-        VBox card = new VBox(6);
+        // ── Fixed size card ──────────────────────────────
+        VBox card = new VBox(0);
         card.getStyleClass().add("product-card");
         card.setPrefWidth(240);
+        card.setMinWidth(240);
         card.setMaxWidth(240);
+        card.setPrefHeight(340);
+        card.setMinHeight(340);
+        card.setMaxHeight(340);
         card.setCursor(javafx.scene.Cursor.HAND);
         card.setOnMouseClicked(e -> NavigationManager.showProductDetail(id));
 
-        // Image placeholder (lettre initiale) — même que LandingPage
+        // ── Image — fills 240x160, cropped like object-fit:cover ──
         StackPane imgBox = new StackPane();
         imgBox.getStyleClass().add("product-card-image-container");
         imgBox.setPrefHeight(160);
         imgBox.setMinHeight(160);
-        Label letter = new Label(
-                name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
-        letter.getStyleClass().add("product-image-letter");
-        imgBox.getChildren().add(letter);
+        imgBox.setMaxHeight(160);
+        imgBox.setPrefWidth(240);
+        imgBox.setMinWidth(240);
+        imgBox.setMaxWidth(240);
+        imgBox.setStyle("-fx-background-color: transparent;");
 
+        // Clip so nothing overflows the image box
+        Rectangle clip = new Rectangle(240, 160);
+        clip.setArcWidth(12);
+        clip.setArcHeight(12);
+        imgBox.setClip(clip);
+
+        Image productImage = loadProductImage(imageUrl);
+
+        if (productImage != null && !productImage.isError()) {
+            Region imgRegion = new Region();
+            imgRegion.setPrefSize(240, 160);
+            imgRegion.setMaxSize(240, 160);
+            
+            BackgroundImage bgImg = new BackgroundImage(
+                productImage,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true)
+            );
+            imgRegion.setBackground(new Background(bgImg));
+            
+            Rectangle imgClip = new Rectangle(240, 160);
+            imgClip.setArcWidth(12);
+            imgClip.setArcHeight(12);
+            imgRegion.setClip(imgClip);
+            
+            imgBox.getChildren().add(imgRegion);
+        } else {
+            Label letter = new Label(
+                    name.isEmpty() ? "?" : name.substring(0, 1).toUpperCase());
+            letter.getStyleClass().add("product-image-letter");
+            imgBox.getChildren().add(letter);
+        }
+
+        // ── Body — fixed height to keep card static ──────
         VBox body = new VBox(6);
         body.getStyleClass().add("product-card-body");
+        body.setPrefHeight(180);
+        body.setMinHeight(180);
+        body.setMaxHeight(180);
+        VBox.setVgrow(body, Priority.ALWAYS);
 
         Label catL = new Label(cat.toUpperCase());
         catL.getStyleClass().add("product-card-category");
@@ -428,6 +473,7 @@ public class ProductListScreen {
         nameL.getStyleClass().add("product-card-name");
         nameL.setWrapText(true);
         nameL.setMaxWidth(220);
+        nameL.setMaxHeight(40);
 
         Label priceL = new Label(String.format("%.2f MAD", price));
         priceL.getStyleClass().add("product-card-price");
@@ -444,15 +490,65 @@ public class ProductListScreen {
             stockL.getStyleClass().add("product-card-stock-out");
         }
 
+        // Spacer to push button to the bottom
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
         Button btn = new Button("Voir le produit");
         btn.getStyleClass().add("product-card-btn");
         btn.setMaxWidth(Double.MAX_VALUE);
         btn.setDisable(!inStock);
         btn.setOnAction(e -> NavigationManager.showProductDetail(id));
 
-        body.getChildren().addAll(catL, nameL, priceL, stockL, btn);
+        body.getChildren().addAll(catL, nameL, priceL, stockL, spacer, btn);
         card.getChildren().addAll(imgBox, body);
         return card;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  CHARGEMENT D'IMAGE — multiple fallbacks
+    // ═══════════════════════════════════════════════════════
+
+    private Image loadProductImage(String imageUrl) {
+        if (imageUrl == null || imageUrl.trim().isEmpty()) return null;
+        imageUrl = imageUrl.trim();
+
+        // 1. Classpath resource (target/classes/...)
+        try {
+            InputStream is = getClass().getResourceAsStream(imageUrl);
+            if (is != null) {
+                Image img = new Image(is);
+                if (!img.isError()) return img;
+            }
+        } catch (Exception ignored) {}
+
+        // 2. File system: src/main/resources + path
+        try {
+            File f = new File("src/main/resources" + imageUrl);
+            if (f.exists()) {
+                Image img = new Image(f.toURI().toString());
+                if (!img.isError()) return img;
+            }
+        } catch (Exception ignored) {}
+
+        // 3. Chemin absolu direct
+        try {
+            File f = new File(imageUrl);
+            if (f.exists()) {
+                Image img = new Image(f.toURI().toString());
+                if (!img.isError()) return img;
+            }
+        } catch (Exception ignored) {}
+
+        // 4. URL HTTP/HTTPS/file:
+        try {
+            if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")
+                    || imageUrl.startsWith("file:")) {
+                return new Image(imageUrl, true);
+            }
+        } catch (Exception ignored) {}
+
+        return null;
     }
 
     // ═══════════════════════════════════════════════════════

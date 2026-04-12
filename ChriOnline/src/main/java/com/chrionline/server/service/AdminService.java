@@ -2,6 +2,7 @@ package com.chrionline.server.service;
 
 import com.chrionline.server.core.ServerLogger;
 import com.chrionline.server.core.UDPNotifier;
+import com.chrionline.server.dao.AdminDAO;
 import com.chrionline.server.dao.NotificationDAO;
 import com.chrionline.server.dao.OrderDAO;
 import com.chrionline.server.dao.ProductDAO;
@@ -9,27 +10,32 @@ import com.chrionline.server.dao.UserDAO;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
 
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Factory;
+
 public class AdminService {
 
-    private final ProductDAO productDAO = new ProductDAO();
-    private final UserDAO userDAO = new UserDAO();
-    private final OrderDAO orderDAO = new OrderDAO();
+    private final ProductDAO     productDAO     = new ProductDAO();
+    private final UserDAO        userDAO        = new UserDAO();
+    private final OrderDAO       orderDAO       = new OrderDAO();
     private final NotificationDAO notificationDAO = new NotificationDAO();
+    private final AdminDAO       adminDAO       = new AdminDAO();
 
     // ═══════════ PRODUITS ══════════════════════
 
     public Response addProduct(Request request) {
         try {
-            String name = request.getString("name");
+            String name        = request.getString("name");
             String description = request.getString("description");
-            double price = request.getDouble("price");
-            int stock = request.getInt("stockQuantity");
-            int categoryId = request.getInt("categoryId");
-            String imageUrl = request.getString("imageUrl");
+            double price       = request.getDouble("price");
+            int    stock       = request.getInt("stockQuantity");
+            int    categoryId  = request.getInt("categoryId");
+            String imageUrl    = request.getString("imageUrl");
 
             if (name == null || price <= 0)
                 return Response.error("Nom et prix (> 0) requis.");
@@ -37,8 +43,7 @@ public class AdminService {
             int id = productDAO.addProduct(name, description, price,
                     stock, categoryId, imageUrl);
             ServerLogger.info("ADMIN_ADD_PRODUCT : " + name + " (ID:" + id + ")");
-            return Response.ok("Produit ajouté.",
-                    Map.of("productId", id, "name", name));
+            return Response.ok("Produit ajouté.", Map.of("productId", id, "name", name));
 
         } catch (SQLException e) {
             ServerLogger.error("ADMIN_ADD_PRODUCT error : " + e.getMessage());
@@ -48,13 +53,13 @@ public class AdminService {
 
     public Response editProduct(Request request) {
         try {
-            int id = request.getInt("productId");
-            String name = request.getString("name");
+            int    id          = request.getInt("productId");
+            String name        = request.getString("name");
             String description = request.getString("description");
-            double price = request.getDouble("price");
-            int stock = request.getInt("stockQuantity");
-            int categoryId = request.getInt("categoryId");
-            String imageUrl = request.getString("imageUrl");
+            double price       = request.getDouble("price");
+            int    stock       = request.getInt("stockQuantity");
+            int    categoryId  = request.getInt("categoryId");
+            String imageUrl    = request.getString("imageUrl");
 
             if (!productDAO.updateProduct(id, name, description, price,
                     stock, categoryId, imageUrl))
@@ -102,8 +107,7 @@ public class AdminService {
             if (!userDAO.toggleUserActive(userId))
                 return Response.error("Utilisateur introuvable.");
             ServerLogger.info("ADMIN_TOGGLE_USER : ID=" + userId);
-            return Response.ok("Statut utilisateur modifié.",
-                    Map.of("userId", userId));
+            return Response.ok("Statut utilisateur modifié.", Map.of("userId", userId));
         } catch (SQLException e) {
             ServerLogger.error("ADMIN_TOGGLE_USER error : " + e.getMessage());
             return Response.error("Erreur : " + e.getMessage());
@@ -125,7 +129,7 @@ public class AdminService {
 
     public Response updateOrderStatus(Request request) {
         try {
-            String orderId = request.getString("orderId");
+            String orderId   = request.getString("orderId");
             String newStatus = request.getString("status");
 
             if (orderId == null || newStatus == null)
@@ -137,7 +141,6 @@ public class AdminService {
 
             orderDAO.updateOrderStatus(orderId, newStatus);
 
-            // ── Notification UDP + DB ──────────────
             Map<String, Object> order = orderDAO.getOrderById(orderId);
             if (order != null) {
                 int userId = ((Number) order.get("userId")).intValue();
@@ -146,18 +149,15 @@ public class AdminService {
                 notificationDAO.createNotification(
                         userId,
                         "Commande " + orderId + " → " + newStatus,
-                        "ORDER",
-                        "UDP");
+                        "ORDER", "UDP");
             }
 
-            ServerLogger.info("ADMIN_UPDATE_ORDER_STATUS : "
-                    + orderId + " → " + newStatus);
+            ServerLogger.info("ADMIN_UPDATE_ORDER_STATUS : " + orderId + " → " + newStatus);
             return Response.ok("Statut commande mis à jour.",
                     Map.of("orderId", orderId, "status", newStatus));
 
         } catch (SQLException e) {
-            ServerLogger.error("ADMIN_UPDATE_ORDER_STATUS error : "
-                    + e.getMessage());
+            ServerLogger.error("ADMIN_UPDATE_ORDER_STATUS error : " + e.getMessage());
             return Response.error("Erreur : " + e.getMessage());
         }
     }
@@ -166,5 +166,106 @@ public class AdminService {
         return "EN_ATTENTE".equals(s) || "VALIDEE".equals(s)
                 || "EXPEDIEE".equals(s) || "LIVREE".equals(s)
                 || "ANNULEE".equals(s);
+    }
+
+    // ═══════════ GESTION ADMINS (SUPER_ADMIN) ══
+
+    public Response getAllAdmins(Request request) {
+        try {
+            List<Map<String, Object>> admins = adminDAO.getAllAdmins();
+            // Ne pas exposer le hash du mot de passe
+            admins.forEach(a -> a.remove("passwordHash"));
+            ServerLogger.info("ADMIN_GET_ALL_ADMINS : " + admins.size() + " admin(s)");
+            return Response.ok("Admins récupérés.", admins);
+        } catch (SQLException e) {
+            ServerLogger.error("ADMIN_GET_ALL_ADMINS error : " + e.getMessage());
+            return Response.error("Erreur : " + e.getMessage());
+        }
+    }
+
+    public Response createAdmin(Request request) {
+        String username  = request.getString("username");
+        String email     = request.getString("email");
+        String password  = request.getString("password");
+        String firstName = request.getString("firstName");
+        String lastName  = request.getString("lastName");
+
+        if (username == null || email == null || password == null
+                || firstName == null || lastName == null)
+            return Response.error("Tous les champs sont obligatoires.");
+
+        if (password.length() < 8)
+            return Response.error("Mot de passe trop court (min 8 caractères).");
+
+        if (!password.matches(".*[A-Z].*"))
+            return Response.error("Le mot de passe doit contenir au moins une lettre majuscule.");
+
+        if (!password.matches(".*\\d.*"))
+            return Response.error("Le mot de passe doit contenir au moins un chiffre.");
+
+        if (!password.matches(".*[^a-zA-Z0-9\\s].*"))
+            return Response.error("Le mot de passe doit contenir au moins un caractère spécial.");
+
+        if (firstName != null && !firstName.isBlank() && password.toLowerCase().contains(firstName.toLowerCase()))
+            return Response.error("Le mot de passe ne doit pas inclure votre prénom.");
+
+        if (lastName != null && !lastName.isBlank() && password.toLowerCase().contains(lastName.toLowerCase()))
+            return Response.error("Le mot de passe ne doit pas inclure votre nom de famille.");
+
+        try {
+            if (adminDAO.usernameExists(username))
+                return Response.error("Ce nom d'utilisateur est déjà pris.");
+
+            if (adminDAO.emailExists(email))
+                return Response.error("Cet email est déjà utilisé.");
+
+            String hash    = hashPassword(password);
+            int    adminId = adminDAO.createAdmin(username, email, hash,
+                    firstName, lastName);
+            if (adminId < 0)
+                return Response.error("Échec de la création.");
+
+            ServerLogger.info("ADMIN CREATED : " + username + " (ID:" + adminId + ")");
+            return Response.ok("Administrateur créé avec succès !", null);
+
+        } catch (SQLException e) {
+            ServerLogger.error("ADMIN_CREATE_ADMIN error : " + e.getMessage());
+            return Response.error("Erreur : " + e.getMessage());
+        }
+    }
+
+    public Response toggleAdmin(Request request) {
+        int     adminId  = request.getInt("adminId");
+        // APRÈS — utilise getInt() et convertit en boolean
+        boolean activate = request.getInt("isActive") == 1
+                || Boolean.parseBoolean(request.getString("isActive"));
+
+        if (adminId <= 0)
+            return Response.error("ID admin invalide.");
+
+        try {
+            boolean ok = adminDAO.setActive(adminId, activate);
+            if (!ok) return Response.error("Admin introuvable.");
+
+            String msg = activate ? "Admin activé." : "Admin désactivé.";
+            ServerLogger.info("ADMIN_TOGGLE_ADMIN : ID=" + adminId + " active=" + activate);
+            return Response.ok(msg, null);
+
+        } catch (SQLException e) {
+            ServerLogger.error("ADMIN_TOGGLE_ADMIN error : " + e.getMessage());
+            return Response.error("Erreur : " + e.getMessage());
+        }
+    }
+
+    // ═══════════ HASH ══════════════════════════
+
+    private String hashPassword(String rawPassword) {
+        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
+        char[] passwordArray = rawPassword.toCharArray();
+        try {
+            return argon2.hash(3, 65536, 1, passwordArray);
+        } finally {
+            argon2.wipeArray(passwordArray);
+        }
     }
 }

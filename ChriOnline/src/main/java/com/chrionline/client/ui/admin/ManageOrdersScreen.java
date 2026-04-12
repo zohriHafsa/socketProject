@@ -251,9 +251,9 @@ public class ManageOrdersScreen {
         header.setPadding(new Insets(10, 16, 10, 16));
         header.getChildren().addAll(
                 tCol("No Commande", 170), tCol("Client", 120),
-                tCol("Montant", 100), tCol("Statut", 120),
-                tCol("Date", 140), tCol("Changer statut", 180),
-                tCol("", 70));
+                tCol("Montant", 130), tCol("Statut", 140),
+                tCol("Date", 160), tCol("Changer statut", 210),
+                tCol("", 80));
         ordersContainer.getChildren().add(header);
 
         for (int i = 0; i < filtered.size(); i++) {
@@ -298,16 +298,20 @@ public class ManageOrdersScreen {
 
         Label clientL = tCell(str(order.get("username")), 120);
 
-        Label amtL = tCell(String.format("%.2f EUR", dbl(order.get("totalAmount"))), 100);
+        Label amtL = tCell(String.format("%.2f MAD", dbl(order.get("totalAmount"))), 130);
         amtL.getStyleClass().add("admin-cell-amount");
 
         Label statusL = new Label(getStatusLabel(status));
         statusL.getStyleClass().add("admin-status-badge");
         statusL.getStyleClass().add("admin-status-" + status.toLowerCase());
-        statusL.setMinWidth(110);
+        
+        HBox statusBox = new HBox(statusL);
+        statusBox.setAlignment(Pos.CENTER_LEFT);
+        statusBox.setMinWidth(140);
+        statusBox.setMaxWidth(140);
 
         String date = str(order.get("createdAt"));
-        Label dateL = tCell(date.length() > 10 ? date.substring(0, 10) : date, 140);
+        Label dateL = tCell(date.length() > 10 ? date.substring(0, 10) : date, 160);
         dateL.getStyleClass().add("admin-cell-date");
 
         ComboBox<String> statusCombo = new ComboBox<>();
@@ -323,9 +327,14 @@ public class ManageOrdersScreen {
             }
         });
 
+        HBox changerBox = new HBox(statusCombo);
+        changerBox.setAlignment(Pos.CENTER_LEFT);
+        changerBox.setMinWidth(210);
+        changerBox.setMaxWidth(210);
+
         Button detailBtn = new Button("Details");
         detailBtn.getStyleClass().add("admin-detail-btn");
-        detailBtn.setMinWidth(60);
+        detailBtn.setMinWidth(70);
 
         VBox detailPanel = new VBox(10);
         detailPanel.getStyleClass().add("admin-detail-panel");
@@ -353,7 +362,7 @@ public class ManageOrdersScreen {
             }
         });
 
-        row.getChildren().addAll(idL, clientL, amtL, statusL, dateL, statusCombo, detailBtn);
+        row.getChildren().addAll(idL, clientL, amtL, statusBox, dateL, changerBox, detailBtn);
         wrapper.getChildren().addAll(row, detailPanel);
         return wrapper;
     }
@@ -422,8 +431,8 @@ public class ManageOrdersScreen {
                     itemRow.getChildren().addAll(
                             tCell(productName, 200),
                             tCell(String.valueOf(intV(item.get("quantity"))), 60),
-                            tCell(String.format("%.2f EUR", dbl(item.get("unitPrice"))), 100),
-                            tCell(String.format("%.2f EUR", dbl(item.get("subtotal"))), 100));
+                            tCell(String.format("%.2f MAD", dbl(item.get("unitPrice"))), 100),
+                            tCell(String.format("%.2f MAD", dbl(item.get("subtotal"))), 100));
                     panel.getChildren().add(itemRow);
                 }
             }
@@ -441,7 +450,7 @@ public class ManageOrdersScreen {
             payInfo.getChildren().addAll(
                     detailField("Methode", str(pay.get("method"))),
                     detailField("Statut", payStatus),
-                    detailField("Montant", String.format("%.2f EUR", dbl(pay.get("amount")))),
+                    detailField("Montant", String.format("%.2f MAD", dbl(pay.get("amount")))),
                     detailField("Ref.", str(pay.get("transactionRef")))
             );
 

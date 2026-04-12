@@ -40,6 +40,10 @@ INSERT INTO users (username, email, password_hash, first_name, last_name, role, 
                                                                                                     ('tnoir',   'thomas.noir@mail.com',  SHA2('password123',  256), 'Thomas', 'Noir',   'CLIENT', '22 Rue de Rivoli, Paris',       '0644444444');
 
 
+
+ALTER TABLE users
+    ADD COLUMN failed_attempts INT NOT NULL DEFAULT 0,
+ADD COLUMN locked_until DATETIME DEFAULT NULL;
 -- -------------------------------------------------------------
 --  TABLE : sessions
 -- -------------------------------------------------------------
@@ -290,6 +294,8 @@ INSERT INTO notifications (user_id, message, type, is_read, protocol) VALUES
                                                                           (3, 'Paiement accepté pour la commande #ORD-0003-2026',         'PAYMENT', 1, 'UDP'),
                                                                           (5, 'Votre commande #ORD-0005-2026 a été annulée.',             'ORDER',   0, 'UDP'),
                                                                           (5, 'Remboursement effectué pour la commande #ORD-0005-2026.',  'PAYMENT', 0, 'TCP');
+
+
 
 -- =============================================================
 --  FIN DU SCRIPT
