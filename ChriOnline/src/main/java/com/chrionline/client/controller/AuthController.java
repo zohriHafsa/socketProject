@@ -61,4 +61,10 @@ public class AuthController {
     public Response resetPassword(Map<String, Object> data) {
         return conn.send(new Request(Action.RESET_PASSWORD, null, data));
     }
+
+    public Response verifyCaptcha(String token) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("captchaToken", token);
+        return conn.send(new Request(Action.VERIFY_CAPTCHA, null, data));
+    }
 }

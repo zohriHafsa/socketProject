@@ -35,5 +35,7 @@ public enum Action {
     RESET_PASSWORD,
     FORGOT_PASSWORD,
     // UDP
+    VERIFY_CAPTCHA,
+
     REGISTER_UDP
 }
