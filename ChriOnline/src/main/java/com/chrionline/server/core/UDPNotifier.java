@@ -21,10 +21,14 @@ public class UDPNotifier {
     private static class ClientInfo {
         final InetAddress address;
         final int port;
+        volatile long lastSeen; // timestamp of last heartbeat
+
 
         ClientInfo(InetAddress address, int port) {
             this.address = address;
             this.port = port;
+            this.lastSeen = System.currentTimeMillis();
+
         }
     }
 
@@ -93,6 +97,40 @@ public class UDPNotifier {
         } catch (IOException e) {
             ServerLogger.error("UDP envoi échoué : " + e.getMessage());
         }
+    }
+
+    // ── Heartbeat ──────────────────────────────────
+    /**
+     * Called by UDPHeartbeatServer every time a heartbeat arrives.
+     * Updates the last seen timestamp for this user.
+     */
+    public void updateLastSeen(int userId) {
+        ClientInfo ci = clients.get(userId);
+        if (ci != null) {
+            ci.lastSeen = System.currentTimeMillis();
+            ServerLogger.info("[UDP] lastSeen updated for userId=" + userId);
+        } else {
+            ServerLogger.warn("[UDP] Heartbeat from unknown userId=" + userId);
+        }
+    }
+
+    /**
+     * Removes clients that haven't sent a heartbeat in 60 seconds.
+     * Called by the scheduler in ServerMain every 30 seconds.
+     */
+    public void cleanInactiveClients() {
+        long now     = System.currentTimeMillis();
+        long timeout = 60_000; // 60 seconds
+
+        clients.entrySet().removeIf(entry -> {
+            long inactive = now - entry.getValue().lastSeen;
+            if (inactive > timeout) {
+                ServerLogger.info("[UDP] Client removed (inactive " +
+                        (inactive / 1000) + "s) : userId=" + entry.getKey());
+                return true;
+            }
+            return false;
+        });
     }
 
     public void close() {

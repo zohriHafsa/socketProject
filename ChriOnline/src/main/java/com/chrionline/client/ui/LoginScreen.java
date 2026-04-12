@@ -2,6 +2,7 @@ package com.chrionline.client.ui;
 
 import com.chrionline.client.controller.AuthController;
 import com.chrionline.client.network.ServerConnection;
+import com.chrionline.client.network.UDPHeartbeatSender;
 import com.chrionline.shared.dto.Response;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,6 +28,9 @@ public class LoginScreen {
     public Node getView() {
         StackPane root = new StackPane();
         root.getStyleClass().add("auth-root");
+        CaptchaWebView captchaView = new CaptchaWebView();
+
+
 
         // ── Watermark background ─────────────────────────
         Label watermark = new Label("ChriOnline");
@@ -110,15 +114,22 @@ public class LoginScreen {
         HBox.setHgrow(errorText, Priority.ALWAYS);
         errorBox.getChildren().addAll(errorIcon, errorText);
 
+
         // Login button
         Button loginBtn = new Button("Se connecter");
         loginBtn.getStyleClass().add("auth-btn-primary");
+        loginBtn.setDisable(true); // disabled until captcha solved
+
+// Captcha
+        captchaView.setOnSolved(() -> loginBtn.setDisable(false));
+
+// Wire the actions
         loginBtn.setOnAction(e ->
                 handleLogin(usernameField, passwordField, loginBtn,
-                        errorBox, errorText));
+                        errorBox, errorText, captchaView));
         passwordField.setOnAction(e ->
                 handleLogin(usernameField, passwordField, loginBtn,
-                        errorBox, errorText));
+                        errorBox, errorText, captchaView));
 
         // Register link
         HBox registerRow = new HBox(4);
@@ -134,6 +145,7 @@ public class LoginScreen {
                 titleRow, subtitle, div,
                 userGroup, passGroup,
                 forgotLink,
+                captchaView,
                 errorBox,
                 loginBtn,
                 registerRow
@@ -250,7 +262,7 @@ public class LoginScreen {
     // ═══════════════════════════════════════════════════════
 
     private void handleLogin(TextField usernameField, PasswordField passwordField,
-                             Button loginBtn, HBox errorBox, Label errorText) {
+                             Button loginBtn, HBox errorBox, Label errorText , CaptchaWebView captchaView) {
 
         String username = usernameField.getText().trim();
         String password = passwordField.getText();
@@ -261,11 +273,19 @@ public class LoginScreen {
             return;
         }
 
+        if (!captchaView.isSolved()) {
+            showError(errorBox, errorText, "Veuillez compléter le CAPTCHA.");
+            shakeNode(errorBox);
+            return;
+        }
+        String captchaToken = captchaView.getToken();
+
         hideError(errorBox);
         loginBtn.setDisable(true);
         loginBtn.setText("Connexion en cours...");
 
         new Thread(() -> {
+            Response captchaResponse = authController.verifyCaptcha(captchaToken);
             if (!ServerConnection.getInstance().isConnected()) {
                 boolean ok = ServerConnection.getInstance().connect();
                 if (!ok) {
@@ -302,6 +322,13 @@ public class LoginScreen {
                             getStr(data, "firstName"),
                             getStr(data, "lastName")
                     );
+                    // ── Start UDP heartbeat sender ───────────────
+                    int uid = getInt(data, "userId");
+                    UDPHeartbeatSender heartbeat = new UDPHeartbeatSender(uid);
+                    Thread heartbeatThread = new Thread(heartbeat);
+                    heartbeatThread.setDaemon(true);
+                    heartbeatThread.setName("udp-heartbeat-" + uid);
+                    heartbeatThread.start();
 
                     // APRÈS — redirige selon le rôle
                     String role = getStr(data, "role");

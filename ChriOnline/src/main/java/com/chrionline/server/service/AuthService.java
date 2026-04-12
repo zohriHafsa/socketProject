@@ -459,4 +459,44 @@ public class AuthService {
         }
     }
 
+    public Response verifyCaptcha(Request request) {
+        String token = request.getString("captchaToken");
+        if (token == null || token.isBlank())
+            return Response.error("Token CAPTCHA manquant.");
+
+        try {
+            // Call Google's verification API
+            String secretKey = "YOUR_SECRET_KEY_HERE"; // ← replace this
+            String url = "https://www.google.com/recaptcha/api/siteverify"
+                    + "?secret=" + secretKey
+                    + "&response=" + token;
+
+            java.net.URL apiUrl = new java.net.URL(url);
+            java.net.HttpURLConnection conn =
+                    (java.net.HttpURLConnection) apiUrl.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setConnectTimeout(5000);
+
+            java.util.Scanner scanner = new java.util.Scanner(
+                    conn.getInputStream()).useDelimiter("\\A");
+            String jsonResponse = scanner.hasNext() ? scanner.next() : "";
+
+            // Parse "success": true/false from Google's JSON response
+            boolean success = jsonResponse.contains("\"success\": true")
+                    || jsonResponse.contains("\"success\":true");
+
+            if (success) {
+                ServerLogger.info("CAPTCHA verified OK");
+                return Response.ok("CAPTCHA valide.", null);
+            } else {
+                ServerLogger.warn("CAPTCHA failed: " + jsonResponse);
+                return Response.error("CAPTCHA invalide.");
+            }
+
+        } catch (Exception e) {
+            ServerLogger.error("CAPTCHA verify error: " + e.getMessage());
+            return Response.error("Erreur vérification CAPTCHA.");
+        }
+    }
+
 }

@@ -111,6 +111,7 @@ public class RequestRouter {
             case ADMIN_GET_USERS:   return adminService.getUsers(request);
             case ADMIN_TOGGLE_USER: return adminService.toggleUser(request);
 
+
             // Admin — commandes
             case ADMIN_UPDATE_ORDER_STATUS: return adminService.updateOrderStatus(request);
             case ADMIN_GET_ALL_ORDERS:      return adminService.getAllOrders(request);
@@ -119,6 +120,8 @@ public class RequestRouter {
             case ADMIN_ADD_CATEGORY:    return productService.addCategory(request);
             case ADMIN_EDIT_CATEGORY:   return productService.editCategory(request);
             case ADMIN_DELETE_CATEGORY: return productService.deleteCategory(request);
+
+            case VERIFY_CAPTCHA: return authService.verifyCaptcha(request);
 
             // Admin — gestion admins (SUPER_ADMIN seulement)
             case ADMIN_GET_ALL_ADMINS: {
