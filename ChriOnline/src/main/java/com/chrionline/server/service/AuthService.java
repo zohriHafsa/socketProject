@@ -141,7 +141,7 @@ public class AuthService {
 
             int userId = (int) user.get("userId");
 
-// ── Check if account is locked ──────────────────
+            // ── Check if account is locked ──────────────────
             if (!(boolean) user.get("isActive")) {
                 Object lockedUntil = user.get("lockedUntil");
 
@@ -156,11 +156,11 @@ public class AuthService {
                     return Response.error(
                             "Compte bloque. Reessayez dans quelques minutes.");
                 }
-// Time passed → account just got unlocked → reload fresh user from DB
+                // Time passed → account just got unlocked → reload fresh user from DB
                 user = userDAO.getUserByUsername(username);
             }
 
-// ── Wrong password ───────────────────────────────
+            // ── Wrong password ───────────────────────────────
             if (!verifyPassword(password, (String) user.get("passwordHash"))) {
                 userDAO.recordFailedAttempt(userId);
 
@@ -180,7 +180,7 @@ public class AuthService {
                     return Response.error("Mot de passe incorrect. ");
             }
 
-// ── Password correct → reset failed attempts ─────
+            // ── Password correct → reset failed attempts ─────
             userDAO.resetFailedAttempts(userId);
 
             // ── Vérification email obligatoire ──────────────
@@ -196,15 +196,6 @@ public class AuthService {
 
             userId = (int)   user.get("userId");
             String userEmail = (String) user.get("email");
-
-            if (userDAO.hasActiveOtp(userId)) {
-                Map<String, Object> result = new HashMap<>();
-                result.put("userId", userId);
-                result.put("email",  userEmail);
-                result.put("2fa_required", true);
-                ServerLogger.info("LOGIN 2FA RE-TRIGGERED (SPAM PREVENTED) : " + username);
-                return Response.ok("Un code 2FA a deja ete envoye a votre email.", result);
-            }
 
             String code = EmailService.generateCode();
             userDAO.saveVerifyCode(userId, code);
@@ -280,11 +271,6 @@ public class AuthService {
         }
     }
 
-    // ─────────────────────────────────────────────────────────────
-//  Add these two methods to your existing AuthService.java
-//  Place them after the verifyEmail() method
-// ─────────────────────────────────────────────────────────────
-
     // ── FORGOT PASSWORD ────────────────────────────────────
     public Response forgotPassword(Request request) {
         String username = request.getString("username");
@@ -305,12 +291,10 @@ public class AuthService {
             int    userId = (int)    user.get("userId");
             String email  = (String) user.get("email");
 
-            // Generate a 6-digit code (same style as your OTP)
             String token = EmailService.generateCode();
 
-            // Save token in DB with 30-minute expiry
             userDAO.saveVerifyCode(userId, token);
-            // Send the email
+
             boolean sent = EmailService.sendResetPasswordEmail(email, token);
             if (!sent) {
                 ServerLogger.error("FORGOT_PASSWORD : email non envoye pour userId=" + userId);
