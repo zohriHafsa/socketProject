@@ -1823,7 +1823,7 @@
     -fx-font-weight: bold;
 }
 .header-user-name {
-    -fx-text-fill: #2C3E50;
+    -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-font-weight: 600;
 }
@@ -2401,7 +2401,7 @@
    ================================================================ */
 
 .admin-header-badge {
-    -fx-background-color: #E74C3C;
+    -fx-background-color: #E67E22;
     -fx-text-fill: white;
     -fx-font-size: 9px;
     -fx-font-weight: bold;

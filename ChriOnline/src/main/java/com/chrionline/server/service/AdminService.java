@@ -236,9 +236,9 @@ public class AdminService {
 
     public Response toggleAdmin(Request request) {
         int     adminId  = request.getInt("adminId");
-        // APRÈS — utilise getInt() et convertit en boolean
-        boolean activate = request.getInt("isActive") == 1
-                || Boolean.parseBoolean(request.getString("isActive"));
+        String activeStr = request.getString("isActive");
+        boolean activate = activeStr != null && 
+                (activeStr.equals("1") || activeStr.equals("1.0") || Boolean.parseBoolean(activeStr));
 
         if (adminId <= 0)
             return Response.error("ID admin invalide.");

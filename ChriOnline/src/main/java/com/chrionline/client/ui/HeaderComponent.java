@@ -211,7 +211,7 @@ public class HeaderComponent {
             avatar.setMaxSize(32, 32);
 
             if (isAdmin) {
-                avatar.setStyle("-fx-background-color: linear-gradient(to bottom right, #E74C3C, #C0392B); -fx-background-radius: 16;");
+                avatar.setStyle("-fx-background-color: linear-gradient(to bottom right, #F39C12, #E67E22); -fx-background-radius: 16;");
             }
 
             Label initLabel = new Label(initials.toUpperCase());

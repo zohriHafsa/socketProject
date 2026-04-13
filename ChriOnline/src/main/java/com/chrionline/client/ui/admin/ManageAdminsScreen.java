@@ -168,8 +168,11 @@ public class ManageAdminsScreen {
         passField.getStyleClass().add("auth-field");
         confirmField.getStyleClass().add("auth-field");
 
-        VBox pwGroup = new VBox(5, fieldLabel("Mot de passe *"), passField);
-        VBox cpGroup = new VBox(5, fieldLabel("Confirmer *"), confirmField);
+        StackPane passWrapper = buildPasswordWithToggle(passField);
+        StackPane confirmWrapper = buildPasswordWithToggle(confirmField);
+
+        VBox pwGroup = new VBox(5, fieldLabel("Mot de passe *"), passWrapper);
+        VBox cpGroup = new VBox(5, fieldLabel("Confirmer *"), confirmWrapper);
         HBox.setHgrow(pwGroup, Priority.ALWAYS);
         HBox.setHgrow(cpGroup, Priority.ALWAYS);
         HBox row3 = new HBox(14, pwGroup, cpGroup);
@@ -232,6 +235,34 @@ public class ManageAdminsScreen {
 
         form.getChildren().addAll(formTitle, row1, row2, row3, passHint, errorBox, successBox, createBtn);
         return form;
+    }
+
+    private StackPane buildPasswordWithToggle(PasswordField passField) {
+        TextField visibleField = new TextField();
+        visibleField.setPromptText(passField.getPromptText());
+        visibleField.getStyleClass().add("auth-field");
+        visibleField.setManaged(false);
+        visibleField.setVisible(false);
+        
+        visibleField.textProperty().bindBidirectional(passField.textProperty());
+        
+        Button toggleBtn = new Button("\uD83D\uDC41");
+        toggleBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #95A5A6; -fx-cursor: hand; -fx-font-size: 14px;");
+        toggleBtn.setFocusTraversable(false);
+        StackPane.setAlignment(toggleBtn, Pos.CENTER_RIGHT);
+        StackPane.setMargin(toggleBtn, new Insets(0, 5, 0, 0));
+        
+        toggleBtn.setOnAction(e -> {
+            boolean hidden = visibleField.isVisible();
+            visibleField.setVisible(!hidden);
+            visibleField.setManaged(!hidden);
+            passField.setVisible(hidden);
+            passField.setManaged(hidden);
+            toggleBtn.setText(hidden ? "\uD83D\uDC41" : "\u00D8");
+            toggleBtn.toFront();
+        });
+        
+        return new StackPane(passField, visibleField, toggleBtn);
     }
 
     private void handleCreateAdmin(TextField usernameField, TextField emailField,
@@ -399,7 +430,7 @@ public class ManageAdminsScreen {
         avatar.setMaxSize(30, 30);
         avatar.setStyle(
                 "-fx-background-color: linear-gradient(to bottom right," +
-                        (isSuper ? "#E74C3C,#C0392B" : "#8E44AD,#6C3483") + ");" +
+                        (isSuper ? "#E67E22,#D35400" : "#8E44AD,#6C3483") + ");" +
                         "-fx-background-radius: 50;"
         );
         String initials = "";
@@ -424,7 +455,11 @@ public class ManageAdminsScreen {
         // Badge type
         Label typeL = new Label(isSuper ? "SUPER" : "ADMIN");
         typeL.getStyleClass().add("admin-status-badge");
-        typeL.getStyleClass().add(isSuper ? "admin-status-annulee" : "admin-status-expediee");
+        if (isSuper) {
+            typeL.setStyle("-fx-background-color: rgba(211,84,0,0.12); -fx-text-fill: #D35400;");
+        } else {
+            typeL.setStyle("-fx-background-color: rgba(142,68,173,0.12); -fx-text-fill: #8E44AD;");
+        }
         
         HBox typeBox = new HBox(typeL);
         typeBox.setAlignment(Pos.CENTER_LEFT);
