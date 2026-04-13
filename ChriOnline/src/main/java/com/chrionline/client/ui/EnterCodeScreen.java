@@ -86,6 +86,12 @@ public class EnterCodeScreen {
         codeField.setPromptText("_ _ _ _ _ _");
         codeField.getStyleClass().add("auth-field");
         codeField.setMaxWidth(Double.MAX_VALUE);
+        codeField.setAlignment(Pos.CENTER);
+        codeField.setStyle(
+                "-fx-font-size: 22px;" +
+                "-fx-text-alignment: center;" +
+                "-fx-letter-spacing: 8px;"
+        );
         // Accept digits only, max 6 chars
         codeField.textProperty().addListener((obs, oldVal, newVal) -> {
             String filtered = newVal.replaceAll("[^0-9]", "");

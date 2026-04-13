@@ -96,6 +96,9 @@ public class LoginScreen {
         Button forgotLink = new Button("Mot de passe oublié ?");
         forgotLink.getStyleClass().add("auth-link");
         forgotLink.setOnAction(e -> NavigationManager.showForgotPassword());
+        HBox forgotRow = new HBox(forgotLink);
+        forgotRow.setAlignment(Pos.CENTER_RIGHT);
+        forgotRow.setPadding(new Insets(0, 0, 6, 0));
 
         // Error box (hidden by default)
         HBox errorBox = new HBox(8);
@@ -134,7 +137,7 @@ public class LoginScreen {
         card.getChildren().addAll(
                 titleRow, subtitle, div,
                 userGroup, passGroup,
-                forgotLink,
+                forgotRow,
                 errorBox,
                 loginBtn,
                 registerRow

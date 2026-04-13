@@ -83,8 +83,9 @@ public class EmailVerificationScreen {
         Label codeLabel = new Label("Code de verification");
         codeLabel.getStyleClass().add("auth-field-label");
         TextField codeField = new TextField();
-        codeField.setPromptText("Ex: 123456");
+        codeField.setPromptText("_ _ _ _ _ _");
         codeField.getStyleClass().add("auth-field");
+        codeField.setAlignment(Pos.CENTER);
         codeField.setStyle(
                 "-fx-font-size: 22px;" +
                 "-fx-text-alignment: center;" +

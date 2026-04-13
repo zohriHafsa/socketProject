@@ -113,7 +113,7 @@ public class ForgotPasswordScreen {
 
         Label subtitle = new Label(
                 "Entrez votre nom d'utilisateur. Nous enverrons\n" +
-                        "un lien de réinitialisation à l'adresse associée."
+                        "un code de réinitialisation à l'adresse associée."
         );
         subtitle.getStyleClass().add("auth-subtitle");
         subtitle.setWrapText(true);
@@ -146,7 +146,7 @@ public class ForgotPasswordScreen {
         errorBox.getChildren().addAll(errorIcon, errorText);
 
         // Submit button
-        Button submitBtn = new Button("Envoyer le lien");
+        Button submitBtn = new Button("Envoyer le code");
         submitBtn.getStyleClass().add("auth-btn-primary");
         submitBtn.setOnAction(e ->
                 handleForgotPassword(usernameField, submitBtn, errorBox, errorText, card));
@@ -266,7 +266,7 @@ public class ForgotPasswordScreen {
             Response response = authController.forgotPassword(username);
             Platform.runLater(() -> {
                 submitBtn.setDisable(false);
-                submitBtn.setText("Envoyer le lien");
+                submitBtn.setText("Envoyer le code");
 
                 if (response.isSuccess()) {
                     // Always show "email sent" regardless — never confirm if user exists

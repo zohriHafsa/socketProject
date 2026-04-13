@@ -335,21 +335,33 @@ public class AuthService {
         if (token == null || newPassword == null || username == null)
             return Response.error("Token et nouveau mot de passe requis.");
 
+        // ── Same rules as register ──────────────────────────
         if (newPassword.length() < 8)
-            return Response.error("Le mot de passe doit contenir au moins 8 caracteres.");
+            return Response.error("Le mot de passe doit contenir au moins 8 caractères.");
         if (!newPassword.matches(".*[A-Z].*"))
-            return Response.error("Le mot de passe doit contenir au moins une majuscule.");
+            return Response.error("Le mot de passe doit contenir au moins une lettre majuscule.");
         if (!newPassword.matches(".*\\d.*"))
             return Response.error("Le mot de passe doit contenir au moins un chiffre.");
         if (!newPassword.matches(".*[^a-zA-Z0-9\\s].*"))
-            return Response.error("Le mot de passe doit contenir au moins un caractere special.");
+            return Response.error("Le mot de passe doit contenir au moins un caractère spécial.");
 
         try {
             Map<String, Object> user = userDAO.getUserByUsername(username);
             if (user == null)
                 return Response.error("Utilisateur introuvable.");
 
-            int userId = (int) user.get("userId");
+            int    userId    = (int)    user.get("userId");
+            String firstName = (String) user.get("firstName");
+            String lastName  = (String) user.get("lastName");
+
+            // First/last name containment checks (same as register)
+            if (firstName != null && !firstName.isBlank()
+                    && newPassword.toLowerCase().contains(firstName.toLowerCase()))
+                return Response.error("Le mot de passe ne doit pas inclure votre prénom.");
+
+            if (lastName != null && !lastName.isBlank()
+                    && newPassword.toLowerCase().contains(lastName.toLowerCase()))
+                return Response.error("Le mot de passe ne doit pas inclure votre nom de famille.");
 
             // Token already verified and consumed in verifyResetToken step
             // Just update the password directly
@@ -359,7 +371,7 @@ public class AuthService {
             SessionManager.invalidateAllForUser(userId);
 
             ServerLogger.info("RESET_PASSWORD OK : userId=" + userId);
-            return Response.ok("Mot de passe modifie avec succes. Vous pouvez vous connecter.", null);
+            return Response.ok("Mot de passe modifié avec succès. Vous pouvez vous connecter.", null);
 
         } catch (SQLException e) {
             ServerLogger.error("RESET_PASSWORD SQL error : " + e.getMessage());

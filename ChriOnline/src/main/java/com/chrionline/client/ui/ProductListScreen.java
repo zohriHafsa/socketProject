@@ -33,11 +33,13 @@ public class ProductListScreen {
     private final Gson              gson              = new Gson();
 
     private List<Map<String, Object>> allProducts = new ArrayList<>();
+    private List<String>              currentCategories = new ArrayList<>();
     private FlowPane                  productGrid;
     private TextField                 searchField;
-    private ComboBox<String>          categoryBox;
-    private Slider                    priceSlider;
-    private Label                     priceValueLabel;
+    private VBox                      categoryContainer;
+    private String                    selectedCategory = "Toutes";
+    private TextField                 minPriceField;
+    private TextField                 maxPriceField;
     private Label                     statusLabel;
 
     private Label cartCountLabel  = new Label("0");
@@ -203,65 +205,115 @@ public class ProductListScreen {
     // ═══════════════════════════════════════════════════════
 
     private VBox buildSidebar() {
-        VBox side = new VBox(18);
-        side.setPrefWidth(220);
-        side.setPadding(new Insets(28, 20, 28, 20));
+        VBox wrapper = new VBox();
+        wrapper.setPadding(new Insets(28, 0, 28, 24)); // Floating with left padding
+
+        VBox side = new VBox(20);
+        side.setPrefWidth(240);
+        side.setPadding(new Insets(24));
         side.setStyle(
-                "-fx-background-color: white;" +
-                        "-fx-border-color: #e2e8f0;" +
-                        "-fx-border-width: 0 1 0 0;"
+            "-fx-background-color: #FFFFFF;" +
+            "-fx-background-radius: 12;" +
+            "-fx-border-color: #EDEDF0;" +
+            "-fx-border-radius: 12;" +
+            "-fx-border-width: 1;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 4);"
         );
 
         Label title = new Label("Filtres");
-        title.setStyle(
-                "-fx-font-size: 16;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-text-fill: #3b0764;"
-        );
+        title.setStyle("-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #3b0764;");
 
-        Label catLbl = new Label("Categorie");
-        catLbl.setStyle("-fx-text-fill: #6b7280; -fx-font-size: 12;");
+        // Categories
+        Label catLbl = new Label("Catégories");
+        catLbl.setStyle("-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 14;");
+        
+        categoryContainer = new VBox(10);
+        
+        Separator sep1 = new Separator();
+        
+        // Prix
+        Label priceLbl = new Label("Prix (MAD)");
+        priceLbl.setStyle("-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 14;");
 
-        categoryBox = new ComboBox<>();
-        categoryBox.setMaxWidth(Double.MAX_VALUE);
-        categoryBox.setValue("Toutes");
-        categoryBox.setOnAction(e -> applyLocalFilters());
+        HBox priceBox = new HBox(8);
+        priceBox.setAlignment(Pos.CENTER_LEFT);
+        minPriceField = new TextField();
+        minPriceField.setPromptText("Min");
+        minPriceField.setPrefWidth(80);
+        minPriceField.setStyle("-fx-background-color: transparent; -fx-border-color: #d1d5db; -fx-border-radius: 6; -fx-padding: 6;");
+        
+        Label dash = new Label("-");
+        
+        maxPriceField = new TextField();
+        maxPriceField.setPromptText("Max");
+        maxPriceField.setPrefWidth(80);
+        maxPriceField.setStyle("-fx-background-color: transparent; -fx-border-color: #d1d5db; -fx-border-radius: 6; -fx-padding: 6;");
+        
+        priceBox.getChildren().addAll(minPriceField, dash, maxPriceField);
 
-        Label priceLbl = new Label("Prix maximum");
-        priceLbl.setStyle("-fx-text-fill: #6b7280; -fx-font-size: 12;");
+        Button applyPriceBtn = new Button("Appliquer");
+        applyPriceBtn.setMaxWidth(Double.MAX_VALUE);
+        applyPriceBtn.setStyle("-fx-background-color: #6C3483; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 8; -fx-cursor: hand;");
+        applyPriceBtn.setOnAction(e -> applyLocalFilters());
 
-        priceValueLabel = new Label("Tous");
-        priceValueLabel.setStyle(
-                "-fx-text-fill: #3b0764;" +
-                        "-fx-font-weight: bold;" +
-                        "-fx-font-size: 13;"
-        );
+        Separator sep2 = new Separator();
 
-        priceSlider = new Slider(0, 5000, 5000);
-        priceSlider.setBlockIncrement(100);
-        priceSlider.valueProperty().addListener((obs, o, n) -> {
-            double v = n.doubleValue();
-            priceValueLabel.setText(v >= priceSlider.getMax()
-                    ? "Tous" : String.format("<= %.0f MAD", v));
-            applyLocalFilters();
-        });
-
-        Button resetBtn = new Button("Reinitialiser");
+        Button resetBtn = new Button("Réinitialiser");
         resetBtn.setMaxWidth(Double.MAX_VALUE);
-        resetBtn.getStyleClass().add("nav-link");
+        resetBtn.setStyle("-fx-border-color: #6c3483; -fx-text-fill: #6c3483; -fx-background-color: transparent; -fx-border-radius: 6; -fx-padding: 8; -fx-font-weight: bold; -fx-cursor: hand;");
         resetBtn.setOnAction(e -> {
             searchField.clear();
-            categoryBox.setValue("Toutes");
-            priceSlider.setValue(priceSlider.getMax());
+            selectedCategory = "Toutes";
+            minPriceField.clear();
+            maxPriceField.clear();
+            renderCategories();
             displayProducts(allProducts);
         });
 
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
         side.getChildren().addAll(
-                title, catLbl, categoryBox,
-                priceLbl, priceValueLabel, priceSlider,
-                resetBtn
+                title, sep1,
+                catLbl, categoryContainer, sep2,
+                priceLbl, priceBox, applyPriceBtn,
+                spacer, resetBtn
         );
-        return side;
+        wrapper.getChildren().add(side);
+        return wrapper;
+    }
+
+    private void renderCategories() {
+        if (categoryContainer == null) return;
+        categoryContainer.getChildren().clear();
+        for (String cat : currentCategories) {
+            Label cLbl = new Label(cat);
+            cLbl.setCursor(javafx.scene.Cursor.HAND);
+            cLbl.setMaxWidth(Double.MAX_VALUE);
+            if (cat.equals(selectedCategory)) {
+                cLbl.setStyle("-fx-background-color: #F8F6FB; -fx-background-radius: 6; -fx-text-fill: #6C3483; -fx-font-weight: bold; -fx-font-size: 14; -fx-padding: 6 10;");
+            } else {
+                cLbl.setStyle("-fx-background-color: transparent; -fx-text-fill: #7f8c8d; -fx-font-weight: normal; -fx-font-size: 14; -fx-padding: 6 10;");
+            }
+            
+            cLbl.setOnMouseEntered(e -> {
+                if (!cat.equals(selectedCategory)) {
+                    cLbl.setStyle("-fx-background-color: #f3f4f6; -fx-background-radius: 6; -fx-text-fill: #2c3e50; -fx-font-weight: normal; -fx-font-size: 14; -fx-padding: 6 10;");
+                }
+            });
+            cLbl.setOnMouseExited(e -> {
+                if (!cat.equals(selectedCategory)) {
+                    cLbl.setStyle("-fx-background-color: transparent; -fx-text-fill: #7f8c8d; -fx-font-weight: normal; -fx-font-size: 14; -fx-padding: 6 10;");
+                }
+            });
+            
+            cLbl.setOnMouseClicked(e -> {
+                selectedCategory = cat;
+                renderCategories();
+                applyLocalFilters();
+            });
+            categoryContainer.getChildren().add(cLbl);
+        }
     }
 
     // ═══════════════════════════════════════════════════════
@@ -321,18 +373,12 @@ public class ProductListScreen {
                     String c = getStr(p, "categoryName");
                     if (!c.isEmpty() && !cats.contains(c)) cats.add(c);
                 }
-
-                double maxPrice = products.stream()
-                        .mapToDouble(p -> getDbl(p, "price"))
-                        .max().orElse(5000);
-
+                
                 allProducts = products;
+                currentCategories = cats;
 
                 Platform.runLater(() -> {
-                    categoryBox.getItems().setAll(cats);
-                    categoryBox.setValue("Toutes");
-                    priceSlider.setMax(maxPrice);
-                    priceSlider.setValue(maxPrice);
+                    renderCategories();
                     statusLabel.setVisible(false);
                     displayProducts(products);
                 });
@@ -359,19 +405,27 @@ public class ProductListScreen {
     private void applyLocalFilters() {
         if (searchField != null && !searchField.getText().isBlank()) return;
         List<Map<String, Object>> filtered = new ArrayList<>(allProducts);
-        String cat = categoryBox.getValue();
-        if (cat != null && !cat.equals("Toutes"))
-            filtered.removeIf(p -> !cat.equals(getStr(p, "categoryName")));
+        if (!"Toutes".equals(selectedCategory)) {
+            filtered.removeIf(p -> !selectedCategory.equals(getStr(p, "categoryName")));
+        }
         displayProducts(filterByPrice(filtered));
     }
 
     private List<Map<String, Object>> filterByPrice(List<Map<String, Object>> list) {
-        if (priceSlider == null || priceSlider.getValue() >= priceSlider.getMax())
-            return list;
-        double max = priceSlider.getValue();
+        double min = 0;
+        double max = Double.MAX_VALUE;
+        try {
+            if (!minPriceField.getText().isBlank()) min = Double.parseDouble(minPriceField.getText());
+        } catch(Exception ignored){}
+        try {
+            if (!maxPriceField.getText().isBlank()) max = Double.parseDouble(maxPriceField.getText());
+        } catch(Exception ignored){}
+        
         List<Map<String, Object>> out = new ArrayList<>();
-        for (Map<String, Object> p : list)
-            if (getDbl(p, "price") <= max) out.add(p);
+        for (Map<String, Object> p : list) {
+            double price = getDbl(p, "price");
+            if (price >= min && price <= max) out.add(p);
+        }
         return out;
     }
 
