@@ -1,5 +1,7 @@
 package com.chrionline.server.core;
 
+import com.chrionline.server.security.SYNFloodProtection;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -34,10 +36,19 @@ public class TCPServer {
         while (running) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("[SERVER] New client connected: "
-                        + clientSocket.getInetAddress().getHostAddress());
+                String clientIp = clientSocket.getInetAddress().getHostAddress();
+
+                // ── Protection SYN Flood ──
+                if (!SYNFloodProtection.getInstance().allowConnection(clientIp)) {
+                    ServerLogger.warn("[SECURITY] SYN Flood détecté, connexion rejetée : " + clientIp);
+                    clientSocket.close(); // Fermer immédiatement
+                    continue;
+                }
+
+                System.out.println("[SERVER] New client connected: " + clientIp);
                 ClientHandler handler = new ClientHandler(clientSocket);
                 threadPool.execute(handler);
+
             } catch (IOException e) {
                 if (running) {
                     System.err.println("[SERVER] Error accepting connection: " + e.getMessage());

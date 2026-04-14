@@ -1,5 +1,7 @@
 package com.chrionline.server.core;
 
+import com.chrionline.server.security.Log4jDetector;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -46,6 +48,12 @@ public class ServerLogger {
 
     // ═══════════════ CORE ══════════════════════
     private static void log(String level, String msg) {
+        // ── Protection Log4j (AJOUTER EN PREMIER) ──
+        if (Log4jDetector.isMalicious(msg)) {
+            msg = "[BLOCKED LOG4J PAYLOAD] " + Log4jDetector.sanitize(msg);
+            level = "SECURITY_ALERT";
+        }
+
         String time = LocalDateTime.now().format(TIME_FMT);
         String full = LocalDateTime.now().format(FULL_FMT);
 

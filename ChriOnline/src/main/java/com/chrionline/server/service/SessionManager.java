@@ -16,13 +16,15 @@ public class SessionManager {
         final int    userId;
         final String username;
         final String role;
+        final String email;
         final LocalDateTime createdAt;
         final LocalDateTime expiresAt;
 
-        SessionInfo(int userId, String username, String role) {
+        SessionInfo(int userId, String username, String role, String email) {
             this.userId    = userId;
             this.username  = username;
             this.role      = role;
+            this.email     = email;
             this.createdAt = LocalDateTime.now();
             this.expiresAt = createdAt.plusMinutes(SESSION_DURATION_MINUTES);
         }
@@ -35,9 +37,9 @@ public class SessionManager {
 
     // ── API publique ───────────────────────────
 
-    public static String createSession(int userId, String username, String role) {
+    public static String createSession(int userId, String username, String role, String email) {
         String token = UUID.randomUUID().toString();
-        sessions.put(token, new SessionInfo(userId, username, role));
+        sessions.put(token, new SessionInfo(userId, username, role, email));
         ServerLogger.info("Session created for '" + username
                 + "' (ID:" + userId + ") token=" + token.substring(0, 8) + "...");
         return token;
@@ -55,17 +57,24 @@ public class SessionManager {
         return true;
     }
 
-    public static int    getUserId(String token)  {
+    public static int getUserId(String token) {
         SessionInfo si = sessions.get(token);
         return si != null ? si.userId : -1;
     }
+
     public static String getUsername(String token) {
         SessionInfo si = sessions.get(token);
         return si != null ? si.username : null;
     }
+
     public static String getRole(String token) {
         SessionInfo si = sessions.get(token);
         return si != null ? si.role : null;
+    }
+
+    public static String getEmail(String token) {
+        SessionInfo si = sessions.get(token);
+        return si != null ? si.email : null;
     }
 
     public static boolean invalidate(String token) {
@@ -100,7 +109,4 @@ public class SessionManager {
             return false;
         });
     }
-
-
-
 }

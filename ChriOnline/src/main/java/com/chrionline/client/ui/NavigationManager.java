@@ -28,6 +28,7 @@ public class NavigationManager {
     private static int    userId = -1;
     private static String firstName;
     private static String lastName;
+    private static String email;  // ← AJOUTÉ
 
     public static void initialize(StackPane root, Scene sc) {
         rootContainer = root;
@@ -48,11 +49,25 @@ public class NavigationManager {
     public static void showNotifications()       { transitionTo(new NotificationScreen().getView(), true); }
 
     // ── Email verification ─────────────────────────────
-    public static void showEmailVerification(int uid, String email) {
-        transitionTo(new EmailVerificationScreen(uid, email).getView(), true);
+    public static void showEmailVerification(int uid, String userEmail) {
+        transitionTo(new EmailVerificationScreen(uid, userEmail).getView(), true);
     }
-    public static void showTwoFactor(int uid, String email) {
-        transitionTo(new TwoFactorScreen(uid, email).getView(), true);
+
+    public static void showTwoFactor(int uid, String userEmail) {
+        transitionTo(new TwoFactorScreen(uid, userEmail).getView(), true);
+    }
+
+    // ── Password reset ─────────────────────────────────
+    public static void showForgotPassword() {
+        transitionTo(new ForgotPasswordScreen().getView(), true);
+    }
+
+    public static void showEnterCode(String username) {
+        transitionTo(new EnterCodeScreen(new AuthController(), username).getView(), true);
+    }
+
+    public static void showResetPassword(String username, String resetToken) {
+        transitionTo(new ResetPasswordScreen(new AuthController(), username, resetToken).getView(), true);
     }
 
     // ── Admin screens ──────────────────────────────────
@@ -63,6 +78,7 @@ public class NavigationManager {
     public static void showManageCategories(){ transitionTo(new ManageCategoriesScreen().getView(), true); }
     public static void showManageAdmins()    { transitionTo(new ManageAdminsScreen().getView(), true); }
 
+    // ── Navigation par nom ─────────────────────────────
     public static void navigateTo(String name) {
         Platform.runLater(() -> {
             switch (name) {
@@ -80,12 +96,13 @@ public class NavigationManager {
                 case "manageOrders":     showManageOrders();     break;
                 case "manageCategories": showManageCategories(); break;
                 case "manageAdmins":     showManageAdmins();     break;
-                case "forgotPassword": showForgotPassword(); break;
+                case "forgotPassword":   showForgotPassword();   break;
                 default: System.err.println("[NAV] Unknown: " + name);
             }
         });
     }
 
+    // ── Transition avec animation ──────────────────────
     private static void transitionTo(Node newView, boolean animate) {
         Platform.runLater(() -> {
             if (rootContainer == null || scene == null) return;
@@ -124,18 +141,26 @@ public class NavigationManager {
         });
     }
 
+    // ── Refresh CSS ────────────────────────────────────
     private static void refreshSceneStyles() {
         if (scene == null) return;
         String cssUrl = resolveStylesheetUrl();
-        if (cssUrl == null) { System.err.println("[NAV] style.css introuvable."); return; }
+        if (cssUrl == null) {
+            System.err.println("[NAV] style.css introuvable.");
+            return;
+        }
         scene.getStylesheets().setAll(cssUrl);
-        if (scene.getRoot() != null) { scene.getRoot().applyCss(); scene.getRoot().layout(); }
+        if (scene.getRoot() != null) {
+            scene.getRoot().applyCss();
+            scene.getRoot().layout();
+        }
     }
 
     private static String resolveStylesheetUrl() {
         try {
             File sourceCss = new File("src/main/resources/css/style.css");
             if (sourceCss.exists()) return copyToTempAndGetUrl(sourceCss.toPath());
+
             URL resource = NavigationManager.class.getResource("/css/style.css");
             if (resource != null) {
                 Path tempFile = Files.createTempFile("chrionline-style-", ".css");
@@ -158,17 +183,30 @@ public class NavigationManager {
         return tempFile.toUri().toString();
     }
 
+    // ── Session management ─────────────────────────────
+    // Version 6 paramètres (sans email) - pour compatibilité
     public static void setSession(String tk, int uid, String un,
                                   String rl, String fn, String ln) {
         token = tk; userId = uid; username = un;
         role = rl; firstName = fn; lastName = ln;
+        email = null;
+    }
+
+    // Version 7 paramètres (avec email) - VERSION RECOMMANDÉE
+    public static void setSession(String tk, int uid, String un,
+                                  String rl, String fn, String ln, String userEmail) {
+        token = tk; userId = uid; username = un;
+        role = rl; firstName = fn; lastName = ln;
+        email = userEmail;
     }
 
     public static void clearSession() {
         token = null; userId = -1; username = null;
         role = null; firstName = null; lastName = null;
+        email = null;
     }
 
+    // ── Getters ────────────────────────────────────────
     public static boolean isLoggedIn()   { return token != null; }
     public static boolean isAdmin()      { return "ADMIN".equals(role) || "SUPER_ADMIN".equals(role); }
     public static boolean isSuperAdmin() { return "SUPER_ADMIN".equals(role); }
@@ -178,18 +216,6 @@ public class NavigationManager {
     public static String  getRole()      { return role; }
     public static String  getFirstName() { return firstName; }
     public static String  getLastName()  { return lastName; }
+    public static String  getEmail()     { return email; }      // ← AJOUTÉ
     public static Scene   getScene()     { return scene; }
-    public static void showForgotPassword() {
-        transitionTo(new ForgotPasswordScreen().getView(), true);
-    }
-
-    // After ForgotPassword succeeds → show code entry screen
-    public static void showEnterCode(String username) {
-        transitionTo(new EnterCodeScreen(new AuthController(), username).getView(), true);
-    }
-
-    public static void showResetPassword(String username, String token) {
-        transitionTo(new ResetPasswordScreen(new AuthController(), username, token).getView(), true);
-    }
-
 }

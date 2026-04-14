@@ -29,36 +29,30 @@ public class LoginScreen {
         StackPane root = new StackPane();
         root.getStyleClass().add("auth-root");
 
-        // ── Watermark background ─────────────────────────
         Label watermark = new Label("ChriOnline");
         watermark.getStyleClass().add("auth-brand-watermark");
         watermark.setMouseTransparent(true);
         StackPane.setAlignment(watermark, Pos.CENTER);
 
-        // ── Back to home — top left ──────────────────────
         Button backLink = new Button("\u2190  Retour a l'accueil");
         backLink.getStyleClass().add("auth-back-link");
         backLink.setOnAction(e -> NavigationManager.showLanding());
         StackPane.setAlignment(backLink, Pos.TOP_LEFT);
         StackPane.setMargin(backLink, new Insets(24, 0, 0, 24));
 
-        // ── Center content ───────────────────────────────
         VBox centerBox = new VBox(28);
         centerBox.setAlignment(Pos.CENTER);
         centerBox.setPadding(new Insets(40, 40, 40, 40));
         centerBox.setMaxWidth(440);
 
-        // ── Branding (outside the card) ──────────────────
         VBox branding = buildBranding();
 
-        // ── White card (compact) ─────────────────────────
         VBox card = new VBox(14);
         card.getStyleClass().add("auth-card");
         card.setPadding(new Insets(28, 36, 24, 36));
         card.setAlignment(Pos.CENTER);
         card.setMaxWidth(400);
 
-        // Title
         HBox titleRow = new HBox(10);
         titleRow.setAlignment(Pos.CENTER);
         Label lockIcon = new Label("\uD83D\uDD12");
@@ -71,11 +65,9 @@ public class LoginScreen {
         Label subtitle = new Label("Entrez vos identifiants pour continuer");
         subtitle.getStyleClass().add("auth-subtitle");
 
-        // Divider
         Region div = new Region();
         div.setStyle("-fx-background-color: #E8E8E8; -fx-pref-height: 1;");
 
-        // Username field
         Label userLabel = new Label("Nom d'utilisateur");
         userLabel.getStyleClass().add("auth-field-label");
         TextField usernameField = new TextField();
@@ -83,7 +75,6 @@ public class LoginScreen {
         usernameField.getStyleClass().add("auth-field");
         VBox userGroup = new VBox(5, userLabel, usernameField);
 
-        // Password field
         Label passLabel = new Label("Mot de passe");
         passLabel.getStyleClass().add("auth-field-label");
         PasswordField passwordField = new PasswordField();
@@ -92,7 +83,6 @@ public class LoginScreen {
         StackPane passWrapper = wrapWithToggle(passwordField);
         VBox passGroup = new VBox(5, passLabel, passWrapper);
 
-        //forgot password
         Button forgotLink = new Button("Mot de passe oublié ?");
         forgotLink.getStyleClass().add("auth-link");
         forgotLink.setOnAction(e -> NavigationManager.showForgotPassword());
@@ -100,7 +90,6 @@ public class LoginScreen {
         forgotRow.setAlignment(Pos.CENTER_RIGHT);
         forgotRow.setPadding(new Insets(0, 0, 6, 0));
 
-        // Error box (hidden by default)
         HBox errorBox = new HBox(8);
         errorBox.getStyleClass().add("auth-error");
         errorBox.setVisible(false);
@@ -114,7 +103,6 @@ public class LoginScreen {
         HBox.setHgrow(errorText, Priority.ALWAYS);
         errorBox.getChildren().addAll(errorIcon, errorText);
 
-        // Login button
         Button loginBtn = new Button("Se connecter");
         loginBtn.getStyleClass().add("auth-btn-primary");
         loginBtn.setOnAction(e ->
@@ -124,7 +112,6 @@ public class LoginScreen {
                 handleLogin(usernameField, passwordField, loginBtn,
                         errorBox, errorText));
 
-        // Register link
         HBox registerRow = new HBox(4);
         registerRow.setAlignment(Pos.CENTER);
         Label noAccount = new Label("Pas encore de compte ?");
@@ -145,12 +132,10 @@ public class LoginScreen {
 
         centerBox.getChildren().addAll(branding, card);
 
-        // ── Particles layer ──────────────────────────────
         Pane particles = buildParticles();
 
         root.getChildren().addAll(particles, watermark, backLink, centerBox);
 
-        // ── Entrance animation ───────────────────────────
         Platform.runLater(() -> {
             branding.setOpacity(0);
             branding.setTranslateY(-15);
@@ -177,15 +162,10 @@ public class LoginScreen {
         return root;
     }
 
-    // ═══════════════════════════════════════════════════════
-    //  BRANDING — above the card
-    // ═══════════════════════════════════════════════════════
-
     private VBox buildBranding() {
         VBox branding = new VBox(6);
         branding.setAlignment(Pos.CENTER);
 
-        // Logo
         try {
             ImageView logo = new ImageView(new Image(
                     Objects.requireNonNull(
@@ -196,7 +176,6 @@ public class LoginScreen {
             branding.getChildren().add(logo);
         } catch (Exception ignored) {}
 
-        // Name
         HBox nameRow = new HBox(0);
         nameRow.setAlignment(Pos.CENTER);
         Label l1 = new Label("Chri");
@@ -209,17 +188,12 @@ public class LoginScreen {
                         + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 2);");
         nameRow.getChildren().addAll(l1, l2);
 
-        // Tagline
         Label tagline = new Label("Votre boutique en ligne premium");
         tagline.setStyle("-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.6);");
 
         branding.getChildren().addAll(nameRow, tagline);
         return branding;
     }
-
-    // ═══════════════════════════════════════════════════════
-    //  FLOATING PARTICLES
-    // ═══════════════════════════════════════════════════════
 
     private Pane buildParticles() {
         Pane layer = new Pane();
@@ -248,10 +222,6 @@ public class LoginScreen {
 
         return layer;
     }
-
-    // ═══════════════════════════════════════════════════════
-    //  LOGIN LOGIC
-    // ═══════════════════════════════════════════════════════
 
     private void handleLogin(TextField usernameField, PasswordField passwordField,
                              Button loginBtn, HBox errorBox, Label errorText) {
@@ -291,22 +261,26 @@ public class LoginScreen {
 
                 if (response.isSuccess()) {
                     Map<String, Object> data = castToMap(response.getData());
-                    System.out.println("ROLE RECU : " + getStr(data, "role"));
 
                     if (Boolean.TRUE.equals(data.get("2fa_required"))) {
-                        NavigationManager.showTwoFactor(getInt(data, "userId"), getStr(data, "email"));
+                        NavigationManager.showTwoFactor(
+                                getInt(data, "userId"),
+                                getStr(data, "email")
+                        );
                         return;
                     }
 
+                    // ← MODIFIER ICI (6 paramètres avec email)
                     NavigationManager.setSession(
                             getStr(data, "token"),
                             getInt(data, "userId"),
                             getStr(data, "username"),
                             getStr(data, "role"),
                             getStr(data, "firstName"),
-                            getStr(data, "lastName")
+                            getStr(data, "lastName"),
+                            getStr(data, "email")  // ← AJOUTER
                     );
-                    // ── Start UDP heartbeat sender ───────────────
+
                     int uid = getInt(data, "userId");
                     UDPHeartbeatSender heartbeat = new UDPHeartbeatSender(uid);
                     Thread heartbeatThread = new Thread(heartbeat);
@@ -314,28 +288,21 @@ public class LoginScreen {
                     heartbeatThread.setName("udp-heartbeat-" + uid);
                     heartbeatThread.start();
 
-                    // APRÈS — redirige selon le rôle
                     String role = getStr(data, "role");
 
                     if ("ADMIN".equals(role) || "SUPER_ADMIN".equals(role)) {
-                        NavigationManager.showAdminDashboard();  // ← admin va au dashboard
+                        NavigationManager.showAdminDashboard();
                     } else {
-                        NavigationManager.showLanding();         // ← client va à l'accueil
+                        NavigationManager.showLanding();
                     }
 
                 } else {
                     showError(errorBox, errorText, response.getMessage());
-
-                    // Shake animation on error
                     shakeNode(errorBox);
                 }
             });
         }).start();
     }
-
-    // ═══════════════════════════════════════════════════════
-    //  ERROR HELPERS
-    // ═══════════════════════════════════════════════════════
 
     private void showError(HBox errorBox, Label errorText, String msg) {
         errorText.setText(msg);
@@ -363,10 +330,6 @@ public class LoginScreen {
         tt.play();
     }
 
-    // ═══════════════════════════════════════════════════════
-    //  HELPERS
-    // ═══════════════════════════════════════════════════════
-
     @SuppressWarnings("unchecked")
     private Map<String, Object> castToMap(Object obj) {
         if (obj == null) return Map.of();
@@ -388,6 +351,7 @@ public class LoginScreen {
         if (v instanceof Double) return ((Double) v).intValue();
         return Integer.parseInt(v.toString());
     }
+
     private StackPane wrapWithToggle(PasswordField pf) {
         TextField visibleField = new TextField();
         visibleField.setPromptText(pf.getPromptText());

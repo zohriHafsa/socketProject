@@ -21,8 +21,6 @@ public class AuthService {
     private final UserDAO  userDAO  = new UserDAO();
     private final AdminDAO adminDAO = new AdminDAO();
 
-
-
     // ── REGISTER ───────────────────────────────────────────
     public Response register(Request request) {
         String username  = request.getString("username");
@@ -67,7 +65,6 @@ public class AuthService {
             if (userId < 0)
                 return Response.error("Echec de la creation du compte.");
 
-            // ── Générer et envoyer le code de vérification ──
             String code = EmailService.generateCode();
             userDAO.saveVerifyCode(userId, code);
 
@@ -116,17 +113,17 @@ public class AuthService {
                     return Response.error("Ce compte admin est desactive.");
 
                 int    adminId = (int) admin.get("adminId");
-                String role    = (boolean) admin.get("isSuper")
-                        ? "SUPER_ADMIN" : "ADMIN";
-                String token   = SessionManager.createSession(adminId, username, role);
+                String email   = (String) admin.get("email");
+                String role    = (boolean) admin.get("isSuper") ? "SUPER_ADMIN" : "ADMIN";
+                String token   = SessionManager.createSession(adminId, username, role, email);
 
-                ServerLogger.info("LOGIN ADMIN OK : " + username
-                        + " (ID:" + adminId + ", role=" + role + ")");
+                ServerLogger.info("LOGIN ADMIN OK : " + username + " (ID:" + adminId + ", role=" + role + ")");
 
                 Map<String, Object> result = new HashMap<>();
                 result.put("token",     token);
                 result.put("userId",    adminId);
                 result.put("username",  username);
+                result.put("email",     email);
                 result.put("role",      role);
                 result.put("firstName", admin.get("firstName"));
                 result.put("lastName",  admin.get("lastName"));
@@ -141,30 +138,23 @@ public class AuthService {
 
             int userId = (int) user.get("userId");
 
-            // ── Check if account is locked ──────────────────
             if (!(boolean) user.get("isActive")) {
                 Object lockedUntil = user.get("lockedUntil");
 
                 if (lockedUntil == null) {
-                    // locked_until is NULL → permanent ban by admin
                     return Response.error("Ce compte est desactive.");
                 }
 
-                // Temporary lockout → check if time has passed
                 boolean stillLocked = userDAO.checkAndUnlockIfExpired(userId);
                 if (stillLocked) {
-                    return Response.error(
-                            "Compte bloque. Reessayez dans quelques minutes.");
+                    return Response.error("Compte bloque. Reessayez dans quelques minutes.");
                 }
-                // Time passed → account just got unlocked → reload fresh user from DB
                 user = userDAO.getUserByUsername(username);
             }
 
-            // ── Wrong password ───────────────────────────────
             if (!verifyPassword(password, (String) user.get("passwordHash"))) {
                 userDAO.recordFailedAttempt(userId);
 
-                // Get updated attempts count to give a helpful message
                 Map<String, Object> updated = userDAO.getUserById(userId);
                 int attempts = 0;
                 Object att = updated.get("failedAttempts");
@@ -180,10 +170,8 @@ public class AuthService {
                     return Response.error("Mot de passe incorrect. ");
             }
 
-            // ── Password correct → reset failed attempts ─────
             userDAO.resetFailedAttempts(userId);
 
-            // ── Vérification email obligatoire ──────────────
             Object verified = user.get("isVerified");
             boolean isVerified = verified != null &&
                     (Boolean.TRUE.equals(verified) ||
@@ -191,8 +179,7 @@ public class AuthService {
                             "true".equalsIgnoreCase(verified.toString()));
 
             if (!isVerified)
-                return Response.error(
-                        "Veuillez verifier votre email avant de vous connecter.");
+                return Response.error("Veuillez verifier votre email avant de vous connecter.");
 
             userId = (int)   user.get("userId");
             String userEmail = (String) user.get("email");
@@ -227,16 +214,17 @@ public class AuthService {
             if (ok) {
                 Map<String, Object> user = userDAO.getUserById(userId);
                 String username = (String) user.get("username");
-                String role   = "CLIENT";
-                String token  = SessionManager.createSession(userId, username, role);
+                String email    = (String) user.get("email");
+                String role     = "CLIENT";
+                String token    = SessionManager.createSession(userId, username, role, email);
 
-                ServerLogger.info("LOGIN CLIENT (2FA PASSED) OK : " + username
-                        + " (ID:" + userId + ", role=" + role + ")");
+                ServerLogger.info("LOGIN CLIENT (2FA PASSED) OK : " + username + " (ID:" + userId + ", role=" + role + ")");
 
                 Map<String, Object> result = new HashMap<>();
                 result.put("token",     token);
                 result.put("userId",    userId);
                 result.put("username",  username);
+                result.put("email",     email);
                 result.put("role",      role);
                 result.put("firstName", user.get("firstName"));
                 result.put("lastName",  user.get("lastName"));
@@ -261,8 +249,7 @@ public class AuthService {
             boolean ok = userDAO.verifyCode(userId, code);
             if (ok) {
                 ServerLogger.info("EMAIL VERIFIED : userId=" + userId);
-                return Response.ok(
-                        "Email verifie ! Vous pouvez maintenant vous connecter.", null);
+                return Response.ok("Email verifie ! Vous pouvez maintenant vous connecter.", null);
             }
             return Response.error("Code incorrect ou expire.");
         } catch (SQLException e) {
@@ -281,8 +268,6 @@ public class AuthService {
         try {
             Map<String, Object> user = userDAO.getUserByUsername(username);
 
-            // SECURITY: always return the same response whether user exists or not
-            // This prevents attackers from knowing which usernames are registered
             if (user == null) {
                 ServerLogger.warn("FORGOT_PASSWORD : username inconnu = " + username);
                 return Response.ok("Si ce compte existe, un email a ete envoye.", null);
@@ -319,7 +304,6 @@ public class AuthService {
         if (token == null || newPassword == null || username == null)
             return Response.error("Token et nouveau mot de passe requis.");
 
-        // ── Same rules as register ──────────────────────────
         if (newPassword.length() < 8)
             return Response.error("Le mot de passe doit contenir au moins 8 caractères.");
         if (!newPassword.matches(".*[A-Z].*"))
@@ -338,7 +322,6 @@ public class AuthService {
             String firstName = (String) user.get("firstName");
             String lastName  = (String) user.get("lastName");
 
-            // First/last name containment checks (same as register)
             if (firstName != null && !firstName.isBlank()
                     && newPassword.toLowerCase().contains(firstName.toLowerCase()))
                 return Response.error("Le mot de passe ne doit pas inclure votre prénom.");
@@ -347,8 +330,6 @@ public class AuthService {
                     && newPassword.toLowerCase().contains(lastName.toLowerCase()))
                 return Response.error("Le mot de passe ne doit pas inclure votre nom de famille.");
 
-            // Token already verified and consumed in verifyResetToken step
-            // Just update the password directly
             String newHash = hashPassword(newPassword);
             userDAO.updatePassword(userId, newHash);
 
@@ -374,6 +355,35 @@ public class AuthService {
             return Response.ok("Deconnexion reussie.", null);
         }
         return Response.error("Session introuvable ou deja expiree.");
+    }
+
+    // ── VERIFY RESET TOKEN ─────────────────────────────────
+    public Response verifyResetToken(Request request) {
+        String username = request.getString("username");
+        String token    = request.getString("token");
+
+        if (username == null || token == null)
+            return Response.error("Username et token requis.");
+
+        try {
+            Map<String, Object> user = userDAO.getUserByUsername(username);
+            if (user == null)
+                return Response.error("Code invalide ou expiré.");
+
+            int userId = (int) user.get("userId");
+
+            boolean ok = userDAO.verifyOtp(userId, token);
+            if (!ok)
+                return Response.error("Code invalide ou expiré. Faites une nouvelle demande.");
+
+            ServerLogger.info("VERIFY_RESET_TOKEN OK : username=" + username);
+            return Response.ok("Code valide.", null);
+
+        } catch (SQLException e) {
+            ServerLogger.error("VERIFY_RESET_TOKEN SQL error : " + e.getMessage());
+            e.printStackTrace();
+            return Response.error("Erreur serveur.");
+        }
     }
 
     // ── Hashing (Argon2id + legacy SHA-256 fallback) ───────
@@ -424,35 +434,4 @@ public class AuthService {
         }
         return false;
     }
-
-    // ── VERIFY RESET TOKEN ─────────────────────────────────
-    public Response verifyResetToken(Request request) {
-        String username = request.getString("username");
-        String token    = request.getString("token");
-
-        if (username == null || token == null)
-            return Response.error("Username et token requis.");
-
-        try {
-            Map<String, Object> user = userDAO.getUserByUsername(username);
-            if (user == null)
-                return Response.error("Code invalide ou expiré.");
-
-            int userId = (int) user.get("userId");
-
-            // Reuse the same OTP verify method you already have
-            boolean ok = userDAO.verifyOtp(userId, token);
-            if (!ok)
-                return Response.error("Code invalide ou expiré. Faites une nouvelle demande.");
-
-            ServerLogger.info("VERIFY_RESET_TOKEN OK : username=" + username);
-            return Response.ok("Code valide.", null);
-
-        } catch (SQLException e) {
-            ServerLogger.error("VERIFY_RESET_TOKEN SQL error : " + e.getMessage());
-            e.printStackTrace();
-            return Response.error("Erreur serveur.");
-        }
-    }
-
 }

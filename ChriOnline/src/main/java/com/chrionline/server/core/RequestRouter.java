@@ -1,6 +1,7 @@
 package com.chrionline.server.core;
 
 import com.chrionline.server.dao.NotificationDAO;
+import com.chrionline.server.security.AntiReplayFilter;
 import com.chrionline.server.service.*;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
@@ -11,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class RequestRouter {
-
+    private static final PaymentValidationService paymentValidationService =
+            new PaymentValidationService();
     private static final AuthService     authService     = new AuthService();
     private static final ProductService  productService  = new ProductService();
     private static final CartService     cartService     = new CartService();
@@ -36,6 +38,11 @@ public class RequestRouter {
         if (request.getAction() == null) {
             ServerLogger.error("Missing action field");
             return Response.error("Missing action field.");
+        }
+
+        // ── Anti-Replay Check (AJOUTER ICI) ──
+        if (!AntiReplayFilter.getInstance().validate(request.getNonce(), request.getTimestamp())) {
+            return Response.error("REPLAY ATTACK DETECTED - Request rejected");
         }
 
         ServerLogger.info("Routing action: " + request.getAction());
@@ -76,6 +83,14 @@ public class RequestRouter {
             case FORGOT_PASSWORD: return authService.forgotPassword(request);
             case VERIFY_RESET_TOKEN:  return authService.verifyResetToken(request);
             case RESET_PASSWORD:  return authService.resetPassword(request);
+            case VALIDATE_CARD:
+                return handleValidateCard(request);
+
+            case SEND_PAYMENT_2FA:
+                return handleSendPayment2FA(request);
+
+            case VERIFY_PAYMENT_2FA:
+                return handleVerifyPayment2FA(request);
 
             // Products (public)
             case GET_PRODUCTS:       return productService.getProducts(request);
@@ -198,5 +213,35 @@ public class RequestRouter {
             ServerLogger.error("REGISTER_UDP error : " + e.getMessage());
             return Response.error("Erreur UDP : " + e.getMessage());
         }
+    }
+    private static Response handleValidateCard(Request request) {
+        int userId = SessionManager.getUserId(request.getToken());
+        if (userId <= 0) return Response.error("Session invalide");
+
+        String cardNumber = request.getString("cardNumber");
+        String expiry     = request.getString("expiry");
+        String cvv        = request.getString("cvv");
+
+        return paymentValidationService.validateCard(userId, cardNumber, expiry, cvv);
+    }
+
+    private static Response handleSendPayment2FA(Request request) {
+        int userId = SessionManager.getUserId(request.getToken());
+        if (userId <= 0) return Response.error("Session invalide");
+
+        double amount  = request.getDouble("amount");
+        String orderId = request.getString("orderId");
+        String email   = request.getString("email");
+
+        return paymentValidationService.send2FACode(userId, amount, orderId, email);
+    }
+
+    private static Response handleVerifyPayment2FA(Request request) {
+        int userId = SessionManager.getUserId(request.getToken());
+        if (userId <= 0) return Response.error("Session invalide");
+
+        String code = request.getString("code");
+
+        return paymentValidationService.verify2FACode(userId, code);
     }
 }

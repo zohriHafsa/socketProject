@@ -1,6 +1,7 @@
 package com.chrionline.server.service;
 
 import com.chrionline.server.core.ServerLogger;
+import com.chrionline.server.security.InputSanitizer;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import java.util.Properties;
@@ -12,6 +13,12 @@ public class EmailService {
     private static final String PASSWORD = "vgljnfvcwzcftoow"; // App Password
 
     private static boolean sendEmail(String toEmail, String subject, String title, String message, String code) {
+        // ── Protection injection email (AJOUTER AU DÉBUT) ──
+        if (!InputSanitizer.isValidEmail(toEmail)) {
+            System.err.println("[EMAIL] Email invalide ou dangereux : " + toEmail);
+            return false;
+        }
+
         Properties props = new Properties();
         props.put("mail.smtp.host",            "smtp.gmail.com");
         props.put("mail.smtp.port",            "587");
@@ -60,7 +67,20 @@ public class EmailService {
             return false;
         }
     }
-
+    /**
+     * Envoie un code 2FA pour confirmer un paiement.
+     */
+    public static boolean sendPayment2FAEmail(String toEmail, String code, double amount) {
+        return sendEmail(
+                toEmail,
+                "ChriOnline - Confirmation de paiement",
+                "Securite Paiement",
+                "Un paiement de <strong>" + String.format("%.2f MAD", amount) +
+                        "</strong> est en attente de confirmation. Pour autoriser cette transaction, " +
+                        "veuillez saisir le code de securite ci-dessous :",
+                code
+        );
+    }
     public static boolean sendRegistrationEmail(String toEmail, String code) {
         return sendEmail(toEmail, 
             "Bienvenue sur ChriOnline - Code de verification", 
