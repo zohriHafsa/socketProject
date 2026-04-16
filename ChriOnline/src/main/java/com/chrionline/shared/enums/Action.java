@@ -16,6 +16,7 @@ public enum Action {
     // Payment
     PROCESS_PAYMENT,
 
+
     // Notifications
     GET_NOTIFICATIONS, MARK_NOTIFICATION_READ, MARK_ALL_NOTIFICATIONS_READ,
 
@@ -33,7 +34,11 @@ public enum Action {
     VERIFY_RESET_TOKEN,
 
     RESET_PASSWORD,
+    VALIDATE_CARD,
+    SEND_PAYMENT_2FA,
+    VERIFY_PAYMENT_2FA,
     FORGOT_PASSWORD,
     // UDP
     REGISTER_UDP
+
 }

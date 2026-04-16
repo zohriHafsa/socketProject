@@ -35,36 +35,30 @@ public class TwoFactorScreen {
         StackPane root = new StackPane();
         root.getStyleClass().add("auth-root");
 
-        // ── Watermark background ─────────────────────────
         Label watermark = new Label("ChriOnline");
         watermark.getStyleClass().add("auth-brand-watermark");
         watermark.setMouseTransparent(true);
         StackPane.setAlignment(watermark, Pos.CENTER);
 
-        // ── Back to login — top left ──────────────────────
         Button backLink = new Button("\u2190  Retour a la connexion");
         backLink.getStyleClass().add("auth-back-link");
         backLink.setOnAction(e -> NavigationManager.showLogin());
         StackPane.setAlignment(backLink, Pos.TOP_LEFT);
         StackPane.setMargin(backLink, new Insets(24, 0, 0, 24));
 
-        // ── Center content ───────────────────────────────
         VBox centerBox = new VBox(28);
         centerBox.setAlignment(Pos.CENTER);
         centerBox.setPadding(new Insets(40, 40, 40, 40));
         centerBox.setMaxWidth(500);
 
-        // ── Branding (outside the card) ──────────────────
         VBox branding = buildBranding();
 
-        // ── White card (compact) ─────────────────────────
         VBox card = new VBox(14);
         card.getStyleClass().add("auth-card");
         card.setPadding(new Insets(28, 36, 24, 36));
         card.setAlignment(Pos.CENTER);
         card.setMaxWidth(400);
 
-        // Title
         HBox titleRow = new HBox(10);
         titleRow.setAlignment(Pos.CENTER);
         Label mailIcon = new Label("\uD83D\uDD12");
@@ -79,11 +73,9 @@ public class TwoFactorScreen {
         subtitle.setWrapText(true);
         subtitle.setStyle("-fx-text-alignment: center;");
 
-        // Divider
         Region div = new Region();
         div.setStyle("-fx-background-color: #E8E8E8; -fx-pref-height: 1;");
 
-        // Code input
         Label codeLabel = new Label("Code de connexion (2FA)");
         codeLabel.getStyleClass().add("auth-field-label");
         TextField codeField = new TextField();
@@ -92,8 +84,8 @@ public class TwoFactorScreen {
         codeField.setAlignment(Pos.CENTER);
         codeField.setStyle(
                 "-fx-font-size: 22px;" +
-                "-fx-text-alignment: center;" +
-                "-fx-letter-spacing: 8px;"
+                        "-fx-text-alignment: center;" +
+                        "-fx-letter-spacing: 8px;"
         );
         codeField.textProperty().addListener((obs, o, n) -> {
             if (!n.matches("\\d*")) codeField.setText(n.replaceAll("[^\\d]", ""));
@@ -101,7 +93,6 @@ public class TwoFactorScreen {
         });
         VBox codeGroup = new VBox(5, codeLabel, codeField);
 
-        // Error / Feedback box (hidden by default)
         HBox fbBox = new HBox(8);
         fbBox.getStyleClass().add("auth-error");
         fbBox.setVisible(false);
@@ -115,7 +106,6 @@ public class TwoFactorScreen {
         HBox.setHgrow(fbText, Priority.ALWAYS);
         fbBox.getChildren().addAll(fbIcon, fbText);
 
-        // Bouton vérifier
         Button verifyBtn = new Button("Valider mon code 2FA");
         verifyBtn.getStyleClass().add("auth-btn-primary");
         verifyBtn.setOnAction(e -> handleVerify(codeField, verifyBtn, fbBox, fbText, fbIcon));
@@ -129,7 +119,6 @@ public class TwoFactorScreen {
 
         root.getChildren().addAll(particles, watermark, backLink, centerBox);
 
-        // ── Entrance animation ───────────────────────────
         Platform.runLater(() -> {
             branding.setOpacity(0);
             branding.setTranslateY(-15);
@@ -228,15 +217,18 @@ public class TwoFactorScreen {
                 if (resp.isSuccess()) {
                     showFeedback(fbBox, fbText, fbIcon,
                             "Authentification reussie ! Redirection...", true);
-                    
+
                     Map<String, Object> data = castToMap(resp.getData());
+
+                    // ← MODIFIER ICI (6 paramètres avec email)
                     NavigationManager.setSession(
                             getStr(data, "token"),
                             getInt(data, "userId"),
                             getStr(data, "username"),
                             getStr(data, "role"),
                             getStr(data, "firstName"),
-                            getStr(data, "lastName")
+                            getStr(data, "lastName"),
+                            getStr(data, "email")  // ← AJOUTER
                     );
 
                     javafx.animation.PauseTransition pause =
@@ -266,13 +258,13 @@ public class TwoFactorScreen {
         fbBox.getStyleClass().removeAll("auth-error", "auth-success");
         if (success) {
             fbBox.getStyleClass().add("auth-success");
-            fbBox.setStyle("-fx-padding: 10 14;"); // inline padding
+            fbBox.setStyle("-fx-padding: 10 14;");
             fbText.setStyle("-fx-font-size: 13px; -fx-text-fill: #166534;");
             fbIcon.setText("✓");
             fbIcon.setStyle("-fx-font-size: 14px; -fx-text-fill: #166534;");
         } else {
             fbBox.getStyleClass().add("auth-error");
-            fbBox.setStyle(null); // revert to standard padding
+            fbBox.setStyle(null);
             fbText.setStyle(null);
             fbIcon.setText("\u26A0");
             fbIcon.setStyle("-fx-font-size: 14px; -fx-text-fill: #E74C3C;");

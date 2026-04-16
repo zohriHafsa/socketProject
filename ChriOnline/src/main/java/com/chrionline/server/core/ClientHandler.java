@@ -1,5 +1,6 @@
 package com.chrionline.server.core;
 
+import com.chrionline.server.security.SYNFloodProtection;
 import com.chrionline.shared.dto.Response;
 
 import java.io.BufferedReader;
@@ -57,6 +58,9 @@ public class ClientHandler implements Runnable {
 
     public void disconnect() {
         try {
+            String ip = socket.getInetAddress().getHostAddress();
+            SYNFloodProtection.getInstance().releaseConnection(ip); // ← AJOUTER
+
             if (socket != null && !socket.isClosed()) socket.close();
             ServerLogger.info("Client disconnected.");
         } catch (IOException e) {

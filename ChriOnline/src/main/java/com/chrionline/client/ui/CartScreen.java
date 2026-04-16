@@ -2,6 +2,7 @@ package com.chrionline.client.ui;
 
 import com.chrionline.client.network.ServerConnection;
 import com.chrionline.shared.dto.Request;
+import com.chrionline.shared.dto.Response;
 import com.chrionline.shared.enums.Action;
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -16,7 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.*;
 
@@ -37,11 +37,23 @@ public class CartScreen {
     private double cartTotal      = 0;
     private int    cartItemCount  = 0;
     private String shippingAddress = "";
-    private String paymentMethod  = "PAIEMENT_FICTIF";
+    private String paymentMethod  = "CARTE_BANCAIRE";
     private String cardLastFour   = "";
 
-    // Stock issues tracking
     private boolean hasStockIssues = false;
+
+    // Champs de paiement sécurisé
+    private ImageView bankLogoView;
+    private Label bankNameLabel;
+    private TextField cardNumField;
+    private TextField expiryField;
+    private TextField cvvField;
+    private Label validationMessageLabel;
+    private Button validate2FAButton;
+    private TextField tfaCodeField;
+    private VBox tfa2Box;
+    private boolean cardValidated = false;
+    private boolean tfa2Validated = false;
 
     public CartScreen() {
         root = new BorderPane();
@@ -76,40 +88,6 @@ public class CartScreen {
     }
 
     public Node getView() { return root; }
-
-    // ═══════════════════════════════════════════════════════
-    //  HEADER
-    // ═══════════════════════════════════════════════════════
-
-    private StackPane buildHeader() {
-        StackPane w = new StackPane();
-        w.getStyleClass().add("page-header-bar");
-        w.setMinWidth(0);
-
-        HBox inner = new HBox(16);
-        inner.setMaxWidth(MAX_W);
-        inner.setPadding(new Insets(0, H_PAD, 0, H_PAD));
-        inner.setMinHeight(70);
-        inner.setAlignment(Pos.CENTER_LEFT);
-
-        Button back = new Button("\u2190 Boutique");
-        back.getStyleClass().add("page-back-btn");
-        back.setOnAction(e -> NavigationManager.showLanding());
-
-        Label title = new Label("\uD83D\uDED2  Mon Panier");
-        title.getStyleClass().add("page-title");
-
-        Region sp = new Region();
-        HBox.setHgrow(sp, Priority.ALWAYS);
-
-        Button ordersBtn = new Button("Mes commandes");
-        ordersBtn.getStyleClass().add("page-back-btn");
-        ordersBtn.setOnAction(e -> NavigationManager.showOrders());
-
-        inner.getChildren().addAll(back, title, sp, ordersBtn);
-        w.getChildren().add(inner);
-        return w;
-    }
 
     // ═══════════════════════════════════════════════════════
     //  STEPPER
@@ -176,7 +154,6 @@ public class CartScreen {
             return;
         }
 
-        // Vérifier les problèmes de stock
         for (Map<String, Object> item : cartItems) {
             int qty   = intV(item.get("quantity"));
             int stock = intV(item.get("stockQuantity"));
@@ -186,23 +163,22 @@ public class CartScreen {
             }
         }
 
-        // Bannière d'alerte stock global
         if (hasStockIssues) {
             HBox alert = new HBox(10);
             alert.setAlignment(Pos.CENTER_LEFT);
             alert.setStyle(
-                    "-fx-background-color: rgba(243,156,18,0.1);"
-                            + "-fx-border-color: rgba(243,156,18,0.3);"
-                            + "-fx-border-width: 1;"
-                            + "-fx-border-radius: 10;"
-                            + "-fx-background-radius: 10;"
-                            + "-fx-padding: 12 20;"
+                    "-fx-background-color: rgba(243,156,18,0.1);" +
+                            "-fx-border-color: rgba(243,156,18,0.3);" +
+                            "-fx-border-width: 1;" +
+                            "-fx-border-radius: 10;" +
+                            "-fx-background-radius: 10;" +
+                            "-fx-padding: 12 20;"
             );
             Label alertIcon = new Label("\u26A0\uFE0F");
             alertIcon.setStyle("-fx-font-size: 18px;");
             Label alertText = new Label(
-                    "Certains articles ont un stock insuffisant. "
-                            + "Veuillez ajuster les quantites ou retirer les articles concernes.");
+                    "Certains articles ont un stock insuffisant. " +
+                            "Veuillez ajuster les quantites ou retirer les articles concernes.");
             alertText.setStyle(
                     "-fx-text-fill: #E67E22; -fx-font-size: 12px; -fx-wrap-text: true;");
             alertText.setWrapText(true);
@@ -210,10 +186,6 @@ public class CartScreen {
             alert.getChildren().addAll(alertIcon, alertText);
             page.getChildren().add(alert);
         }
-
-        Label floatingIcon = new Label("\uD83D\uDED2");
-        floatingIcon.getStyleClass().add("floating-cart-icon");
-        floatingIcon.setMouseTransparent(true);
 
         HBox content = new HBox(24);
         content.setAlignment(Pos.TOP_CENTER);
@@ -235,12 +207,7 @@ public class CartScreen {
         summaryCol.getChildren().add(buildSummaryCard(true));
 
         content.getChildren().addAll(itemsCol, summaryCol);
-
-        StackPane contentStack = new StackPane(floatingIcon, content);
-        contentStack.setAlignment(Pos.TOP_CENTER);
-        StackPane.setAlignment(floatingIcon, Pos.CENTER);
-
-        page.getChildren().add(contentStack);
+        page.getChildren().add(content);
         setContent(page);
     }
 
@@ -276,7 +243,6 @@ public class CartScreen {
                     + "-fx-opacity: 0.7;");
         }
 
-        // ── Image ou lettre ──────────────────────────────
         StackPane imgBox = new StackPane();
         imgBox.getStyleClass().add("cart-item-image");
 
@@ -296,7 +262,6 @@ public class CartScreen {
             imgBox.getChildren().add(letter);
         }
 
-        // ── Infos ────────────────────────────────────────
         VBox info = new VBox(3);
         HBox.setHgrow(info, Priority.ALWAYS);
 
@@ -312,11 +277,9 @@ public class CartScreen {
 
         info.getChildren().addAll(nameL, priceL, removeBtn);
 
-        // ── Quantité ─────────────────────────────────────
         Label qtyL = new Label("x" + qty);
         qtyL.getStyleClass().add("qty-label");
 
-        // ── Sous-total ───────────────────────────────────
         Label subL = new Label(String.format("%.2f MAD", subtotal));
         subL.getStyleClass().add("cart-item-subtotal");
         subL.setMinWidth(100);
@@ -324,14 +287,13 @@ public class CartScreen {
         card.getChildren().addAll(imgBox, info, qtyL, subL);
         wrapper.getChildren().add(card);
 
-        // ── Alerte stock pour cet article ────────────────
         if (outOfStock) {
             HBox stockWarn = new HBox(8);
             stockWarn.setAlignment(Pos.CENTER_LEFT);
             stockWarn.setStyle(
-                    "-fx-background-color: rgba(231,76,60,0.08);"
-                            + "-fx-background-radius: 0 0 14 14;"
-                            + "-fx-padding: 8 18;"
+                    "-fx-background-color: rgba(231,76,60,0.08);" +
+                            "-fx-background-radius: 0 0 14 14;" +
+                            "-fx-padding: 8 18;"
             );
             Label wIcon = new Label("\u2717");
             wIcon.setStyle("-fx-text-fill: #E74C3C; -fx-font-weight: bold;");
@@ -349,15 +311,14 @@ public class CartScreen {
             HBox stockWarn = new HBox(8);
             stockWarn.setAlignment(Pos.CENTER_LEFT);
             stockWarn.setStyle(
-                    "-fx-background-color: rgba(243,156,18,0.08);"
-                            + "-fx-background-radius: 0 0 14 14;"
-                            + "-fx-padding: 8 18;"
+                    "-fx-background-color: rgba(243,156,18,0.08);" +
+                            "-fx-background-radius: 0 0 14 14;" +
+                            "-fx-padding: 8 18;"
             );
             Label wIcon = new Label("\u26A0");
             wIcon.setStyle("-fx-text-fill: #E67E22; -fx-font-weight: bold;");
             Label wText = new Label(
-                    "Stock insuffisant : " + stock + " disponible(s), "
-                            + qty + " demande(s)");
+                    "Stock insuffisant : " + stock + " disponible(s), " + qty + " demande(s)");
             wText.setStyle("-fx-text-fill: #E67E22; -fx-font-size: 11px;");
             stockWarn.getChildren().addAll(wIcon, wText);
             wrapper.getChildren().add(stockWarn);
@@ -381,8 +342,7 @@ public class CartScreen {
                 summaryRow("Articles (" + cartItemCount + ")",
                         String.format("%.2f MAD", cartTotal)),
                 summaryRow("Livraison",
-                        shipping == 0 ? "Gratuite"
-                                : String.format("%.2f MAD", shipping))
+                        shipping == 0 ? "Gratuite" : String.format("%.2f MAD", shipping))
         );
 
         if (shipping == 0) {
@@ -415,13 +375,13 @@ public class CartScreen {
                 checkBtn.setDisable(true);
                 checkBtn.setText("Resolvez les problemes de stock");
                 checkBtn.setStyle(
-                        "-fx-background-color: #BDC3C7;"
-                                + "-fx-text-fill: white;"
-                                + "-fx-font-size: 13px;"
-                                + "-fx-font-weight: bold;"
-                                + "-fx-padding: 14 0;"
-                                + "-fx-background-radius: 10;"
-                                + "-fx-max-width: 1.7976931348623157E308;"
+                        "-fx-background-color: #BDC3C7;" +
+                                "-fx-text-fill: white;" +
+                                "-fx-font-size: 13px;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-padding: 14 0;" +
+                                "-fx-background-radius: 10;" +
+                                "-fx-max-width: 1.7976931348623157E308;"
                 );
             } else {
                 checkBtn.setOnAction(e -> showShippingStep());
@@ -534,11 +494,14 @@ public class CartScreen {
     }
 
     // ═══════════════════════════════════════════════════════
-    //  STEP 2 — PAIEMENT
+    //  STEP 2 — PAIEMENT SÉCURISÉ (NOUVEAU)
     // ═══════════════════════════════════════════════════════
 
     private void showPaymentStep() {
         currentStep = 2;
+        cardValidated = false;
+        tfa2Validated = false;
+
         VBox page = new VBox(20);
         page.setMaxWidth(MAX_W);
         page.setPadding(new Insets(20, H_PAD, 40, H_PAD));
@@ -554,58 +517,172 @@ public class CartScreen {
         VBox payCard = new VBox(16);
         payCard.getStyleClass().add("checkout-card");
 
-        Label payTitle = new Label("\uD83D\uDCB3  Methode de paiement");
+        Label payTitle = new Label("\uD83D\uDCB3  Informations de carte");
         payTitle.getStyleClass().add("checkout-section-title");
 
-        VBox methods = new VBox(10);
-        String[][] methodList = {
-                {"CARTE_BANCAIRE",  "\uD83D\uDCB3 Carte bancaire"},
-                {"PAIEMENT_FICTIF", "\uD83E\uDDEA Paiement fictif (test)"},
-                {"VIREMENT",        "\uD83C\uDFE6 Virement bancaire"}
-        };
+        // ── Logo banque + nom ────────────────────────────────
+        HBox bankInfoBox = new HBox(12);
+        bankInfoBox.setAlignment(Pos.CENTER_LEFT);
+        bankInfoBox.setVisible(false);
+        bankInfoBox.setManaged(false);
+        bankInfoBox.setStyle(
+                "-fx-background-color: rgba(108,52,131,0.05);" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-padding: 12 16;"
+        );
 
-        List<Button> methodBtns = new ArrayList<>();
-        for (String[] m : methodList) {
-            Button btn = new Button(m[1]);
-            btn.getStyleClass().add("checkout-method-btn");
-            btn.setMaxWidth(Double.MAX_VALUE);
-            if (m[0].equals(paymentMethod))
-                btn.getStyleClass().add("checkout-method-active");
-            btn.setOnAction(e -> {
-                paymentMethod = m[0];
-                methodBtns.forEach(b ->
-                        b.getStyleClass().remove("checkout-method-active"));
-                btn.getStyleClass().add("checkout-method-active");
-            });
-            methodBtns.add(btn);
-            methods.getChildren().add(btn);
-        }
+        bankLogoView = new ImageView();
+        bankLogoView.setFitWidth(80);
+        bankLogoView.setFitHeight(40);
+        bankLogoView.setPreserveRatio(true);
+        bankLogoView.setSmooth(true);
 
-        VBox cardFields = new VBox(10);
-        Label cardTitle = new Label("Informations de carte (simulation)");
-        cardTitle.getStyleClass().add("page-subtitle");
+        bankNameLabel = new Label();
+        bankNameLabel.setStyle(
+                "-fx-font-size: 14px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-text-fill: #6C3483;"
+        );
 
-        TextField cardNum = new TextField();
-        cardNum.setPromptText("1234 5678 9012 3456");
-        cardNum.getStyleClass().add("auth-field");
-        cardNum.setStyle("-fx-padding:12 14;");
+        bankInfoBox.getChildren().addAll(bankLogoView, bankNameLabel);
+
+        // ── Champs carte ─────────────────────────────────────
+        cardNumField = new TextField();
+        cardNumField.setPromptText("Numéro de carte");
+        cardNumField.getStyleClass().add("auth-field");
+        cardNumField.setStyle("-fx-padding:12 14; -fx-font-size:14px;");
+
+        // Auto-formatage 16 chiffres avec espaces
+        cardNumField.textProperty().addListener((obs, old, neu) -> {
+            if (neu.length() > 19) {
+                cardNumField.setText(old);
+                return;
+            }
+
+            String cleaned = neu.replaceAll("\\s+", "");
+            if (!cleaned.matches("\\d*")) {
+                cardNumField.setText(old);
+                return;
+            }
+
+            StringBuilder formatted = new StringBuilder();
+            for (int i = 0; i < cleaned.length(); i++) {
+                if (i > 0 && i % 4 == 0) formatted.append(" ");
+                formatted.append(cleaned.charAt(i));
+            }
+
+            if (!formatted.toString().equals(neu)) {
+                cardNumField.setText(formatted.toString());
+                cardNumField.positionCaret(formatted.length());
+            }
+
+            // Validation en temps réel dès 6 chiffres (BIN)
+            if (cleaned.length() >= 6) {
+                validateCardRealtime(cleaned, bankInfoBox);
+            } else {
+                bankInfoBox.setVisible(false);
+                bankInfoBox.setManaged(false);
+            }
+        });
 
         HBox cardRow = new HBox(12);
-        TextField expiry = new TextField();
-        expiry.setPromptText("MM/AA");
-        expiry.getStyleClass().add("auth-field");
-        expiry.setStyle("-fx-padding:12 14;");
-        HBox.setHgrow(expiry, Priority.ALWAYS);
 
-        TextField cvv = new TextField();
-        cvv.setPromptText("CVV");
-        cvv.getStyleClass().add("auth-field");
-        cvv.setStyle("-fx-padding:12 14;");
-        HBox.setHgrow(cvv, Priority.ALWAYS);
-        cardRow.getChildren().addAll(expiry, cvv);
+        expiryField = new TextField();
+        expiryField.setPromptText("MM/AA");
+        expiryField.getStyleClass().add("auth-field");
+        expiryField.setStyle("-fx-padding:12 14;");
+        HBox.setHgrow(expiryField, Priority.ALWAYS);
 
-        cardFields.getChildren().addAll(cardTitle, cardNum, cardRow);
+        // Auto-formatage MM/AA
+        expiryField.textProperty().addListener((obs, old, neu) -> {
+            if (neu.length() > 5) {
+                expiryField.setText(old);
+                return;
+            }
 
+            String cleaned = neu.replaceAll("[^\\d]", "");
+            if (cleaned.length() > 4) cleaned = cleaned.substring(0, 4);
+
+            StringBuilder formatted = new StringBuilder();
+            for (int i = 0; i < cleaned.length(); i++) {
+                if (i == 2) formatted.append("/");
+                formatted.append(cleaned.charAt(i));
+            }
+
+            if (!formatted.toString().equals(neu)) {
+                expiryField.setText(formatted.toString());
+                expiryField.positionCaret(formatted.length());
+            }
+        });
+
+        cvvField = new TextField();
+        cvvField.setPromptText("CVV");
+        cvvField.getStyleClass().add("auth-field");
+        cvvField.setStyle("-fx-padding:12 14;");
+        cvvField.setMaxWidth(100);
+
+        // Limiter à 3-4 chiffres
+        cvvField.textProperty().addListener((obs, old, neu) -> {
+            if (!neu.matches("\\d*") || neu.length() > 4) {
+                cvvField.setText(old);
+            }
+        });
+
+        cardRow.getChildren().addAll(expiryField, cvvField);
+
+        // ── Message de validation ────────────────────────────
+        validationMessageLabel = new Label();
+        validationMessageLabel.setWrapText(true);
+        validationMessageLabel.setVisible(false);
+        validationMessageLabel.setManaged(false);
+
+        // ── Bouton validation carte ──────────────────────────
+        Button validateCardBtn = new Button("Valider la carte");
+        validateCardBtn.getStyleClass().add("cart-checkout-btn");
+        validateCardBtn.setStyle("-fx-max-width:200;");
+        validateCardBtn.setOnAction(e -> validateCardFull());
+
+        // ── Section 2FA (cachée au début) ─────────────────────
+        tfa2Box = new VBox(12);
+        tfa2Box.setVisible(false);
+        tfa2Box.setManaged(false);
+        tfa2Box.setStyle(
+                "-fx-background-color: rgba(39,174,96,0.05);" +
+                        "-fx-border-color: rgba(39,174,96,0.3);" +
+                        "-fx-border-width: 1;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-padding: 16;"
+        );
+
+        Label tfa2Title = new Label("\uD83D\uDD12  Confirmation 2FA");
+        tfa2Title.setStyle(
+                "-fx-font-size: 14px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-text-fill: #27AE60;"
+        );
+
+        Label tfa2Info = new Label(
+                "Un code de sécurité a été envoyé à votre email. " +
+                        "Veuillez le saisir ci-dessous pour finaliser le paiement."
+        );
+        tfa2Info.setWrapText(true);
+        tfa2Info.setStyle("-fx-font-size: 12px; -fx-text-fill: #555;");
+
+        tfaCodeField = new TextField();
+        tfaCodeField.setPromptText("Code 6 chiffres");
+        tfaCodeField.getStyleClass().add("auth-field");
+        tfaCodeField.setStyle("-fx-padding:12 14;");
+        tfaCodeField.setMaxWidth(200);
+
+        validate2FAButton = new Button("Valider et payer");
+        validate2FAButton.getStyleClass().add("cart-checkout-btn");
+        validate2FAButton.setStyle("-fx-max-width:200;");
+        validate2FAButton.setOnAction(e -> verify2FAAndPay());
+
+        tfa2Box.getChildren().addAll(tfa2Title, tfa2Info, tfaCodeField, validate2FAButton);
+
+        // ── Boutons navigation ───────────────────────────────
         HBox btns = new HBox(12);
         btns.setAlignment(Pos.CENTER_RIGHT);
 
@@ -614,21 +691,23 @@ public class CartScreen {
         backBtn.setStyle("-fx-max-width:120;");
         backBtn.setOnAction(e -> showShippingStep());
 
-        Button payBtn = new Button("\uD83D\uDD12 Payer maintenant");
-        payBtn.getStyleClass().add("cart-checkout-btn");
-        payBtn.setStyle("-fx-max-width:200;");
-        payBtn.setOnAction(e -> {
-            String cn = cardNum.getText().trim();
-            if (cn.length() >= 4) {
-                cardLastFour = cn.substring(cn.length() - 4);
-            }
-            doPlaceOrder();
-        });
-        btns.getChildren().addAll(backBtn, payBtn);
+        btns.getChildren().add(backBtn);
 
-        payCard.getChildren().addAll(payTitle, methods, cardFields, btns);
+        // ── Assemblage ───────────────────────────────────────
+        payCard.getChildren().addAll(
+                payTitle,
+                bankInfoBox,
+                cardNumField,
+                cardRow,
+                validationMessageLabel,
+                validateCardBtn,
+                tfa2Box,
+                btns
+        );
+
         form.getChildren().add(payCard);
 
+        // ── Colonne résumé ───────────────────────────────────
         VBox summaryCol = new VBox(16);
         summaryCol.setMinWidth(300);
         summaryCol.setMaxWidth(300);
@@ -639,7 +718,7 @@ public class CartScreen {
         Label shipTitle = new Label("\uD83D\uDCE6 Livraison");
         shipTitle.getStyleClass().add("checkout-section-title");
         Label shipAddr = new Label(
-                shippingAddress.isEmpty() ? "Adresse par defaut" : shippingAddress);
+                shippingAddress.isEmpty() ? "Adresse par défaut" : shippingAddress);
         shipAddr.getStyleClass().add("page-subtitle");
         shipAddr.setWrapText(true);
         shipRecap.getChildren().addAll(shipTitle, shipAddr);
@@ -648,6 +727,178 @@ public class CartScreen {
         content.getChildren().addAll(form, summaryCol);
         page.getChildren().add(content);
         setContent(page);
+    }
+
+    /**
+     * Validation en temps réel du BIN (affichage du logo banque).
+     */
+    private void validateCardRealtime(String cardNumber, HBox bankInfoBox) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("cardNumber", cardNumber);
+        data.put("expiry", "12/99");
+        data.put("cvv", "123");
+
+        ServerConnection.getInstance()
+                .sendAsync(new Request(Action.VALIDATE_CARD,
+                        NavigationManager.getToken(), data))
+                .thenAccept(res -> Platform.runLater(() -> {
+                    if (res.isSuccess() && res.getData() != null) {
+                        @SuppressWarnings("unchecked")
+                        Map<String, Object> cardInfo = (Map<String, Object>) res.getData();
+
+                        String bankName = str(cardInfo.get("bankName"));
+                        String logoPath = str(cardInfo.get("bankLogo"));
+
+                        try {
+                            InputStream is = getClass().getResourceAsStream(logoPath);
+                            if (is != null) {
+                                bankLogoView.setImage(new Image(is));
+                                bankNameLabel.setText(bankName);
+                                bankInfoBox.setVisible(true);
+                                bankInfoBox.setManaged(true);
+                            }
+                        } catch (Exception ex) {
+                            bankNameLabel.setText(bankName);
+                            bankLogoView.setImage(null);
+                            bankInfoBox.setVisible(true);
+                            bankInfoBox.setManaged(true);
+                        }
+                    }
+                }));
+    }
+
+    /**
+     * Validation complète de la carte (avec date + CVV).
+     */
+    private void validateCardFull() {
+        String cardNumber = cardNumField.getText().trim();
+        String expiry = expiryField.getText().trim();
+        String cvv = cvvField.getText().trim();
+
+        if (cardNumber.isEmpty() || expiry.isEmpty() || cvv.isEmpty()) {
+            showValidationMessage("Veuillez remplir tous les champs.", false);
+            return;
+        }
+
+        showLoading(true);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("cardNumber", cardNumber);
+        data.put("expiry", expiry);
+        data.put("cvv", cvv);
+
+        ServerConnection.getInstance()
+                .sendAsync(new Request(Action.VALIDATE_CARD,
+                        NavigationManager.getToken(), data))
+                .thenAccept(res -> Platform.runLater(() -> {
+                    showLoading(false);
+
+                    if (res.isSuccess()) {
+                        @SuppressWarnings("unchecked")
+                        Map<String, Object> cardInfo = (Map<String, Object>) res.getData();
+
+                        cardLastFour = str(cardInfo.get("last4"));
+                        cardValidated = true;
+
+                        showValidationMessage("✅ Carte validée avec succès !", true);
+                        send2FACode();
+
+                    } else {
+                        cardValidated = false;
+                        showValidationMessage("❌ " + res.getMessage(), false);
+                    }
+                }))
+                .exceptionally(ex -> {
+                    Platform.runLater(() -> {
+                        showLoading(false);
+                        showValidationMessage("Erreur réseau.", false);
+                    });
+                    return null;
+                });
+    }
+
+    /**
+     * Envoie le code 2FA pour le paiement.
+     */
+    private void send2FACode() {
+        double shipping = cartTotal >= 50 ? 0 : 4.99;
+        double total = cartTotal + shipping;
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("amount", total);
+        data.put("orderId", "TEMP-" + System.currentTimeMillis());
+        data.put("email", NavigationManager.getEmail());
+
+        ServerConnection.getInstance()
+                .sendAsync(new Request(Action.SEND_PAYMENT_2FA,
+                        NavigationManager.getToken(), data))
+                .thenAccept(res -> Platform.runLater(() -> {
+                    if (res.isSuccess()) {
+                        tfa2Box.setVisible(true);
+                        tfa2Box.setManaged(true);
+                        showValidationMessage(
+                                "✉️ Code de confirmation envoyé à votre email !", true);
+                    }
+                }));
+    }
+
+    /**
+     * Vérifie le code 2FA et finalise le paiement.
+     */
+    private void verify2FAAndPay() {
+        String code = tfaCodeField.getText().trim();
+
+        if (code.isEmpty() || !code.matches("\\d{6}")) {
+            showValidationMessage("Code invalide (6 chiffres requis).", false);
+            return;
+        }
+
+        showLoading(true);
+
+        ServerConnection.getInstance()
+                .sendAsync(new Request(Action.VERIFY_PAYMENT_2FA,
+                        NavigationManager.getToken(), Map.of("code", code)))
+                .thenAccept(res -> Platform.runLater(() -> {
+                    showLoading(false);
+
+                    if (res.isSuccess()) {
+                        tfa2Validated = true;
+                        doPlaceOrder();
+                    } else {
+                        showValidationMessage("❌ " + res.getMessage(), false);
+                    }
+                }))
+                .exceptionally(ex -> {
+                    Platform.runLater(() -> {
+                        showLoading(false);
+                        showValidationMessage("Erreur réseau.", false);
+                    });
+                    return null;
+                });
+    }
+
+    /**
+     * Affiche un message de validation (succès/erreur).
+     */
+    private void showValidationMessage(String message, boolean success) {
+        validationMessageLabel.setText(message);
+        validationMessageLabel.setStyle(
+                "-fx-font-size: 13px;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-text-fill: " + (success ? "#27AE60" : "#E74C3C") + ";" +
+                        "-fx-padding: 10 0;"
+        );
+        validationMessageLabel.setVisible(true);
+        validationMessageLabel.setManaged(true);
+
+        if (success) {
+            PauseTransition pause = new PauseTransition(Duration.seconds(5));
+            pause.setOnFinished(e -> {
+                validationMessageLabel.setVisible(false);
+                validationMessageLabel.setManaged(false);
+            });
+            pause.play();
+        }
     }
 
     // ═══════════════════════════════════════════════════════
@@ -696,14 +947,11 @@ public class CartScreen {
                 receiptRow("Montant total", String.format("%.2f MAD", total)),
                 receiptDivider(),
                 receiptRow("Paiement", payStatus),
-                receiptRow("Methode",
-                        paymentMethod.replace("_", " ")),
-                receiptRow("Reference",
-                        txnRef.isEmpty() ? "\u2014" : txnRef),
+                receiptRow("Methode", "CARTE_BANCAIRE"),
+                receiptRow("Reference", txnRef.isEmpty() ? "\u2014" : txnRef),
                 receiptDivider(),
                 receiptRow("Adresse",
-                        shippingAddress.isEmpty()
-                                ? "Par defaut" : shippingAddress)
+                        shippingAddress.isEmpty() ? "Par defaut" : shippingAddress)
         );
 
         Label statusInd = new Label(
@@ -755,10 +1003,6 @@ public class CartScreen {
         d.getStyleClass().add("receipt-divider");
         return d;
     }
-
-    // ═══════════════════════════════════════════════════════
-    //  CONFETTI
-    // ═══════════════════════════════════════════════════════
 
     private void launchConfetti() {
         Pane confettiLayer = new Pane();
@@ -823,7 +1067,7 @@ public class CartScreen {
         data.put("userId", NavigationManager.getUserId());
         data.put("shippingAddress",
                 shippingAddress.isEmpty() ? "Adresse par defaut" : shippingAddress);
-        data.put("paymentMethod", paymentMethod);
+        data.put("paymentMethod", "CARTE_BANCAIRE");
         if (!cardLastFour.isEmpty()) data.put("cardLastFour", cardLastFour);
 
         ServerConnection.getInstance()
@@ -889,10 +1133,6 @@ public class CartScreen {
                 }));
     }
 
-    // ═══════════════════════════════════════════════════════
-    //  CHARGEMENT D'IMAGE — multiple fallbacks
-    // ═══════════════════════════════════════════════════════
-
     private Image loadProductImage(String imageUrl) {
         if (imageUrl == null || imageUrl.trim().isEmpty()) return null;
         imageUrl = imageUrl.trim();
@@ -905,35 +1145,8 @@ public class CartScreen {
             }
         } catch (Exception ignored) {}
 
-        try {
-            File f = new File("src/main/resources" + imageUrl);
-            if (f.exists()) {
-                Image img = new Image(f.toURI().toString());
-                if (!img.isError()) return img;
-            }
-        } catch (Exception ignored) {}
-
-        try {
-            File f = new File(imageUrl);
-            if (f.exists()) {
-                Image img = new Image(f.toURI().toString());
-                if (!img.isError()) return img;
-            }
-        } catch (Exception ignored) {}
-
-        try {
-            if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")
-                    || imageUrl.startsWith("file:")) {
-                return new Image(imageUrl, true);
-            }
-        } catch (Exception ignored) {}
-
         return null;
     }
-
-    // ═══════════════════════════════════════════════════════
-    //  UI HELPERS
-    // ═══════════════════════════════════════════════════════
 
     private void setContent(Node node) {
         node.setOpacity(0);
