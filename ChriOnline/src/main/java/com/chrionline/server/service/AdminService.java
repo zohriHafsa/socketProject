@@ -203,6 +203,11 @@ public class AdminService {
             if (adminId < 0)
                 return Response.error("Échec de la création.");
 
+            // Send standard activation email asynchronously
+            new Thread(() -> {
+                EmailService.sendAdminActivationEmail(email, activationToken);
+            }).start();
+
             ServerLogger.info("ADMIN CREATED : " + username + " (ID:" + adminId + ")");
             return Response.ok("Administrateur créé avec succès !", java.util.Map.of("activationToken", activationToken));
 
