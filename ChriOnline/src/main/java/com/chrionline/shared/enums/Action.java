@@ -3,6 +3,7 @@ package com.chrionline.shared.enums;
 public enum Action {
     // Auth
     LOGIN, REGISTER, LOGOUT,
+    ADMIN_AUTH_INIT, ADMIN_AUTH_RESPONSE,
 
     // Products
     GET_PRODUCTS, GET_PRODUCT_DETAIL, SEARCH_PRODUCTS, GET_CATEGORIES,

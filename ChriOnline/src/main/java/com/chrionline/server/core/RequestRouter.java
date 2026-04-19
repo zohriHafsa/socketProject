@@ -62,6 +62,8 @@ public class RequestRouter {
             case SEARCH_PRODUCTS:
             case GET_CATEGORIES:
             case ADMIN_REGISTER_KEY:
+            case ADMIN_AUTH_INIT:
+            case ADMIN_AUTH_RESPONSE:
                 break;
             default:
                 if (!SessionManager.isValid(request.getToken())) {
@@ -84,6 +86,8 @@ public class RequestRouter {
             case FORGOT_PASSWORD: return authService.forgotPassword(request);
             case VERIFY_RESET_TOKEN:  return authService.verifyResetToken(request);
             case RESET_PASSWORD:  return authService.resetPassword(request);
+            case ADMIN_AUTH_INIT: return authService.adminAuthInit(request, clientAddress);
+            case ADMIN_AUTH_RESPONSE: return authService.adminAuthResponse(request, clientAddress);
             case VALIDATE_CARD:
                 return handleValidateCard(request);
 

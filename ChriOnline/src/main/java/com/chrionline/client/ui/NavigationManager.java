@@ -78,6 +78,7 @@ public class NavigationManager {
     public static void showManageCategories(){ transitionTo(new ManageCategoriesScreen().getView(), true); }
     public static void showManageAdmins()    { transitionTo(new ManageAdminsScreen().getView(), true); }
     public static void showAdminInit()       { transitionTo(new AdminInitScreen().getView(), true); }
+    public static void showAdminLogin()      { transitionTo(new AdminLoginScreen().getView(), true); }
 
     // ── Navigation par nom ─────────────────────────────
     public static void navigateTo(String name) {
@@ -98,6 +99,7 @@ public class NavigationManager {
                 case "manageCategories": showManageCategories(); break;
                 case "manageAdmins":     showManageAdmins();     break;
                 case "adminInit":        showAdminInit();        break;
+                case "adminLogin":       showAdminLogin();       break;
                 case "forgotPassword":   showForgotPassword();   break;
                 default: System.err.println("[NAV] Unknown: " + name);
             }

@@ -16,6 +16,9 @@ import java.util.Map;
 import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 
+import com.chrionline.server.security.ChallengeManager;
+import com.chrionline.shared.security.RSAUtils;
+
 public class AuthService {
 
     private final UserDAO  userDAO  = new UserDAO();
@@ -83,6 +86,110 @@ public class AuthService {
         } catch (SQLException e) {
             ServerLogger.error("REGISTER SQL error : " + e.getMessage());
             return Response.error("Erreur serveur : " + e.getMessage());
+        }
+    }
+
+    // ── ADMIN RSA AUTH INIT ────────────────────────────────
+    public Response adminAuthInit(Request request, java.net.InetAddress clientAddress) {
+        String username = request.getString("username");
+        if (username == null || username.isBlank()) {
+            return Response.error("Username requis.");
+        }
+
+        try {
+            Map<String, Object> admin = adminDAO.getAdminByUsername(username);
+            if (admin == null) {
+                return Response.error("Administrateur introuvable.");
+            }
+
+            String ip = clientAddress != null ? clientAddress.getHostAddress() : "127.0.0.1";
+            if (!isInternalIp(ip)) {
+                ServerLogger.warn("SECURITY ALERT (RSA): Tentative admin hors réseau interne (IP: " + ip + ")");
+                return Response.error("Acces refuse. Les administrateurs peuvent se connecter uniquement via le reseau interne.");
+            }
+
+            if (!(boolean) admin.get("isActive")) {
+                return Response.error("Ce compte admin est desactive.");
+            }
+
+            String status = (String) admin.get("status");
+            if ("PENDING".equals(status)) {
+                // Return a specific custom response so the client knows to route to AdminInitScreen
+                return Response.ok("NEEDS_INIT", Map.of("status", "PENDING"));
+            }
+
+            // Normal active scenario -> generate challenge
+            String challenge = ChallengeManager.getInstance().createChallenge(username);
+            ServerLogger.info("ADMIN_AUTH_INIT: Challenge généré pour " + username);
+            return Response.ok("Challenge généré.", Map.of("challenge", challenge, "status", "ACTIVE"));
+
+        } catch (SQLException e) {
+            ServerLogger.error("adminAuthInit DB error : " + e.getMessage());
+            return Response.error("Erreur base de donnees.");
+        }
+    }
+
+    // ── ADMIN RSA AUTH RESPONSE ────────────────────────────
+    public Response adminAuthResponse(Request request, java.net.InetAddress clientAddress) {
+        String username = request.getString("username");
+        String signature = request.getString("signature");
+
+        if (username == null || signature == null) {
+            return Response.error("Username et signature requis.");
+        }
+
+        // Always pop the challenge (thread-safe, single-use, eliminates replay)
+        String storedChallenge = ChallengeManager.getInstance().getAndRemoveChallenge(username);
+        
+        if (storedChallenge == null) {
+            ServerLogger.warn("ADMIN_AUTH_RESPONSE: Challenge expiré ou inexistant pour " + username);
+            return Response.error("Session expirée (Timeout 60s). Veuillez réessayer.");
+        }
+
+        try {
+            Map<String, Object> admin = adminDAO.getAdminByUsername(username);
+            if (admin == null) {
+                return Response.error("Administrateur introuvable.");
+            }
+
+            String publicKeyBase64 = (String) admin.get("publicKey");
+            if (publicKeyBase64 == null || publicKeyBase64.isBlank()) {
+                return Response.error("Clé publique introuvable. Initialisation requise.");
+            }
+
+            java.security.PublicKey pubKey = RSAUtils.decodePublicKey(publicKeyBase64);
+            
+            // Verify signature against the identical exact challenge string we just popped from memory
+            byte[] sigBytes = java.util.Base64.getDecoder().decode(signature);
+            boolean valid = RSAUtils.verify(storedChallenge, sigBytes, pubKey);
+
+            if (!valid) {
+                ServerLogger.warn("ADMIN_AUTH_RESPONSE: Signature INVALIDE pour " + username);
+                return Response.error("Échec de l'authentification (Signature invalide).");
+            }
+
+            // Authentication successful -> Create Session
+            int    adminId = (int) admin.get("adminId");
+            String email   = (String) admin.get("email");
+            String role    = (boolean) admin.get("isSuper") ? "SUPER_ADMIN" : "ADMIN";
+            String token   = SessionManager.createSession(adminId, username, role, email);
+
+            ServerLogger.info("LOGIN ADMIN (RSA) OK : " + username + " (ID:" + adminId + ", role=" + role + ")");
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("token",     token);
+            result.put("userId",    adminId);
+            result.put("username",  username);
+            result.put("email",     email);
+            result.put("role",      role);
+            result.put("firstName", admin.get("firstName"));
+            result.put("lastName",  admin.get("lastName"));
+            
+            return Response.ok("Connexion réussie !", result);
+
+        } catch (Exception e) {
+            ServerLogger.error("adminAuthResponse error : " + e.getMessage());
+            return Response.error("Erreur serveur inattendue lors de la verification.");
         }
     }
 
