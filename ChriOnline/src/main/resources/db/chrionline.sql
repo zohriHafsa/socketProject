@@ -20,6 +20,8 @@ CREATE TABLE admins (
     last_name     VARCHAR(80)  NOT NULL,
     is_active     TINYINT(1)   NOT NULL DEFAULT 1,
     is_super      TINYINT(1)   NOT NULL DEFAULT 0,
+    verify_code   VARCHAR(10)             DEFAULT NULL,
+    verify_expires DATETIME               DEFAULT NULL,
     created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT pk_admins          PRIMARY KEY (admin_id),

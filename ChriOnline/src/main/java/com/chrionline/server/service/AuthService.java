@@ -171,21 +171,20 @@ public class AuthService {
             // Authentication successful -> Create Session
             int    adminId = (int) admin.get("adminId");
             String email   = (String) admin.get("email");
-            String role    = (boolean) admin.get("isSuper") ? "SUPER_ADMIN" : "ADMIN";
-            String token   = SessionManager.createSession(adminId, username, role, email);
 
-            ServerLogger.info("LOGIN ADMIN (RSA) OK : " + username + " (ID:" + adminId + ", role=" + role + ")");
+            String code = com.chrionline.server.service.EmailService.generateCode();
+            adminDAO.saveVerifyCode(adminId, code);
+            com.chrionline.server.service.EmailService.send2faEmail(email, code);
+
+            ServerLogger.info("LOGIN ADMIN (RSA) OK - 2FA REQUIRED : " + username);
 
             Map<String, Object> result = new HashMap<>();
-            result.put("token",     token);
-            result.put("userId",    adminId);
-            result.put("username",  username);
-            result.put("email",     email);
-            result.put("role",      role);
-            result.put("firstName", admin.get("firstName"));
-            result.put("lastName",  admin.get("lastName"));
+            result.put("userId", adminId);
+            result.put("email",  email);
+            result.put("2fa_required", true);
+            result.put("isAdmin", true);
             
-            return Response.ok("Connexion réussie !", result);
+            return Response.ok("Verification 2FA requise", result);
 
         } catch (Exception e) {
             ServerLogger.error("adminAuthResponse error : " + e.getMessage());
@@ -312,32 +311,57 @@ public class AuthService {
     public Response verify2FA(Request request) {
         int    userId = request.getInt("userId");
         String code   = request.getString("code");
+        boolean isAdmin = Boolean.TRUE.equals(request.get("isAdmin"));
 
         if (userId <= 0 || code == null)
             return Response.error("userId et code requis.");
 
         try {
-            boolean ok = userDAO.verifyOtp(userId, code);
-            if (ok) {
-                Map<String, Object> user = userDAO.getUserById(userId);
-                String username = (String) user.get("username");
-                String email    = (String) user.get("email");
-                String role     = "CLIENT";
-                String token    = SessionManager.createSession(userId, username, role, email);
-
-                ServerLogger.info("LOGIN CLIENT (2FA PASSED) OK : " + username + " (ID:" + userId + ", role=" + role + ")");
-
-                Map<String, Object> result = new HashMap<>();
-                result.put("token",     token);
-                result.put("userId",    userId);
-                result.put("username",  username);
-                result.put("email",     email);
-                result.put("role",      role);
-                result.put("firstName", user.get("firstName"));
-                result.put("lastName",  user.get("lastName"));
-                return Response.ok("Connexion reussie !", result);
+            if (isAdmin) {
+                boolean ok = adminDAO.verifyOtp(userId, code);
+                if (ok) {
+                    Map<String, Object> admin = adminDAO.getAdminById(userId);
+                    String username = (String) admin.get("username");
+                    String email    = (String) admin.get("email");
+                    String role     = (boolean) admin.get("isSuper") ? "SUPER_ADMIN" : "ADMIN";
+                    String token    = SessionManager.createSession(userId, username, role, email);
+    
+                    ServerLogger.info("LOGIN ADMIN (2FA PASSED) OK : " + username + " (ID:" + userId + ", role=" + role + ")");
+    
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("token",     token);
+                    result.put("userId",    userId);
+                    result.put("username",  username);
+                    result.put("email",     email);
+                    result.put("role",      role);
+                    result.put("firstName", admin.get("firstName"));
+                    result.put("lastName",  admin.get("lastName"));
+                    return Response.ok("Connexion réussie !", result);
+                }
+                return Response.error("Code incorrect ou expiré.");
+            } else {
+                boolean ok = userDAO.verifyOtp(userId, code);
+                if (ok) {
+                    Map<String, Object> user = userDAO.getUserById(userId);
+                    String username = (String) user.get("username");
+                    String email    = (String) user.get("email");
+                    String role     = "CLIENT";
+                    String token    = SessionManager.createSession(userId, username, role, email);
+    
+                    ServerLogger.info("LOGIN CLIENT (2FA PASSED) OK : " + username + " (ID:" + userId + ", role=" + role + ")");
+    
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("token",     token);
+                    result.put("userId",    userId);
+                    result.put("username",  username);
+                    result.put("email",     email);
+                    result.put("role",      role);
+                    result.put("firstName", user.get("firstName"));
+                    result.put("lastName",  user.get("lastName"));
+                    return Response.ok("Connexion reussie !", result);
+                }
+                return Response.error("Code incorrect ou expire.");
             }
-            return Response.error("Code incorrect ou expire.");
         } catch (SQLException e) {
             ServerLogger.error("VERIFY_2FA error : " + e.getMessage());
             return Response.error("Erreur serveur : " + e.getMessage());

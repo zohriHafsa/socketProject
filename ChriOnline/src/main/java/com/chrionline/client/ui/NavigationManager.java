@@ -53,8 +53,8 @@ public class NavigationManager {
         transitionTo(new EmailVerificationScreen(uid, userEmail).getView(), true);
     }
 
-    public static void showTwoFactor(int uid, String userEmail) {
-        transitionTo(new TwoFactorScreen(uid, userEmail).getView(), true);
+    public static void showTwoFactor(int uid, String userEmail, boolean isAdmin) {
+        transitionTo(new TwoFactorScreen(uid, userEmail, isAdmin).getView(), true);
     }
 
     // ── Password reset ─────────────────────────────────

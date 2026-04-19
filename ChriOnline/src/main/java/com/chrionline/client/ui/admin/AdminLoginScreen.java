@@ -229,6 +229,16 @@ public class AdminLoginScreen {
                         if (resp.isSuccess()) {
                             Map<String, Object> data = castToMap(resp.getData());
                             
+                            if (Boolean.TRUE.equals(data.get("2fa_required"))) {
+                                NavigationManager.showTwoFactor(
+                                    getInt(data, "userId"),
+                                    getStr(data, "email"),
+                                    true
+                                );
+                                return;
+                            }
+
+                            // Fallback par sécurité
                             NavigationManager.setSession(
                                 getStr(data, "token"),
                                 getInt(data, "userId"),

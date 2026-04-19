@@ -94,6 +94,40 @@ public class AdminDAO {
         }
     }
 
+    public Map<String, Object> getAdminById(int adminId) throws SQLException {
+        String sql = "SELECT * FROM admins WHERE admin_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setInt(1, adminId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return mapAdmin(rs);
+            return null;
+        }
+    }
+
+    public void saveVerifyCode(int adminId, String code) throws SQLException {
+        String sql = "UPDATE admins SET verify_code = ?, verify_expires = DATE_ADD(NOW(), INTERVAL 30 MINUTE) WHERE admin_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setString(1, code);
+            ps.setInt(2, adminId);
+            ps.executeUpdate();
+        }
+    }
+
+    public boolean verifyOtp(int adminId, String code) throws SQLException {
+        String sql = "SELECT 1 FROM admins WHERE admin_id = ? AND verify_code = ? AND verify_expires > NOW()";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setInt(1, adminId);
+            ps.setString(2, code);
+            boolean valid = ps.executeQuery().next();
+            if (valid) {
+                PreparedStatement clear = conn().prepareStatement("UPDATE admins SET verify_code = NULL, verify_expires = NULL WHERE admin_id = ?");
+                clear.setInt(1, adminId);
+                clear.executeUpdate();
+            }
+            return valid;
+        }
+    }
+
     // ── Mapping ResultSet → Map ───────────────────────────
     private Map<String, Object> mapAdmin(ResultSet rs) throws SQLException {
         Map<String, Object> m = new HashMap<>();

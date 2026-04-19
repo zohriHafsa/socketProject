@@ -274,7 +274,8 @@ public class LoginScreen {
                     if (Boolean.TRUE.equals(data.get("2fa_required"))) {
                         NavigationManager.showTwoFactor(
                                 getInt(data, "userId"),
-                                getStr(data, "email")
+                                getStr(data, "email"),
+                                false
                         );
                         return;
                     }

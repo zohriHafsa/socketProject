@@ -24,11 +24,13 @@ public class TwoFactorScreen {
 
     private final int    userId;
     private final String email;
+    private final boolean isAdmin;
     private final Gson gson = new Gson();
 
-    public TwoFactorScreen(int userId, String email) {
+    public TwoFactorScreen(int userId, String email, boolean isAdmin) {
         this.userId = userId;
         this.email  = email;
+        this.isAdmin = isAdmin;
     }
 
     public Node getView() {
@@ -207,7 +209,7 @@ public class TwoFactorScreen {
         new Thread(() -> {
             Response resp = ServerConnection.getInstance().send(
                     new Request(Action.VERIFY_2FA, null,
-                            java.util.Map.of("userId", userId, "code", code))
+                            java.util.Map.of("userId", userId, "code", code, "isAdmin", isAdmin))
             );
 
             Platform.runLater(() -> {
