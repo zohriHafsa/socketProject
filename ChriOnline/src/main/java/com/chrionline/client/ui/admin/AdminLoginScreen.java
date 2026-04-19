@@ -184,7 +184,8 @@ public class AdminLoginScreen {
         PasswordField passField = new PasswordField();
         passField.setPromptText("Entrez la passphrase");
         passField.getStyleClass().add("auth-password-field");
-        VBox passGroup = new VBox(5, passLabel, passField);
+        StackPane passWrapper = wrapWithToggle(passField);
+        VBox passGroup = new VBox(5, passLabel, passWrapper);
 
         HBox errorBox = createErrorBox();
         Label errorText = (Label) errorBox.getChildren().get(1);
@@ -430,5 +431,53 @@ public class AdminLoginScreen {
         if (v == null) return -1;
         if (v instanceof Double) return ((Double) v).intValue();
         return Integer.parseInt(v.toString());
+    }
+
+    private StackPane wrapWithToggle(PasswordField pf) {
+        TextField visibleField = new TextField();
+        visibleField.setPromptText(pf.getPromptText());
+        visibleField.getStyleClass().addAll(pf.getStyleClass());
+        visibleField.setVisible(false);
+        visibleField.setManaged(false);
+
+        pf.textProperty().addListener((obs, o, n) -> {
+            if (!visibleField.isFocused()) visibleField.setText(n);
+        });
+        visibleField.textProperty().addListener((obs, o, n) -> {
+            if (!pf.isFocused()) pf.setText(n);
+        });
+
+        Button eyeBtn = new Button("\uD83D\uDC41");
+        eyeBtn.setStyle(
+                "-fx-background-color: transparent;" +
+                        "-fx-border-color: transparent;" +
+                        "-fx-cursor: hand;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-padding: 0 10 0 0;"
+        );
+        StackPane.setAlignment(eyeBtn, Pos.CENTER_RIGHT);
+
+        eyeBtn.setOnAction(e -> {
+            boolean showing = visibleField.isVisible();
+            if (showing) {
+                pf.setText(visibleField.getText());
+                pf.setVisible(true);
+                pf.setManaged(true);
+                visibleField.setVisible(false);
+                visibleField.setManaged(false);
+                eyeBtn.setText("\uD83D\uDC41");
+            } else {
+                visibleField.setText(pf.getText());
+                visibleField.setVisible(true);
+                visibleField.setManaged(true);
+                pf.setVisible(false);
+                pf.setManaged(false);
+                eyeBtn.setText("\u00D8");
+            }
+        });
+
+        StackPane wrapper = new StackPane(pf, visibleField, eyeBtn);
+        wrapper.setAlignment(Pos.CENTER_LEFT);
+        return wrapper;
     }
 }
