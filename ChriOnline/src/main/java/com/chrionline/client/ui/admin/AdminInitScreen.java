@@ -5,7 +5,7 @@ import com.chrionline.client.ui.NavigationManager;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
 import com.chrionline.shared.enums.Action;
-import com.chrionline.shared.security.RSAUtils;
+import com.chrionline.shared.security.ECDSAUtils;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -227,12 +227,12 @@ public class AdminInitScreen {
 
         new Thread(() -> {
             try {
-                KeyPair rsaKeys = RSAUtils.generateKeyPair();
+                KeyPair rsaKeys = ECDSAUtils.generateKeyPair();
 
                 File privateKeyFile = new File(selectedDirectory, username + "_private.key");
-                RSAUtils.savePrivateKeyEncrypted(rsaKeys.getPrivate(), privateKeyFile, pass);
+                ECDSAUtils.savePrivateKeyEncrypted(rsaKeys.getPrivate(), privateKeyFile, pass);
 
-                String publicKeyBase64 = RSAUtils.encodePublicKey(rsaKeys.getPublic());
+                String publicKeyBase64 = ECDSAUtils.encodePublicKey(rsaKeys.getPublic());
 
                 ServerConnection.getInstance().sendAsync(
                     new Request(Action.ADMIN_REGISTER_KEY, null, Map.of(
@@ -246,28 +246,47 @@ public class AdminInitScreen {
                     
                     if (resp.isSuccess()) {
                         formCard.getChildren().clear();
+                        formCard.setSpacing(20);
+                        HBox titleRow = new HBox(8);
+                        titleRow.setAlignment(Pos.CENTER);
+                        Label successIcon = new Label("\uD83D\uDD11"); // Key icon
+                        successIcon.setStyle("-fx-font-size: 24px; -fx-text-fill: #8E44AD;");
+                        Label successTitle = new Label("SÉCURITÉ CONFIGURÉE");
+                        successTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #2C3E50; -fx-letter-spacing: 1px;");
+                        titleRow.getChildren().addAll(successIcon, successTitle);
                         
-                        Label successIcon = new Label("\u2714");
-                        successIcon.setStyle("-fx-font-size: 56px; -fx-text-fill: #2ecc71;");
+                        VBox headerBox = new VBox(4);
+                        headerBox.setAlignment(Pos.CENTER);
+                        Label successSub = new Label("Votre compte admin est prêt.");
+                        successSub.getStyleClass().add("auth-subtitle");
+                        headerBox.getChildren().addAll(titleRow, successSub);
                         
-                        Label successTitle = new Label("Initialisation Réussie");
-                        successTitle.getStyleClass().add("auth-title");
-                        successTitle.setStyle("-fx-font-size: 24px;");
+                        VBox pathBox = new VBox(5);
+                        pathBox.setAlignment(Pos.CENTER);
+                        pathBox.setStyle("-fx-background-color: rgba(142, 68, 173, 0.05); -fx-background-radius: 8; -fx-padding: 15;");
+                        Label pathTitle = new Label("Emplacement de la clé :");
+                        pathTitle.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #8E44AD;");
+                        Label pathValue = new Label(privateKeyFile.getAbsolutePath());
+                        pathValue.setStyle("-fx-font-size: 13px; -fx-font-family: 'Courier New', monospace; -fx-text-fill: #34495E;");
+                        pathValue.setWrapText(true);
+                        pathValue.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+                        pathBox.getChildren().addAll(pathTitle, pathValue);
                         
-                        Label successMsg = new Label("Sécurité RSA configurée !\nVotre clé a été sauvegardée sous :\n" + 
-                                privateKeyFile.getAbsolutePath() + "\n\n\u26A0 NE PERDEZ PAS CE FICHIER NI LA PASSPHRASE.");
-                        successMsg.getStyleClass().add("auth-subtitle");
-                        successMsg.setWrapText(true);
-                        successMsg.setStyle("-fx-text-fill: #2c3e50; -fx-font-weight: bold;");
-                        successMsg.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+                        HBox warnBox = new HBox(8);
+                        warnBox.setAlignment(Pos.CENTER);
+                        Label warnIcon = new Label("\u26A0");
+                        warnIcon.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+                        Label warnMsg = new Label("Ne perdez ni ce fichier, ni votre passphrase.");
+                        warnMsg.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
+                        warnBox.getChildren().addAll(warnIcon, warnMsg);
                         
-                        Button returnBtn = new Button("Aller à la connexion");
+                        Button returnBtn = new Button("Retour à la connexion");
                         returnBtn.getStyleClass().add("auth-btn-primary");
                         returnBtn.setMaxWidth(Double.MAX_VALUE);
-                        VBox.setMargin(returnBtn, new Insets(20, 0, 0, 0));
-                        returnBtn.setOnAction(evt -> NavigationManager.navigateTo("login"));
+                        VBox.setMargin(returnBtn, new Insets(10, 0, 0, 0));
+                        returnBtn.setOnAction(evt -> NavigationManager.showAdminLogin());
                         
-                        formCard.getChildren().addAll(successIcon, successTitle, successMsg, returnBtn);
+                        formCard.getChildren().addAll(headerBox, pathBox, warnBox, returnBtn);
                     } else {
                         showError(errorBox, errorText, resp.getMessage());
                     }

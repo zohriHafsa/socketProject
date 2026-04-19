@@ -121,29 +121,27 @@ public class LoginScreen {
         registerLink.setOnAction(e -> NavigationManager.showRegister());
         registerRow.getChildren().addAll(noAccount, registerLink);
 
-        Button adminAccessLink = new Button("\u26A1 Espace Administrateur");
-        adminAccessLink.setStyle("-fx-background-color: transparent; -fx-text-fill: #8E44AD; -fx-cursor: hand; -fx-font-size: 11px;");
-        adminAccessLink.setOnAction(e -> NavigationManager.showAdminLogin());
-
-        HBox adminRow = new HBox(adminAccessLink);
-        adminRow.setAlignment(Pos.CENTER);
-        adminRow.setPadding(new Insets(8, 0, 0, 0));
-
         card.getChildren().addAll(
                 titleRow, subtitle, div,
                 userGroup, passGroup,
                 forgotRow,
                 errorBox,
                 loginBtn,
-                registerRow,
-                adminRow
+                registerRow
         );
 
         centerBox.getChildren().addAll(branding, card);
 
         Pane particles = buildParticles();
 
-        root.getChildren().addAll(particles, watermark, backLink, centerBox);
+        Button adminIconBtn = new Button("\u2699"); 
+        adminIconBtn.getStyleClass().add("auth-back-link");
+        adminIconBtn.setStyle("-fx-font-size: 22px; -fx-text-fill: rgba(255, 255, 255, 0.4);");
+        adminIconBtn.setOnAction(e -> NavigationManager.showAdminLogin());
+        StackPane.setAlignment(adminIconBtn, Pos.TOP_RIGHT);
+        StackPane.setMargin(adminIconBtn, new Insets(20, 24, 0, 0));
+
+        root.getChildren().addAll(particles, watermark, backLink, adminIconBtn, centerBox);
 
         Platform.runLater(() -> {
             branding.setOpacity(0);
@@ -274,7 +272,8 @@ public class LoginScreen {
                     if (Boolean.TRUE.equals(data.get("2fa_required"))) {
                         NavigationManager.showTwoFactor(
                                 getInt(data, "userId"),
-                                getStr(data, "email")
+                                getStr(data, "email"),
+                                false
                         );
                         return;
                     }

@@ -9,8 +9,8 @@ import java.util.Properties;
 public class EmailService {
 
     // !! Remplace par tes credentials Gmail
-    private static final String FROM     = "ss7901507@gmail.com";
-    private static final String PASSWORD = "egzheattgycomxgz"; // App Password
+    private static final String FROM     = "hafsazohri0@gmail.com";
+    private static final String PASSWORD = "vgljnfvcwzcftoow"; // App Password
 
     private static boolean sendEmail(String toEmail, String subject, String title, String message, String code) {
         // ── Protection injection email (AJOUTER AU DÉBUT) ──
