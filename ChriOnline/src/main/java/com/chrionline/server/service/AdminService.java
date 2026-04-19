@@ -173,8 +173,6 @@ public class AdminService {
     public Response getAllAdmins(Request request) {
         try {
             List<Map<String, Object>> admins = adminDAO.getAllAdmins();
-            // Ne pas exposer le hash du mot de passe
-            admins.forEach(a -> a.remove("passwordHash"));
             ServerLogger.info("ADMIN_GET_ALL_ADMINS : " + admins.size() + " admin(s)");
             return Response.ok("Admins récupérés.", admins);
         } catch (SQLException e) {
@@ -186,31 +184,11 @@ public class AdminService {
     public Response createAdmin(Request request) {
         String username  = request.getString("username");
         String email     = request.getString("email");
-        String password  = request.getString("password");
         String firstName = request.getString("firstName");
         String lastName  = request.getString("lastName");
 
-        if (username == null || email == null || password == null
-                || firstName == null || lastName == null)
+        if (username == null || email == null || firstName == null || lastName == null)
             return Response.error("Tous les champs sont obligatoires.");
-
-        if (password.length() < 8)
-            return Response.error("Mot de passe trop court (min 8 caractères).");
-
-        if (!password.matches(".*[A-Z].*"))
-            return Response.error("Le mot de passe doit contenir au moins une lettre majuscule.");
-
-        if (!password.matches(".*\\d.*"))
-            return Response.error("Le mot de passe doit contenir au moins un chiffre.");
-
-        if (!password.matches(".*[^a-zA-Z0-9\\s].*"))
-            return Response.error("Le mot de passe doit contenir au moins un caractère spécial.");
-
-        if (firstName != null && !firstName.isBlank() && password.toLowerCase().contains(firstName.toLowerCase()))
-            return Response.error("Le mot de passe ne doit pas inclure votre prénom.");
-
-        if (lastName != null && !lastName.isBlank() && password.toLowerCase().contains(lastName.toLowerCase()))
-            return Response.error("Le mot de passe ne doit pas inclure votre nom de famille.");
 
         try {
             if (adminDAO.usernameExists(username))
@@ -219,18 +197,44 @@ public class AdminService {
             if (adminDAO.emailExists(email))
                 return Response.error("Cet email est déjà utilisé.");
 
-            String hash    = hashPassword(password);
-            int    adminId = adminDAO.createAdmin(username, email, hash,
+            String activationToken = java.util.UUID.randomUUID().toString();
+            int    adminId = adminDAO.createAdmin(username, email, activationToken,
                     firstName, lastName);
             if (adminId < 0)
                 return Response.error("Échec de la création.");
 
+            // Send standard activation email asynchronously
+            new Thread(() -> {
+                EmailService.sendAdminActivationEmail(email, activationToken);
+            }).start();
+
             ServerLogger.info("ADMIN CREATED : " + username + " (ID:" + adminId + ")");
-            return Response.ok("Administrateur créé avec succès !", null);
+            return Response.ok("Administrateur créé avec succès !", java.util.Map.of("activationToken", activationToken));
 
         } catch (SQLException e) {
             ServerLogger.error("ADMIN_CREATE_ADMIN error : " + e.getMessage());
             return Response.error("Erreur : " + e.getMessage());
+        }
+    }
+
+    public Response registerKey(Request request) {
+        String username = request.getString("username");
+        String token = request.getString("token");
+        String publicKey = request.getString("publicKey");
+
+        if (username == null || token == null || publicKey == null)
+            return Response.error("Paramètres manquants.");
+
+        try {
+            boolean success = adminDAO.activateAdmin(username, token, publicKey);
+            if (!success) {
+                return Response.error("Token invalide ou compte déjà actif.");
+            }
+            ServerLogger.info("ADMIN_REGISTER_KEY : " + username + " (Clé RSA enrégistrée)");
+            return Response.ok("Clé de sécurité enregistrée. Vous pouvez maintenant vous connecter.", null);
+        } catch (SQLException e) {
+            ServerLogger.error("ADMIN_REGISTER_KEY error: " + e.getMessage());
+            return Response.error("Erreur serveur.");
         }
     }
 
@@ -259,13 +263,5 @@ public class AdminService {
 
     // ═══════════ HASH ══════════════════════════
 
-    private String hashPassword(String rawPassword) {
-        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-        char[] passwordArray = rawPassword.toCharArray();
-        try {
-            return argon2.hash(3, 65536, 1, passwordArray);
-        } finally {
-            argon2.wipeArray(passwordArray);
-        }
-    }
+    // (Removed hashing logic since Admins no longer use passwords)
 }

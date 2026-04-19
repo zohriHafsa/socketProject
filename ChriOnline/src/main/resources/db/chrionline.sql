@@ -13,7 +13,9 @@ CREATE TABLE admins (
     admin_id      INT          NOT NULL AUTO_INCREMENT,
     username      VARCHAR(50)  NOT NULL,
     email         VARCHAR(150) NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
+    public_key       TEXT                  DEFAULT NULL,
+    activation_token VARCHAR(255)          DEFAULT NULL,
+    status           ENUM('PENDING', 'ACTIVE') NOT NULL DEFAULT 'PENDING',
     first_name    VARCHAR(80)  NOT NULL,
     last_name     VARCHAR(80)  NOT NULL,
     is_active     TINYINT(1)   NOT NULL DEFAULT 1,
@@ -25,9 +27,9 @@ CREATE TABLE admins (
     CONSTRAINT uq_admins_email    UNIQUE (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO admins (admin_id, username, email, password_hash, first_name, last_name, is_active, is_super, created_at) VALUES
-(1, 'superadmin', 'super@chrionline.com', '$argon2id$v=19$m=65536,t=3,p=1$AMLD/tGQNnu4Q/q9pWbV/Q$OnR4IEiBMTmLJ2N1bolG/Pz3Bdsm3I5ADnWfgxqW73I', 'Super',  'Admin', 1, 1, '2026-03-29 15:16:50'),
-(2, 'admin',      'admin@chrionline.com', '$argon2id$v=19$m=65536,t=3,p=1$thfCAtqBaKOrOS1ABlUnkQ$Ib26FKpVzxrhKIPF5m7O0uK6f9Omab8vOGSBUhNjY4E', 'Normal', 'Admin', 1, 0, '2026-03-29 17:04:54');
+INSERT INTO admins (admin_id, username, email, public_key, activation_token, status, first_name, last_name, is_active, is_super, created_at) VALUES
+(1, 'superadmin', 'super@chrionline.com', NULL, 'super_init_token', 'PENDING', 'Super',  'Admin', 1, 1, '2026-03-29 15:16:50'),
+(2, 'admin',      'admin@chrionline.com', NULL, 'admin_init_token', 'PENDING', 'Normal', 'Admin', 1, 0, '2026-03-29 17:04:54');
 
 
 -- =============================================================

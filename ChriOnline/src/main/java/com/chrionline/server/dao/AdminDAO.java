@@ -32,23 +32,36 @@ public class AdminDAO {
     }
 
     // ── Créer un nouvel admin ─────────────────────────────
-    public int createAdmin(String username, String email, String hash,
+    public int createAdmin(String username, String email, String activationToken,
                            String firstName, String lastName)
             throws SQLException {
         String sql = "INSERT INTO admins " +
-                "(username, email, password_hash, first_name, last_name) " +
-                "VALUES (?, ?, ?, ?, ?)";
+                "(username, email, activation_token, status, first_name, last_name) " +
+                "VALUES (?, ?, ?, 'PENDING', ?, ?)";
         try (PreparedStatement ps = conn().prepareStatement(sql,
                 Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, username);
             ps.setString(2, email);
-            ps.setString(3, hash);
+            ps.setString(3, activationToken);
             ps.setString(4, firstName);
             ps.setString(5, lastName);
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) return rs.getInt(1);
             return -1;
+        }
+    }
+
+    // ── Enregistrer Clé Publique (Finalise Inscription) ──
+    public boolean activateAdmin(String username, String activationToken, String publicKey)
+            throws SQLException {
+        String sql = "UPDATE admins SET public_key = ?, status = 'ACTIVE', activation_token = NULL " +
+                     "WHERE username = ? AND activation_token = ? AND status = 'PENDING'";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setString(1, publicKey);
+            ps.setString(2, username);
+            ps.setString(3, activationToken);
+            return ps.executeUpdate() > 0;
         }
     }
 
@@ -87,7 +100,9 @@ public class AdminDAO {
         m.put("adminId",      rs.getInt("admin_id"));
         m.put("username",     rs.getString("username"));
         m.put("email",        rs.getString("email"));
-        m.put("passwordHash", rs.getString("password_hash"));
+        m.put("publicKey",    rs.getString("public_key"));
+        m.put("activationToken", rs.getString("activation_token"));
+        m.put("status",       rs.getString("status"));
         m.put("firstName",    rs.getString("first_name"));
         m.put("lastName",     rs.getString("last_name"));
         m.put("isActive",     rs.getBoolean("is_active"));

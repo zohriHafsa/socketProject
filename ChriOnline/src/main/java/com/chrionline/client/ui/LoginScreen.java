@@ -121,13 +121,22 @@ public class LoginScreen {
         registerLink.setOnAction(e -> NavigationManager.showRegister());
         registerRow.getChildren().addAll(noAccount, registerLink);
 
+        Button adminAccessLink = new Button("\u26A1 Espace Administrateur");
+        adminAccessLink.setStyle("-fx-background-color: transparent; -fx-text-fill: #8E44AD; -fx-cursor: hand; -fx-font-size: 11px;");
+        adminAccessLink.setOnAction(e -> NavigationManager.showAdminLogin());
+
+        HBox adminRow = new HBox(adminAccessLink);
+        adminRow.setAlignment(Pos.CENTER);
+        adminRow.setPadding(new Insets(8, 0, 0, 0));
+
         card.getChildren().addAll(
                 titleRow, subtitle, div,
                 userGroup, passGroup,
                 forgotRow,
                 errorBox,
                 loginBtn,
-                registerRow
+                registerRow,
+                adminRow
         );
 
         centerBox.getChildren().addAll(branding, card);

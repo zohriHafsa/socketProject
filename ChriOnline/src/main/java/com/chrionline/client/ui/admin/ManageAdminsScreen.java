@@ -160,29 +160,7 @@ public class ManageAdminsScreen {
         HBox.setHgrow(lnGroup, Priority.ALWAYS);
         HBox row2 = new HBox(14, fnGroup, lnGroup);
 
-        // Row 3 — password + confirm
-        PasswordField passField    = new PasswordField();
-        PasswordField confirmField = new PasswordField();
-        passField.setPromptText("Minimum 8 caracteres");
-        confirmField.setPromptText("Confirmer le mot de passe");
-        passField.getStyleClass().add("auth-field");
-        confirmField.getStyleClass().add("auth-field");
 
-        StackPane passWrapper = buildPasswordWithToggle(passField);
-        StackPane confirmWrapper = buildPasswordWithToggle(confirmField);
-
-        VBox pwGroup = new VBox(5, fieldLabel("Mot de passe *"), passWrapper);
-        VBox cpGroup = new VBox(5, fieldLabel("Confirmer *"), confirmWrapper);
-        HBox.setHgrow(pwGroup, Priority.ALWAYS);
-        HBox.setHgrow(cpGroup, Priority.ALWAYS);
-        HBox row3 = new HBox(14, pwGroup, cpGroup);
-
-        // Hint Mot de passe
-        HBox passHint = new HBox(8);
-        passHint.setAlignment(Pos.CENTER_LEFT);
-        Label hintText = new Label("• Min 8 caractères, 1 majuscule, 1 chiffre, 1 spécial\n• Ne doit inclure ni le prénom, ni le nom");
-        hintText.setStyle("-fx-font-size: 11px; -fx-text-fill: #95A5A6;");
-        passHint.getChildren().addAll(hintText);
 
         HBox errorBox = new HBox(8);
         errorBox.getStyleClass().add("auth-error");
@@ -228,72 +206,33 @@ public class ManageAdminsScreen {
 
         createBtn.setOnAction(e -> handleCreateAdmin(
                 usernameField, emailField, firstNameField, lastNameField,
-                passField, confirmField, errorBox, errorText, successBox, successText, createBtn,
-                usernameField, emailField, firstNameField, lastNameField,
-                passField, confirmField
+                errorBox, errorText, successBox, successText, createBtn,
+                usernameField, emailField, firstNameField, lastNameField
         ));
 
-        form.getChildren().addAll(formTitle, row1, row2, row3, passHint, errorBox, successBox, createBtn);
+        form.getChildren().addAll(formTitle, row1, row2, errorBox, successBox, createBtn);
         return form;
     }
 
-    private StackPane buildPasswordWithToggle(PasswordField passField) {
-        TextField visibleField = new TextField();
-        visibleField.setPromptText(passField.getPromptText());
-        visibleField.getStyleClass().add("auth-field");
-        visibleField.setManaged(false);
-        visibleField.setVisible(false);
-        
-        visibleField.textProperty().bindBidirectional(passField.textProperty());
-        
-        Button toggleBtn = new Button("\uD83D\uDC41");
-        toggleBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #95A5A6; -fx-cursor: hand; -fx-font-size: 14px;");
-        toggleBtn.setFocusTraversable(false);
-        StackPane.setAlignment(toggleBtn, Pos.CENTER_RIGHT);
-        StackPane.setMargin(toggleBtn, new Insets(0, 5, 0, 0));
-        
-        toggleBtn.setOnAction(e -> {
-            boolean hidden = visibleField.isVisible();
-            visibleField.setVisible(!hidden);
-            visibleField.setManaged(!hidden);
-            passField.setVisible(hidden);
-            passField.setManaged(hidden);
-            toggleBtn.setText(hidden ? "\uD83D\uDC41" : "\u00D8");
-            toggleBtn.toFront();
-        });
-        
-        return new StackPane(passField, visibleField, toggleBtn);
-    }
+
 
     private void handleCreateAdmin(TextField usernameField, TextField emailField,
                                    TextField firstNameField, TextField lastNameField,
-                                   PasswordField passField, PasswordField confirmField,
                                    HBox errorBox, Label errorText, HBox successBox, Label successText, Button createBtn,
                                    TextField u, TextField em, TextField fn,
-                                   TextField ln, PasswordField p, PasswordField c) {
+                                   TextField ln) {
 
         String username  = usernameField.getText().trim();
         String email     = emailField.getText().trim();
         String firstName = firstNameField.getText().trim();
         String lastName  = lastNameField.getText().trim();
-        String password  = passField.getText();
-        String confirm   = confirmField.getText();
 
         hideError(errorBox);
         hideError(successBox);
 
         // Validation locale
-        if (username.isEmpty() || email.isEmpty() || firstName.isEmpty()
-                || lastName.isEmpty() || password.isEmpty()) {
+        if (username.isEmpty() || email.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
             showError(errorBox, errorText, "Tous les champs sont obligatoires.");
-            shakeNode(errorBox); return;
-        }
-        if (password.length() < 8) {
-            showError(errorBox, errorText, "Le mot de passe doit contenir au moins 8 caracteres.");
-            shakeNode(errorBox); return;
-        }
-        if (!password.equals(confirm)) {
-            showError(errorBox, errorText, "Les mots de passe ne correspondent pas.");
             shakeNode(errorBox); return;
         }
 
@@ -306,7 +245,6 @@ public class ManageAdminsScreen {
                         Map.of(
                                 "username",  username,
                                 "email",     email,
-                                "password",  password,
                                 "firstName", firstName,
                                 "lastName",  lastName
                         )))
@@ -315,10 +253,17 @@ public class ManageAdminsScreen {
                     createBtn.setText("Creer l'administrateur");
 
                     if (resp.isSuccess()) {
-                        showError(successBox, successText, "Administrateur '" + username + "' cree avec succes !");
+                        String tokenInfo = "";
+                        if (resp.getData() instanceof Map) {
+                            @SuppressWarnings("unchecked")
+                            Map<String,Object> data = (Map<String,Object>) resp.getData();
+                            if (data.containsKey("activationToken")) {
+                                tokenInfo = "\nL'email d'activation a ete envoye (Token: " + data.get("activationToken") + ").";
+                            }
+                        }
+                        showError(successBox, successText, "Administrateur '" + username + "' cree avec succes !" + tokenInfo);
                         // Vider les champs
                         u.clear(); em.clear(); fn.clear(); ln.clear();
-                        p.clear(); c.clear();
                         // Recharger la liste
                         loadAdmins();
                     } else {
