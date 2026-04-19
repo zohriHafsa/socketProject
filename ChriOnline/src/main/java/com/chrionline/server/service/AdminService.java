@@ -217,6 +217,27 @@ public class AdminService {
         }
     }
 
+    public Response registerKey(Request request) {
+        String username = request.getString("username");
+        String token = request.getString("token");
+        String publicKey = request.getString("publicKey");
+
+        if (username == null || token == null || publicKey == null)
+            return Response.error("Paramètres manquants.");
+
+        try {
+            boolean success = adminDAO.activateAdmin(username, token, publicKey);
+            if (!success) {
+                return Response.error("Token invalide ou compte déjà actif.");
+            }
+            ServerLogger.info("ADMIN_REGISTER_KEY : " + username + " (Clé RSA enrégistrée)");
+            return Response.ok("Clé de sécurité enregistrée. Vous pouvez maintenant vous connecter.", null);
+        } catch (SQLException e) {
+            ServerLogger.error("ADMIN_REGISTER_KEY error: " + e.getMessage());
+            return Response.error("Erreur serveur.");
+        }
+    }
+
     public Response toggleAdmin(Request request) {
         int     adminId  = request.getInt("adminId");
         String activeStr = request.getString("isActive");

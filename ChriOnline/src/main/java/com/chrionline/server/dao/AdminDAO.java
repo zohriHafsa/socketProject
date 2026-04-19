@@ -52,6 +52,19 @@ public class AdminDAO {
         }
     }
 
+    // ── Enregistrer Clé Publique (Finalise Inscription) ──
+    public boolean activateAdmin(String username, String activationToken, String publicKey)
+            throws SQLException {
+        String sql = "UPDATE admins SET public_key = ?, status = 'ACTIVE', activation_token = NULL " +
+                     "WHERE username = ? AND activation_token = ? AND status = 'PENDING'";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setString(1, publicKey);
+            ps.setString(2, username);
+            ps.setString(3, activationToken);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
     // ── Activer / Désactiver ──────────────────────────────
     public boolean setActive(int adminId, boolean active)
             throws SQLException {
