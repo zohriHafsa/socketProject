@@ -5,7 +5,7 @@ import com.chrionline.client.ui.NavigationManager;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
 import com.chrionline.shared.enums.Action;
-import com.chrionline.shared.security.RSAUtils;
+import com.chrionline.shared.security.ECDSAUtils;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -227,12 +227,12 @@ public class AdminInitScreen {
 
         new Thread(() -> {
             try {
-                KeyPair rsaKeys = RSAUtils.generateKeyPair();
+                KeyPair rsaKeys = ECDSAUtils.generateKeyPair();
 
                 File privateKeyFile = new File(selectedDirectory, username + "_private.key");
-                RSAUtils.savePrivateKeyEncrypted(rsaKeys.getPrivate(), privateKeyFile, pass);
+                ECDSAUtils.savePrivateKeyEncrypted(rsaKeys.getPrivate(), privateKeyFile, pass);
 
-                String publicKeyBase64 = RSAUtils.encodePublicKey(rsaKeys.getPublic());
+                String publicKeyBase64 = ECDSAUtils.encodePublicKey(rsaKeys.getPublic());
 
                 ServerConnection.getInstance().sendAsync(
                     new Request(Action.ADMIN_REGISTER_KEY, null, Map.of(
@@ -254,7 +254,7 @@ public class AdminInitScreen {
                         successTitle.getStyleClass().add("auth-title");
                         successTitle.setStyle("-fx-font-size: 24px;");
                         
-                        Label successMsg = new Label("Sécurité RSA configurée !\nVotre clé a été sauvegardée sous :\n" + 
+                        Label successMsg = new Label("Sécurité ECDSA configurée !\nVotre clé a été sauvegardée sous :\n" + 
                                 privateKeyFile.getAbsolutePath() + "\n\n\u26A0 NE PERDEZ PAS CE FICHIER NI LA PASSPHRASE.");
                         successMsg.getStyleClass().add("auth-subtitle");
                         successMsg.setWrapText(true);

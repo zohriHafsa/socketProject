@@ -17,7 +17,7 @@ import de.mkammerer.argon2.Argon2;
 import de.mkammerer.argon2.Argon2Factory;
 
 import com.chrionline.server.security.ChallengeManager;
-import com.chrionline.shared.security.RSAUtils;
+import com.chrionline.shared.security.ECDSAUtils;
 
 public class AuthService {
 
@@ -157,11 +157,11 @@ public class AuthService {
                 return Response.error("Clé publique introuvable. Initialisation requise.");
             }
 
-            java.security.PublicKey pubKey = RSAUtils.decodePublicKey(publicKeyBase64);
+            java.security.PublicKey pubKey = ECDSAUtils.decodePublicKey(publicKeyBase64);
             
             // Verify signature against the identical exact challenge string we just popped from memory
             byte[] sigBytes = java.util.Base64.getDecoder().decode(signature);
-            boolean valid = RSAUtils.verify(storedChallenge, sigBytes, pubKey);
+            boolean valid = ECDSAUtils.verify(storedChallenge, sigBytes, pubKey);
 
             if (!valid) {
                 ServerLogger.warn("ADMIN_AUTH_RESPONSE: Signature INVALIDE pour " + username);

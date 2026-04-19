@@ -6,7 +6,7 @@ import com.chrionline.client.ui.NavigationManager;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
 import com.chrionline.shared.enums.Action;
-import com.chrionline.shared.security.RSAUtils;
+import com.chrionline.shared.security.ECDSAUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import javafx.animation.*;
@@ -212,9 +212,9 @@ public class AdminLoginScreen {
 
             new Thread(() -> {
                 try {
-                    PrivateKey privateKey = RSAUtils.loadPrivateKeyDecrypted(selectedKeyFile, pass);
+                    PrivateKey privateKey = ECDSAUtils.loadPrivateKeyDecrypted(selectedKeyFile, pass);
                     
-                    byte[] sigBytes = RSAUtils.sign(activeChallenge, privateKey);
+                    byte[] sigBytes = ECDSAUtils.sign(activeChallenge, privateKey);
                     String signature = java.util.Base64.getEncoder().encodeToString(sigBytes);
 
                     ServerConnection.getInstance().sendAsync(
