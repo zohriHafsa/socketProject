@@ -35,29 +35,29 @@ public class ServerMain {
 
         // ─── Banner ─────────────────────────────────────
         System.out.println();
-        System.out.println(CYN+B+"  ╔══════════════════════════════════════════════════════════════════╗"+R);
-        System.out.println(CYN+B+"  ║                                                                  ║"+R);
-        System.out.println(CYN+B+"  ║"+WHT+B+"       ██████╗██╗  ██╗██████╗ ██╗  ██████╗  ███╗   ██╗           "+CYN+B+"║"+R);
-        System.out.println(CYN+B+"  ║"+WHT+B+"      ██╔════╝██║  ██║██╔══██╗██║ ██╔═══██╗ ████╗  ██║           "+CYN+B+"║"+R);
-        System.out.println(CYN+B+"  ║"+WHT+B+"      ██║     ███████║██████╔╝██║ ██║   ██║ ██╔██╗ ██║           "+CYN+B+"║"+R);
-        System.out.println(CYN+B+"  ║"+WHT+B+"      ██║     ██╔══██║██╔══██╗██║ ██║   ██║ ██║╚██╗██║           "+CYN+B+"║"+R);
-        System.out.println(CYN+B+"  ║"+WHT+B+"      ╚██████╗██║  ██║██║  ██║██║ ╚██████╔╝ ██║ ╚████║           "+CYN+B+"║"+R);
-        System.out.println(CYN+B+"  ║"+WHT+B+"       ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═════╝  ╚═╝  ╚═══╝        "+CYN+B+"║"+R);
-        System.out.println(CYN+B+"  ║"+YLW+B+"                    ━━━  O N L I N E  ━━━                        "+CYN+B+"║"+R);
-        System.out.println(CYN+B+"  ║                                                                  ║"+R);
-        System.out.println(CYN+B+"  ║"+WHT+B+"          🖥   Serveur E-Commerce TCP — v1.0                     "+CYN+B+"║"+R);
-        System.out.println(CYN+B+"  ║"+DIM+"            Plateforme de vente en ligne ChriOnline               "+CYN+B+"║"+R);
-        System.out.println(CYN+B+"  ║                                                                  ║"+R);
-        System.out.println(CYN+B+"  ╚══════════════════════════════════════════════════════════════════╝"+R);
+        System.out.println(CYN+B+"  ╔═══════════════════════════════════════════════════════════════════════════════╗"+R);
+        System.out.println(CYN+B+"  ║                                                                               ║"+R);
+        System.out.println(CYN+B+"  ║"+WHT+B+"   ██████╗██╗  ██╗██████╗ ██╗ ██████╗ ███╗   ██╗██╗     ██╗███╗   ██╗███████╗  "+CYN+B+"║"+R);
+        System.out.println(CYN+B+"  ║"+WHT+B+"  ██╔════╝██║  ██║██╔══██╗██║██╔═══██╗████╗  ██║██║     ██║████╗  ██║██╔════╝  "+CYN+B+"║"+R);
+        System.out.println(CYN+B+"  ║"+WHT+B+"  ██║     ███████║██████╔╝██║██║   ██║██╔██╗ ██║██║     ██║██╔██╗ ██║█████╗    "+CYN+B+"║"+R);
+        System.out.println(CYN+B+"  ║"+WHT+B+"  ██║     ██╔══██║██╔══██╗██║██║   ██║██║╚██╗██║██║     ██║██║╚██╗██║██╔══╝    "+CYN+B+"║"+R);
+        System.out.println(CYN+B+"  ║"+WHT+B+"  ╚██████╗██║  ██║██║  ██║██║╚██████╔╝██║ ╚████║███████╗██║██║ ╚████║███████╗  "+CYN+B+"║"+R);
+        System.out.println(CYN+B+"  ║"+WHT+B+"   ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝  "+CYN+B+"║"+R);
+        System.out.println(CYN+B+"  ║"+YLW+B+"                        ━━━  C H R I O N L I N E  ━━━                          "+CYN+B+"║"+R);
+        System.out.println(CYN+B+"  ║                                                                               ║"+R);
+        System.out.println(CYN+B+"  ║"+WHT+B+"                     Serveur E-Commerce TCP — v1.0                             "+CYN+B+"║"+R);
+        System.out.println(CYN+B+"  ║"+DIM+"                Plateforme de vente en ligne ChriOnline                        "+CYN+B+"║"+R);
+        System.out.println(CYN+B+"  ║                                                                               ║"+R);
+        System.out.println(CYN+B+"  ╚═══════════════════════════════════════════════════════════════════════════════╝"+R);
         System.out.println();
 
         // ─── Config info ─────────────────────────────────
         String now = LocalDateTime.now()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-        System.out.println(CYN+B+"  ┌──────────────────────────────────────────────────────┐"+R);
-        System.out.println(CYN+B+"  │"+WHT+B+"                ⚙  CONFIGURATION                      "+CYN+B+"│"+R);
-        System.out.println(CYN+B+"  ├──────────────────────────────────────────────────────┤"+R);
+        System.out.println(CYN+B+"  ┌───────────────────────────────────────────────────────┐"+R);
+        System.out.println(CYN+B+"  │"+WHT+B+"                   CONFIGURATION                       "+CYN+B+"│"+R);
+        System.out.println(CYN+B+"  ├───────────────────────────────────────────────────────┤"+R);
         System.out.println(CYN+B+"  │"+WHT+"  Port TCP            : "+GRN+B+"9090                           "+CYN+B+"│"+R);
         System.out.println(CYN+B+"  │"+WHT+"  Port UDP Heartbeat  : "+GRN+B+"9091                           "+CYN+B+"│"+R);
         System.out.println(CYN+B+"  │"+WHT+"  Pool threads        : "+GRN+B+"10                             "+CYN+B+"│"+R);
@@ -66,10 +66,10 @@ public class ServerMain {
         System.out.println(CYN+B+"  │"+WHT+"  UDP cleanup         : "+GRN+B+"toutes les 30s                 "+CYN+B+"│"+R);
         System.out.println(CYN+B+"  │"+WHT+"  UDP Flood limit     : "+GRN+B+"20 paquets / 10s par IP        "+CYN+B+"│"+R);
         System.out.println(CYN+B+"  │"+WHT+"  UDP block duration  : "+GRN+B+"60s                            "+CYN+B+"│"+R);
-        System.out.println(CYN+B+"  │"+WHT+"  Base de données     : "+GRN+B+"MySQL — chrionline              "+CYN+B+"│"+R);
-        System.out.println(CYN+B+"  │"+WHT+"  Logger              : "+GRN+B+"server.log (fichier + console)  "+CYN+B+"│"+R);
-        System.out.println(CYN+B+"  │"+WHT+"  Démarré le          : "+YLW+now+"           "+CYN+B+"│"+R);
-        System.out.println(CYN+B+"  └──────────────────────────────────────────────────────┘"+R);
+        System.out.println(CYN+B+"  │"+WHT+"  Base de données     : "+GRN+B+"MySQL — chrionline             "+CYN+B+"│"+R);
+        System.out.println(CYN+B+"  │"+WHT+"  Logger              : "+GRN+B+"server.log (fichier + console) "+CYN+B+"│"+R);
+        System.out.println(CYN+B+"  │"+WHT+"  Démarré le          : "+YLW+now+"            "+CYN+B+"│"+R);
+        System.out.println(CYN+B+"  └───────────────────────────────────────────────────────┘"+R);
         System.out.println();
 
         // ─── Step 1 : Logger ────────────────────────────
@@ -110,11 +110,11 @@ public class ServerMain {
         System.out.println(GRN+B+"  ╔══════════════════════════════════════════════════════════════════╗"+R);
         System.out.println(GRN+B+"  ║                                                                  ║"+R);
         System.out.println(GRN+B+"  ║   🟢  CHRIONLINE SERVER PRÊT — En écoute sur le port 9090        ║"+R);
-        System.out.println(GRN+B+"  ║   🔵  UDP HEARTBEAT actif    — En écoute sur le port 9091        ║"+R);
+        System.out.println(GRN+B+"  ║   🟢  UDP HEARTBEAT actif    — En écoute sur le port 9091        ║"+R);
         System.out.println(GRN+B+"  ║                                                                  ║"+R);
-        System.out.println(GRN+B+"  ║"+DIM+"   En attente de connexions clients...                           "+GRN+B+"║"+R);
-        System.out.println(GRN+B+"  ║"+DIM+"   Les logs s'affichent ici ET dans server.log                   "+GRN+B+"║"+R);
-        System.out.println(GRN+B+"  ║"+DIM+"   Ctrl+C pour arrêter le serveur                               "+GRN+B+"║"+R);
+        System.out.println(GRN+B+"  ║"+DIM+"   En attente de connexions clients...                            "+GRN+B+"║"+R);
+        System.out.println(GRN+B+"  ║"+DIM+"   Les logs s'affichent ici ET dans server.log                    "+GRN+B+"║"+R);
+        System.out.println(GRN+B+"  ║"+DIM+"   Ctrl+C pour arrêter le serveur                                 "+GRN+B+"║"+R);
         System.out.println(GRN+B+"  ║                                                                  ║"+R);
         System.out.println(GRN+B+"  ╚══════════════════════════════════════════════════════════════════╝"+R);
         System.out.println();

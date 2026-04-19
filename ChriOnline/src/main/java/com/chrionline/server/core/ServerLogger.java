@@ -60,17 +60,17 @@ public class ServerLogger {
         // ── Client connection ──────────────────────
         if (msg.startsWith("Client connected")) {
             out("");
-            out(CYN + "  ╔═══════════════════════════════════════════════════════════════╗" + R);
-            out(CYN + "  ║" + GRN + B + "  🔗  NOUVELLE CONNEXION CLIENT                                  " + CYN + "║" + R);
+            out(CYN + "  ╔════════════════════════════════════════════════════════════════╗" + R);
+            out(CYN + "  ║" + GRN + B + "  🔗  NOUVELLE CONNEXION CLIENT                                 " + CYN + "║" + R);
             out(CYN + "  ║" + WHT + "      " + msg + spaces(58 - msg.length()) + CYN + "║" + R);
-            out(CYN + "  ╚═══════════════════════════════════════════════════════════════╝" + R);
+            out(CYN + "  ╚════════════════════════════════════════════════════════════════╝" + R);
             return;
         }
 
         // ── Client disconnection ───────────────────
         if (msg.startsWith("Client disconnected") || msg.startsWith("Connection lost")) {
             out(RED + "  ╔═══════════════════════════════════════════════════════════════╗" + R);
-            out(RED + "  ║" + RED + B + "  🔌  CLIENT DÉCONNECTÉ                                         " + RED + "║" + R);
+            out(RED + "  ║" + RED + B + "  🔌  CLIENT DÉCONNECTÉ                                        " + RED + "║" + R);
             out(RED + "  ╚═══════════════════════════════════════════════════════════════╝" + R);
             out("");
             return;
