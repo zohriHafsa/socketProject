@@ -11,15 +11,7 @@ import java.security.KeyPair;
 import java.util.Base64;
 import java.util.Map;
 
-/**
- * SecureCommSimulation — Visual proof that the encrypted channel works.
- *
- * Simulates the full handshake + message exchange in a single thread,
- * printing plaintext vs ciphertext side by side so you can see
- * that real data is completely unreadable in transit.
- *
- * Run main() directly — no server needs to be running.
- */
+
 public class SecureCommSimulation {
 
     // ─── Console formatting helpers ───────────────────────────────
@@ -103,16 +95,12 @@ public class SecureCommSimulation {
 
         System.out.println();
 
-        // ══════════════════════════════════════════════════════════
-        // PHASE 2 — Encrypted message exchange
-        // ══════════════════════════════════════════════════════════
+        // Encrypted message exchange
         simulateMessages(aesKey, serverAesKey);
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // PHASE 2 — Message exchange (client uses aesKey, server uses serverAesKey)
+    // Message exchange (client uses aesKey, server uses serverAesKey)
     // Both are identical — separated to make the simulation realistic
-    // ─────────────────────────────────────────────────────────────
     private static void simulateMessages(SecretKey clientKey, SecretKey serverKey) throws Exception {
         printPhaseHeader("PHASE 2 — ENCRYPTED MESSAGE EXCHANGE");
 
@@ -198,9 +186,9 @@ public class SecureCommSimulation {
         System.out.println();
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // PHASE 3 — Tamper test: flip one byte → GCM must reject it
-    // ─────────────────────────────────────────────────────────────
+
+    // Tamper test: flip one byte → GCM must reject it
+
     private static void simulateTamperTest(SecretKey clientKey, SecretKey serverKey) throws Exception {
         printPhaseHeader("PHASE 3 — TAMPER DETECTION (GCM Integrity)");
 

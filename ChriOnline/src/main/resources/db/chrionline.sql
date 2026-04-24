@@ -62,6 +62,8 @@ CREATE TABLE users (
     CONSTRAINT uq_users_email    UNIQUE (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+
 INSERT INTO users (user_id, username, email, password_hash, first_name, last_name, address, phone, is_active, is_verified, failed_attempts, created_at, updated_at) VALUES
 (2,  'jdupont',       'jean.dupont@mail.com',                    '$argon2id$v=19$m=65536,t=3,p=1$wW23gnSPzmlQ59gD0vPT8A$wHjOLMhmL9kFrIek4d1FD8O8sxL6X0LhOLKNM1aqcv8', 'Jean',          'Dupont',      '12 Avenue Victor Hugo, Lyon',        '0611111111', 1, 1, 0, '2026-03-15 23:41:05', '2026-04-12 17:47:00'),
 (3,  'mleroy',        'marie.leroy@mail.com',                    '$argon2id$v=19$m=65536,t=3,p=1$wW23gnSPzmlQ59gD0vPT8A$wHjOLMhmL9kFrIek4d1FD8O8sxL6X0LhOLKNM1aqcv8', 'Marie',         'Leroy',       '8 Boulevard Pasteur, Marseille',     '0622222222', 1, 1, 0, '2026-03-15 23:41:05', '2026-04-12 17:47:02'),
@@ -73,6 +75,15 @@ INSERT INTO users (user_id, username, email, password_hash, first_name, last_nam
 (9,  'amine_jk',      'aitjaakikemohamedamine@gmail.com',        '$argon2id$v=19$m=65536,t=3,p=1$mOFBZpRj5QAlpxoudb1Kfw$yLE1Zel8eJC8QcVYEKZiYMQF9uX8X8bkvSspNktsdvU', 'Amine',         'Jaakike',     '',                                   '',           1, 1, 0, '2026-04-14 18:38:45', '2026-04-14 18:39:59'),
 (10, 'amine2_jk',     'mohamedamine.aitjaakike@etu.uae.ac.ma',   '$argon2id$v=19$m=65536,t=3,p=1$+6c+AM7kWjVsS5SEFY1L/Q$mfBoo4NKYMnoyHGHwX/RLXAFYWa2/aw0rWwbDyMoxGg', 'Amine',         'Jaakike',     '',                                   '',           1, 1, 0, '2026-04-14 18:49:29', '2026-04-14 19:08:00');
 
+ALTER TABLE users ADD COLUMN email_hash VARCHAR(64) DEFAULT NULL;
+CREATE INDEX idx_users_email_hash ON users (email_hash);
+
+ALTER TABLE users
+    MODIFY COLUMN email      VARCHAR(500)  NOT NULL,
+    MODIFY COLUMN first_name VARCHAR(500)  NOT NULL,
+    MODIFY COLUMN last_name  VARCHAR(500)  NOT NULL,
+    MODIFY COLUMN address    TEXT,
+    MODIFY COLUMN phone      VARCHAR(200);
 
 -- =============================================================
 --  TABLE : categories
