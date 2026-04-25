@@ -40,7 +40,7 @@ public enum Action {
     SEND_PAYMENT_2FA,
     VERIFY_PAYMENT_2FA,
     FORGOT_PASSWORD,
+    UPDATE_PROFILE,
     // UDP
     REGISTER_UDP
-
 }

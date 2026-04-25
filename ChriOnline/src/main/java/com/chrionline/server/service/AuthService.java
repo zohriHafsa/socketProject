@@ -519,6 +519,29 @@ public class AuthService {
         }
     }
 
+    // ── UPDATE PROFILE ────────────────────────────────────
+    public Response updateProfile(Request request) {
+        int userId = SessionManager.getUserId(request.getToken());
+        if (userId <= 0) return Response.error("Session invalide.");
+
+        String firstName = request.getString("firstName");
+        String lastName  = request.getString("lastName");
+        String address   = request.getString("address");
+        String phone     = request.getString("phone");
+
+        try {
+            boolean ok = userDAO.updateProfile(userId, firstName, lastName, address, phone);
+            if (ok) {
+                ServerLogger.info("UPDATE_PROFILE OK for userId=" + userId);
+                return Response.ok("Profil mis à jour avec succès !", null);
+            }
+            return Response.error("Échec de la mise à jour du profil.");
+        } catch (SQLException e) {
+            ServerLogger.error("UPDATE_PROFILE error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
+        }
+    }
+
     // ── Hashing (Argon2id + legacy SHA-256 fallback) ───────
     private String hashPassword(String rawPassword) {
         Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);

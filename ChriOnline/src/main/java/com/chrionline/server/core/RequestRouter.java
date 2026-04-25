@@ -86,6 +86,7 @@ public class RequestRouter {
             case FORGOT_PASSWORD: return authService.forgotPassword(request);
             case VERIFY_RESET_TOKEN:  return authService.verifyResetToken(request);
             case RESET_PASSWORD:  return authService.resetPassword(request);
+            case UPDATE_PROFILE:  return authService.updateProfile(request);
             case ADMIN_AUTH_INIT: return authService.adminAuthInit(request, clientAddress);
             case ADMIN_AUTH_RESPONSE: return authService.adminAuthResponse(request, clientAddress);
             case VALIDATE_CARD:

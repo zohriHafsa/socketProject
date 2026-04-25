@@ -273,6 +273,19 @@ public class UserDAO {
         }
     }
 
+    public boolean updateProfile(int userId, String firstName, String lastName,
+                                 String address, String phone) throws SQLException {
+        String sql = "UPDATE users SET first_name = ?, last_name = ?, address = ?, phone = ? WHERE user_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setString(1, EncryptionHelper.encrypt(firstName));
+            ps.setString(2, EncryptionHelper.encrypt(lastName));
+            ps.setString(3, EncryptionHelper.encrypt(address));
+            ps.setString(4, EncryptionHelper.encrypt(phone));
+            ps.setInt(5, userId);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
     public boolean checkAndUnlockIfExpired(int userId) throws SQLException {
         String sql = "SELECT locked_until, " +
                 "locked_until < NOW() AS is_expired " +
