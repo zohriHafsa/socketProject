@@ -54,14 +54,14 @@ public class ClientHandler implements Runnable {
 
                 ServerLogger.info("Received from " + clientAddr + " [DECRYPTED]: " + decrypted);
 
-                // 2. Rate limiting (unchanged)
+                // 2. Rate limiting
                 if (!RateLimiter.getInstance().allowRequest(clientAddr)) {
                     ServerLogger.warn("Rate limit exceeded for: " + clientAddr);
                     sendEncrypted(Response.error("Too many requests.").toJson());
                     continue;
                 }
 
-                // 3. Route the decrypted request (unchanged logic)
+                // 3. Route the decrypted request
                 Response response = RequestRouter.route(decrypted, socket.getInetAddress());
 
                 // 4. Encrypt the response before sending
@@ -115,7 +115,6 @@ public class ClientHandler implements Runnable {
     }
 
     // Helper — encrypts and sends a response in one call
-
     private void sendEncrypted(String plaintext) {
         try {
             out.println(AESCipher.encrypt(plaintext, sessionKey));
@@ -123,8 +122,6 @@ public class ClientHandler implements Runnable {
             ServerLogger.error("Encryption failed: " + e.getMessage());
         }
     }
-
-
 
     public void sendMessage(String message) {
         if (out != null) out.println(message);

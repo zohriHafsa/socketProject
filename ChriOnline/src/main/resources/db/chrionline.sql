@@ -41,12 +41,13 @@ INSERT INTO admins (admin_id, username, email, public_key, activation_token, sta
 CREATE TABLE users (
     user_id         INT            NOT NULL AUTO_INCREMENT,
     username        VARCHAR(50)    NOT NULL,
-    email           VARCHAR(150)   NOT NULL,
+    email           VARCHAR(500)   NOT NULL,
+    email_hash      VARCHAR(64)             DEFAULT NULL,
     password_hash   VARCHAR(255)   NOT NULL,
-    first_name      VARCHAR(80)    NOT NULL,
-    last_name       VARCHAR(80)    NOT NULL,
+    first_name      VARCHAR(500)   NOT NULL,
+    last_name       VARCHAR(500)   NOT NULL,
     address         TEXT                    DEFAULT NULL,
-    phone           VARCHAR(20)             DEFAULT NULL,
+    phone           VARCHAR(200)            DEFAULT NULL,
     role            ENUM('CLIENT') NOT NULL DEFAULT 'CLIENT',
     is_active       TINYINT(1)     NOT NULL DEFAULT 1,
     is_verified     TINYINT(1)     NOT NULL DEFAULT 0,
@@ -59,10 +60,9 @@ CREATE TABLE users (
 
     CONSTRAINT pk_users          PRIMARY KEY (user_id),
     CONSTRAINT uq_users_username UNIQUE (username),
-    CONSTRAINT uq_users_email    UNIQUE (email)
+    CONSTRAINT uq_users_email    UNIQUE (email),
+    INDEX idx_users_email_hash (email_hash)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
 
 INSERT INTO users (user_id, username, email, password_hash, first_name, last_name, address, phone, is_active, is_verified, failed_attempts, created_at, updated_at) VALUES
 (2,  'jdupont',       'jean.dupont@mail.com',                    '$argon2id$v=19$m=65536,t=3,p=1$wW23gnSPzmlQ59gD0vPT8A$wHjOLMhmL9kFrIek4d1FD8O8sxL6X0LhOLKNM1aqcv8', 'Jean',          'Dupont',      '12 Avenue Victor Hugo, Lyon',        '0611111111', 1, 1, 0, '2026-03-15 23:41:05', '2026-04-12 17:47:00'),
@@ -74,16 +74,6 @@ INSERT INTO users (user_id, username, email, password_hash, first_name, last_nam
 (8,  'amine',         'amine@gmail.com',                         '$argon2id$v=19$m=65536,t=3,p=1$oSkgWXCpX1vnE5pC0W7x1w$ghUHzGPO8qiNvQnlIENq54ITgqZxx/wguriu1uwF05E', 'Amine',         'El Hauari',   '12 Av. des FAR, Tetouan',            '0612312345', 1, 1, 0, '2026-03-27 09:17:49', '2026-04-12 18:04:38'),
 (9,  'amine_jk',      'aitjaakikemohamedamine@gmail.com',        '$argon2id$v=19$m=65536,t=3,p=1$mOFBZpRj5QAlpxoudb1Kfw$yLE1Zel8eJC8QcVYEKZiYMQF9uX8X8bkvSspNktsdvU', 'Amine',         'Jaakike',     '',                                   '',           1, 1, 0, '2026-04-14 18:38:45', '2026-04-14 18:39:59'),
 (10, 'amine2_jk',     'mohamedamine.aitjaakike@etu.uae.ac.ma',   '$argon2id$v=19$m=65536,t=3,p=1$+6c+AM7kWjVsS5SEFY1L/Q$mfBoo4NKYMnoyHGHwX/RLXAFYWa2/aw0rWwbDyMoxGg', 'Amine',         'Jaakike',     '',                                   '',           1, 1, 0, '2026-04-14 18:49:29', '2026-04-14 19:08:00');
-
-ALTER TABLE users ADD COLUMN email_hash VARCHAR(64) DEFAULT NULL;
-CREATE INDEX idx_users_email_hash ON users (email_hash);
-
-ALTER TABLE users
-    MODIFY COLUMN email      VARCHAR(500)  NOT NULL,
-    MODIFY COLUMN first_name VARCHAR(500)  NOT NULL,
-    MODIFY COLUMN last_name  VARCHAR(500)  NOT NULL,
-    MODIFY COLUMN address    TEXT,
-    MODIFY COLUMN phone      VARCHAR(200);
 
 -- =============================================================
 --  TABLE : categories
@@ -266,8 +256,8 @@ CREATE TABLE payments (
     method          ENUM('CARTE_BANCAIRE','PAIEMENT_FICTIF','VIREMENT')  NOT NULL,
     status          ENUM('EN_ATTENTE','ACCEPTE','REFUSE','REMBOURSE')    NOT NULL DEFAULT 'EN_ATTENTE',
     amount          DECIMAL(10,2)                                        NOT NULL,
-    card_last_four  CHAR(4)                                                       DEFAULT NULL,
-    transaction_ref VARCHAR(100)                                                  DEFAULT NULL,
+    card_last_four  VARCHAR(255)                                              DEFAULT NULL,
+    transaction_ref VARCHAR(255)                                              DEFAULT NULL,
     paid_at         DATETIME                                                      DEFAULT NULL,
 
     CONSTRAINT pk_payments       PRIMARY KEY (payment_id),
