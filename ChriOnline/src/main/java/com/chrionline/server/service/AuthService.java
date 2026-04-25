@@ -358,6 +358,8 @@ public class AuthService {
                     result.put("role",      role);
                     result.put("firstName", user.get("firstName"));
                     result.put("lastName",  user.get("lastName"));
+                    result.put("address",   user.get("address"));
+                    result.put("phone",     user.get("phone"));
                     return Response.ok("Connexion reussie !", result);
                 }
                 return Response.error("Code incorrect ou expire.");

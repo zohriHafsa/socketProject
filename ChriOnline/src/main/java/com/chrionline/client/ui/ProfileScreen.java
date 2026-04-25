@@ -45,6 +45,9 @@ public class ProfileScreen {
         String ln       = orEmpty(NavigationManager.getLastName());
         String username = orEmpty(NavigationManager.getUsername());
         String role     = orEmpty(NavigationManager.getRole());
+        String email    = orEmpty(NavigationManager.getEmail());
+        String address  = orEmpty(NavigationManager.getAddress());
+        String phone    = orEmpty(NavigationManager.getPhone());
 
         String fullName = (fn + " " + ln).trim();
         String displayName = fullName.isEmpty() ? username : fullName;
@@ -141,6 +144,13 @@ public class ProfileScreen {
         infoGrid.add(infoField("Nom de famille",    ln.isEmpty()       ? "—" : ln),       1, 0);
         infoGrid.add(infoField("Nom d'utilisateur", username.isEmpty() ? "—" : "@" + username), 0, 1);
         infoGrid.add(infoField("Rôle",              fmtRole(role)),                        1, 1);
+        infoGrid.add(infoField("E-mail",           email.isEmpty()    ? "—" : email),    0, 2);
+
+        if (!NavigationManager.isAdmin()) {
+            infoGrid.add(infoField("Téléphone",    phone.isEmpty()    ? "—" : phone),    1, 2);
+            VBox addrBox = infoField("Adresse de livraison", address.isEmpty() ? "—" : address);
+            infoGrid.add(addrBox, 0, 3, 2, 1);
+        }
 
         infoCard.getChildren().addAll(infoTitle, divider, infoGrid);
 

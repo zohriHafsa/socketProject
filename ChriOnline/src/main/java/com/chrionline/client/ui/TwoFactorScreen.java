@@ -222,16 +222,30 @@ public class TwoFactorScreen {
 
                     Map<String, Object> data = castToMap(resp.getData());
 
-                    // ← MODIFIER ICI (6 paramètres avec email)
-                    NavigationManager.setSession(
-                            getStr(data, "token"),
-                            getInt(data, "userId"),
-                            getStr(data, "username"),
-                            getStr(data, "role"),
-                            getStr(data, "firstName"),
-                            getStr(data, "lastName"),
-                            getStr(data, "email")  // ← AJOUTER
-                    );
+                    String roleStr = getStr(data, "role");
+                    if ("CLIENT".equals(roleStr)) {
+                        NavigationManager.setSession(
+                                getStr(data, "token"),
+                                getInt(data, "userId"),
+                                getStr(data, "username"),
+                                roleStr,
+                                getStr(data, "firstName"),
+                                getStr(data, "lastName"),
+                                getStr(data, "email"),
+                                getStr(data, "address"),
+                                getStr(data, "phone")
+                        );
+                    } else {
+                        NavigationManager.setSession(
+                                getStr(data, "token"),
+                                getInt(data, "userId"),
+                                getStr(data, "username"),
+                                roleStr,
+                                getStr(data, "firstName"),
+                                getStr(data, "lastName"),
+                                getStr(data, "email")
+                        );
+                    }
 
                     javafx.animation.PauseTransition pause =
                             new javafx.animation.PauseTransition(
