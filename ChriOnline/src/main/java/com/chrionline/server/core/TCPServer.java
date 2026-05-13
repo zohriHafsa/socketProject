@@ -2,6 +2,8 @@ package com.chrionline.server.core;
 
 import com.chrionline.server.security.SYNFloodProtection;
 
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,10 +24,15 @@ public class TCPServer {
 
     public void start() {
         try {
-            serverSocket = new ServerSocket(port);
+            // ── TLS : Création du SSLServerSocket via le Keystore configuré ──
+            SSLServerSocketFactory factory =
+                    (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+            serverSocket = factory.createServerSocket(port);
+            ServerLogger.info("[TLS] SSLServerSocket créé sur le port " + port);
+
             threadPool = Executors.newFixedThreadPool(poolSize);
             running = true;
-            System.out.println("[SERVER] Started on port " + port);
+            System.out.println("[SERVER] Started on port " + port + " (TLS enabled)");
             acceptConnections();
         } catch (IOException e) {
             System.err.println("[SERVER] Failed to start: " + e.getMessage());

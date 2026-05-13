@@ -7,6 +7,10 @@ public class Response {
     private String  message;
     private Object  data;
 
+    // ── Signature numérique (optionnel — uniquement pour les paiements) ──
+    private String signature;   // Signature SHA256withRSA en Base64
+    private String publicKey;   // Clé publique du serveur en Base64
+
     public Response() {}
 
     public Response(boolean success, String message, Object data) {
@@ -47,6 +51,14 @@ public class Response {
     public Object getData()                     { return data; }
     public void setData(Object data)          { this.data = data; }
 
+    // ── Signature getters/setters ──
+    public String getSignature()                     { return signature; }
+    public void setSignature(String signature)    { this.signature = signature; }
+
+    public String getPublicKey()                     { return publicKey; }
+    public void setPublicKey(String publicKey)    { this.publicKey = publicKey; }
+
     @Override
     public String toString() { return toJson(); }
 }
+

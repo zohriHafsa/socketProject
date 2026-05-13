@@ -3,11 +3,13 @@ package com.chrionline.client.network;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
+import java.io.*;
 import java.net.Socket;
+import java.security.KeyStore;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,6 +20,10 @@ public class ServerConnection {
 
     private static final String HOST = "localhost";
     private static final int    PORT = 9090;
+
+    // ── Chemin du TrustStore client (contient le certificat du serveur) ──
+    private static final String TRUSTSTORE_PATH     = "src/main/resources/security/client_truststore.p12";
+    private static final String TRUSTSTORE_PASSWORD  = "chrionline2026";
 
     private Socket         socket;
     private BufferedReader  in;
@@ -40,12 +46,38 @@ public class ServerConnection {
 
     public boolean connect() {
         try {
-            socket = new Socket(HOST, PORT);
+            // ── Configuration TLS via TrustStore ──
+            // Charger le TrustStore PKCS12 contenant le certificat du serveur
+            KeyStore trustStore = KeyStore.getInstance("PKCS12");
+            File trustStoreFile = new File(TRUSTSTORE_PATH);
+            try (FileInputStream fis = new FileInputStream(trustStoreFile.getAbsolutePath())) {
+                trustStore.load(fis, TRUSTSTORE_PASSWORD.toCharArray());
+            }
+
+            // Initialiser le TrustManager avec le TrustStore
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(
+                    TrustManagerFactory.getDefaultAlgorithm());
+            tmf.init(trustStore);
+
+            // Créer le SSLContext TLS
+            SSLContext context = SSLContext.getInstance("TLS");
+            context.init(null, tmf.getTrustManagers(), null);
+
+            // Créer le SSLSocket
+            SSLSocketFactory factory = context.getSocketFactory();
+            SSLSocket sslSocket = (SSLSocket) factory.createSocket(HOST, PORT);
+
+            // Forcer le handshake TLS pour vérifier immédiatement
+            sslSocket.startHandshake();
+            System.out.println("[CLIENT] TLS Handshake réussi avec " + HOST + ":" + PORT);
+
+            socket = sslSocket;
             in     = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out    = new PrintWriter(socket.getOutputStream(), true);
             return true;
-        } catch (IOException e) {
-            System.err.println("[CLIENT] Connection failed: " + e.getMessage());
+
+        } catch (Exception e) {
+            System.err.println("[CLIENT] Connexion TLS échouée: " + e.getMessage());
             return false;
         }
     }
@@ -85,4 +117,4 @@ public class ServerConnection {
 
     public String getHost() { return HOST; }
     public int    getPort() { return PORT; }
-}
+}

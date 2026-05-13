@@ -2,6 +2,7 @@ package com.chrionline.server.core;
 
 import com.chrionline.server.dao.NotificationDAO;
 import com.chrionline.server.security.AntiReplayFilter;
+import com.chrionline.server.security.DigitalSignatureService;
 import com.chrionline.server.service.*;
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
@@ -110,7 +111,8 @@ public class RequestRouter {
             case GET_ORDER_STATUS:  return orderService.getOrderStatus(request);
 
             // Payment
-            case PROCESS_PAYMENT: return paymentService.processPayment(request);
+            case PROCESS_PAYMENT: return signPaymentResponse(
+                    paymentService.processPayment(request), "PROCESS_PAYMENT");
 
             // Notifications
             case GET_NOTIFICATIONS:           return handleGetNotifications(request);
@@ -222,7 +224,8 @@ public class RequestRouter {
         String expiry     = request.getString("expiry");
         String cvv        = request.getString("cvv");
 
-        return paymentValidationService.validateCard(userId, cardNumber, expiry, cvv);
+        Response response = paymentValidationService.validateCard(userId, cardNumber, expiry, cvv);
+        return signPaymentResponse(response, "VALIDATE_CARD");
     }
 
     private static Response handleSendPayment2FA(Request request) {
@@ -233,7 +236,8 @@ public class RequestRouter {
         String orderId = request.getString("orderId");
         String email   = request.getString("email");
 
-        return paymentValidationService.send2FACode(userId, amount, orderId, email);
+        Response response = paymentValidationService.send2FACode(userId, amount, orderId, email);
+        return signPaymentResponse(response, "SEND_PAYMENT_2FA");
     }
 
     private static Response handleVerifyPayment2FA(Request request) {
@@ -242,6 +246,42 @@ public class RequestRouter {
 
         String code = request.getString("code");
 
-        return paymentValidationService.verify2FACode(userId, code);
+        Response response = paymentValidationService.verify2FACode(userId, code);
+        return signPaymentResponse(response, "VERIFY_PAYMENT_2FA");
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    //  SIGNATURE NUMÉRIQUE — Signe les réponses de paiement
+    // ══════════════════════════════════════════════════════════════════
+
+    /**
+     * Signe une réponse de paiement avec SHA256withRSA.
+     * La signature et la clé publique sont ajoutées à la Response
+     * pour que le client puisse vérifier l'authenticité.
+     *
+     * @param response     La réponse originale
+     * @param operationType Le type d'opération (pour le log)
+     * @return La réponse enrichie avec la signature
+     */
+    private static Response signPaymentResponse(Response response, String operationType) {
+        if (response.isSuccess()) {
+            try {
+                DigitalSignatureService sigService = DigitalSignatureService.getInstance();
+
+                // Signer le contenu de la réponse (message + data sérialisés)
+                String dataToSign = response.getMessage() + "|" +
+                        (response.getData() != null ? response.getData().toString() : "null");
+
+                String signature = sigService.sign(dataToSign);
+                response.setSignature(signature);
+                response.setPublicKey(sigService.getPublicKeyBase64());
+
+                ServerLogger.info("[SIGNATURE] Réponse " + operationType + " signée avec succès");
+            } catch (Exception e) {
+                ServerLogger.error("[SIGNATURE] Erreur signature " + operationType + " : " + e.getMessage());
+                // Ne pas bloquer la réponse si la signature échoue
+            }
+        }
+        return response;
     }
 }
