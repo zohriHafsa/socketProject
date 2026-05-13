@@ -62,6 +62,9 @@ public class RequestRouter {
             case GET_PRODUCT_DETAIL:
             case SEARCH_PRODUCTS:
             case GET_CATEGORIES:
+            case ADMIN_REGISTER_KEY:
+            case ADMIN_AUTH_INIT:
+            case ADMIN_AUTH_RESPONSE:
                 break;
             default:
                 if (!SessionManager.isValid(request.getToken())) {
@@ -84,6 +87,9 @@ public class RequestRouter {
             case FORGOT_PASSWORD: return authService.forgotPassword(request);
             case VERIFY_RESET_TOKEN:  return authService.verifyResetToken(request);
             case RESET_PASSWORD:  return authService.resetPassword(request);
+            case UPDATE_PROFILE:  return authService.updateProfile(request);
+            case ADMIN_AUTH_INIT: return authService.adminAuthInit(request, clientAddress);
+            case ADMIN_AUTH_RESPONSE: return authService.adminAuthResponse(request, clientAddress);
             case VALIDATE_CARD:
                 return handleValidateCard(request);
 
@@ -136,6 +142,9 @@ public class RequestRouter {
             case ADMIN_ADD_CATEGORY:    return productService.addCategory(request);
             case ADMIN_EDIT_CATEGORY:   return productService.editCategory(request);
             case ADMIN_DELETE_CATEGORY: return productService.deleteCategory(request);
+
+            // Admin — Initialize new admin with RSA details
+            case ADMIN_REGISTER_KEY: return adminService.registerKey(request);
 
             // Admin — gestion admins (SUPER_ADMIN seulement)
             case ADMIN_GET_ALL_ADMINS: {

@@ -24,11 +24,13 @@ public class TwoFactorScreen {
 
     private final int    userId;
     private final String email;
+    private final boolean isAdmin;
     private final Gson gson = new Gson();
 
-    public TwoFactorScreen(int userId, String email) {
+    public TwoFactorScreen(int userId, String email, boolean isAdmin) {
         this.userId = userId;
         this.email  = email;
+        this.isAdmin = isAdmin;
     }
 
     public Node getView() {
@@ -207,7 +209,7 @@ public class TwoFactorScreen {
         new Thread(() -> {
             Response resp = ServerConnection.getInstance().send(
                     new Request(Action.VERIFY_2FA, null,
-                            java.util.Map.of("userId", userId, "code", code))
+                            java.util.Map.of("userId", userId, "code", code, "isAdmin", isAdmin))
             );
 
             Platform.runLater(() -> {
@@ -220,16 +222,30 @@ public class TwoFactorScreen {
 
                     Map<String, Object> data = castToMap(resp.getData());
 
-                    // ← MODIFIER ICI (6 paramètres avec email)
-                    NavigationManager.setSession(
-                            getStr(data, "token"),
-                            getInt(data, "userId"),
-                            getStr(data, "username"),
-                            getStr(data, "role"),
-                            getStr(data, "firstName"),
-                            getStr(data, "lastName"),
-                            getStr(data, "email")  // ← AJOUTER
-                    );
+                    String roleStr = getStr(data, "role");
+                    if ("CLIENT".equals(roleStr)) {
+                        NavigationManager.setSession(
+                                getStr(data, "token"),
+                                getInt(data, "userId"),
+                                getStr(data, "username"),
+                                roleStr,
+                                getStr(data, "firstName"),
+                                getStr(data, "lastName"),
+                                getStr(data, "email"),
+                                getStr(data, "address"),
+                                getStr(data, "phone")
+                        );
+                    } else {
+                        NavigationManager.setSession(
+                                getStr(data, "token"),
+                                getInt(data, "userId"),
+                                getStr(data, "username"),
+                                roleStr,
+                                getStr(data, "firstName"),
+                                getStr(data, "lastName"),
+                                getStr(data, "email")
+                        );
+                    }
 
                     javafx.animation.PauseTransition pause =
                             new javafx.animation.PauseTransition(

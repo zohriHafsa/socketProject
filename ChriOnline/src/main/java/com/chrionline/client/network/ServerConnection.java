@@ -2,7 +2,10 @@ package com.chrionline.client.network;
 
 import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.dto.Response;
+import com.chrionline.shared.security.AESCipher;
+import com.chrionline.shared.security.RSAUtils;
 
+import javax.crypto.SecretKey;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -10,6 +13,8 @@ import javax.net.ssl.TrustManagerFactory;
 import java.io.*;
 import java.net.Socket;
 import java.security.KeyStore;
+import java.security.PublicKey;
+import java.util.Base64;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +33,8 @@ public class ServerConnection {
     private Socket         socket;
     private BufferedReader  in;
     private PrintWriter     out;
+    private SecretKey       sessionKey;
+    private boolean         secureChannel;
 
     private final ExecutorService networkExecutor = Executors.newSingleThreadExecutor(r -> {
         Thread t = new Thread(r, "Network-IO");
@@ -47,51 +54,63 @@ public class ServerConnection {
     public boolean connect() {
         try {
             // ── Configuration TLS via TrustStore ──
-            // Charger le TrustStore PKCS12 contenant le certificat du serveur
             KeyStore trustStore = KeyStore.getInstance("PKCS12");
             File trustStoreFile = new File(TRUSTSTORE_PATH);
             try (FileInputStream fis = new FileInputStream(trustStoreFile.getAbsolutePath())) {
                 trustStore.load(fis, TRUSTSTORE_PASSWORD.toCharArray());
             }
 
-            // Initialiser le TrustManager avec le TrustStore
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(
                     TrustManagerFactory.getDefaultAlgorithm());
             tmf.init(trustStore);
 
-            // Créer le SSLContext TLS
             SSLContext context = SSLContext.getInstance("TLS");
             context.init(null, tmf.getTrustManagers(), null);
 
-            // Créer le SSLSocket
             SSLSocketFactory factory = context.getSocketFactory();
             SSLSocket sslSocket = (SSLSocket) factory.createSocket(HOST, PORT);
 
-            // Forcer le handshake TLS pour vérifier immédiatement
+            // Forcer le handshake TLS
             sslSocket.startHandshake();
             System.out.println("[CLIENT] TLS Handshake réussi avec " + HOST + ":" + PORT);
 
             socket = sslSocket;
             in     = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out    = new PrintWriter(socket.getOutputStream(), true);
+
+            // Couche applicative : Handshake AES/RSA
+            performHandshake();
+
             return true;
 
         } catch (Exception e) {
-            System.err.println("[CLIENT] Connexion TLS échouée: " + e.getMessage());
+            System.err.println("[CLIENT] Connexion sécurisée échouée: " + e.getMessage());
             return false;
         }
     }
 
     public synchronized Response send(Request request) {
         try {
-            out.println(request.toJson());
-            String line = in.readLine();
-            if (line != null) {
-                return Response.fromJson(line);
+            String json = request.toJson();
+            if (secureChannel) {
+                out.println(AESCipher.encrypt(json, sessionKey));
+            } else {
+                out.println(json);
             }
-            return Response.error("Aucune réponse du serveur.");
-        } catch (IOException e) {
-            return Response.error("Erreur réseau : " + e.getMessage());
+
+            String line = in.readLine();
+            if (line == null) {
+                return Response.error("Server closed connection.");
+            }
+            if (secureChannel) {
+                line = AESCipher.decrypt(line, sessionKey);
+            }
+            return Response.fromJson(line);
+
+        } catch (javax.crypto.AEADBadTagException e) {
+            return Response.error("Security error: response was tampered.");
+        } catch (Exception e) {
+            return Response.error("Communication error: " + e.getMessage());
         }
     }
 
@@ -117,4 +136,23 @@ public class ServerConnection {
 
     public String getHost() { return HOST; }
     public int    getPort() { return PORT; }
-}
+
+    private void performHandshake() {
+        try {
+            String line = in.readLine();
+            if (line == null || !line.startsWith("PUBLIC_KEY:")) {
+                throw new RuntimeException("Handshake failed: expected PUBLIC_KEY");
+            }
+            String pubKeyBase64 = line.substring("PUBLIC_KEY:".length());
+            PublicKey serverPubKey = RSAUtils.decodePublicKey(pubKeyBase64);
+            sessionKey = AESCipher.generateKey();
+            byte[] encryptedKey = RSAUtils.encryptWithPublicKey(sessionKey.getEncoded(), serverPubKey);
+            String encKeyBase64 = Base64.getEncoder().encodeToString(encryptedKey);
+            out.println("AES_KEY:" + encKeyBase64);
+            secureChannel = true;
+            System.out.println("[HANDSHAKE] Secure channel established (AES/RSA).");
+        } catch (Exception e) {
+            throw new RuntimeException("Handshake failed: " + e.getMessage(), e);
+        }
+    }
+}

@@ -3,6 +3,7 @@ package com.chrionline.shared.enums;
 public enum Action {
     // Auth
     LOGIN, REGISTER, LOGOUT,
+    ADMIN_AUTH_INIT, ADMIN_AUTH_RESPONSE,
 
     // Products
     GET_PRODUCTS, GET_PRODUCT_DETAIL, SEARCH_PRODUCTS, GET_CATEGORIES,
@@ -28,6 +29,7 @@ public enum Action {
 
     ADMIN_GET_ALL_ADMINS,
     ADMIN_CREATE_ADMIN,
+    ADMIN_REGISTER_KEY,
     ADMIN_TOGGLE_ADMIN,
     VERIFY_EMAIL,
     VERIFY_2FA,
@@ -38,7 +40,7 @@ public enum Action {
     SEND_PAYMENT_2FA,
     VERIFY_PAYMENT_2FA,
     FORGOT_PASSWORD,
+    UPDATE_PROFILE,
     // UDP
     REGISTER_UDP
-
 }

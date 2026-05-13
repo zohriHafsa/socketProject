@@ -134,7 +134,14 @@ public class LoginScreen {
 
         Pane particles = buildParticles();
 
-        root.getChildren().addAll(particles, watermark, backLink, centerBox);
+        Button adminIconBtn = new Button("\u2699"); 
+        adminIconBtn.getStyleClass().add("auth-back-link");
+        adminIconBtn.setStyle("-fx-font-size: 22px; -fx-text-fill: rgba(255, 255, 255, 0.4);");
+        adminIconBtn.setOnAction(e -> NavigationManager.showAdminLogin());
+        StackPane.setAlignment(adminIconBtn, Pos.TOP_RIGHT);
+        StackPane.setMargin(adminIconBtn, new Insets(20, 24, 0, 0));
+
+        root.getChildren().addAll(particles, watermark, backLink, adminIconBtn, centerBox);
 
         Platform.runLater(() -> {
             branding.setOpacity(0);
@@ -265,21 +272,36 @@ public class LoginScreen {
                     if (Boolean.TRUE.equals(data.get("2fa_required"))) {
                         NavigationManager.showTwoFactor(
                                 getInt(data, "userId"),
-                                getStr(data, "email")
+                                getStr(data, "email"),
+                                false
                         );
                         return;
                     }
 
-                    // ← MODIFIER ICI (6 paramètres avec email)
-                    NavigationManager.setSession(
-                            getStr(data, "token"),
-                            getInt(data, "userId"),
-                            getStr(data, "username"),
-                            getStr(data, "role"),
-                            getStr(data, "firstName"),
-                            getStr(data, "lastName"),
-                            getStr(data, "email")  // ← AJOUTER
-                    );
+                    String roleStr = getStr(data, "role");
+                    if ("CLIENT".equals(roleStr)) {
+                        NavigationManager.setSession(
+                                getStr(data, "token"),
+                                getInt(data, "userId"),
+                                getStr(data, "username"),
+                                roleStr,
+                                getStr(data, "firstName"),
+                                getStr(data, "lastName"),
+                                getStr(data, "email"),
+                                getStr(data, "address"),
+                                getStr(data, "phone")
+                        );
+                    } else {
+                        NavigationManager.setSession(
+                                getStr(data, "token"),
+                                getInt(data, "userId"),
+                                getStr(data, "username"),
+                                roleStr,
+                                getStr(data, "firstName"),
+                                getStr(data, "lastName"),
+                                getStr(data, "email")
+                        );
+                    }
 
                     int uid = getInt(data, "userId");
                     UDPHeartbeatSender heartbeat = new UDPHeartbeatSender(uid);

@@ -1,5 +1,7 @@
 package com.chrionline.server.dao;
 
+import com.chrionline.server.security.EncryptionHelper;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,11 +28,11 @@ public class PaymentDAO {
             ps.setString(4, status);
             ps.setDouble(5, amount);
             if (cardLastFour != null) {
-                ps.setString(6, cardLastFour);
+                ps.setString(6, EncryptionHelper.encrypt(cardLastFour));
             } else {
                 ps.setNull(6, Types.CHAR);
             }
-            ps.setString(7, transactionRef);
+            ps.setString(7, EncryptionHelper.encrypt(transactionRef));
             if (paidAt != null) {
                 ps.setString(8, paidAt);
             } else {
@@ -68,8 +70,8 @@ public class PaymentDAO {
                 p.put("method", rs.getString("method"));
                 p.put("status", rs.getString("status"));
                 p.put("amount", rs.getDouble("amount"));
-                p.put("cardLastFour", rs.getString("card_last_four"));
-                p.put("transactionRef", rs.getString("transaction_ref"));
+                p.put("cardLastFour", EncryptionHelper.decrypt(rs.getString("card_last_four")));
+                p.put("transactionRef", EncryptionHelper.decrypt(rs.getString("transaction_ref")));
                 p.put("paidAt", rs.getString("paid_at"));
                 return p;
             }

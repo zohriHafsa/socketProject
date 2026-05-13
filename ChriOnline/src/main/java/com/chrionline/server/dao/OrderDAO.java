@@ -1,5 +1,7 @@
 package com.chrionline.server.dao;
 
+import com.chrionline.server.security.EncryptionHelper;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,7 +25,7 @@ public class OrderDAO {
             ps.setString(1, orderId);
             ps.setInt(2, userId);
             ps.setDouble(3, totalAmount);
-            ps.setString(4, shippingAddress);
+            ps.setString(4, EncryptionHelper.encrypt(shippingAddress));
             ps.executeUpdate();
         }
     }
@@ -117,7 +119,7 @@ public class OrderDAO {
         o.put("userId", rs.getInt("user_id"));
         o.put("status", rs.getString("status"));
         o.put("totalAmount", rs.getDouble("total_amount"));
-        o.put("shippingAddress", rs.getString("shipping_address"));
+        o.put("shippingAddress", EncryptionHelper.decrypt(rs.getString("shipping_address")));
         o.put("createdAt", rs.getString("created_at"));
         o.put("updatedAt", rs.getString("updated_at"));
         return o;

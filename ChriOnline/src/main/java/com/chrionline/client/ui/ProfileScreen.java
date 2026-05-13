@@ -39,12 +39,18 @@ public class ProfileScreen {
 
     public Node getView() { return root; }
 
+    private boolean isEditing = false;
+    private final Map<String, TextField> editFields = new HashMap<>();
+
     @SuppressWarnings("unchecked")
     private void buildContent() {
         String fn       = orEmpty(NavigationManager.getFirstName());
         String ln       = orEmpty(NavigationManager.getLastName());
         String username = orEmpty(NavigationManager.getUsername());
         String role     = orEmpty(NavigationManager.getRole());
+        String email    = orEmpty(NavigationManager.getEmail());
+        String address  = orEmpty(NavigationManager.getAddress());
+        String phone    = orEmpty(NavigationManager.getPhone());
 
         String fullName = (fn + " " + ln).trim();
         String displayName = fullName.isEmpty() ? username : fullName;
@@ -59,20 +65,33 @@ public class ProfileScreen {
         container.setPadding(new Insets(30, H_PAD, 60, H_PAD));
         container.setAlignment(Pos.TOP_CENTER);
 
-        // ── Page title ───────────────────────────────────────
+        // ── Header Row ───────────────────────────────────────
+        HBox headerRow = new HBox(15);
+        headerRow.setAlignment(Pos.CENTER_LEFT);
+        
         Label pageTitle = new Label("Mon Profil");
         pageTitle.getStyleClass().add("page-title");
-        pageTitle.setAlignment(Pos.CENTER_LEFT);
+        
+        Region headerSpacer = new Region();
+        HBox.setHgrow(headerSpacer, Priority.ALWAYS);
+        
+        Button editBtn = new Button(isEditing ? "Annuler" : "Modifier le profil");
+        editBtn.getStyleClass().add(isEditing ? "btn-secondary" : "btn-primary");
+        editBtn.setOnAction(e -> {
+            isEditing = !isEditing;
+            buildContent();
+        });
+        
+        headerRow.getChildren().addAll(pageTitle, headerSpacer, editBtn);
 
         // ════════════════════════════════════════════════════
-        //  HERO CARD — avatar + name + role + username
+        //  HERO CARD
         // ════════════════════════════════════════════════════
         HBox heroCard = new HBox(20);
         heroCard.getStyleClass().add("profile-hero-card");
         heroCard.setAlignment(Pos.CENTER_LEFT);
         heroCard.setPadding(new Insets(24, 28, 24, 28));
 
-        // Avatar
         StackPane avatar = new StackPane();
         avatar.getStyleClass().add("profile-avatar-lg");
         Label avatarLabel = new Label(initials);
@@ -92,34 +111,25 @@ public class ProfileScreen {
         Label roleBadge = new Label(fmtRole(role));
         roleBadge.getStyleClass().addAll("order-status-badge", "profile-badge-client");
 
-        // ── Orders chip (loaded async) ─────────────────────
-        Label ordersChip = new Label("●  — commandes");
-        ordersChip.getStyleClass().add("profile-orders-chip");
-
         heroText.getChildren().addAll(nameLabel, usernameLabel, roleBadge);
 
-        // ── Orders stat — right side of hero ──────────────
         VBox ordersBox = new VBox(4);
         ordersBox.setAlignment(Pos.CENTER);
         ordersBox.setPadding(new Insets(8, 12, 8, 12));
         ordersBox.getStyleClass().add("profile-orders-box");
-
         Label ordersIcon = new Label("📦");
         ordersIcon.setStyle("-fx-font-size: 22px; -fx-text-fill: #6C3483;");
-
         Label ordersCount = new Label("—");
         ordersCount.getStyleClass().add("profile-orders-count");
-
         Label ordersLabel = new Label("commandes");
         ordersLabel.getStyleClass().add("profile-orders-label");
-
         ordersBox.getChildren().addAll(ordersIcon, ordersCount, ordersLabel);
+        
         heroCard.getChildren().addAll(avatar, heroText, ordersBox);
-
         loadOrdersCount(ordersCount);
 
         // ════════════════════════════════════════════════════
-        //  INFO CARD — two-column grid
+        //  INFO CARD
         // ════════════════════════════════════════════════════
         VBox infoCard = new VBox(16);
         infoCard.getStyleClass().add("profile-info-card");
@@ -137,10 +147,24 @@ public class ProfileScreen {
         ColumnConstraints c2 = new ColumnConstraints(); c2.setPercentWidth(50);
         infoGrid.getColumnConstraints().addAll(c1, c2);
 
-        infoGrid.add(infoField("Prénom",           fn.isEmpty()       ? "—" : fn),       0, 0);
-        infoGrid.add(infoField("Nom de famille",    ln.isEmpty()       ? "—" : ln),       1, 0);
-        infoGrid.add(infoField("Nom d'utilisateur", username.isEmpty() ? "—" : "@" + username), 0, 1);
-        infoGrid.add(infoField("Rôle",              fmtRole(role)),                        1, 1);
+        if (isEditing) {
+            infoGrid.add(infoField("Nom d'utilisateur", "@" + username), 0, 0);
+            infoGrid.add(infoField("E-mail", email), 1, 0);
+            infoGrid.add(editField("firstName", "Prénom", fn), 0, 1);
+            infoGrid.add(editField("lastName",  "Nom de famille", ln), 1, 1);
+            infoGrid.add(editField("phone", "Téléphone", phone), 0, 2);
+            infoGrid.add(editField("address", "Adresse de livraison", address), 1, 2);
+        } else {
+            infoGrid.add(infoField("Nom d'utilisateur", username.isEmpty() ? "—" : "@" + username), 0, 0);
+            infoGrid.add(infoField("E-mail",           email.isEmpty() ? "—" : email),    1, 0);
+            infoGrid.add(infoField("Prénom",           fn.isEmpty() ? "—" : fn),          0, 1);
+            infoGrid.add(infoField("Nom de famille",    ln.isEmpty() ? "—" : ln),          1, 1);
+
+            if (!NavigationManager.isAdmin()) {
+                infoGrid.add(infoField("Téléphone",    phone.isEmpty() ? "—" : phone),    0, 2);
+                infoGrid.add(infoField("Adresse de livraison", address.isEmpty() ? "—" : address), 1, 2);
+            }
+        }
 
         infoCard.getChildren().addAll(infoTitle, divider, infoGrid);
 
@@ -150,15 +174,24 @@ public class ProfileScreen {
         HBox actions = new HBox(12);
         actions.setAlignment(Pos.CENTER_LEFT);
 
-        Button ordersBtn = new Button("📦  Mes commandes");
-        ordersBtn.getStyleClass().add("btn-primary");
-        ordersBtn.setStyle("-fx-font-size:13px;-fx-padding:11 22;");
-        ordersBtn.setOnAction(e -> NavigationManager.showOrders());
+        if (isEditing) {
+            Button saveBtn = new Button("💾  Enregistrer les modifications");
+            saveBtn.getStyleClass().add("btn-primary");
+            saveBtn.setStyle("-fx-font-size:13px;-fx-padding:11 22;");
+            saveBtn.setOnAction(e -> doUpdateProfile(saveBtn));
+            actions.getChildren().add(saveBtn);
+        } else {
+            Button ordersBtn = new Button("📦  Mes commandes");
+            ordersBtn.getStyleClass().add("btn-primary");
+            ordersBtn.setStyle("-fx-font-size:13px;-fx-padding:11 22;");
+            ordersBtn.setOnAction(e -> NavigationManager.showOrders());
 
-        Button cartBtn = new Button("🛒  Mon panier");
-        cartBtn.getStyleClass().add("btn-secondary");
-        cartBtn.setStyle("-fx-font-size:13px;-fx-padding:11 22;");
-        cartBtn.setOnAction(e -> NavigationManager.showCart());
+            Button cartBtn = new Button("🛒  Mon panier");
+            cartBtn.getStyleClass().add("btn-secondary");
+            cartBtn.setStyle("-fx-font-size:13px;-fx-padding:11 22;");
+            cartBtn.setOnAction(e -> NavigationManager.showCart());
+            actions.getChildren().addAll(ordersBtn, cartBtn);
+        }
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -167,33 +200,78 @@ public class ProfileScreen {
         logoutBtn.getStyleClass().add("profile-logout-btn");
         logoutBtn.setOnAction(e -> doLogout());
 
-        actions.getChildren().addAll(ordersBtn, cartBtn, spacer, logoutBtn);
+        actions.getChildren().addAll(spacer, logoutBtn);
 
-        container.getChildren().addAll(pageTitle, heroCard, infoCard, actions);
+        container.getChildren().addAll(headerRow, heroCard, infoCard, actions);
 
         StackPane centered = new StackPane(container);
         centered.setAlignment(Pos.TOP_CENTER);
-
         ScrollPane scroll = new ScrollPane(centered);
         scroll.setFitToWidth(true);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scroll.getStyleClass().add("scroll-pane");
-
         root.setCenter(scroll);
+    }
 
-        // Staggered entrance
-        Platform.runLater(() -> {
-            Node[] nodes = {heroCard, infoCard, actions};
-            for (int i = 0; i < nodes.length; i++) {
-                Node n = nodes[i]; n.setOpacity(0); n.setTranslateY(18);
-                FadeTransition f = new FadeTransition(Duration.millis(420), n);
-                f.setToValue(1); f.setDelay(Duration.millis(80 + i * 90));
-                TranslateTransition s = new TranslateTransition(Duration.millis(420), n);
-                s.setToY(0); s.setDelay(Duration.millis(80 + i * 90));
-                s.setInterpolator(Interpolator.EASE_OUT);
-                new ParallelTransition(f, s).play();
+    private VBox editField(String key, String label, String value) {
+        VBox box = new VBox(4);
+        Label l = new Label(label);
+        l.getStyleClass().add("profile-field-label");
+        
+        TextField tf = new TextField(value);
+        tf.getStyleClass().add("auth-field");
+        tf.setStyle("-fx-font-size: 13px; -fx-padding: 8 12;");
+        editFields.put(key, tf);
+        
+        box.getChildren().addAll(l, tf);
+        return box;
+    }
+
+    private void doUpdateProfile(Button btn) {
+        String fn = editFields.get("firstName").getText().trim();
+        String ln = editFields.get("lastName").getText().trim();
+        String ph = editFields.get("phone").getText().trim();
+        String ad = editFields.get("address").getText().trim();
+
+        if (fn.isEmpty() || ln.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Prénom et Nom requis.");
+            alert.show();
+            return;
+        }
+
+        btn.setDisable(true);
+        btn.setText("Mise à jour...");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("firstName", fn);
+        params.put("lastName", ln);
+        params.put("phone", ph);
+        params.put("address", ad);
+
+        ServerConnection.getInstance().sendAsync(
+            new Request(Action.UPDATE_PROFILE, NavigationManager.getToken(), params)
+        ).thenAccept(resp -> Platform.runLater(() -> {
+            btn.setDisable(false);
+            btn.setText("💾  Enregistrer les modifications");
+            
+            if (resp.isSuccess()) {
+                // Update local session
+                NavigationManager.setSession(
+                    NavigationManager.getToken(),
+                    NavigationManager.getUserId(),
+                    NavigationManager.getUsername(),
+                    NavigationManager.getRole(),
+                    fn, ln,
+                    NavigationManager.getEmail(),
+                    ad, ph
+                );
+                isEditing = false;
+                buildContent();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, resp.getMessage());
+                alert.show();
             }
-        });
+        }));
     }
 
     // ── Info field (label + value stacked) ────────────────

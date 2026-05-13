@@ -28,7 +28,9 @@ public class NavigationManager {
     private static int    userId = -1;
     private static String firstName;
     private static String lastName;
-    private static String email;  // ← AJOUTÉ
+    private static String email;
+    private static String address;
+    private static String phone;
 
     public static void initialize(StackPane root, Scene sc) {
         rootContainer = root;
@@ -53,8 +55,8 @@ public class NavigationManager {
         transitionTo(new EmailVerificationScreen(uid, userEmail).getView(), true);
     }
 
-    public static void showTwoFactor(int uid, String userEmail) {
-        transitionTo(new TwoFactorScreen(uid, userEmail).getView(), true);
+    public static void showTwoFactor(int uid, String userEmail, boolean isAdmin) {
+        transitionTo(new TwoFactorScreen(uid, userEmail, isAdmin).getView(), true);
     }
 
     // ── Password reset ─────────────────────────────────
@@ -77,6 +79,8 @@ public class NavigationManager {
     public static void showManageOrders()    { transitionTo(new ManageOrdersScreen().getView(), true); }
     public static void showManageCategories(){ transitionTo(new ManageCategoriesScreen().getView(), true); }
     public static void showManageAdmins()    { transitionTo(new ManageAdminsScreen().getView(), true); }
+    public static void showAdminInit(String username) { transitionTo(new AdminInitScreen(username).getView(), true); }
+    public static void showAdminLogin()      { transitionTo(new AdminLoginScreen().getView(), true); }
 
     // ── Navigation par nom ─────────────────────────────
     public static void navigateTo(String name) {
@@ -96,6 +100,8 @@ public class NavigationManager {
                 case "manageOrders":     showManageOrders();     break;
                 case "manageCategories": showManageCategories(); break;
                 case "manageAdmins":     showManageAdmins();     break;
+                case "adminInit":        showAdminInit(null);    break;
+                case "adminLogin":       showAdminLogin();       break;
                 case "forgotPassword":   showForgotPassword();   break;
                 default: System.err.println("[NAV] Unknown: " + name);
             }
@@ -184,26 +190,25 @@ public class NavigationManager {
     }
 
     // ── Session management ─────────────────────────────
-    // Version 6 paramètres (sans email) - pour compatibilité
-    public static void setSession(String tk, int uid, String un,
-                                  String rl, String fn, String ln) {
-        token = tk; userId = uid; username = un;
-        role = rl; firstName = fn; lastName = ln;
-        email = null;
-    }
-
-    // Version 7 paramètres (avec email) - VERSION RECOMMANDÉE
     public static void setSession(String tk, int uid, String un,
                                   String rl, String fn, String ln, String userEmail) {
         token = tk; userId = uid; username = un;
         role = rl; firstName = fn; lastName = ln;
-        email = userEmail;
+        email = userEmail; address = null; phone = null;
+    }
+
+    public static void setSession(String tk, int uid, String un, String rl,
+                                  String fn, String ln, String userEmail,
+                                  String userAddr, String userPhone) {
+        token = tk; userId = uid; username = un;
+        role = rl; firstName = fn; lastName = ln;
+        email = userEmail; address = userAddr; phone = userPhone;
     }
 
     public static void clearSession() {
         token = null; userId = -1; username = null;
         role = null; firstName = null; lastName = null;
-        email = null;
+        email = null; address = null; phone = null;
     }
 
     // ── Getters ────────────────────────────────────────
@@ -216,6 +221,8 @@ public class NavigationManager {
     public static String  getRole()      { return role; }
     public static String  getFirstName() { return firstName; }
     public static String  getLastName()  { return lastName; }
-    public static String  getEmail()     { return email; }      // ← AJOUTÉ
+    public static String  getEmail()     { return email; }
+    public static String  getAddress()   { return address; }
+    public static String  getPhone()     { return phone; }
     public static Scene   getScene()     { return scene; }
 }

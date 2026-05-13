@@ -48,7 +48,7 @@ public class EmailService {
                 "      <h2 style='font-size: 20px; color: #2C3E50; margin-top: 0; font-weight: 600;'>Bonjour,</h2>" +
                 "      <p style='font-size: 15px; color: #4a5568;'>" + message + "</p>" +
                 "      <div style='text-align: center; margin: 35px 0;'>" +
-                "        <span style='display: inline-block; background-color: #F8F9FA; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px 35px; font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #6C3483;'>" + code + "</span>" +
+                "        <span style='display: inline-block; background-color: #F8F9FA; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px 20px; font-size: " + (code.length() > 10 ? "16px" : "36px") + "; font-weight: bold; letter-spacing: " + (code.length() > 10 ? "2px" : "8px") + "; color: #6C3483; word-break: break-all;'>" + code + "</span>" +
                 "      </div>" +
                 "      <p style='font-size: 14px; color: #718096; margin-bottom: 0;'>Ce code expirera dans 10 minutes. Si vous n'avez pas initie cette demande, vous pouvez ignorer cet email en toute securite.</p>" +
                 "    </div>" +
@@ -110,6 +110,15 @@ public class EmailService {
                 "Recuperation de compte",
                 "Nous avons recu une demande de reinitialisation de mot de passe pour votre compte. Veuillez utiliser le code de securite ci-dessous pour modifier votre mot de passe :",
                 code
+        );
+    }
+
+    public static boolean sendAdminActivationEmail(String toEmail, String activationToken) {
+        return sendEmail(toEmail,
+                "ChriOnline - Activation de compte Administrateur",
+                "Activation Admin",
+                "Vous avez été désigné comme administrateur de ChriOnline. Veuillez utiliser le token d'activation ci-dessous dans l'application pour initialiser vos clés de sécurité :",
+                activationToken
         );
     }
 }

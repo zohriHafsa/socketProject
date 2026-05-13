@@ -1629,3 +1629,1490 @@
               │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":9,"items":[],"itemCount":0}}
               └───────────────────────────────────────────────────────
 
+  11:32:17.278  🚀 [INFO   ] Starting ChriOnline Server...
+  11:32:17.316  ℹ  [INFO   ] UDP Heartbeat Server listening on port 9091
+  11:32:47.312  ℹ  [INFO   ] UDP Notifier initialisé
+  11:35:33.313  ℹ  [INFO   ] [SYN FLOOD] Cleanup pour IP 127.0.0.1
+  11:35:33.328  ℹ  [INFO   ] [SYN FLOOD] Connexion acceptée pour IP 127.0.0.1 (1/5)
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                  ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  11:35:36.505  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES","nonce":"f83e8b48-8c8c-4ada-9744-cfae428ce2b2","timestamp":1776418536330}
+              └───────────────────────────────────────────────────────
+  11:35:36.763  ℹ  [INFO   ] [REPLAY] Request valide : nonce=f83e8b48...
+  11:35:36.767  ⚡ [ROUTE] GET_CATEGORIES
+  11:35:37.601  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  11:35:37.615  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  11:35:37.655  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS","nonce":"f5babdd9-1ee6-47df-9d61-c575ebbed6cc","timestamp":1776418536355}
+              └───────────────────────────────────────────────────────
+  11:35:37.655  ℹ  [INFO   ] [REPLAY] Request valide : nonce=f5babdd9...
+  11:35:37.660  ⚡ [ROUTE] GET_PRODUCTS
+  11:35:37.669  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  11:35:37.675  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+  11:40:36.773  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  11:41:36.773  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                         ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:27:14.075  ℹ  [INFO   ] [SYN FLOOD] Connexion libérée pour IP 127.0.0.1 (reste: 0)
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                         ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  21:30:32.136  🚀 [INFO   ] Starting ChriOnline Server...
+  21:30:32.163  ℹ  [INFO   ] UDP Heartbeat Server listening on port 9091
+  21:31:02.156  ℹ  [INFO   ] UDP Notifier initialisé
+  21:31:04.916  ℹ  [INFO   ] [SYN FLOOD] Cleanup pour IP 127.0.0.1
+  21:31:04.923  ℹ  [INFO   ] [SYN FLOOD] Connexion acceptée pour IP 127.0.0.1 (1/5)
+
+  ╔════════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                 ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚════════════════════════════════════════════════════════════════╝
+
+  21:31:08.027  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES","nonce":"405b0606-40d0-44fb-bb84-bf869eab72d1","timestamp":1776627067915}
+              └───────────────────────────────────────────────────────
+  21:31:08.223  ℹ  [INFO   ] [REPLAY] Request valide : nonce=405b0606...
+  21:31:08.224  ⚡ [ROUTE] GET_CATEGORIES
+  21:31:08.823  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  21:31:08.838  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  21:31:08.854  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS","nonce":"94ba2036-8b80-4697-9549-7b2d22a90403","timestamp":1776627067921}
+              └───────────────────────────────────────────────────────
+  21:31:08.858  ℹ  [INFO   ] [REPLAY] Request valide : nonce=94ba2036...
+  21:31:08.859  ⚡ [ROUTE] GET_PRODUCTS
+  21:31:08.869  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  21:31:08.875  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+  21:36:08.237  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  21:37:08.227  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+
+  22:21:14.497  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"Superadmin.123","username":"superadmin"},"nonce":"7584c796-1a2c-4f42-bf6d-f9ab88c59435","timestamp":1776630074496}
+              └───────────────────────────────────────────────────────
+  22:21:14.506  ℹ  [INFO   ] [REPLAY] Request valide : nonce=7584c796...
+  22:21:14.506  ⚡ [ROUTE] LOGIN
+  22:21:14.515  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect."}
+              └───────────────────────────────────────────────────────
+
+
+  22:21:45.245  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── FORGOT_PASSWORD ──────
+              │ {"action":"FORGOT_PASSWORD","data":{"username":"superadmin"},"nonce":"c12ace71-cb2d-4fd0-a76e-aef1ea2697cc","timestamp":1776630105244}
+              └───────────────────────────────────────────────────────
+  22:21:45.248  ℹ  [INFO   ] [REPLAY] Request valide : nonce=c12ace71...
+  22:21:45.248  ⚡ [ROUTE] FORGOT_PASSWORD
+  22:21:45.254  ⚠  [WARN   ] FORGOT_PASSWORD : username inconnu = superadmin
+  22:21:45.256  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Si ce compte existe, un email a ete envoye."}
+              └───────────────────────────────────────────────────────
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                        ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  22:22:56.446  ℹ  [INFO   ] [SYN FLOOD] Connexion libérée pour IP 127.0.0.1 (reste: 0)
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                        ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  22:23:10.848  🚀 [INFO   ] Starting ChriOnline Server...
+  22:23:10.868  ℹ  [INFO   ] UDP Heartbeat Server listening on port 9091
+  22:23:30.390  ℹ  [INFO   ] [SYN FLOOD] Cleanup pour IP 127.0.0.1
+  22:23:30.392  ℹ  [INFO   ] [SYN FLOOD] Connexion acceptée pour IP 127.0.0.1 (1/5)
+
+  ╔════════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                 ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚════════════════════════════════════════════════════════════════╝
+
+  22:23:33.386  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES","nonce":"d9de9e0c-e683-4b9c-8cf9-35addfbcf9a4","timestamp":1776630213329}
+              └───────────────────────────────────────────────────────
+  22:23:33.548  ℹ  [INFO   ] [REPLAY] Request valide : nonce=d9de9e0c...
+  22:23:33.548  ⚡ [ROUTE] GET_CATEGORIES
+  22:23:33.911  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  22:23:33.917  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  22:23:33.928  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS","nonce":"c40f80c7-8706-4f0e-807a-78c0592a5b20","timestamp":1776630213335}
+              └───────────────────────────────────────────────────────
+  22:23:33.930  ℹ  [INFO   ] [REPLAY] Request valide : nonce=c40f80c7...
+  22:23:33.930  ⚡ [ROUTE] GET_PRODUCTS
+  22:23:33.934  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  22:23:33.936  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+  22:23:40.866  ℹ  [INFO   ] UDP Notifier initialisé
+
+  22:23:56.635  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── FORGOT_PASSWORD ──────
+              │ {"action":"FORGOT_PASSWORD","data":{"username":"superadmin"},"nonce":"66be9107-feeb-426b-a8d5-4daa7ca4fc3f","timestamp":1776630236634}
+              └───────────────────────────────────────────────────────
+  22:23:56.639  ℹ  [INFO   ] [REPLAY] Request valide : nonce=66be9107...
+  22:23:56.639  ⚡ [ROUTE] FORGOT_PASSWORD
+  22:23:56.642  ⚠  [WARN   ] FORGOT_PASSWORD : username inconnu = superadmin
+  22:23:56.643  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Si ce compte existe, un email a ete envoye."}
+              └───────────────────────────────────────────────────────
+
+
+  22:25:02.686  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── VERIFY_RESET_TOKEN ───
+              │ {"action":"VERIFY_RESET_TOKEN","data":{"username":"superadmin","token":"692547"},"nonce":"6d6e26eb-ef9f-47cd-a2f6-d1df56ae1334","timestamp":1776630302685}
+              └───────────────────────────────────────────────────────
+  22:25:02.689  ℹ  [INFO   ] [REPLAY] Request valide : nonce=6d6e26eb...
+  22:25:02.689  ⚡ [ROUTE] VERIFY_RESET_TOKEN
+  22:25:02.694  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Code invalide ou expiré."}
+              └───────────────────────────────────────────────────────
+
+
+  22:25:07.487  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── FORGOT_PASSWORD ──────
+              │ {"action":"FORGOT_PASSWORD","data":{"username":"superadmin"},"nonce":"9d5f47e2-eedf-4887-9d20-ec77a3b48be4","timestamp":1776630307486}
+              └───────────────────────────────────────────────────────
+  22:25:07.490  ℹ  [INFO   ] [REPLAY] Request valide : nonce=9d5f47e2...
+  22:25:07.491  ⚡ [ROUTE] FORGOT_PASSWORD
+  22:25:07.493  ⚠  [WARN   ] FORGOT_PASSWORD : username inconnu = superadmin
+  22:25:07.495  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Si ce compte existe, un email a ete envoye."}
+              └───────────────────────────────────────────────────────
+
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                        ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  22:26:49.121  ℹ  [INFO   ] [SYN FLOOD] Connexion libérée pour IP 127.0.0.1 (reste: 0)
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                        ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  22:31:56.068  ℹ  [INFO   ] [REPLAY] Cleanup : 5 nonces expirés
+  22:32:14.634  ℹ  [INFO   ] [SYN FLOOD] Cleanup pour IP 127.0.0.1
+  22:32:14.634  ℹ  [INFO   ] [SYN FLOOD] Connexion acceptée pour IP 127.0.0.1 (1/5)
+
+  ╔════════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                 ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚════════════════════════════════════════════════════════════════╝
+
+  22:32:17.654  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES","nonce":"60770a5f-d296-47b4-a7a3-1984ccf01c2c","timestamp":1776630737595}
+              └───────────────────────────────────────────────────────
+  22:32:17.656  ℹ  [INFO   ] [REPLAY] Request valide : nonce=60770a5f...
+  22:32:17.656  ⚡ [ROUTE] GET_CATEGORIES
+  22:32:17.659  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  22:32:17.661  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  22:32:17.670  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS","nonce":"37cdc289-3b17-43c5-93f4-ccb7bb69a1f3","timestamp":1776630737598}
+              └───────────────────────────────────────────────────────
+  22:32:17.671  ℹ  [INFO   ] [REPLAY] Request valide : nonce=37cdc289...
+  22:32:17.671  ⚡ [ROUTE] GET_PRODUCTS
+  22:32:17.675  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  22:32:17.676  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+
+  22:33:33.935  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_AUTH_INIT ──────
+              │ {"action":"ADMIN_AUTH_INIT","data":{"username":"superadmin"},"nonce":"2febc33d-c012-4a6c-8d96-7b153957ae45","timestamp":1776630813933}
+              └───────────────────────────────────────────────────────
+  22:33:33.937  ℹ  [INFO   ] [REPLAY] Request valide : nonce=2febc33d...
+  22:33:33.937  ⚡ [ROUTE] ADMIN_AUTH_INIT
+  22:33:33.942  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"NEEDS_INIT","data":{"status":"PENDING"}}
+              └───────────────────────────────────────────────────────
+
+
+  22:35:28.856  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_REGISTER_KEY ───
+              │ {"action":"ADMIN_REGISTER_KEY","data":{"token":"super_init_token","publicKey":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAws4sAIPKoFhrZFClRauO2lZ8E9UE1YTaghcqVybQQb3mMef1DJK74o2POMkz0G/fZCqvPghkxoUHOjsDJ68d811JAgOcA5C5B0JBdlYuV61HcEEp+Dy7a0U4eWEab7mCQ06d7j5SDH1p1yie9wAiqfzHIMx2nEb9PBwd6UCFFd+GVj9DpBF8ioeMWubfzOH9O3BBYQCDHjTv/Uo0ge49Iao+X1SirslY5CX2b2BEnA5ROatKRJ1QdMupcEk0uLlqFQIQeHEpDNfSY/+LUfSyY67VXTLME11RayELvO3hnB7p4TiLkxZ+YyYQzGMqruEVNUU0TUNbZ9TYmZj92jw0gwIDAQAB","username":"superadmin"},"nonce":"a1c596ff-5ab8-44a7-a0d8-19ca3ff14d35","timestamp":1776630928854}
+              └───────────────────────────────────────────────────────
+  22:35:28.857  ℹ  [INFO   ] [REPLAY] Request valide : nonce=a1c596ff...
+  22:35:28.858  ⚡ [ROUTE] ADMIN_REGISTER_KEY
+  22:35:28.862  ℹ  [INFO   ] ADMIN_REGISTER_KEY : superadmin (Clé RSA enrégistrée)
+  22:35:28.863  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Clé de sécurité enregistrée. Vous pouvez maintenant vous connecter."}
+              └───────────────────────────────────────────────────────
+
+
+  22:35:59.143  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── LOGIN ────────────────
+              │ {"action":"LOGIN","data":{"password":"Hafsa123456","username":"superadmin"},"nonce":"8d7160ae-1d19-4a29-946d-464f5dfdd84e","timestamp":1776630959142}
+              └───────────────────────────────────────────────────────
+  22:35:59.146  ℹ  [INFO   ] [REPLAY] Request valide : nonce=8d7160ae...
+  22:35:59.146  ⚡ [ROUTE] LOGIN
+  22:35:59.151  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 ──────────────────────────
+              │ {"success":false,"message":"Mot de passe incorrect."}
+              └───────────────────────────────────────────────────────
+
+
+  22:37:22.267  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_AUTH_INIT ──────
+              │ {"action":"ADMIN_AUTH_INIT","data":{"username":"superadmin"},"nonce":"5f9be2a7-f203-42f3-a070-1e5cd37d4d04","timestamp":1776631042265}
+              └───────────────────────────────────────────────────────
+  22:37:22.270  ℹ  [INFO   ] [REPLAY] Request valide : nonce=5f9be2a7...
+  22:37:22.270  ⚡ [ROUTE] ADMIN_AUTH_INIT
+  22:37:22.286  ℹ  [INFO   ] ADMIN_AUTH_INIT: Challenge généré pour superadmin
+  22:37:22.288  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Challenge généré.","data":{"challenge":"vMhjn5b3HARfax55RyyidYeAPlBmPvrp0OCFBYR_HgA","status":"ACTIVE"}}
+              └───────────────────────────────────────────────────────
+
+  22:37:33.550  ℹ  [INFO   ] [REPLAY] Cleanup : 2 nonces expirés
+
+  22:37:55.536  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_AUTH_RESPONSE ──
+              │ {"action":"ADMIN_AUTH_RESPONSE","data":{"username":"superadmin","signature":"C2cutzSxaswqN82xDYIsphxOwOYJfek2AyuFf5HKDST6VclsWRnlIcSxtT803wJJFwDshOmQbhqDJJyOBAsJowRjOi7uVGRaK2PPPX+hD2+bEuiGND1umNJA59KPn4uhyVDnqpCJfEcKqy7Jrk5ombr25KOsedneVNxf0Gp2/1jdL8Ep5VrboeKSIqaupVJOSjOVOrCbZXtGQUoibVE/tWuqdL/LrJVZOE1U9VEiRxX88/BrcKxmCysmX/rV7d6InQg7JF0+ODxwh2bkQDR+q/QgcrDqG2SYmS/9MTSgNi3VRzr9GGg+ajsnbj9hbnqLZgVuPnK5H1d0g+SKMcrqyA\u003d\u003d"},"nonce":"bf558ce5-87de-42ac-9323-dcbb07400697","timestamp":1776631075535}
+              └───────────────────────────────────────────────────────
+  22:37:55.537  ℹ  [INFO   ] [REPLAY] Request valide : nonce=bf558ce5...
+  22:37:55.537  ⚡ [ROUTE] ADMIN_AUTH_RESPONSE
+  22:37:55.572  🔑 [SESSION+] Session created for 'superadmin' (ID:1) token=0a6ff630...
+  22:37:55.573  🔑 [LOGIN   ] LOGIN ADMIN (RSA) OK : superadmin (ID:1, role=SUPER_ADMIN)
+  22:37:55.573  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Connexion réussie !","data":{"firstName":"Super","lastName":"Admin","role":"SUPER_ADMIN","userId":1,"email":"hafsazohri0@gmail.com","token":"0a6ff630-426b-4027-9a85-ed881b6f... (231 chars)
+              │ [FULL] {"success":true,"message":"Connexion réussie !","data":{"firstName":"Super","lastName":"Admin","role":"SUPER_ADMIN","userId":1,"email":"hafsazohri0@gmail.com","token":"0a6ff630-426b-4027-9a85-ed881b6f62c9","username":"superadmin"}}
+              └───────────────────────────────────────────────────────
+
+  22:37:55.593  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  22:37:55.598  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59191)
+
+  22:37:55.599  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_GET_ALL_ORDERS ─
+              │ {"action":"ADMIN_GET_ALL_ORDERS","token":"0a6ff630-426b-4027-9a85-ed881b6f62c9","nonce":"da87882d-17ac-429e-a2d0-301ca2da5c8e","timestamp":1776631075597}
+              └───────────────────────────────────────────────────────
+  22:37:55.604  ℹ  [INFO   ] [REPLAY] Request valide : nonce=da87882d...
+  22:37:55.605  ⚡ [ROUTE] ADMIN_GET_ALL_ORDERS
+  22:37:55.613  ℹ  [INFO   ] ADMIN_GET_ALL_ORDERS : 8
+  22:37:55.615  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Toutes les commandes.","data":[{"totalAmount":899.99,"createdAt":"2026-04-14 19:09:36","orderId":"ORD-10A9EE80","shippingAddress":"Mhamid Bouaakaz 1504, marrakech 40000","us... (1772 chars)
+              │ [FULL] {"success":true,"message":"Toutes les commandes.","data":[{"totalAmount":899.99,"createdAt":"2026-04-14 19:09:36","orderId":"ORD-10A9EE80","shippingAddress":"Mhamid Bouaakaz 1504, marrakech 40000","userId":10,"status":"VALIDEE","updatedAt":"2026-04-14 19:09:36","username":"amine2_jk"},{"totalAmount":1199.99,"createdAt":"2026-03-25 14:53:51","orderId":"ORD-EC8F6535","shippingAddress":"99 Rue X, Teouan","userId":7,"status":"VALIDEE","updatedAt":"2026-04-12 18:00:32","username":"hafsa"},{"totalAmount":74.97,"createdAt":"2026-03-16 01:12:15","orderId":"ORD-7C9E12F4","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"status":"VALIDEE","updatedAt":"2026-03-16 01:12:15","username":"cblanc"},{"totalAmount":899.99,"createdAt":"2026-03-15 23:41:06","orderId":"ORD-0001-2026","shippingAddress":"12 Avenue Victor Hugo, Lyon","userId":2,"status":"LIVREE","updatedAt":"2026-03-15 23:41:06","username":"jdupont"},{"totalAmount":70.0,"createdAt":"2026-03-15 23:41:06","orderId":"ORD-0002-2026","shippingAddress":"12 Avenue Victor Hugo, Lyon","userId":2,"status":"EXPEDIEE","updatedAt":"2026-03-15 23:41:06","username":"jdupont"},{"totalAmount":2199.99,"createdAt":"2026-03-15 23:41:06","orderId":"ORD-0003-2026","shippingAddress":"8 Boulevard Pasteur, Marseille","userId":3,"status":"VALIDEE","updatedAt":"2026-03-15 23:41:06","username":"mleroy"},{"totalAmount":74.97,"createdAt":"2026-03-15 23:41:06","orderId":"ORD-0004-2026","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"status":"VALIDEE","updatedAt":"2026-03-16 01:12:15","username":"cblanc"},{"totalAmount":1299.0,"createdAt":"2026-03-15 23:41:06","orderId":"ORD-0005-2026","shippingAddress":"22 Rue de Rivoli, Paris","userId":5,"status":"ANNULEE","updatedAt":"2026-03-15 23:41:06","username":"tnoir"}]}
+              └───────────────────────────────────────────────────────
+
+
+  22:37:55.617  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_GET_USERS ──────
+              │ {"action":"ADMIN_GET_USERS","token":"0a6ff630-426b-4027-9a85-ed881b6f62c9","nonce":"f2d06747-e540-4d4c-91c4-b3f597525ad4","timestamp":1776631075616}
+              └───────────────────────────────────────────────────────
+  22:37:55.618  ℹ  [INFO   ] [REPLAY] Request valide : nonce=f2d06747...
+  22:37:55.618  ⚡ [ROUTE] ADMIN_GET_USERS
+  22:37:55.621  ℹ  [INFO   ] ADMIN_GET_USERS : 9 user(s)
+  22:37:55.622  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Liste des utilisateurs.","data":[{"lastName":"Dupont","address":"12 Avenue Victor Hugo, Lyon","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":2... (2752 chars)
+              │ [FULL] {"success":true,"message":"Liste des utilisateurs.","data":[{"lastName":"Dupont","address":"12 Avenue Victor Hugo, Lyon","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":2,"firstName":"Jean","createdAt":"2026-03-15 23:41:05","phone":"0611111111","email":"jean.dupont@mail.com","username":"jdupont","updatedAt":"2026-04-12 17:47:00"},{"lastName":"Leroy","address":"8 Boulevard Pasteur, Marseille","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":3,"firstName":"Marie","createdAt":"2026-03-15 23:41:05","phone":"0622222222","email":"marie.leroy@mail.com","username":"mleroy","updatedAt":"2026-04-12 17:47:02"},{"lastName":"Blanc","address":"5 Rue du Moulin, Bordeaux","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":4,"firstName":"Claire","createdAt":"2026-03-15 23:41:05","phone":"0633333333","email":"claire.blanc@mail.com","username":"cblanc","updatedAt":"2026-04-12 17:47:04"},{"lastName":"Noir","address":"22 Rue de Rivoli, Paris","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":5,"firstName":"Thomas","createdAt":"2026-03-15 23:41:05","phone":"0644444444","email":"thomas.noir@mail.com","username":"tnoir","updatedAt":"2026-04-12 17:50:50"},{"lastName":"Ait Jaakike","address":"15 Rue Mouassine, Marrakech","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":6,"firstName":"Mohamed Amine","createdAt":"2026-03-16 11:50:51","phone":"0622334412","email":"mohamedamine@gmail.com","username":"mohamed_amine","updatedAt":"2026-04-12 18:01:35"},{"lastName":"Zohri","address":"22 Avenue Moulay El Hassan, Martil","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":7,"firstName":"Hafsa","createdAt":"2026-03-25 14:44:46","phone":"0699887766","email":"hafsa@gmail.com","username":"hafsa","updatedAt":"2026-04-12 17:50:05"},{"lastName":"El Hauari","address":"12 Av. des FAR, Tetouan","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":8,"firstName":"Amine","createdAt":"2026-03-27 09:17:49","phone":"0612312345","email":"amine@gmail.com","username":"amine","updatedAt":"2026-04-12 18:04:38"},{"lastName":"Jaakike","address":"","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":9,"firstName":"Amine","createdAt":"2026-04-14 18:38:45","phone":"","email":"aitjaakikemohamedamine@gmail.com","username":"amine_jk","updatedAt":"2026-04-14 18:39:59"},{"lastName":"Jaakike","address":"","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":10,"firstName":"Amine","createdAt":"2026-04-14 18:49:29","phone":"","email":"mohamedamine.aitjaakike@etu.uae.ac.ma","username":"amine2_jk","updatedAt":"2026-04-14 19:08:00"}]}
+              └───────────────────────────────────────────────────────
+
+
+  22:37:55.625  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS","token":"0a6ff630-426b-4027-9a85-ed881b6f62c9","nonce":"ae5cdd02-3866-4a1f-8499-8320156cca71","timestamp":1776631075624}
+              └───────────────────────────────────────────────────────
+  22:37:55.626  ℹ  [INFO   ] [REPLAY] Request valide : nonce=ae5cdd02...
+  22:37:55.626  ⚡ [ROUTE] GET_PRODUCTS
+  22:37:55.628  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  22:37:55.629  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+  22:38:25.597  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  22:38:25.597  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62415)
+  22:38:55.598  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  22:38:55.598  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57748)
+  22:39:25.602  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  22:39:25.603  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56502)
+  22:39:33.558  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  22:39:55.605  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  22:39:55.606  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56443)
+  22:40:25.609  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  22:40:25.610  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:58825)
+  22:40:33.547  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  22:40:55.612  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  22:40:55.612  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59727)
+  22:41:25.614  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  22:41:25.615  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:50381)
+  22:41:33.559  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  22:41:55.617  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  22:41:55.618  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62472)
+  22:42:25.621  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  22:42:25.622  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:53357)
+  22:42:33.561  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  22:42:55.623  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  22:42:55.623  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:64747)
+  23:12:38.223  ℹ  [INFO   ] Session cleanup : 1 session(s) expirée(s). Actives : 0
+  23:21:48.887  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  23:21:48.887  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:49680)
+  23:21:56.821  ℹ  [INFO   ] [REPLAY] Cleanup : 4 nonces expirés
+  23:22:18.890  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  23:22:18.892  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:58619)
+  23:22:48.894  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  23:22:48.895  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60218)
+  23:23:18.899  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  23:23:18.899  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:51554)
+  23:23:48.903  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  23:23:48.903  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:52858)
+  23:24:18.907  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  23:24:18.907  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54992)
+  23:24:48.911  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  23:24:48.911  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:51223)
+  23:40:42.411  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  23:40:42.411  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55733)
+  08:38:59.473  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:38:59.473  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60218)
+  08:39:29.478  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:39:29.479  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57553)
+  08:39:59.486  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:39:59.486  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61749)
+  08:40:29.490  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:40:29.491  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:53811)
+  08:40:59.496  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:40:59.497  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62369)
+  08:41:29.510  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:41:29.510  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62448)
+  08:41:59.517  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:41:59.517  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:49790)
+  08:42:29.523  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:42:29.523  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57548)
+  08:42:59.536  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:42:59.536  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:51455)
+  08:43:29.547  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:43:29.547  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60474)
+  08:43:59.559  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:43:59.560  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56196)
+  08:44:29.564  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:44:29.564  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:65483)
+  08:44:59.571  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:44:59.571  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57228)
+  08:45:29.585  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:45:29.585  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54303)
+  08:45:59.596  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:45:59.597  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55787)
+  08:46:29.604  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:46:29.605  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55999)
+  08:46:59.614  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:46:59.615  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:65170)
+  08:47:29.618  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:47:29.618  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57420)
+  08:47:59.629  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:47:59.630  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55202)
+  08:48:29.632  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:48:29.632  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54017)
+  08:48:59.641  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:48:59.641  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:49344)
+  08:49:29.646  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:49:29.647  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:63472)
+  08:49:59.654  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:49:59.654  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54732)
+  08:50:29.666  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:50:29.667  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60331)
+  08:50:59.669  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:50:59.669  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54852)
+  08:51:29.673  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:51:29.673  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62744)
+  08:51:59.683  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:51:59.684  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:65110)
+  08:52:29.698  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:52:29.698  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:51697)
+  08:52:59.703  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:52:59.703  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56163)
+  08:53:29.714  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:53:29.714  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60303)
+  08:53:59.730  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:53:59.730  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:58593)
+  08:54:29.746  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:54:29.746  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:63076)
+  08:54:59.752  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:54:59.752  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56846)
+  08:55:29.764  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:55:29.764  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61753)
+  08:55:59.774  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:55:59.774  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:58108)
+  08:56:29.782  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:56:29.782  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:52838)
+  08:56:59.791  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:56:59.791  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60882)
+  08:57:29.794  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:57:29.795  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59663)
+  08:57:59.799  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:57:59.799  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60712)
+  08:58:29.807  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:58:29.807  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:49221)
+  08:58:59.815  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:58:59.816  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61086)
+  08:59:29.823  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:59:29.823  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:51745)
+  08:59:59.840  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  08:59:59.840  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:53881)
+  09:00:29.854  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:00:29.854  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57410)
+  09:00:59.863  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:00:59.864  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61749)
+  09:01:29.871  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:01:29.871  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56108)
+  09:01:59.888  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:01:59.888  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54208)
+  09:02:29.895  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:02:29.895  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57201)
+  09:02:59.905  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:02:59.905  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:58351)
+  09:03:29.915  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:03:29.915  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59016)
+  09:03:59.923  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:03:59.923  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61185)
+  09:04:29.925  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:04:29.925  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57144)
+  09:04:59.933  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:04:59.934  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60037)
+  09:05:29.946  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:05:29.946  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:64303)
+  09:05:59.957  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:05:59.957  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56165)
+  09:06:29.964  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:06:29.965  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57004)
+  09:06:59.967  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:06:59.967  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:53702)
+  09:07:29.970  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:07:29.970  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:51918)
+  09:07:59.985  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:07:59.985  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:53324)
+  09:08:30.000  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:08:30.000  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:63778)
+  09:09:00.016  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:09:00.016  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:53386)
+  09:09:30.031  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:09:30.031  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57549)
+  09:10:00.038  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:10:00.039  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:52459)
+  09:10:30.040  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:10:30.040  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54405)
+  09:11:00.044  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:11:00.045  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:49666)
+  09:11:30.047  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:11:30.048  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61061)
+  09:12:00.053  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:12:00.054  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54054)
+  09:12:30.068  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:12:30.068  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:50886)
+  09:13:00.079  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:13:00.079  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:52690)
+  09:13:30.095  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:13:30.095  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57567)
+  09:14:00.098  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:14:00.098  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:64843)
+  09:14:30.106  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:14:30.106  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:64997)
+  09:15:00.113  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:15:00.114  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62172)
+  09:15:30.123  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:15:30.124  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59607)
+  09:16:00.131  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:16:00.131  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59335)
+  09:16:30.141  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:16:30.141  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59458)
+  09:17:00.152  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:17:00.152  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56723)
+  09:17:30.155  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:17:30.155  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54963)
+  09:18:00.162  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:18:00.162  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62085)
+  09:18:30.177  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:18:30.177  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:64245)
+  09:19:00.181  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:19:00.181  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54023)
+  09:19:30.195  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:19:30.195  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57563)
+  09:20:00.198  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:20:00.198  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:58558)
+  09:20:30.211  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:20:30.212  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57836)
+  09:21:00.223  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:21:00.224  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54363)
+  09:21:30.231  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:21:30.231  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:64142)
+  09:22:00.246  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:22:00.247  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54403)
+  09:22:30.251  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:22:30.251  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61749)
+  09:23:00.261  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:23:00.261  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62896)
+  09:23:30.270  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:23:30.270  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:63329)
+  09:24:00.286  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:24:00.286  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:63794)
+  09:24:30.291  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:24:30.291  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61250)
+  09:25:00.303  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:25:00.304  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:65035)
+  09:25:30.314  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:25:30.314  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62464)
+  09:26:00.319  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:26:00.319  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59877)
+  09:26:30.322  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:26:30.322  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54466)
+  09:27:00.323  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:27:00.323  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:52246)
+  09:27:30.344  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:27:30.344  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60765)
+  09:28:00.358  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:28:00.358  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62977)
+  09:28:30.365  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:28:30.366  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60616)
+  09:29:00.382  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:29:00.382  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55063)
+  09:29:30.387  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:29:30.387  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61034)
+  09:30:00.401  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:30:00.401  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60970)
+  09:30:30.415  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:30:30.416  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62057)
+  09:31:00.424  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:31:00.426  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:50185)
+  09:31:30.435  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:31:30.436  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61830)
+  09:32:00.443  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:32:00.443  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:51106)
+  09:32:30.454  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:32:30.455  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:53161)
+  09:33:00.472  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:33:00.472  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:64120)
+  09:33:30.490  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:33:30.491  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59655)
+  09:34:00.506  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:34:00.507  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:51723)
+  09:34:30.519  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:34:30.519  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62566)
+  09:35:00.526  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:35:00.526  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54877)
+  09:35:30.534  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:35:30.534  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60275)
+  09:36:00.545  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:36:00.546  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:53072)
+  09:36:30.555  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:36:30.556  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59437)
+  09:37:00.557  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:37:00.558  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56232)
+  09:37:30.565  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:37:30.565  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59577)
+  09:38:00.575  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:38:00.575  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:49666)
+  09:38:30.592  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:38:30.592  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:58615)
+  09:39:00.601  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:39:00.601  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:49666)
+  09:39:30.604  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:39:30.605  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:49963)
+  09:40:00.607  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:40:00.607  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61758)
+  09:40:30.614  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:40:30.615  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56529)
+  09:41:00.629  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:41:00.629  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62071)
+  09:41:30.646  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:41:30.646  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55607)
+  09:42:00.661  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:42:00.661  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:59324)
+  09:42:30.673  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:42:30.673  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:58929)
+  09:43:00.689  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:43:00.690  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55467)
+  09:43:30.696  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:43:30.697  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54023)
+  09:44:00.710  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:44:00.710  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:51606)
+  09:44:30.713  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:44:30.713  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:63695)
+  09:45:00.717  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:45:00.718  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55133)
+  09:45:30.728  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:45:30.728  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:50739)
+  09:46:00.732  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:46:00.733  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:50744)
+  09:46:30.748  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:46:30.749  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:50828)
+  09:47:00.757  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:47:00.757  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61854)
+  09:47:30.760  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:47:30.760  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55165)
+  09:48:00.768  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:48:00.768  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:51010)
+  09:48:30.784  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:48:30.785  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60664)
+  09:49:00.788  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:49:00.788  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62110)
+  09:49:30.797  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:49:30.797  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:65176)
+  09:50:00.811  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:50:00.811  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:65378)
+  09:50:30.825  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:50:30.825  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62234)
+  09:51:00.835  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:51:00.835  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56397)
+  09:51:30.837  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:51:30.837  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:50783)
+  09:52:00.847  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:52:00.847  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:63539)
+  09:52:30.852  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:52:30.852  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62467)
+  09:53:00.856  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:53:00.856  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60123)
+  09:53:30.858  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:53:30.858  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62757)
+  09:54:00.865  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:54:00.866  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:53114)
+  09:54:30.880  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:54:30.880  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54421)
+  09:55:00.889  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:55:00.889  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55574)
+  09:55:30.899  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:55:30.899  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55320)
+  09:56:00.909  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:56:00.909  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55263)
+  09:56:30.918  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:56:30.918  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:65040)
+  09:57:00.921  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:57:00.922  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:60594)
+  09:57:30.928  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:57:30.928  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:52712)
+  09:58:00.936  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:58:00.937  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57200)
+  09:58:30.949  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:58:30.949  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57830)
+  09:59:00.957  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:59:00.957  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:50061)
+  09:59:30.963  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  09:59:30.963  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:54286)
+  10:00:00.978  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  10:00:00.979  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:62010)
+  10:00:30.988  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  10:00:30.988  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61749)
+  10:01:00.992  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  10:01:00.992  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:57759)
+  10:01:31.007  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  10:01:31.007  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:52095)
+  10:02:01.012  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  10:02:01.013  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55476)
+  10:02:31.025  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  10:02:31.025  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:56686)
+  10:03:01.027  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  10:03:01.027  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:63893)
+  10:03:31.033  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  10:03:31.033  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:55670)
+  10:04:01.046  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  10:04:01.046  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:61883)
+  10:04:31.048  ⚠  [WARN   ] [UDP] Heartbeat from unknown userId=1
+  10:04:31.048  ℹ  [INFO   ] [UDP] Heartbeat from userId=1 (127.0.0.1:65374)
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                        ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  10:04:50.000  ℹ  [INFO   ] [SYN FLOOD] Connexion libérée pour IP 127.0.0.1 (reste: 0)
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  🔌  CLIENT DÉCONNECTÉ                                        ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  16:50:38.234  🚀 [INFO   ] Starting ChriOnline Server...
+  16:50:38.266  ℹ  [INFO   ] UDP Heartbeat Server listening on port 9091
+  16:50:57.520  ℹ  [INFO   ] [SYN FLOOD] Cleanup pour IP 127.0.0.1
+  16:50:57.522  ℹ  [INFO   ] [SYN FLOOD] Connexion acceptée pour IP 127.0.0.1 (1/5)
+
+  ╔════════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                 ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚════════════════════════════════════════════════════════════════╝
+
+  16:51:00.585  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_CATEGORIES ───────
+              │ {"action":"GET_CATEGORIES","nonce":"f57d4884-76a9-4368-9fb4-675752313a2b","timestamp":1776696660489}
+              └───────────────────────────────────────────────────────
+  16:51:00.727  ℹ  [INFO   ] [REPLAY] Request valide : nonce=f57d4884...
+  16:51:00.728  ⚡ [ROUTE] GET_CATEGORIES
+  16:51:01.279  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  16:51:01.286  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:51:01.299  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS","nonce":"9acb9663-faa3-4e60-8766-d83593007555","timestamp":1776696660496}
+              └───────────────────────────────────────────────────────
+  16:51:01.300  ℹ  [INFO   ] [REPLAY] Request valide : nonce=9acb9663...
+  16:51:01.301  ⚡ [ROUTE] GET_PRODUCTS
+  16:51:01.305  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  16:51:01.308  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+  16:51:08.260  ℹ  [INFO   ] UDP Notifier initialisé
+
+  16:52:01.046  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_AUTH_INIT ──────
+              │ {"action":"ADMIN_AUTH_INIT","data":{"username":"superadmin"},"nonce":"ba5a0d0f-e34d-47b2-91dd-7dc7a812fb4a","timestamp":1776696721044}
+              └───────────────────────────────────────────────────────
+  16:52:01.052  ℹ  [INFO   ] [REPLAY] Request valide : nonce=ba5a0d0f...
+  16:52:01.052  ⚡ [ROUTE] ADMIN_AUTH_INIT
+  16:52:01.059  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"NEEDS_INIT","data":{"status":"PENDING"}}
+              └───────────────────────────────────────────────────────
+
+
+  16:52:57.483  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_REGISTER_KEY ───
+              │ {"action":"ADMIN_REGISTER_KEY","data":{"username":"superadmin","publicKey":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE98m54Ehqn7TxwOh3ZZY/B9cZmuyH+lChQLDV4UEE7Wm/oXIVDHdtrRj57d6cg6to6CeK2pGIPme9ffSjJC9nRg\u003d\u003d","token":"super_init_token"},"nonce":"dd87350f-c1a0-4b46-81cc-9c1fd0d30c9e","timestamp":1776696777481}
+              └───────────────────────────────────────────────────────
+  16:52:57.485  ℹ  [INFO   ] [REPLAY] Request valide : nonce=dd87350f...
+  16:52:57.485  ⚡ [ROUTE] ADMIN_REGISTER_KEY
+  16:52:57.490  ℹ  [INFO   ] ADMIN_REGISTER_KEY : superadmin (Clé RSA enrégistrée)
+  16:52:57.492  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Clé de sécurité enregistrée. Vous pouvez maintenant vous connecter."}
+              └───────────────────────────────────────────────────────
+
+
+  16:53:20.660  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_AUTH_INIT ──────
+              │ {"action":"ADMIN_AUTH_INIT","data":{"username":"superadmin"},"nonce":"be1f5ece-8e2f-4761-a559-af0ad231c74d","timestamp":1776696800659}
+              └───────────────────────────────────────────────────────
+  16:53:20.664  ℹ  [INFO   ] [REPLAY] Request valide : nonce=be1f5ece...
+  16:53:20.665  ⚡ [ROUTE] ADMIN_AUTH_INIT
+  16:53:20.678  ℹ  [INFO   ] ADMIN_AUTH_INIT: Challenge généré pour superadmin
+  16:53:20.680  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Challenge généré.","data":{"challenge":"2wM_2WhP947R4SeinmVS7MdJIRFl3WbJTb10YHhhZT4","status":"ACTIVE"}}
+              └───────────────────────────────────────────────────────
+
+
+  16:53:44.561  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_AUTH_RESPONSE ──
+              │ {"action":"ADMIN_AUTH_RESPONSE","data":{"signature":"MEQCIGfkiiXAdI/vgqyRrbVJgUWvQFkOVnDIJ9AKbLxxHMikAiAWsQ50bMuEI9XH7qu3+dAwQGV7zrtOpmy7e/oC1CkROw\u003d\u003d","username":"superadmin"},"nonce":"aa0d257b-2d2f-4ef3-af8d-ebf97d520023","timestamp":1776696824560}
+              └───────────────────────────────────────────────────────
+  16:53:44.562  ℹ  [INFO   ] [REPLAY] Request valide : nonce=aa0d257b...
+  16:53:44.562  ⚡ [ROUTE] ADMIN_AUTH_RESPONSE
+  16:53:47.458  🔑 [LOGIN   ] LOGIN ADMIN (RSA) OK - 2FA REQUIRED : superadmin
+  16:53:47.459  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Verification 2FA requise","data":{"2fa_required":true,"isAdmin":true,"userId":1,"email":"super@chrionline.com"}}
+              └───────────────────────────────────────────────────────
+
+
+  16:54:09.974  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── VERIFY_2FA ───────────
+              │ {"action":"VERIFY_2FA","data":{"code":"342454","userId":1,"isAdmin":true},"nonce":"2b65d003-f4fb-4993-a469-c9796f6341d5","timestamp":1776696849973}
+              └───────────────────────────────────────────────────────
+  16:54:09.976  ℹ  [INFO   ] [REPLAY] Request valide : nonce=2b65d003...
+  16:54:09.976  ⚡ [ROUTE] VERIFY_2FA
+  16:54:09.989  🔑 [SESSION+] Session created for 'superadmin' (ID:1) token=9d71ec19...
+  16:54:09.989  🔑 [LOGIN   ] LOGIN ADMIN (2FA PASSED) OK : superadmin (ID:1, role=SUPER_ADMIN)
+  16:54:09.990  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Connexion réussie !","data":{"firstName":"Super","lastName":"Admin","role":"SUPER_ADMIN","userId":1,"email":"super@chrionline.com","token":"9d71ec19-ee05-4bf6-9e74-cd2197b13... (230 chars)
+              │ [FULL] {"success":true,"message":"Connexion réussie !","data":{"firstName":"Super","lastName":"Admin","role":"SUPER_ADMIN","userId":1,"email":"super@chrionline.com","token":"9d71ec19-ee05-4bf6-9e74-cd2197b1353c","username":"superadmin"}}
+              └───────────────────────────────────────────────────────
+
+
+  16:54:11.521  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_GET_ALL_ORDERS ─
+              │ {"action":"ADMIN_GET_ALL_ORDERS","token":"9d71ec19-ee05-4bf6-9e74-cd2197b1353c","nonce":"b7d4fb19-2089-417a-a2a1-8ba69443211e","timestamp":1776696851520}
+              └───────────────────────────────────────────────────────
+  16:54:11.524  ℹ  [INFO   ] [REPLAY] Request valide : nonce=b7d4fb19...
+  16:54:11.524  ⚡ [ROUTE] ADMIN_GET_ALL_ORDERS
+  16:54:11.530  ℹ  [INFO   ] ADMIN_GET_ALL_ORDERS : 8
+  16:54:11.533  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Toutes les commandes.","data":[{"totalAmount":899.99,"createdAt":"2026-04-14 19:09:36","orderId":"ORD-10A9EE80","shippingAddress":"Mhamid Bouaakaz 1504, marrakech 40000","us... (1772 chars)
+              │ [FULL] {"success":true,"message":"Toutes les commandes.","data":[{"totalAmount":899.99,"createdAt":"2026-04-14 19:09:36","orderId":"ORD-10A9EE80","shippingAddress":"Mhamid Bouaakaz 1504, marrakech 40000","userId":10,"status":"VALIDEE","updatedAt":"2026-04-14 19:09:36","username":"amine2_jk"},{"totalAmount":1199.99,"createdAt":"2026-03-25 14:53:51","orderId":"ORD-EC8F6535","shippingAddress":"99 Rue X, Teouan","userId":7,"status":"VALIDEE","updatedAt":"2026-04-12 18:00:32","username":"hafsa"},{"totalAmount":74.97,"createdAt":"2026-03-16 01:12:15","orderId":"ORD-7C9E12F4","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"status":"VALIDEE","updatedAt":"2026-03-16 01:12:15","username":"cblanc"},{"totalAmount":899.99,"createdAt":"2026-03-15 23:41:06","orderId":"ORD-0001-2026","shippingAddress":"12 Avenue Victor Hugo, Lyon","userId":2,"status":"LIVREE","updatedAt":"2026-03-15 23:41:06","username":"jdupont"},{"totalAmount":70.0,"createdAt":"2026-03-15 23:41:06","orderId":"ORD-0002-2026","shippingAddress":"12 Avenue Victor Hugo, Lyon","userId":2,"status":"EXPEDIEE","updatedAt":"2026-03-15 23:41:06","username":"jdupont"},{"totalAmount":2199.99,"createdAt":"2026-03-15 23:41:06","orderId":"ORD-0003-2026","shippingAddress":"8 Boulevard Pasteur, Marseille","userId":3,"status":"VALIDEE","updatedAt":"2026-03-15 23:41:06","username":"mleroy"},{"totalAmount":74.97,"createdAt":"2026-03-15 23:41:06","orderId":"ORD-0004-2026","shippingAddress":"5 Rue du Moulin, Bordeaux","userId":4,"status":"VALIDEE","updatedAt":"2026-03-16 01:12:15","username":"cblanc"},{"totalAmount":1299.0,"createdAt":"2026-03-15 23:41:06","orderId":"ORD-0005-2026","shippingAddress":"22 Rue de Rivoli, Paris","userId":5,"status":"ANNULEE","updatedAt":"2026-03-15 23:41:06","username":"tnoir"}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:54:11.536  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_GET_USERS ──────
+              │ {"action":"ADMIN_GET_USERS","token":"9d71ec19-ee05-4bf6-9e74-cd2197b1353c","nonce":"353762eb-ab1a-4de1-9456-57294d562aa0","timestamp":1776696851535}
+              └───────────────────────────────────────────────────────
+  16:54:11.540  ℹ  [INFO   ] [REPLAY] Request valide : nonce=353762eb...
+  16:54:11.540  ⚡ [ROUTE] ADMIN_GET_USERS
+  16:54:11.544  ℹ  [INFO   ] ADMIN_GET_USERS : 9 user(s)
+  16:54:11.545  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Liste des utilisateurs.","data":[{"lastName":"Dupont","address":"12 Avenue Victor Hugo, Lyon","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":2... (2752 chars)
+              │ [FULL] {"success":true,"message":"Liste des utilisateurs.","data":[{"lastName":"Dupont","address":"12 Avenue Victor Hugo, Lyon","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":2,"firstName":"Jean","createdAt":"2026-03-15 23:41:05","phone":"0611111111","email":"jean.dupont@mail.com","username":"jdupont","updatedAt":"2026-04-12 17:47:00"},{"lastName":"Leroy","address":"8 Boulevard Pasteur, Marseille","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":3,"firstName":"Marie","createdAt":"2026-03-15 23:41:05","phone":"0622222222","email":"marie.leroy@mail.com","username":"mleroy","updatedAt":"2026-04-12 17:47:02"},{"lastName":"Blanc","address":"5 Rue du Moulin, Bordeaux","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":4,"firstName":"Claire","createdAt":"2026-03-15 23:41:05","phone":"0633333333","email":"claire.blanc@mail.com","username":"cblanc","updatedAt":"2026-04-12 17:47:04"},{"lastName":"Noir","address":"22 Rue de Rivoli, Paris","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":5,"firstName":"Thomas","createdAt":"2026-03-15 23:41:05","phone":"0644444444","email":"thomas.noir@mail.com","username":"tnoir","updatedAt":"2026-04-12 17:50:50"},{"lastName":"Ait Jaakike","address":"15 Rue Mouassine, Marrakech","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":6,"firstName":"Mohamed Amine","createdAt":"2026-03-16 11:50:51","phone":"0622334412","email":"mohamedamine@gmail.com","username":"mohamed_amine","updatedAt":"2026-04-12 18:01:35"},{"lastName":"Zohri","address":"22 Avenue Moulay El Hassan, Martil","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":7,"firstName":"Hafsa","createdAt":"2026-03-25 14:44:46","phone":"0699887766","email":"hafsa@gmail.com","username":"hafsa","updatedAt":"2026-04-12 17:50:05"},{"lastName":"El Hauari","address":"12 Av. des FAR, Tetouan","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":8,"firstName":"Amine","createdAt":"2026-03-27 09:17:49","phone":"0612312345","email":"amine@gmail.com","username":"amine","updatedAt":"2026-04-12 18:04:38"},{"lastName":"Jaakike","address":"","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":9,"firstName":"Amine","createdAt":"2026-04-14 18:38:45","phone":"","email":"aitjaakikemohamedamine@gmail.com","username":"amine_jk","updatedAt":"2026-04-14 18:39:59"},{"lastName":"Jaakike","address":"","role":"CLIENT","isVerified":true,"failedAttempts":0,"isActive":true,"userId":10,"firstName":"Amine","createdAt":"2026-04-14 18:49:29","phone":"","email":"mohamedamine.aitjaakike@etu.uae.ac.ma","username":"amine2_jk","updatedAt":"2026-04-14 19:08:00"}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:54:11.548  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── GET_PRODUCTS ─────────
+              │ {"action":"GET_PRODUCTS","token":"9d71ec19-ee05-4bf6-9e74-cd2197b1353c","nonce":"016d1079-8f82-4d81-9b4e-4fef1b491cb5","timestamp":1776696851547}
+              └───────────────────────────────────────────────────────
+  16:54:11.549  ℹ  [INFO   ] [REPLAY] Request valide : nonce=016d1079...
+  16:54:11.549  ⚡ [ROUTE] GET_PRODUCTS
+  16:54:11.552  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  16:54:11.554  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+
+  16:54:38.384  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 ─── ADMIN_GET_ALL_ADMINS ─
+              │ {"action":"ADMIN_GET_ALL_ADMINS","token":"9d71ec19-ee05-4bf6-9e74-cd2197b1353c","nonce":"256da269-b5c8-460c-92c9-480dac5e70ea","timestamp":1776696878383}
+              └───────────────────────────────────────────────────────
+  16:54:38.385  ℹ  [INFO   ] [REPLAY] Request valide : nonce=256da269...
+  16:54:38.385  ⚡ [ROUTE] ADMIN_GET_ALL_ADMINS
+  16:54:38.388  ℹ  [INFO   ] ADMIN_GET_ALL_ADMINS : 2 admin(s)
+  16:54:38.389  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 ──────────────────────────
+              │ {"success":true,"message":"Admins récupérés.","data":[{"firstName":"Normal","lastName":"Admin","createdAt":"2026-03-29 17:04:54","isSuper":false,"adminId":2,"isActive":true,"email":"admin@chrionline.c... (621 chars)
+              │ [FULL] {"success":true,"message":"Admins récupérés.","data":[{"firstName":"Normal","lastName":"Admin","createdAt":"2026-03-29 17:04:54","isSuper":false,"adminId":2,"isActive":true,"email":"admin@chrionline.com","username":"admin","activationToken":"admin_init_token","status":"PENDING"},{"firstName":"Super","lastName":"Admin","createdAt":"2026-03-29 15:16:50","isSuper":true,"adminId":1,"publicKey":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE98m54Ehqn7TxwOh3ZZY/B9cZmuyH+lChQLDV4UEE7Wm/oXIVDHdtrRj57d6cg6to6CeK2pGIPme9ffSjJC9nRg\u003d\u003d","isActive":true,"email":"super@chrionline.com","username":"superadmin","status":"ACTIVE"}]}
+              └───────────────────────────────────────────────────────
+
+  16:56:00.737  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  16:57:00.739  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  16:58:00.727  ℹ  [INFO   ] [REPLAY] Cleanup : 2 nonces expirés
+  16:59:00.729  ℹ  [INFO   ] [REPLAY] Cleanup : 2 nonces expirés
+  17:00:00.728  ℹ  [INFO   ] [REPLAY] Cleanup : 5 nonces expirés
+  17:25:38.259  ℹ  [INFO   ] Session cleanup : 1 session(s) expirée(s). Actives : 0
+  17:49:13.934  ℹ  [INFO   ] [REPLAY] Request valide : nonce=f24c4fa0...
+  17:49:13.940  ⚠  [WARN   ] [REPLAY] Nonce déjà utilisé (REPLAY ATTACK) : f24c4fa0-a782-40d0-87e3-8381e276bbdf
+  17:53:11.688  🚀 [INFO   ] Starting ChriOnline Server...
+  17:53:11.706  ℹ  [INFO   ] UDP Heartbeat Server listening on port 9091
+  17:53:37.313  ℹ  [INFO   ] [SYN FLOOD] Cleanup pour IP 127.0.0.1
+  17:53:37.318  ℹ  [INFO   ] [SYN FLOOD] Connexion acceptée pour IP 127.0.0.1 (1/5)
+
+  ╔════════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                 ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚════════════════════════════════════════════════════════════════╝
+  17:53:37.325  🚀 [INFO   ] [HANDSHAKE] Starting with 127.0.0.1
+  17:53:37.737  ℹ  [INFO   ] [HANDSHAKE] RSA key pair generated
+  17:53:37.739  ℹ  [INFO   ] [HANDSHAKE] Public key sent to client
+  17:53:37.831  ℹ  [INFO   ] [HANDSHAKE] Secure channel established with 127.0.0.1
+
+  17:53:40.335  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CATEGORIES ─
+              │ {"action":"GET_CATEGORIES","nonce":"e7b6199f-1d7f-4b2e-823b-3cd96339066a","timestamp":1777046020247}
+              └───────────────────────────────────────────────────────
+  17:53:40.446  ℹ  [INFO   ] [REPLAY] Request valide : nonce=e7b6199f...
+  17:53:40.447  ⚡ [ROUTE] GET_CATEGORIES
+  17:53:40.720  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  17:53:40.727  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  17:53:40.741  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_PRODUCTS ─
+              │ {"action":"GET_PRODUCTS","nonce":"b2197cfe-fb76-4d5b-b4d7-ac38ad3fabca","timestamp":1777046020253}
+              └───────────────────────────────────────────────────────
+  17:53:40.742  ℹ  [INFO   ] [REPLAY] Request valide : nonce=b2197cfe...
+  17:53:40.743  ⚡ [ROUTE] GET_PRODUCTS
+  17:53:40.747  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  17:53:40.749  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+  17:53:41.703  ℹ  [INFO   ] UDP Notifier initialisé
+
+  17:55:28.020  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── REGISTER ─
+              │ {"action":"REGISTER","data":{"firstName":"hafsa","lastName":"zohri","password":"H@fsa12345","address":"","phone":"","email":"hafsa.zohri.tech@gmail.com","username":"hafsa"},"nonce":"dcfd8347-5b0e-43d3-8a8f-4f17f6158132","timestamp":1777046128017}
+              └───────────────────────────────────────────────────────
+  17:55:28.028  ℹ  [INFO   ] [REPLAY] Request valide : nonce=dcfd8347...
+  17:55:28.029  ⚡ [ROUTE] REGISTER
+  17:55:28.041  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":false,"message":"Ce nom d\u0027utilisateur est deja pris."}
+              └───────────────────────────────────────────────────────
+
+
+  17:55:33.370  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── REGISTER ─
+              │ {"action":"REGISTER","data":{"firstName":"hafsa","lastName":"zohri","password":"H@fsa12345","address":"","phone":"","email":"hafsa.zohri.tech@gmail.com","username":"Hafsa"},"nonce":"da52016a-27c2-4787-ab0e-0e24ba063957","timestamp":1777046133368}
+              └───────────────────────────────────────────────────────
+  17:55:33.372  ℹ  [INFO   ] [REPLAY] Request valide : nonce=da52016a...
+  17:55:33.373  ⚡ [ROUTE] REGISTER
+  17:55:33.376  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":false,"message":"Ce nom d\u0027utilisateur est deja pris."}
+              └───────────────────────────────────────────────────────
+
+
+  17:55:41.654  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── REGISTER ─
+              │ {"action":"REGISTER","data":{"firstName":"hafsa","lastName":"zohri","password":"H@fsa12345","address":"","phone":"","email":"hafsa.zohri.tech@gmail.com","username":"fatima"},"nonce":"af57e89b-70f8-4a94-a45f-86c0f9874394","timestamp":1777046141652}
+              └───────────────────────────────────────────────────────
+  17:55:41.657  ℹ  [INFO   ] [REPLAY] Request valide : nonce=af57e89b...
+  17:55:41.657  ⚡ [ROUTE] REGISTER
+  17:55:45.069  📝 [REGISTER] REGISTER OK + EMAIL SENT : fatima (ID:11)
+  17:55:45.071  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Code de verification envoye !","data":{"userId":11,"email":"hafsa.zohri.tech@gmail.com","username":"fatima"}}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:13.150  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── VERIFY_EMAIL ─
+              │ {"action":"VERIFY_EMAIL","data":{"userId":11,"code":"476618"},"nonce":"64edbcff-362b-417a-a8c6-b72d5e5d1e85","timestamp":1777046233148}
+              └───────────────────────────────────────────────────────
+  17:57:13.151  ℹ  [INFO   ] [REPLAY] Request valide : nonce=64edbcff...
+  17:57:13.151  ⚡ [ROUTE] VERIFY_EMAIL
+  17:57:13.157  ℹ  [INFO   ] EMAIL VERIFIED : userId=11
+  17:57:13.158  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Email verifie ! Vous pouvez maintenant vous connecter."}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:27.503  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── LOGIN ────
+              │ {"action":"LOGIN","data":{"password":"H@fsa12345","username":"fatima"},"nonce":"b6e5ee14-1b8c-491f-b628-d64937ecb5ba","timestamp":1777046247502}
+              └───────────────────────────────────────────────────────
+  17:57:27.506  ℹ  [INFO   ] [REPLAY] Request valide : nonce=b6e5ee14...
+  17:57:27.506  ⚡ [ROUTE] LOGIN
+  17:57:29.315  🔑 [LOGIN   ] LOGIN 2FA TRIGGERED (NEW CODE) : fatima
+  17:57:29.317  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Code 2FA envoye a votre email.","data":{"2fa_required":true,"userId":11,"email":"hafsa.zohri.tech@gmail.com"}}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:44.511  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── VERIFY_2FA ─
+              │ {"action":"VERIFY_2FA","data":{"userId":11,"code":"861459","isAdmin":false},"nonce":"c4b1fde9-987a-40c8-bc93-c7a7b56eea8c","timestamp":1777046264509}
+              └───────────────────────────────────────────────────────
+  17:57:44.511  ℹ  [INFO   ] [REPLAY] Request valide : nonce=c4b1fde9...
+  17:57:44.511  ⚡ [ROUTE] VERIFY_2FA
+  17:57:44.523  🔑 [SESSION+] Session created for 'fatima' (ID:11) token=fb6b3dfe...
+  17:57:44.523  🔑 [LOGIN   ] LOGIN CLIENT (2FA PASSED) OK : fatima (ID:11, role=CLIENT)
+  17:57:44.525  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Connexion reussie !","data":{"firstName":"hafsa","lastName":"zohri","role":"CLIENT","userId":11,"email":"hafsa.zohri.tech@gmail.com","token":"fb6b3dfe-4a07-438f-93c7-dd97359... (228 chars)
+              │ [FULL] {"success":true,"message":"Connexion reussie !","data":{"firstName":"hafsa","lastName":"zohri","role":"CLIENT","userId":11,"email":"hafsa.zohri.tech@gmail.com","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","username":"fatima"}}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:46.047  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CART ─
+              │ {"action":"GET_CART","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11},"nonce":"838ae671-c84d-4475-a026-46fbe4d0c01d","timestamp":1777046266046}
+              └───────────────────────────────────────────────────────
+  17:57:46.050  ℹ  [INFO   ] [REPLAY] Request valide : nonce=838ae671...
+  17:57:46.052  ⚡ [ROUTE] GET_CART
+  17:57:46.054  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Panier vide.","data":{"total":0.0,"cartId":-1,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:46.059  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_NOTIFICATIONS ─
+              │ {"action":"GET_NOTIFICATIONS","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11},"nonce":"595ebfa4-90e3-48fc-8390-9979395daba5","timestamp":1777046266046}
+              └───────────────────────────────────────────────────────
+  17:57:46.060  ℹ  [INFO   ] [REPLAY] Request valide : nonce=595ebfa4...
+  17:57:46.061  ⚡ [ROUTE] GET_NOTIFICATIONS
+  17:57:46.062  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[]}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:46.066  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CATEGORIES ─
+              │ {"action":"GET_CATEGORIES","nonce":"fc030bb1-1a82-4810-b40e-681b59f092c1","timestamp":1777046266049}
+              └───────────────────────────────────────────────────────
+  17:57:46.067  ℹ  [INFO   ] [REPLAY] Request valide : nonce=fc030bb1...
+  17:57:46.067  ⚡ [ROUTE] GET_CATEGORIES
+  17:57:46.069  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  17:57:46.069  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:46.072  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_PRODUCTS ─
+              │ {"action":"GET_PRODUCTS","nonce":"3aef44a3-a77c-4cd7-8e0e-999f81dda0a2","timestamp":1777046266049}
+              └───────────────────────────────────────────────────────
+  17:57:46.074  ℹ  [INFO   ] [REPLAY] Request valide : nonce=3aef44a3...
+  17:57:46.075  ⚡ [ROUTE] GET_PRODUCTS
+  17:57:46.077  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  17:57:46.080  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:46.085  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CART ─
+              │ {"action":"GET_CART","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11},"nonce":"772ef4f2-102f-4dc7-8deb-1b651c245918","timestamp":1777046266049}
+              └───────────────────────────────────────────────────────
+  17:57:46.085  ℹ  [INFO   ] [REPLAY] Request valide : nonce=772ef4f2...
+  17:57:46.086  ⚡ [ROUTE] GET_CART
+  17:57:46.089  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Panier vide.","data":{"total":0.0,"cartId":-1,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:46.094  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_NOTIFICATIONS ─
+              │ {"action":"GET_NOTIFICATIONS","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11},"nonce":"aa9302cc-c483-447a-b383-d725e3d7b3c0","timestamp":1777046266050}
+              └───────────────────────────────────────────────────────
+  17:57:46.095  ℹ  [INFO   ] [REPLAY] Request valide : nonce=aa9302cc...
+  17:57:46.095  ⚡ [ROUTE] GET_NOTIFICATIONS
+  17:57:46.098  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[]}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:53.998  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CART ─
+              │ {"action":"GET_CART","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11},"nonce":"29c82d7c-6d81-4b9e-8b70-a6e3abbeacd7","timestamp":1777046273996}
+              └───────────────────────────────────────────────────────
+  17:57:53.999  ℹ  [INFO   ] [REPLAY] Request valide : nonce=29c82d7c...
+  17:57:53.999  ⚡ [ROUTE] GET_CART
+  17:57:54.000  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Panier vide.","data":{"total":0.0,"cartId":-1,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:54.002  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_PRODUCT_DETAIL ─
+              │ {"action":"GET_PRODUCT_DETAIL","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"productId":5},"nonce":"fa642d85-c6cf-4525-b4f3-a35abc5d8071","timestamp":1777046273998}
+              └───────────────────────────────────────────────────────
+  17:57:54.002  ℹ  [INFO   ] [REPLAY] Request valide : nonce=fa642d85...
+  17:57:54.002  ⚡ [ROUTE] GET_PRODUCT_DETAIL
+  17:57:54.004  📦 [PRODUCT ] GET_PRODUCT_DETAIL : ID=5
+  17:57:54.005  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Détail du produit.","data":{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"... (269 chars)
+              │ [FULL] {"success":true,"message":"Détail du produit.","data":{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7}}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:54.010  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_NOTIFICATIONS ─
+              │ {"action":"GET_NOTIFICATIONS","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11},"nonce":"6aa46460-1be5-4f51-85cb-425410573514","timestamp":1777046273996}
+              └───────────────────────────────────────────────────────
+  17:57:54.011  ℹ  [INFO   ] [REPLAY] Request valide : nonce=6aa46460...
+  17:57:54.012  ⚡ [ROUTE] GET_NOTIFICATIONS
+  17:57:54.015  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[]}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:56.321  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── ADD_TO_CART ─
+              │ {"action":"ADD_TO_CART","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11,"productId":5,"quantity":1},"nonce":"a95ae563-7b9b-4039-a01f-b295cdc2f018","timestamp":1777046276319}
+              └───────────────────────────────────────────────────────
+  17:57:56.325  ℹ  [INFO   ] [REPLAY] Request valide : nonce=a95ae563...
+  17:57:56.325  ⚡ [ROUTE] ADD_TO_CART
+  17:57:56.339  🛒 [CART    ] ADD_TO_CART userId=11 productId=5 qty=1
+  17:57:56.340  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Produit ajouté au panier.","data":{"quantity":1,"productId":5,"productName":"Dell XPS 15"}}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:57.972  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CART ─
+              │ {"action":"GET_CART","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11},"nonce":"1bf9554e-3f5e-460c-ad04-87fe5b36309a","timestamp":1777046277971}
+              └───────────────────────────────────────────────────────
+  17:57:57.972  ℹ  [INFO   ] [REPLAY] Request valide : nonce=1bf9554e...
+  17:57:57.972  ⚡ [ROUTE] GET_CART
+  17:57:57.988  ℹ  [INFO   ] GET_CART userId=11 items=1
+  17:57:57.989  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":1749.99,"cartId":8,"items":[{"unitPrice":1749.99,"quantity":1,"productId":5,"subtotal":1749.99,"cartId":8,"imageUrl":"/images/products/1774... (356 chars)
+              │ [FULL] {"success":true,"message":"Panier récupéré.","data":{"total":1749.99,"cartId":8,"items":[{"unitPrice":1749.99,"quantity":1,"productId":5,"subtotal":1749.99,"cartId":8,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","stockQuantity":20,"productName":"Dell XPS 15","productDescription":"...","productPrice":1749.99,"cartItemId":4}],"itemCount":1}}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:57.992  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_NOTIFICATIONS ─
+              │ {"action":"GET_NOTIFICATIONS","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11},"nonce":"8e74d144-e6d5-432e-ac21-2a6c84835d42","timestamp":1777046277971}
+              └───────────────────────────────────────────────────────
+  17:57:57.993  ℹ  [INFO   ] [REPLAY] Request valide : nonce=8e74d144...
+  17:57:57.993  ⚡ [ROUTE] GET_NOTIFICATIONS
+  17:57:57.996  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[]}
+              └───────────────────────────────────────────────────────
+
+
+  17:57:57.998  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CART ─
+              │ {"action":"GET_CART","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11},"nonce":"768ffcb1-7e0b-4708-83de-82786a922a15","timestamp":1777046277972}
+              └───────────────────────────────────────────────────────
+  17:57:57.999  ℹ  [INFO   ] [REPLAY] Request valide : nonce=768ffcb1...
+  17:57:57.999  ⚡ [ROUTE] GET_CART
+  17:57:58.002  ℹ  [INFO   ] GET_CART userId=11 items=1
+  17:57:58.004  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":1749.99,"cartId":8,"items":[{"unitPrice":1749.99,"quantity":1,"productId":5,"subtotal":1749.99,"cartId":8,"imageUrl":"/images/products/1774... (356 chars)
+              │ [FULL] {"success":true,"message":"Panier récupéré.","data":{"total":1749.99,"cartId":8,"items":[{"unitPrice":1749.99,"quantity":1,"productId":5,"subtotal":1749.99,"cartId":8,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","stockQuantity":20,"productName":"Dell XPS 15","productDescription":"...","productPrice":1749.99,"cartItemId":4}],"itemCount":1}}
+              └───────────────────────────────────────────────────────
+
+
+  17:58:00.841  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── REMOVE_FROM_CART ─
+              │ {"action":"REMOVE_FROM_CART","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11,"productId":5},"nonce":"29b55da9-e7f4-4b23-b56d-47529993aff3","timestamp":1777046280839}
+              └───────────────────────────────────────────────────────
+  17:58:00.842  ℹ  [INFO   ] [REPLAY] Request valide : nonce=29b55da9...
+  17:58:00.842  ⚡ [ROUTE] REMOVE_FROM_CART
+  17:58:00.849  🛒 [CART    ] REMOVE_FROM_CART userId=11 productId=5
+  17:58:00.849  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Produit retiré du panier."}
+              └───────────────────────────────────────────────────────
+
+
+  17:58:00.852  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CART ─
+              │ {"action":"GET_CART","token":"fb6b3dfe-4a07-438f-93c7-dd97359950ec","data":{"userId":11},"nonce":"edf73a43-eb98-4a75-a62c-879ec7abeeb4","timestamp":1777046280851}
+              └───────────────────────────────────────────────────────
+  17:58:00.855  ℹ  [INFO   ] [REPLAY] Request valide : nonce=edf73a43...
+  17:58:00.855  ⚡ [ROUTE] GET_CART
+  17:58:00.857  ℹ  [INFO   ] GET_CART userId=11 items=0
+  17:58:00.858  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":8,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+  17:58:40.459  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  17:59:40.447  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  18:00:40.452  ℹ  [INFO   ] [REPLAY] Cleanup : 2 nonces expirés
+  18:01:40.448  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  18:02:40.450  ℹ  [INFO   ] [REPLAY] Cleanup : 2 nonces expirés
+  18:03:40.458  ℹ  [INFO   ] [REPLAY] Cleanup : 16 nonces expirés
+  13:30:00.797  🚀 [INFO   ] Starting ChriOnline Server...
+  13:30:00.892  ℹ  [INFO   ] UDP Heartbeat Server listening on port 9091
+  13:30:30.844  ℹ  [INFO   ] UDP Notifier initialisé
+  13:30:43.997  ℹ  [INFO   ] [SYN FLOOD] Cleanup pour IP 127.0.0.1
+  13:30:44.001  ℹ  [INFO   ] [SYN FLOOD] Connexion acceptée pour IP 127.0.0.1 (1/5)
+
+  ╔════════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                 ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚════════════════════════════════════════════════════════════════╝
+  13:30:44.017  🚀 [INFO   ] [HANDSHAKE] Starting with 127.0.0.1
+  13:30:44.385  ℹ  [INFO   ] [HANDSHAKE] RSA key pair generated
+  13:30:44.390  ℹ  [INFO   ] [HANDSHAKE] Public key sent to client
+  13:30:44.591  ℹ  [INFO   ] [HANDSHAKE] Secure channel established with 127.0.0.1
+
+  13:30:47.102  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CATEGORIES ─
+              │ {"action":"GET_CATEGORIES","nonce":"984333b1-34c6-4b50-ad4f-aba270852da5","timestamp":1777116646974}
+              └───────────────────────────────────────────────────────
+  13:30:47.430  ℹ  [INFO   ] [REPLAY] Request valide : nonce=984333b1...
+  13:30:47.430  ⚡ [ROUTE] GET_CATEGORIES
+  13:30:47.832  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  13:30:47.838  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  13:30:47.853  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_PRODUCTS ─
+              │ {"action":"GET_PRODUCTS","nonce":"4b072904-b616-47a5-bbb4-74b7f6409e03","timestamp":1777116646981}
+              └───────────────────────────────────────────────────────
+  13:30:47.854  ℹ  [INFO   ] [REPLAY] Request valide : nonce=4b072904...
+  13:30:47.854  ⚡ [ROUTE] GET_PRODUCTS
+  13:30:47.866  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  13:30:47.867  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+
+  13:32:54.625  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── LOGIN ────
+              │ {"action":"LOGIN","data":{"password":"H@fsa1234","username":"fatima"},"nonce":"35a5cd1d-c39c-426f-9858-82272b176c0d","timestamp":1777116774622}
+              └───────────────────────────────────────────────────────
+  13:32:54.638  ℹ  [INFO   ] [REPLAY] Request valide : nonce=35a5cd1d...
+  13:32:54.639  ⚡ [ROUTE] LOGIN
+  13:32:55.585  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":false,"message":"Mot de passe incorrect. "}
+              └───────────────────────────────────────────────────────
+
+
+  13:33:05.485  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── FORGOT_PASSWORD ─
+              │ {"action":"FORGOT_PASSWORD","data":{"username":"fatima"},"nonce":"f55afbc9-75d5-4bfb-bc21-f08dc5521d47","timestamp":1777116785483}
+              └───────────────────────────────────────────────────────
+  13:33:05.489  ℹ  [INFO   ] [REPLAY] Request valide : nonce=f55afbc9...
+  13:33:05.490  ⚡ [ROUTE] FORGOT_PASSWORD
+  13:33:08.295  ℹ  [INFO   ] FORGOT_PASSWORD OK : fatima (userId=11)
+  13:33:08.297  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Si ce compte existe, un email a ete envoye."}
+              └───────────────────────────────────────────────────────
+
+
+  13:33:43.395  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── VERIFY_RESET_TOKEN ─
+              │ {"action":"VERIFY_RESET_TOKEN","data":{"username":"fatima","token":"796808"},"nonce":"2954fedd-4643-45e8-b497-2b60825e7144","timestamp":1777116823390}
+              └───────────────────────────────────────────────────────
+  13:33:43.403  ℹ  [INFO   ] [REPLAY] Request valide : nonce=2954fedd...
+  13:33:43.404  ⚡ [ROUTE] VERIFY_RESET_TOKEN
+  13:33:43.416  ℹ  [INFO   ] VERIFY_RESET_TOKEN OK : username=fatima
+  13:33:43.417  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Code valide."}
+              └───────────────────────────────────────────────────────
+
+
+  13:33:59.648  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── RESET_PASSWORD ─
+              │ {"action":"RESET_PASSWORD","data":{"password":"H@fsa1234","username":"fatima","token":"796808"},"nonce":"09b60ede-d11c-4331-a17c-da3409ecc695","timestamp":1777116839646}
+              └───────────────────────────────────────────────────────
+  13:33:59.650  ℹ  [INFO   ] [REPLAY] Request valide : nonce=09b60ede...
+  13:33:59.650  ⚡ [ROUTE] RESET_PASSWORD
+  13:33:59.973  ℹ  [INFO   ] RESET_PASSWORD OK : userId=11
+  13:33:59.974  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Mot de passe modifié avec succès. Vous pouvez vous connecter."}
+              └───────────────────────────────────────────────────────
+
+
+  13:34:12.989  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── LOGIN ────
+              │ {"action":"LOGIN","data":{"password":"H@fsa1234","username":"fatima"},"nonce":"0f1edd0d-1c02-4c59-ad19-e7a9f24c0fe4","timestamp":1777116852987}
+              └───────────────────────────────────────────────────────
+  13:34:12.989  ℹ  [INFO   ] [REPLAY] Request valide : nonce=0f1edd0d...
+  13:34:12.990  ⚡ [ROUTE] LOGIN
+  13:34:14.666  🔑 [LOGIN   ] LOGIN 2FA TRIGGERED (NEW CODE) : fatima
+  13:34:14.667  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Code 2FA envoye a votre email.","data":{"2fa_required":true,"userId":11,"email":"hafsa.zohri.tech@gmail.com"}}
+              └───────────────────────────────────────────────────────
+
+
+  13:34:27.734  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── VERIFY_2FA ─
+              │ {"action":"VERIFY_2FA","data":{"isAdmin":false,"userId":11,"code":"371173"},"nonce":"2db7d524-fd53-47b7-ba4d-759d1cb38015","timestamp":1777116867732}
+              └───────────────────────────────────────────────────────
+  13:34:27.735  ℹ  [INFO   ] [REPLAY] Request valide : nonce=2db7d524...
+  13:34:27.735  ⚡ [ROUTE] VERIFY_2FA
+  13:34:27.748  🔑 [SESSION+] Session created for 'fatima' (ID:11) token=e9f44474...
+  13:34:27.750  🔑 [LOGIN   ] LOGIN CLIENT (2FA PASSED) OK : fatima (ID:11, role=CLIENT)
+  13:34:27.751  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Connexion reussie !","data":{"firstName":"hafsa","lastName":"zohri","role":"CLIENT","userId":11,"email":"hafsa.zohri.tech@gmail.com","token":"e9f44474-2248-4eee-8687-8bd6c92... (228 chars)
+              │ [FULL] {"success":true,"message":"Connexion reussie !","data":{"firstName":"hafsa","lastName":"zohri","role":"CLIENT","userId":11,"email":"hafsa.zohri.tech@gmail.com","token":"e9f44474-2248-4eee-8687-8bd6c92cb3dc","username":"fatima"}}
+              └───────────────────────────────────────────────────────
+
+
+  13:34:29.268  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CART ─
+              │ {"action":"GET_CART","token":"e9f44474-2248-4eee-8687-8bd6c92cb3dc","data":{"userId":11},"nonce":"2690227c-2077-4ab9-af59-fe9a593e5b7a","timestamp":1777116869267}
+              └───────────────────────────────────────────────────────
+  13:34:29.270  ℹ  [INFO   ] [REPLAY] Request valide : nonce=2690227c...
+  13:34:29.271  ⚡ [ROUTE] GET_CART
+  13:34:29.328  ℹ  [INFO   ] GET_CART userId=11 items=0
+  13:34:29.329  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":8,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  13:34:29.333  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_NOTIFICATIONS ─
+              │ {"action":"GET_NOTIFICATIONS","token":"e9f44474-2248-4eee-8687-8bd6c92cb3dc","data":{"userId":11},"nonce":"7b7ba557-95d4-42fd-8d64-99554067535f","timestamp":1777116869267}
+              └───────────────────────────────────────────────────────
+  13:34:29.335  ℹ  [INFO   ] [REPLAY] Request valide : nonce=7b7ba557...
+  13:34:29.336  ⚡ [ROUTE] GET_NOTIFICATIONS
+  13:34:29.355  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[]}
+              └───────────────────────────────────────────────────────
+
+
+  13:34:29.366  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CATEGORIES ─
+              │ {"action":"GET_CATEGORIES","nonce":"95b51740-7c09-4b4a-a861-d4d5b1372947","timestamp":1777116869272}
+              └───────────────────────────────────────────────────────
+  13:34:29.375  ℹ  [INFO   ] [REPLAY] Request valide : nonce=95b51740...
+  13:34:29.382  ⚡ [ROUTE] GET_CATEGORIES
+  13:34:29.532  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  13:34:29.599  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  13:34:29.620  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_PRODUCTS ─
+              │ {"action":"GET_PRODUCTS","nonce":"52900d17-e572-4286-90e1-3490fbb7477e","timestamp":1777116869272}
+              └───────────────────────────────────────────────────────
+  13:34:29.622  ℹ  [INFO   ] [REPLAY] Request valide : nonce=52900d17...
+  13:34:29.623  ⚡ [ROUTE] GET_PRODUCTS
+  13:34:29.634  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  13:34:29.655  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+
+  13:34:29.670  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CART ─
+              │ {"action":"GET_CART","token":"e9f44474-2248-4eee-8687-8bd6c92cb3dc","data":{"userId":11},"nonce":"bab13d05-df14-4080-b10e-75a50a697bf0","timestamp":1777116869272}
+              └───────────────────────────────────────────────────────
+  13:34:29.672  ℹ  [INFO   ] [REPLAY] Request valide : nonce=bab13d05...
+  13:34:29.673  ⚡ [ROUTE] GET_CART
+  13:34:29.708  ℹ  [INFO   ] GET_CART userId=11 items=0
+  13:34:29.711  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":8,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  13:34:29.722  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_NOTIFICATIONS ─
+              │ {"action":"GET_NOTIFICATIONS","token":"e9f44474-2248-4eee-8687-8bd6c92cb3dc","data":{"userId":11},"nonce":"0e3cfc8f-07ee-4cad-882b-049b5dbe3f95","timestamp":1777116869273}
+              └───────────────────────────────────────────────────────
+  13:34:29.723  ℹ  [INFO   ] [REPLAY] Request valide : nonce=0e3cfc8f...
+  13:34:29.723  ⚡ [ROUTE] GET_NOTIFICATIONS
+  13:34:29.730  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[]}
+              └───────────────────────────────────────────────────────
+
+  13:35:47.441  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  13:36:47.431  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  13:51:25.031  🚀 [INFO   ] Starting ChriOnline Server...
+  13:51:25.067  ℹ  [INFO   ] UDP Heartbeat Server listening on port 9091
+  13:51:50.330  ℹ  [INFO   ] [SYN FLOOD] Cleanup pour IP 127.0.0.1
+  13:51:50.334  ℹ  [INFO   ] [SYN FLOOD] Connexion acceptée pour IP 127.0.0.1 (1/5)
+
+  ╔════════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                 ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚════════════════════════════════════════════════════════════════╝
+  13:51:50.347  🚀 [INFO   ] [HANDSHAKE] Starting with 127.0.0.1
+  13:51:50.915  ℹ  [INFO   ] [HANDSHAKE] RSA key pair generated
+  13:51:50.917  ℹ  [INFO   ] [HANDSHAKE] Public key sent to client
+  13:51:51.068  ℹ  [INFO   ] [HANDSHAKE] Secure channel established with 127.0.0.1
+
+  13:51:53.430  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CATEGORIES ─
+              │ {"action":"GET_CATEGORIES","nonce":"623c39a3-8fcc-45bf-a698-947e5208273c","timestamp":1777117913307}
+              └───────────────────────────────────────────────────────
+  13:51:53.812  ℹ  [INFO   ] [REPLAY] Request valide : nonce=623c39a3...
+  13:51:53.814  ⚡ [ROUTE] GET_CATEGORIES
+  13:51:54.531  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  13:51:54.560  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  13:51:54.600  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_PRODUCTS ─
+              │ {"action":"GET_PRODUCTS","nonce":"b43bc229-6d03-40f5-a550-d225831d6858","timestamp":1777117913336}
+              └───────────────────────────────────────────────────────
+  13:51:54.603  ℹ  [INFO   ] [REPLAY] Request valide : nonce=b43bc229...
+  13:51:54.604  ⚡ [ROUTE] GET_PRODUCTS
+  13:51:54.615  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  13:51:54.618  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+  13:51:55.064  ℹ  [INFO   ] UDP Notifier initialisé
+
+  13:52:12.159  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── LOGIN ────
+              │ {"action":"LOGIN","data":{"password":"H@fsa1234","username":"fatima"},"nonce":"58f7ede4-bbf8-4632-b334-078ef1ebbba6","timestamp":1777117932157}
+              └───────────────────────────────────────────────────────
+  13:52:12.164  ℹ  [INFO   ] [REPLAY] Request valide : nonce=58f7ede4...
+  13:52:12.166  ⚡ [ROUTE] LOGIN
+  13:52:12.175  📤 ┌─── ❌ RÉPONSE ERREUR ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":false,"message":"Utilisateur introuvable."}
+              └───────────────────────────────────────────────────────
+
+
+  13:52:47.242  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── LOGIN ────
+              │ {"action":"LOGIN","data":{"password":"Password.123","username":"hafsa"},"nonce":"0f573a0d-71db-4d60-85c8-af9128a34788","timestamp":1777117967239}
+              └───────────────────────────────────────────────────────
+  13:52:47.245  ℹ  [INFO   ] [REPLAY] Request valide : nonce=0f573a0d...
+  13:52:47.246  ⚡ [ROUTE] LOGIN
+  13:52:50.591  🔑 [LOGIN   ] LOGIN 2FA TRIGGERED (NEW CODE) : hafsa
+  13:52:50.592  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Code 2FA envoye a votre email.","data":{"2fa_required":true,"userId":7,"email":"hafsa@gmail.com"}}
+              └───────────────────────────────────────────────────────
+
+
+  13:53:26.321  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── VERIFY_2FA ─
+              │ {"action":"VERIFY_2FA","data":{"isAdmin":false,"userId":7,"code":"114095"},"nonce":"6b168f04-d098-469b-81aa-da5a7c6b1ac3","timestamp":1777118006319}
+              └───────────────────────────────────────────────────────
+  13:53:26.323  ℹ  [INFO   ] [REPLAY] Request valide : nonce=6b168f04...
+  13:53:26.326  ⚡ [ROUTE] VERIFY_2FA
+  13:53:26.346  🔑 [SESSION+] Session created for 'hafsa' (ID:7) token=a02daa4f...
+  13:53:26.347  🔑 [LOGIN   ] LOGIN CLIENT (2FA PASSED) OK : hafsa (ID:7, role=CLIENT)
+  13:53:26.349  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Connexion reussie !","data":{"firstName":"Hafsa","lastName":"Zohri","role":"CLIENT","address":"22 Avenue Moulay El Hassan, Martil","phone":"0699887766","userId":7,"email":"h... (283 chars)
+              │ [FULL] {"success":true,"message":"Connexion reussie !","data":{"firstName":"Hafsa","lastName":"Zohri","role":"CLIENT","address":"22 Avenue Moulay El Hassan, Martil","phone":"0699887766","userId":7,"email":"hafsa@gmail.com","token":"a02daa4f-730c-4213-91c5-c674676703d3","username":"hafsa"}}
+              └───────────────────────────────────────────────────────
+
+
+  13:53:27.870  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CART ─
+              │ {"action":"GET_CART","token":"a02daa4f-730c-4213-91c5-c674676703d3","data":{"userId":7},"nonce":"db602337-083e-40a1-9aa8-e075eb6baa7c","timestamp":1777118007866}
+              └───────────────────────────────────────────────────────
+  13:53:27.872  ℹ  [INFO   ] [REPLAY] Request valide : nonce=db602337...
+  13:53:27.872  ⚡ [ROUTE] GET_CART
+  13:53:27.925  ℹ  [INFO   ] GET_CART userId=7 items=0
+  13:53:27.928  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":5,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  13:53:27.935  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_NOTIFICATIONS ─
+              │ {"action":"GET_NOTIFICATIONS","token":"a02daa4f-730c-4213-91c5-c674676703d3","data":{"userId":7},"nonce":"6dc98aa4-3862-4acf-8903-5dafc55ee1b2","timestamp":1777118007867}
+              └───────────────────────────────────────────────────────
+  13:53:27.941  ℹ  [INFO   ] [REPLAY] Request valide : nonce=6dc98aa4...
+  13:53:27.941  ⚡ [ROUTE] GET_NOTIFICATIONS
+  13:53:27.951  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-03-25 14:53:51","protocol":"UDP","isRead":true,"notificationId":7,"message":"Commande ORD-EC8F6535 confirmée ! Total : ... (239 chars)
+              │ [FULL] {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-03-25 14:53:51","protocol":"UDP","isRead":true,"notificationId":7,"message":"Commande ORD-EC8F6535 confirmée ! Total : 1199.99 €","type":"ORDER","userId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  13:53:27.961  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CATEGORIES ─
+              │ {"action":"GET_CATEGORIES","nonce":"adaf89f0-0703-466c-9d84-0dcdc6a7bff5","timestamp":1777118007874}
+              └───────────────────────────────────────────────────────
+  13:53:27.964  ℹ  [INFO   ] [REPLAY] Request valide : nonce=adaf89f0...
+  13:53:27.964  ⚡ [ROUTE] GET_CATEGORIES
+  13:53:27.976  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  13:53:27.977  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  13:53:27.983  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_PRODUCTS ─
+              │ {"action":"GET_PRODUCTS","nonce":"76e5948d-ce57-4659-b2a8-4aca8352de49","timestamp":1777118007874}
+              └───────────────────────────────────────────────────────
+  13:53:27.984  ℹ  [INFO   ] [REPLAY] Request valide : nonce=76e5948d...
+  13:53:27.985  ⚡ [ROUTE] GET_PRODUCTS
+  13:53:27.996  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  13:53:28.050  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+
+  13:53:28.078  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CART ─
+              │ {"action":"GET_CART","token":"a02daa4f-730c-4213-91c5-c674676703d3","data":{"userId":7},"nonce":"ac0dde6e-5208-494d-ae11-aab9f52ca617","timestamp":1777118007874}
+              └───────────────────────────────────────────────────────
+  13:53:28.080  ℹ  [INFO   ] [REPLAY] Request valide : nonce=ac0dde6e...
+  13:53:28.080  ⚡ [ROUTE] GET_CART
+  13:53:28.140  ℹ  [INFO   ] GET_CART userId=7 items=0
+  13:53:28.144  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Panier récupéré.","data":{"total":0.0,"cartId":5,"items":[],"itemCount":0}}
+              └───────────────────────────────────────────────────────
+
+
+  13:53:28.164  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_NOTIFICATIONS ─
+              │ {"action":"GET_NOTIFICATIONS","token":"a02daa4f-730c-4213-91c5-c674676703d3","data":{"userId":7},"nonce":"b119a81f-9521-4210-b66b-2a82a6f59835","timestamp":1777118007875}
+              └───────────────────────────────────────────────────────
+  13:53:28.166  ℹ  [INFO   ] [REPLAY] Request valide : nonce=b119a81f...
+  13:53:28.166  ⚡ [ROUTE] GET_NOTIFICATIONS
+  13:53:28.177  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-03-25 14:53:51","protocol":"UDP","isRead":true,"notificationId":7,"message":"Commande ORD-EC8F6535 confirmée ! Total : ... (239 chars)
+              │ [FULL] {"success":true,"message":"Notifications récupérées.","data":[{"createdAt":"2026-03-25 14:53:51","protocol":"UDP","isRead":true,"notificationId":7,"message":"Commande ORD-EC8F6535 confirmée ! Total : 1199.99 €","type":"ORDER","userId":7}]}
+              └───────────────────────────────────────────────────────
+
+  13:56:53.813  ℹ  [INFO   ] [REPLAY] Cleanup : 1 nonces expirés
+  13:57:53.813  ℹ  [INFO   ] [REPLAY] Cleanup : 3 nonces expirés
+  13:58:53.814  ℹ  [INFO   ] [REPLAY] Cleanup : 7 nonces expirés
+  14:08:43.876  🚀 [INFO   ] Starting ChriOnline Server...
+  14:08:43.899  ℹ  [INFO   ] UDP Heartbeat Server listening on port 9091
+  14:09:01.196  ℹ  [INFO   ] [SYN FLOOD] Cleanup pour IP 127.0.0.1
+  14:09:01.201  ℹ  [INFO   ] [SYN FLOOD] Connexion acceptée pour IP 127.0.0.1 (1/5)
+
+  ╔════════════════════════════════════════════════════════════════╗
+  ║  🔗  NOUVELLE CONNEXION CLIENT                                 ║
+  ║      Client connected: 127.0.0.1                               ║
+  ╚════════════════════════════════════════════════════════════════╝
+  14:09:01.215  🚀 [INFO   ] [HANDSHAKE] Starting with 127.0.0.1
+  14:09:02.432  ℹ  [INFO   ] [HANDSHAKE] RSA key pair generated
+  14:09:02.434  ℹ  [INFO   ] [HANDSHAKE] Public key sent to client
+  14:09:02.704  ℹ  [INFO   ] [HANDSHAKE] Secure channel established with 127.0.0.1
+
+  14:09:04.668  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_CATEGORIES ─
+              │ {"action":"GET_CATEGORIES","nonce":"02e23296-22aa-40c4-a9a4-485d557bc9a8","timestamp":1777118944323}
+              └───────────────────────────────────────────────────────
+  14:09:05.278  ℹ  [INFO   ] [REPLAY] Request valide : nonce=02e23296...
+  14:09:05.279  ⚡ [ROUTE] GET_CATEGORIES
+  14:09:06.354  ℹ  [INFO   ] GET_CATEGORIES : 7 categorie(s)
+  14:09:06.383  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":... (869 chars)
+              │ [FULL] {"success":true,"message":"Categories récupérées.","data":[{"createdAt":"2026-03-15 23:41:05","name":"Electronique","description":"Appareils électroniques et accessoires","categoryId":1},{"createdAt":"2026-03-15 23:41:05","name":"Vetements","description":"Mode homme, femme et enfant","categoryId":2},{"createdAt":"2026-03-15 23:41:05","name":"Livres","description":"Romans, sciences, technique","categoryId":3},{"createdAt":"2026-03-15 23:41:05","name":"Sport","description":"Équipement et vêtements de sport","categoryId":4},{"createdAt":"2026-03-15 23:41:05","name":"Informatique","description":"Livres techniques et programmation","categoryId":5},{"createdAt":"2026-03-15 23:41:05","name":"Smartphones","description":"Téléphones portables","categoryId":6},{"createdAt":"2026-03-15 23:41:05","name":"Ordinateurs","description":"Laptops et desktops","categoryId":7}]}
+              └───────────────────────────────────────────────────────
+
+
+  14:09:06.420  📥 ┌─── REQUÊTE REÇUE ─── 127.0.0.1 [DECRYPTED] ─── GET_PRODUCTS ─
+              │ {"action":"GET_PRODUCTS","nonce":"eb05a5c3-61c3-4e5b-a95e-0f2144e8962d","timestamp":1777118944337}
+              └───────────────────────────────────────────────────────
+  14:09:06.423  ℹ  [INFO   ] [REPLAY] Request valide : nonce=eb05a5c3...
+  14:09:06.424  ⚡ [ROUTE] GET_PRODUCTS
+  14:09:06.433  📦 [PRODUCT ] GET_PRODUCTS : 15 produit(s)
+  14:09:06.437  📤 ┌─── ✅ RÉPONSE OK ─── 127.0.0.1 [BEFORE ENCRYPT] ─────────
+              │ {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","descripti... (3274 chars)
+              │ [FULL] {"success":true,"message":"Produits récupérés.","data":[{"isAvailable":true,"productId":1,"price":1199.99,"imageUrl":"/images/products/1774567072937_iphone15pro.jpeg","name":"iPhone 15 Pro","description":"...","stockQuantity":27,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":2,"price":899.99,"imageUrl":"/images/products/1774567088487_galaxy-s24.png","name":"Samsung Galaxy S24","description":"...","stockQuantity":43,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":3,"price":699.99,"imageUrl":"/images/products/1774567095833_pixel8.jpg","name":"Google Pixel 8","description":"...","stockQuantity":25,"categoryName":"Smartphones","categoryId":6},{"isAvailable":true,"productId":4,"price":2199.99,"imageUrl":"/images/products/1774567103856_macbook-pro-m3.png","name":"MacBook Pro M3","description":"...","stockQuantity":15,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":5,"price":1749.99,"imageUrl":"/images/products/1774567111976_dell-xps-15.jpg","name":"Dell XPS 15","description":"...","stockQuantity":20,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":6,"price":1299.99,"imageUrl":"/images/products/1774567121605_lenovo-thinkpad-x1.jpg","name":"Lenovo ThinkPad X1","description":"...","stockQuantity":18,"categoryName":"Ordinateurs","categoryId":7},{"isAvailable":true,"productId":7,"price":24.99,"imageUrl":"/images/products/1774567129129_T-Shirt_CotonBio.jpeg","name":"T-Shirt Coton Bio","description":"...","stockQuantity":197,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":8,"price":34.99,"imageUrl":"/images/products/1774567136127_T-ShirtNike-DriFit.jpg","name":"T-Shirt Nike Dri-FIT","description":"...","stockQuantity":149,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":9,"price":59.99,"imageUrl":"/images/products/1774567184697_Jean_Noirs.jpeg","name":"Jean Slim Noir","description":"...","stockQuantity":120,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":10,"price":49.99,"imageUrl":"/images/products/1774567177168_beige_chino.jpg","name":"Chino Beige","description":"...","stockQuantity":80,"categoryName":"Vetements","categoryId":2},{"isAvailable":true,"productId":11,"price":35.0,"imageUrl":"/images/products/1776011995753_clean_code.jpg","name":"Clean Code","description":"...","stockQuantity":60,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":12,"price":42.0,"imageUrl":"/images/products/1776012004602_Design_Patterns.jpg","name":"Design Patterns","description":"...","stockQuantity":40,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":13,"price":55.0,"imageUrl":"/images/products/1776012014101_Java_book.jpg","name":"Java : The Complete Reference","description":"...","stockQuantity":35,"categoryName":"Informatique","categoryId":5},{"isAvailable":true,"productId":14,"price":12.99,"imageUrl":"/images/products/1776012298534_le_petit_prince.jpg","name":"Le Petit Prince","description":"...","stockQuantity":90,"categoryName":"Livres","categoryId":3},{"isAvailable":true,"productId":15,"price":14.99,"name":"1984","description":"...","stockQuantity":70,"categoryName":"Livres","categoryId":3}]}
+              └───────────────────────────────────────────────────────
+
+  14:09:13.908  ℹ  [INFO   ] UDP Notifier initialisé
+  14:15:05.279  ℹ  [INFO   ] [REPLAY] Cleanup : 2 nonces expirés
+  14:27:10.090  🚀 [INFO   ] Starting ChriOnline Server...
+  14:27:10.277  ℹ  [INFO   ] UDP Heartbeat Server listening on port 9091
+  14:27:40.255  ℹ  [INFO   ] UDP Notifier initialisé
+  23:17:49.123  🚀 [INFO   ] Starting ChriOnline Server...
+  23:17:49.164  ℹ  [INFO   ] UDP Heartbeat Server listening on port 9091
+  23:18:19.152  ℹ  [INFO   ] UDP Notifier initialisé
