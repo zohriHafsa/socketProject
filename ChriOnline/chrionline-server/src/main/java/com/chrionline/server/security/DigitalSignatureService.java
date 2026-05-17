@@ -50,6 +50,9 @@ public class DigitalSignatureService {
         try {
             KeyStore keyStore = KeyStore.getInstance("PKCS12");
             File keystoreFile = new File(KEYSTORE_PATH);
+            if (!keystoreFile.exists()) {
+                keystoreFile = new File("chrionline-server/" + KEYSTORE_PATH);
+            }
 
             try (FileInputStream fis = new FileInputStream(keystoreFile.getAbsolutePath())) {
                 keyStore.load(fis, KEYSTORE_PASSWORD.toCharArray());

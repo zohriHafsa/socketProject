@@ -38,7 +38,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>com.chrionline.client.ui.ChriOnlineApp</mainClass>
+                    <mainClass>com.chrionline.client.ClientLauncher</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -54,7 +54,7 @@
                             <finalName>chrionline-client</finalName>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.chrionline.client.ui.ChriOnlineApp</mainClass>
+                                    <mainClass>com.chrionline.client.ClientLauncher</mainClass>
                                 </transformer>
                             </transformers>
                             <filters>

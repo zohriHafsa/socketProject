@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
-public class ChriOnlineApp extends Application {
+public class ClientApp extends Application {
 
     private static Stage primaryStage;
 

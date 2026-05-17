@@ -109,8 +109,12 @@ public class ServerMain {
         // ─── Step 5 : TLS/SSL Configuration ─────────────
         System.out.println(YLW+"  ⏳ [5/6] Configuration TLS/SSL (Keystore PKCS12)..."+R);
 
-        // Résoudre le chemin absolu du keystore
-        String keystorePath = new File("src/main/resources/security/server.p12").getAbsolutePath();
+        File keystoreFile = new File("src/main/resources/security/server.p12");
+        if (!keystoreFile.exists()) {
+                keystoreFile = new File("chrionline-server/src/main/resources/security/server.p12");
+        }
+        String keystorePath = keystoreFile.getAbsolutePath();
+
         System.setProperty("javax.net.ssl.keyStore", keystorePath);
         System.setProperty("javax.net.ssl.keyStorePassword", "chrionline2026");
         System.setProperty("javax.net.ssl.keyStoreType", "PKCS12");
