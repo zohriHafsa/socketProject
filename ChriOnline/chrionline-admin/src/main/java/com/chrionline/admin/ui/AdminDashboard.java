@@ -196,10 +196,6 @@ public class AdminDashboard {
         Region sp2 = new Region(); HBox.setHgrow(sp2, Priority.ALWAYS);
 
         // ── Right side ────────────────────────────────────
-        Button shopBtn = new Button("Boutique");
-        shopBtn.getStyleClass().add("admin-shop-link");
-        shopBtn.setOnAction(e -> AdminNavigationManager.showAdminLogin());
-
         StackPane avatar = new StackPane();
         avatar.getStyleClass().add("header-avatar");
         avatar.setMinSize(32, 32);
@@ -233,7 +229,7 @@ public class AdminDashboard {
             AdminNavigationManager.showAdminLogin();
         });
 
-        HBox actions = new HBox(10, shopBtn, avatar, logoutBtn);
+        HBox actions = new HBox(10, avatar, logoutBtn);
         actions.setAlignment(Pos.CENTER_RIGHT);
 
         inner.getChildren().addAll(logo, adminBadge, sp1, nav, sp2, actions);

@@ -347,7 +347,7 @@
     -fx-padding: 10 0;
     -fx-background-radius: 8;
     -fx-cursor: hand;
-    -fx-max-width: 1.7976931348623157E308;
+    -fx-max-width: infinity;
 }
 
 .product-card-btn:hover {
@@ -788,7 +788,7 @@
     -fx-background-radius: 12;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(108,52,131,0.3), 10, 0, 0, 4);
-    -fx-max-width: 1.7976931348623157E308;
+    -fx-max-width: infinity;
 }
 
 .auth-btn-primary:hover {
@@ -1144,7 +1144,7 @@
     -fx-padding: 14 10;
     -fx-background-radius: 10;
     -fx-cursor: hand;
-    -fx-max-width: 1.7976931348623157E308;
+    -fx-max-width: infinity;
     -fx-effect: dropshadow(gaussian, rgba(108,52,131,0.25), 8, 0, 0, 3);
 }
 
@@ -1160,7 +1160,7 @@
     -fx-font-weight: bold;
     -fx-padding: 10 8;
     -fx-cursor: hand;
-    -fx-max-width: 1.7976931348623157E308;
+    -fx-max-width: infinity;
     -fx-border-color: #6C3483;
     -fx-border-radius: 10;
     -fx-border-width: 1.5;

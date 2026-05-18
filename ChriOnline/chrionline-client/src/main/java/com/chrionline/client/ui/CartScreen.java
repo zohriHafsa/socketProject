@@ -381,7 +381,7 @@ public class CartScreen {
                                 "-fx-font-weight: bold;" +
                                 "-fx-padding: 14 0;" +
                                 "-fx-background-radius: 10;" +
-                                "-fx-max-width: 1.7976931348623157E308;"
+                                "-fx-max-width: infinity;"
                 );
             } else {
                 checkBtn.setOnAction(e -> showShippingStep());

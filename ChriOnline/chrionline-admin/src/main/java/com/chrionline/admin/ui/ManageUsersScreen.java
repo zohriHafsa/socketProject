@@ -46,7 +46,6 @@ public class ManageUsersScreen {
     private StackPane loadingOverlay;
     private HBox statsRow;
     private Label resultLabel;
-    private HBox chartRow;
 
     private List<Map<String, Object>> allUsers = new ArrayList<>();
     private String currentFilter = "TOUS";
@@ -96,9 +95,6 @@ public class ManageUsersScreen {
         statsRow = new HBox(12);
         statsRow.setAlignment(Pos.CENTER);
 
-        chartRow = new HBox(22);
-        chartRow.setAlignment(Pos.TOP_CENTER);
-
         Node toolbar = buildToolbar();
 
         usersContainer = new VBox(0);
@@ -106,7 +102,7 @@ public class ManageUsersScreen {
         resultLabel = new Label("");
         resultLabel.getStyleClass().add("admin-mini-stat-label");
 
-        mainContent.getChildren().addAll(titleRow, statsRow, chartRow, toolbar, usersContainer, resultLabel);
+        mainContent.getChildren().addAll(titleRow, statsRow, toolbar, usersContainer, resultLabel);
 
         StackPane centered = new StackPane(mainContent);
         centered.setAlignment(Pos.TOP_CENTER);
@@ -145,9 +141,7 @@ public class ManageUsersScreen {
         String[][] filters = {
                 {"TOUS", "Tous"},
                 {"ACTIFS", "Actifs"},
-                {"INACTIFS", "Inactifs"},
-                {"ADMIN", "Admins"},
-                {"CLIENT", "Clients"}
+                {"INACTIFS", "Inactifs"}
         };
 
         HBox filterChips = new HBox(6);
@@ -171,99 +165,17 @@ public class ManageUsersScreen {
         return bar;
     }
 
-    private void rebuildCharts() {
-        chartRow.getChildren().clear();
-
-        long active = allUsers.stream()
-                .filter(u -> Boolean.TRUE.equals(u.get("isActive")))
-                .count();
-        long inactive = allUsers.size() - active;
-
-        VBox pieBox = new VBox(10);
-        pieBox.getStyleClass().add("admin-chart-card");
-        HBox.setHgrow(pieBox, Priority.ALWAYS);
-        pieBox.setAlignment(Pos.TOP_CENTER);
-        pieBox.setPadding(new Insets(18));
-
-        Label pieTitle = new Label("Statut des comptes");
-        pieTitle.getStyleClass().add("admin-chart-title");
-
-        PieChart pie = new PieChart();
-        pie.setLegendSide(Side.BOTTOM);
-        pie.setMaxHeight(240);
-        pie.getStyleClass().add("admin-pie-chart");
-
-        if (active > 0) pie.getData().add(new PieChart.Data("Actifs (" + active + ")", active));
-        if (inactive > 0) pie.getData().add(new PieChart.Data("Inactifs (" + inactive + ")", inactive));
-
-        Platform.runLater(() -> {
-            for (PieChart.Data d : pie.getData()) {
-                if (d.getNode() != null) {
-                    if (d.getName().startsWith("Actifs")) {
-                        d.getNode().setStyle("-fx-pie-color: #27AE60;");
-                    } else {
-                        d.getNode().setStyle("-fx-pie-color: #E74C3C;");
-                    }
-                }
-            }
-        });
-
-        pieBox.getChildren().addAll(pieTitle, pie);
-
-        long admins = allUsers.stream()
-                .filter(u -> "ADMIN".equals(str(u.get("role"))))
-                .count();
-        long clients = allUsers.size() - admins;
-
-        VBox roleBox = new VBox(10);
-        roleBox.getStyleClass().add("admin-chart-card");
-        HBox.setHgrow(roleBox, Priority.ALWAYS);
-        roleBox.setAlignment(Pos.TOP_CENTER);
-        roleBox.setPadding(new Insets(18));
-
-        Label roleTitle = new Label("Repartition des roles");
-        roleTitle.getStyleClass().add("admin-chart-title");
-
-        PieChart rolePie = new PieChart();
-        rolePie.setLegendSide(Side.BOTTOM);
-        rolePie.setMaxHeight(240);
-        rolePie.getStyleClass().add("admin-pie-chart");
-
-        if (admins > 0) rolePie.getData().add(new PieChart.Data("Admins (" + admins + ")", admins));
-        if (clients > 0) rolePie.getData().add(new PieChart.Data("Clients (" + clients + ")", clients));
-
-        Platform.runLater(() -> {
-            for (PieChart.Data d : rolePie.getData()) {
-                if (d.getNode() != null) {
-                    if (d.getName().startsWith("Admins")) {
-                        d.getNode().setStyle("-fx-pie-color: #8E44AD;");
-                    } else {
-                        d.getNode().setStyle("-fx-pie-color: #3498DB;");
-                    }
-                }
-            }
-        });
-
-        roleBox.getChildren().addAll(roleTitle, rolePie);
-
-        chartRow.getChildren().addAll(pieBox, roleBox);
-    }
-
     private void rebuildStats() {
         statsRow.getChildren().clear();
 
         long total = allUsers.size();
         long active = allUsers.stream().filter(u -> Boolean.TRUE.equals(u.get("isActive"))).count();
         long inactive = total - active;
-        long admins = allUsers.stream().filter(u -> "ADMIN".equals(str(u.get("role")))).count();
-        long clients = total - admins;
 
         statsRow.getChildren().addAll(
                 miniStat("Total", String.valueOf(total), "#6C3483"),
                 miniStat("Actifs", String.valueOf(active), "#27AE60"),
-                miniStat("Inactifs", String.valueOf(inactive), "#E74C3C"),
-                miniStat("Admins", String.valueOf(admins), "#8E44AD"),
-                miniStat("Clients", String.valueOf(clients), "#3498DB")
+                miniStat("Inactifs", String.valueOf(inactive), "#E74C3C")
         );
     }
 
@@ -287,7 +199,6 @@ public class ManageUsersScreen {
     private void displayUsers() {
         usersContainer.getChildren().clear();
         rebuildStats();
-        rebuildCharts();
 
         List<Map<String, Object>> filtered = allUsers;
 
@@ -300,16 +211,6 @@ public class ManageUsersScreen {
             case "INACTIFS":
                 filtered = filtered.stream()
                         .filter(u -> !Boolean.TRUE.equals(u.get("isActive")))
-                        .collect(Collectors.toList());
-                break;
-            case "ADMIN":
-                filtered = filtered.stream()
-                        .filter(u -> "ADMIN".equals(str(u.get("role"))))
-                        .collect(Collectors.toList());
-                break;
-            case "CLIENT":
-                filtered = filtered.stream()
-                        .filter(u -> "CLIENT".equals(str(u.get("role"))))
                         .collect(Collectors.toList());
                 break;
         }
@@ -560,7 +461,9 @@ public class ManageUsersScreen {
                 .thenAccept(res -> Platform.runLater(() -> {
                     showLoading(false);
                     if (res.isSuccess() && res.getData() != null) {
-                        allUsers = (List<Map<String, Object>>) res.getData();
+                        allUsers = ((List<Map<String, Object>>) res.getData()).stream()
+                                .filter(u -> !"ADMIN".equals(str(u.get("role"))))
+                                .collect(Collectors.toList());
                     }
                     displayUsers();
                 }))

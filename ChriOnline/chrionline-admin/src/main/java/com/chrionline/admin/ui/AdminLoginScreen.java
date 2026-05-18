@@ -46,12 +46,7 @@ public class AdminLoginScreen {
         watermark.setMouseTransparent(true);
         StackPane.setAlignment(watermark, Pos.CENTER);
 
-        // Back link
-        Button backLink = new Button("\u2190 Retour à la connexion client");
-        backLink.getStyleClass().add("auth-back-link");
-        backLink.setOnAction(e -> AdminNavigationManager.showAdminLogin());
-        StackPane.setAlignment(backLink, Pos.TOP_LEFT);
-        StackPane.setMargin(backLink, new Insets(24, 0, 0, 24));
+        // No back link needed here
 
         centerBox = new VBox(20);
         centerBox.setAlignment(Pos.CENTER);
@@ -61,8 +56,8 @@ public class AdminLoginScreen {
 
         Pane particles = buildParticles();
 
-        // Ensure backLink is added LAST so it layers ABOVE the centerBox and particles!
-        root.getChildren().addAll(particles, watermark, centerBox, backLink);
+        // Ensure centerBox and particles are added
+        root.getChildren().addAll(particles, watermark, centerBox);
     }
 
     public Node getView() {
