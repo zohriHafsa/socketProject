@@ -232,8 +232,9 @@ public class RequestRouter {
         String cardNumber = request.getString("cardNumber");
         String expiry     = request.getString("expiry");
         String cvv        = request.getString("cvv");
+        boolean isRealtime = "true".equals(request.getString("isRealtime"));
 
-        Response response = paymentValidationService.validateCard(userId, cardNumber, expiry, cvv);
+        Response response = paymentValidationService.validateCard(userId, cardNumber, expiry, cvv, isRealtime);
         return signPaymentResponse(response, "VALIDATE_CARD");
     }
 

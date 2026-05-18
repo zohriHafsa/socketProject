@@ -21,50 +21,54 @@ public class PaymentValidationService {
      *   - success=true + data={bankName, bankLogo, maskedCard} si OK
      *   - success=false + message si erreur
      */
-    public Response validateCard(int userId, String cardNumber, String expiry, String cvv) {
+    public Response validateCard(int userId, String cardNumber, String expiry, String cvv, boolean isRealtime) {
         // 1. Vérifier les tentatives récentes
-        try {
-            int attempts = bankDAO.getRecentFailedAttempts(userId);
-            if (attempts >= 2) {
-                return Response.error(
-                        "Compte temporairement bloqué après 2 tentatives échouées. " +
-                                "Veuillez réessayer dans 30 minutes."
-                );
+        if (!isRealtime) {
+            try {
+                int attempts = bankDAO.getRecentFailedAttempts(userId);
+                if (attempts >= 2) {
+                    return Response.error(
+                            "Compte temporairement bloqué après 2 tentatives échouées. " +
+                                    "Veuillez réessayer dans 30 minutes."
+                    );
+                }
+            } catch (SQLException e) {
+                ServerLogger.error("Erreur vérification tentatives : " + e.getMessage());
             }
-        } catch (SQLException e) {
-            ServerLogger.error("Erreur vérification tentatives : " + e.getMessage());
         }
 
         // 2. Nettoyer et valider le format
         String cleaned = cardNumber.replaceAll("\\s+", "");
 
-        if (cleaned.length() < 13 || cleaned.length() > 19) {
-            recordFailure(userId, cardNumber, "Numéro invalide (longueur)");
-            return Response.error("Le numéro de carte doit contenir entre 13 et 19 chiffres.");
-        }
+        if (!isRealtime) {
+            if (cleaned.length() < 13 || cleaned.length() > 19) {
+                recordFailure(userId, cardNumber, "Numéro invalide (longueur)");
+                return Response.error("Numéro de carte invalide.");
+            }
 
-        if (!cleaned.matches("\\d+")) {
-            recordFailure(userId, cardNumber, "Numéro invalide (non numérique)");
-            return Response.error("Le numéro de carte ne doit contenir que des chiffres.");
-        }
+            if (!cleaned.matches("\\d+")) {
+                recordFailure(userId, cardNumber, "Numéro invalide (non numérique)");
+                return Response.error("Le numéro de carte ne doit contenir que des chiffres.");
+            }
 
-        // 3. Algorithme de Luhn
-        if (!luhnCheck(cleaned)) {
-            recordFailure(userId, cardNumber, "Échec validation Luhn");
-            return Response.error("Numéro de carte invalide (vérification Luhn).");
-        }
+            // 3. Algorithme de Luhn
+            if (!luhnCheck(cleaned)) {
+                recordFailure(userId, cardNumber, "Échec validation Luhn");
+                return Response.error("Numéro de carte invalide.");
+            }
 
-        // 4. Vérifier la date d'expiration
-        Response expiryCheck = validateExpiry(expiry);
-        if (!expiryCheck.isSuccess()) {
-            recordFailure(userId, cardNumber, "Date expirée : " + expiry);
-            return expiryCheck;
-        }
+            // 4. Vérifier la date d'expiration
+            Response expiryCheck = validateExpiry(expiry);
+            if (!expiryCheck.isSuccess()) {
+                recordFailure(userId, cardNumber, "Date expirée : " + expiry);
+                return expiryCheck;
+            }
 
-        // 5. Valider le CVV
-        if (cvv == null || !cvv.matches("\\d{3,4}")) {
-            recordFailure(userId, cardNumber, "CVV invalide");
-            return Response.error("Le CVV doit contenir 3 ou 4 chiffres.");
+            // 5. Valider le CVV
+            if (cvv == null || !cvv.matches("\\d{3,4}")) {
+                recordFailure(userId, cardNumber, "CVV invalide");
+                return Response.error("Le CVV doit contenir 3 ou 4 chiffres.");
+            }
         }
 
         // 6. Identifier la banque via BIN
@@ -78,7 +82,7 @@ public class PaymentValidationService {
         // 7. Construire la réponse
         Map<String, Object> result = new HashMap<>();
         result.put("maskedCard", maskCard(cleaned));
-        result.put("last4", cleaned.substring(cleaned.length() - 4));
+        result.put("last4", cleaned.length() >= 4 ? cleaned.substring(cleaned.length() - 4) : cleaned);
         result.put("cardType", detectCardType(cleaned));
 
         if (bankInfo != null) {
@@ -91,8 +95,10 @@ public class PaymentValidationService {
             result.put("isMoroccan", false);
         }
 
-        ServerLogger.info("Carte validée : " + maskCard(cleaned)
-                + " (" + result.get("bankName") + ")");
+        if (!isRealtime) {
+            ServerLogger.info("Carte validée : " + maskCard(cleaned)
+                    + " (" + result.get("bankName") + ")");
+        }
 
         return Response.ok("Carte valide", result);
     }

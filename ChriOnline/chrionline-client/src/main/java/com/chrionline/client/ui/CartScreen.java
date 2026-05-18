@@ -417,6 +417,14 @@ public class CartScreen {
 
     private void showShippingStep() {
         currentStep = 1;
+        
+        if (shippingAddress.isEmpty()) {
+            String addr = NavigationManager.getAddress();
+            if (addr != null && !addr.trim().isEmpty()) {
+                shippingAddress = addr;
+            }
+        }
+
         VBox page = new VBox(20);
         page.setMaxWidth(MAX_W);
         page.setPadding(new Insets(20, H_PAD, 40, H_PAD));
@@ -683,12 +691,13 @@ public class CartScreen {
         tfa2Box.getChildren().addAll(tfa2Title, tfa2Info, tfaCodeField, validate2FAButton);
 
         // ── Boutons navigation ───────────────────────────────
-        HBox btns = new HBox(12);
+        HBox btns = new HBox();
         btns.setAlignment(Pos.CENTER_RIGHT);
+        btns.setPadding(new Insets(8, 0, 0, 0));
 
         Button backBtn = new Button("\u2190 Retour");
         backBtn.getStyleClass().add("cart-continue-btn");
-        backBtn.setStyle("-fx-max-width:120;");
+        backBtn.setStyle("-fx-max-width:140;");
         backBtn.setOnAction(e -> showShippingStep());
 
         btns.getChildren().add(backBtn);
@@ -737,6 +746,7 @@ public class CartScreen {
         data.put("cardNumber", cardNumber);
         data.put("expiry", "12/99");
         data.put("cvv", "123");
+        data.put("isRealtime", "true");
 
         ServerConnection.getInstance()
                 .sendAsync(new Request(Action.VALIDATE_CARD,
@@ -914,18 +924,16 @@ public class CartScreen {
         page.setAlignment(Pos.TOP_CENTER);
         page.getChildren().add(buildStepper());
 
-        VBox celebration = new VBox(16);
+        VBox celebration = new VBox(10);
         celebration.setAlignment(Pos.CENTER);
         celebration.setPadding(new Insets(20, 0, 20, 0));
 
-        Label icon = new Label("\uD83C\uDF89");
-        icon.getStyleClass().add("celebration-icon");
         Label cTitle = new Label("Commande confirmee !");
         cTitle.getStyleClass().add("celebration-title");
         Label cSub = new Label(
                 "Merci pour votre achat. Votre commande est en cours de traitement.");
         cSub.getStyleClass().add("celebration-subtitle");
-        celebration.getChildren().addAll(icon, cTitle, cSub);
+        celebration.getChildren().addAll(cTitle, cSub);
 
         VBox receipt = new VBox(14);
         receipt.getStyleClass().add("receipt-card");
@@ -981,7 +989,7 @@ public class CartScreen {
         page.getChildren().addAll(celebration, receipt, btns);
         setContent(page);
 
-        Platform.runLater(this::launchConfetti);
+
     }
 
     private HBox receiptRow(String label, String value) {
@@ -1004,56 +1012,7 @@ public class CartScreen {
         return d;
     }
 
-    private void launchConfetti() {
-        Pane confettiLayer = new Pane();
-        confettiLayer.setMouseTransparent(true);
-        confettiLayer.setManaged(false);
 
-        StackPane rootStack = (StackPane) root.getParent();
-        if (rootStack == null) return;
-        rootStack.getChildren().add(confettiLayer);
-
-        Color[] colors = {
-                Color.web("#6C3483"), Color.web("#F39C12"),
-                Color.web("#27AE60"), Color.web("#E74C3C"),
-                Color.web("#3498DB"), Color.web("#8E44AD")
-        };
-
-        Random rand = new Random();
-        for (int i = 0; i < 60; i++) {
-            Rectangle conf = new Rectangle(8, 8);
-            conf.setFill(colors[rand.nextInt(colors.length)]);
-            conf.setRotate(rand.nextDouble() * 360);
-            conf.setLayoutX(200 + rand.nextDouble() * 900);
-            conf.setLayoutY(-20);
-            conf.setOpacity(0.9);
-            confettiLayer.getChildren().add(conf);
-
-            double dur = 1500 + rand.nextDouble() * 2000;
-            TranslateTransition fall = new TranslateTransition(
-                    Duration.millis(dur), conf);
-            fall.setByY(800 + rand.nextDouble() * 200);
-            fall.setByX((rand.nextDouble() - 0.5) * 200);
-            fall.setInterpolator(Interpolator.EASE_IN);
-
-            RotateTransition spin = new RotateTransition(
-                    Duration.millis(dur), conf);
-            spin.setByAngle(360 + rand.nextDouble() * 720);
-
-            FadeTransition fade = new FadeTransition(
-                    Duration.millis(dur), conf);
-            fade.setFromValue(0.9);
-            fade.setToValue(0);
-
-            ParallelTransition anim = new ParallelTransition(fall, spin, fade);
-            anim.setDelay(Duration.millis(rand.nextDouble() * 500));
-            anim.play();
-        }
-
-        PauseTransition cleanup = new PauseTransition(Duration.seconds(4));
-        cleanup.setOnFinished(e -> rootStack.getChildren().remove(confettiLayer));
-        cleanup.play();
-    }
 
     // ═══════════════════════════════════════════════════════
     //  PLACE ORDER

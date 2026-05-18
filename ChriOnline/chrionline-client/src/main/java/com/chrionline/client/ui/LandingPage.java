@@ -1410,7 +1410,9 @@ public class LandingPage {
                         int c = intV(((Map<String, Object>) r.getData())
                                 .get("itemCount"));
                         cartCountLabel.setText(String.valueOf(c));
-                        cartCountLabel.getParent().setVisible(c > 0);
+                        if (cartCountLabel.getParent() != null) {
+                            cartCountLabel.getParent().setVisible(c > 0);
+                        }
                     }
                 }));
     }

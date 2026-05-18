@@ -20,7 +20,7 @@ public class AdminApp extends Application {
     @Override
     public void start(Stage stage) {
         StackPane root = new StackPane();
-        Scene scene = new Scene(root, 1280, 800);
+        Scene scene = new Scene(root, 1152, 720);
 
         String css = resolveStylesheetUrl();
         if (css != null) {

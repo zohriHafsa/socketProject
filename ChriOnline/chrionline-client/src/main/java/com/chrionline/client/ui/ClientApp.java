@@ -24,7 +24,7 @@ public class ClientApp extends Application {
         primaryStage = stage;
 
         StackPane root = new StackPane();
-        Scene scene = new Scene(root, 1280, 800);
+        Scene scene = new Scene(root, 1152, 720);
 
         // Chargement robuste du CSS
         String css = resolveStylesheetUrl();
