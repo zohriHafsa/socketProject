@@ -38,7 +38,7 @@ public class EmailService {
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
             msg.setSubject(subject);
 
-            String htmlContent = 
+            String htmlContent =
                 "<div style='font-family: \"Inter\", Helvetica, Arial, sans-serif; background-color: #f4f6f8; padding: 40px 0;'>" +
                 "  <div style='max-width: 550px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px rgba(0,0,0,0.05);'>" +
                 "    <div style='background-color: #6C3483; padding: 30px; text-align: center; border-bottom: 3px solid #8E44AD;'>" +
@@ -82,18 +82,18 @@ public class EmailService {
         );
     }
     public static boolean sendRegistrationEmail(String toEmail, String code) {
-        return sendEmail(toEmail, 
-            "Bienvenue sur ChriOnline - Code de verification", 
-            "ChriOnline", 
-            "Nous sommes ravis de vous compter parmi nous ! Pour securiser et valider la creation de votre compte, veuillez utiliser le code de verification ci-dessous :", 
+        return sendEmail(toEmail,
+            "Bienvenue sur ChriOnline - Code de verification",
+            "ChriOnline",
+            "Nous sommes ravis de vous compter parmi nous ! Pour securiser et valider la creation de votre compte, veuillez utiliser le code de verification ci-dessous :",
             code);
     }
 
     public static boolean send2faEmail(String toEmail, String code) {
-        return sendEmail(toEmail, 
-            "ChriOnline - Authentification requise", 
-            "Securite ChriOnline", 
-            "Une tentative de connexion a ete detectee sur votre compte. Pour autoriser cet acces, veuillez utiliser le code d'authentification a deux facteurs (2FA) ci-dessous :", 
+        return sendEmail(toEmail,
+            "ChriOnline - Authentification requise",
+            "Securite ChriOnline",
+            "Une tentative de connexion a ete detectee sur votre compte. Pour autoriser cet acces, veuillez utiliser le code d'authentification a deux facteurs (2FA) ci-dessous.<br/><br/>Si ce n'etait pas vous, nous vous conseillons vivement de modifier votre mot de passe immediatement.",
             code);
     }
 
@@ -119,6 +119,18 @@ public class EmailService {
                 "Activation Admin",
                 "Vous avez été désigné comme administrateur de ChriOnline. Veuillez utiliser le token d'activation ci-dessous dans l'application pour initialiser vos clés de sécurité :",
                 activationToken
+        );
+    }
+
+    public static boolean sendSecurityAlertEmail(String toEmail, String ipAddress, String username) {
+        return sendEmail(toEmail,
+                "Alerte de Sécurité - Tentative de connexion bloquée",
+                "Alerte Sécurité",
+                "Nous avons détecté plusieurs tentatives de connexion infructueuses sur votre compte (<strong>@" + username + "</strong>) " +
+                "provenant d'une adresse IP inhabituelle (<strong>IP : " + ipAddress + "</strong>).<br/><br/>" +
+                "Par mesure de précaution, nous avons temporairement bloqué les tentatives de connexion provenant de cette adresse IP pendant 15 minutes.<br/><br/>" +
+                "Votre compte reste pleinement actif et sécurisé. Vous pouvez continuer à vous connecter normalement depuis vos appareils habituels.",
+                "IP BLOQUÉE : " + ipAddress
         );
     }
 }

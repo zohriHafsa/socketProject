@@ -22,20 +22,50 @@ public class TCPServer {
         this.poolSize = poolSize;
     }
 
+    private SSLServerSocketFactory createSSLServerSocketFactory() throws Exception {
+        java.io.InputStream in = TCPServer.class.getResourceAsStream("/security/server.p12");
+        if (in == null) {
+            // Fallback for IDE development paths if classpath resource is not resolved
+            java.io.File file = new java.io.File("src/main/resources/security/server.p12");
+            if (!file.exists()) {
+                file = new java.io.File("chrionline-server/src/main/resources/security/server.p12");
+            }
+            if (file.exists()) {
+                in = new java.io.FileInputStream(file);
+            } else {
+                throw new java.io.FileNotFoundException("Keystore server.p12 resource not found on classpath or disk!");
+            }
+        }
+
+        try (java.io.InputStream keystoreStream = in) {
+            java.security.KeyStore keystore = java.security.KeyStore.getInstance("PKCS12");
+            keystore.load(keystoreStream, "chrionline2026".toCharArray());
+
+            javax.net.ssl.KeyManagerFactory kmf =
+                    javax.net.ssl.KeyManagerFactory.getInstance(javax.net.ssl.KeyManagerFactory.getDefaultAlgorithm());
+            kmf.init(keystore, "chrionline2026".toCharArray());
+
+            javax.net.ssl.SSLContext sslContext = javax.net.ssl.SSLContext.getInstance("TLS");
+            sslContext.init(kmf.getKeyManagers(), null, null);
+
+            return sslContext.getServerSocketFactory();
+        }
+    }
+
     public void start() {
         try {
-            // ── TLS : Création du SSLServerSocket via le Keystore configuré ──
-            SSLServerSocketFactory factory =
-                    (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+            // ── TLS : In-memory creation of SSLServerSocket using custom SSLContext ──
+            SSLServerSocketFactory factory = createSSLServerSocketFactory();
             serverSocket = factory.createServerSocket(port);
             ServerLogger.info("[TLS] SSLServerSocket créé sur le port " + port);
-
+ 
             threadPool = Executors.newFixedThreadPool(poolSize);
             running = true;
-            System.out.println("[SERVER] Started on port " + port + " (TLS enabled)");
+            System.out.println("[SERVER] Started on port " + port + " (TLS enabled - In-Memory Keystore)");
             acceptConnections();
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println("[SERVER] Failed to start: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
