@@ -161,7 +161,7 @@ public class AdminLoginScreen {
         VBox.setMargin(greeting, new Insets(0, 0, 5, 0));
 
         // File Selector
-        Label fileLabel = new Label("Fichier de Clé Privée (.key)");
+        Label fileLabel = new Label("Fichier KeyStore Admin (.p12)");
         fileLabel.getStyleClass().add("auth-field-label");
         
         HBox fileBox = new HBox(10);
@@ -177,7 +177,7 @@ public class AdminLoginScreen {
         browseBtn.setOnAction(e -> {
             FileChooser fc = new FileChooser();
             fc.setTitle("Sélectionner la clé privée RSA");
-            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Private Key Files", "*.key", "*.pem"));
+            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PKCS12 KeyStore", "*.p12"));
             Stage stage = (Stage) root.getScene().getWindow();
             File file = fc.showOpenDialog(stage);
             if (file != null) {
@@ -222,7 +222,7 @@ public class AdminLoginScreen {
 
             new Thread(() -> {
                 try {
-                    PrivateKey privateKey = ECDSAUtils.loadPrivateKeyDecrypted(selectedKeyFile, pass);
+                    PrivateKey privateKey = ECDSAUtils.loadPrivateKeyFromKeyStore(selectedKeyFile, pass);
                     
                     byte[] sigBytes = ECDSAUtils.sign(activeChallenge, privateKey);
                     String signature = java.util.Base64.getEncoder().encodeToString(sigBytes);

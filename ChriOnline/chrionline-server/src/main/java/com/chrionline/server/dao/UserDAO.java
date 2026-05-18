@@ -135,6 +135,17 @@ public class UserDAO {
         }
     }
 
+    /** Helper for simulation/tests only: get the current verify code from DB */
+    public String getLatestVerifyCode(int userId) throws SQLException {
+        String sql = "SELECT verify_code FROM users WHERE user_id = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getString("verify_code");
+        }
+        return null;
+    }
+
     public boolean hasActiveOtp(int userId) throws SQLException {
         String sql = "SELECT 1 FROM users WHERE user_id = ? AND verify_code IS NOT NULL AND verify_expires > NOW()";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {

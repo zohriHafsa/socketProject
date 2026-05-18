@@ -36,8 +36,8 @@ public class AdminDAO {
                            String firstName, String lastName)
             throws SQLException {
         String sql = "INSERT INTO admins " +
-                "(username, email, activation_token, status, first_name, last_name) " +
-                "VALUES (?, ?, ?, 'PENDING', ?, ?)";
+                "(username, email, activation_token, token_expires_at, status, first_name, last_name) " +
+                "VALUES (?, ?, ?, DATE_ADD(NOW(), INTERVAL 12 HOUR), 'PENDING', ?, ?)";
         try (PreparedStatement ps = conn().prepareStatement(sql,
                 Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, username);
@@ -55,8 +55,8 @@ public class AdminDAO {
     // ── Enregistrer Clé Publique (Finalise Inscription) ──
     public boolean activateAdmin(String username, String activationToken, String publicKey)
             throws SQLException {
-        String sql = "UPDATE admins SET public_key = ?, status = 'ACTIVE', activation_token = NULL " +
-                     "WHERE username = ? AND activation_token = ? AND status = 'PENDING'";
+        String sql = "UPDATE admins SET public_key = ?, status = 'ACTIVE', activation_token = NULL, token_expires_at = NULL " +
+                     "WHERE username = ? AND activation_token = ? AND status = 'PENDING' AND (token_expires_at IS NULL OR token_expires_at > NOW())";
         try (PreparedStatement ps = conn().prepareStatement(sql)) {
             ps.setString(1, publicKey);
             ps.setString(2, username);
@@ -136,6 +136,7 @@ public class AdminDAO {
         m.put("email",        rs.getString("email"));
         m.put("publicKey",    rs.getString("public_key"));
         m.put("activationToken", rs.getString("activation_token"));
+        m.put("tokenExpiresAt", rs.getString("token_expires_at"));
         m.put("status",       rs.getString("status"));
         m.put("firstName",    rs.getString("first_name"));
         m.put("lastName",     rs.getString("last_name"));

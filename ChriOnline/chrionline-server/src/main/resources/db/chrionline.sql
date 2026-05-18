@@ -10,28 +10,29 @@ USE chrionline;
 --  Separate from users — admins manage the platform
 -- =============================================================
 CREATE TABLE admins (
-    admin_id      INT          NOT NULL AUTO_INCREMENT,
-    username      VARCHAR(50)  NOT NULL,
-    email         VARCHAR(150) NOT NULL,
+    admin_id         INT          NOT NULL AUTO_INCREMENT,
+    username         VARCHAR(50)  NOT NULL,
+    email            VARCHAR(150) NOT NULL,
     public_key       TEXT                  DEFAULT NULL,
     activation_token VARCHAR(255)          DEFAULT NULL,
+    token_expires_at DATETIME              DEFAULT NULL,
     status           ENUM('PENDING', 'ACTIVE') NOT NULL DEFAULT 'PENDING',
-    first_name    VARCHAR(80)  NOT NULL,
-    last_name     VARCHAR(80)  NOT NULL,
-    is_active     TINYINT(1)   NOT NULL DEFAULT 1,
-    is_super      TINYINT(1)   NOT NULL DEFAULT 0,
-    verify_code   VARCHAR(10)             DEFAULT NULL,
-    verify_expires DATETIME               DEFAULT NULL,
-    created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    first_name       VARCHAR(80)  NOT NULL,
+    last_name        VARCHAR(80)  NOT NULL,
+    is_active        TINYINT(1)   NOT NULL DEFAULT 1,
+    is_super         TINYINT(1)   NOT NULL DEFAULT 0,
+    verify_code      VARCHAR(10)             DEFAULT NULL,
+    verify_expires   DATETIME               DEFAULT NULL,
+    created_at       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT pk_admins          PRIMARY KEY (admin_id),
     CONSTRAINT uq_admins_username UNIQUE (username),
     CONSTRAINT uq_admins_email    UNIQUE (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO admins (admin_id, username, email, public_key, activation_token, status, first_name, last_name, is_active, is_super, created_at) VALUES
-(1, 'superadmin', 'super@chrionline.com', NULL, 'super_init_token', 'PENDING', 'Super',  'Admin', 1, 1, '2026-03-29 15:16:50'),
-(2, 'admin',      'admin@chrionline.com', NULL, 'admin_init_token', 'PENDING', 'Normal', 'Admin', 1, 0, '2026-03-29 17:04:54');
+INSERT INTO admins (admin_id, username, email, public_key, activation_token, token_expires_at, status, first_name, last_name, is_active, is_super, created_at) VALUES
+(1, 'superadmin', 'super@chrionline.com', NULL, 'super_init_token', '2030-01-01 00:00:00', 'PENDING', 'Super',  'Admin', 1, 1, '2026-03-29 15:16:50'),
+(2, 'admin',      'admin@chrionline.com', NULL, 'admin_init_token', '2030-01-01 00:00:00', 'PENDING', 'Normal', 'Admin', 1, 0, '2026-03-29 17:04:54');
 
 
 -- =============================================================

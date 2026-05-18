@@ -4,13 +4,11 @@ import java.io.*;
 import java.security.*;
 import java.security.spec.*;
 import java.util.Base64;
-import javax.crypto.*;
-import javax.crypto.spec.*;
 
 public class ECDSAUtils {
 
     /**
-     * Generates a new ECDSA KeyPair using the secp256r1 curve
+     * Generates a new ECDSA KeyPair using the secp256r1 curve.
      */
     public static KeyPair generateKeyPair() throws Exception {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("EC");
@@ -56,57 +54,60 @@ public class ECDSAUtils {
     }
 
     /**
-     * Encrypts the EC PrivateKey securely using AES-256 derived from a passphrase and saves it to a file.
-     * This protects the admin's private key at rest on their desktop.
+     * Generates an EC keypair into a PKCS12 KeyStore file (.p12) using keytool,
+     * then returns the PublicKey for server registration.
+     * Replaces the old manual AES/PBKDF2 encryption approach.
      */
-    public static void savePrivateKeyEncrypted(PrivateKey privateKey, File file, String pass) throws Exception {
-        byte[] salt = new byte[16];
-        new SecureRandom().nextBytes(salt);
-        
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        KeySpec spec = new PBEKeySpec(pass.toCharArray(), salt, 65536, 256);
-        SecretKey tmp = factory.generateSecret(spec);
-        SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
-        
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, secret);
-        AlgorithmParameters params = cipher.getParameters();
-        byte[] iv = params.getParameterSpec(IvParameterSpec.class).getIV();
-        
-        byte[] encryptedKey = cipher.doFinal(privateKey.getEncoded());
-        
-        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
-            dos.write(salt);
-            dos.write(iv);
-            dos.write(encryptedKey);
+    public static PublicKey generateAndSaveKeyStore(String username, File file, String pass) throws Exception {
+        String keytoolPath = System.getProperty("java.home")
+                + File.separator + "bin" + File.separator + "keytool";
+
+        if (file.exists()) {
+            file.delete();
         }
+
+        // Sanitize CN to prevent DN injection
+        String cn = username.replaceAll("[,=\"+<>;\\\\]", "");
+
+        ProcessBuilder pb = new ProcessBuilder(
+            keytoolPath, "-genkeypair",
+            "-alias",     "admin-key",
+            "-keyalg",    "EC",
+            "-keysize",   "256",
+            "-storetype", "PKCS12",
+            "-keystore",  file.getAbsolutePath(),
+            "-storepass", pass,
+            "-validity",  "3650",
+            "-dname",     "CN=" + cn + ", OU=Admin, O=ChriOnline"
+        );
+        pb.redirectErrorStream(true);
+
+        Process p = pb.start();
+        int exitCode = p.waitFor();
+        if (exitCode != 0) {
+            java.util.Scanner s = new java.util.Scanner(p.getInputStream()).useDelimiter("\\A");
+            String output = s.hasNext() ? s.next() : "(no output)";
+            throw new Exception("keytool failed (exit " + exitCode + "): " + output);
+        }
+
+        // Read back the KeyStore and extract the public key
+        KeyStore ks = KeyStore.getInstance("PKCS12");
+        try (FileInputStream fis = new FileInputStream(file)) {
+            ks.load(fis, pass.toCharArray());
+        }
+        java.security.cert.Certificate cert = ks.getCertificate("admin-key");
+        return cert.getPublicKey();
     }
 
     /**
-     * Loads an encrypted EC PrivateKey from a file and decrypts it using the passphrase.
+     * Loads the PrivateKey from a PKCS12 KeyStore file (.p12).
+     * Replaces the old manual AES/PBKDF2 decryption approach.
      */
-    public static PrivateKey loadPrivateKeyDecrypted(File file, String pass) throws Exception {
-        try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
-            byte[] salt = new byte[16];
-            dis.readFully(salt);
-            
-            byte[] iv = new byte[16];
-            dis.readFully(iv);
-            
-            byte[] encryptedKey = dis.readAllBytes();
-            
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            KeySpec spec = new PBEKeySpec(pass.toCharArray(), salt, 65536, 256);
-            SecretKey tmp = factory.generateSecret(spec);
-            SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
-            
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(iv));
-            byte[] pkcs8Bytes = cipher.doFinal(encryptedKey);
-            
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(pkcs8Bytes);
-            KeyFactory kf = KeyFactory.getInstance("EC");
-            return kf.generatePrivate(keySpec);
+    public static PrivateKey loadPrivateKeyFromKeyStore(File file, String pass) throws Exception {
+        KeyStore ks = KeyStore.getInstance("PKCS12");
+        try (FileInputStream fis = new FileInputStream(file)) {
+            ks.load(fis, pass.toCharArray());
         }
+        return (PrivateKey) ks.getKey("admin-key", pass.toCharArray());
     }
 }

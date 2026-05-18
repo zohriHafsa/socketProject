@@ -17,7 +17,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.security.KeyPair;
+import java.security.PublicKey;
 import java.util.Map;
 
 public class AdminInitScreen {
@@ -228,12 +228,10 @@ public class AdminInitScreen {
 
         new Thread(() -> {
             try {
-                KeyPair rsaKeys = ECDSAUtils.generateKeyPair();
+                File privateKeyFile = new File(selectedDirectory, username + "_admin.p12");
+                PublicKey pubKey = ECDSAUtils.generateAndSaveKeyStore(username, privateKeyFile, pass);
 
-                File privateKeyFile = new File(selectedDirectory, username + "_private.key");
-                ECDSAUtils.savePrivateKeyEncrypted(rsaKeys.getPrivate(), privateKeyFile, pass);
-
-                String publicKeyBase64 = ECDSAUtils.encodePublicKey(rsaKeys.getPublic());
+                String publicKeyBase64 = ECDSAUtils.encodePublicKey(pubKey);
 
                 ServerConnection.getInstance().sendAsync(
                     new Request(Action.ADMIN_REGISTER_KEY, null, Map.of(

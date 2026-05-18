@@ -228,7 +228,7 @@ public class AdminService {
         try {
             boolean success = adminDAO.activateAdmin(username, token, publicKey);
             if (!success) {
-                return Response.error("Token invalide ou compte déjà actif.");
+                return Response.error("Token invalide, expiré (12h) ou compte déjà actif.");
             }
             ServerLogger.info("ADMIN_REGISTER_KEY : " + username + " (Clé RSA enrégistrée)");
             return Response.ok("Clé de sécurité enregistrée. Vous pouvez maintenant vous connecter.", null);
