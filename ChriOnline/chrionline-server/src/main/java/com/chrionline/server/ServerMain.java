@@ -106,21 +106,25 @@ public class ServerMain {
                 );
         System.out.println(GRN+B+"  ✅ [4/6] Nettoyeur UDP actif (toutes les 30s)"+R);
 
-        // ─── Step 5 : TLS/SSL Configuration ─────────────
         System.out.println(YLW+"  ⏳ [5/6] Configuration TLS/SSL (Keystore PKCS12)..."+R);
-
-        File keystoreFile = new File("src/main/resources/security/server.p12");
-        if (!keystoreFile.exists()) {
-                keystoreFile = new File("chrionline-server/src/main/resources/security/server.p12");
+        // Verify that the keystore resource is available on the classpath or local disk
+        try (java.io.InputStream in = ServerMain.class.getResourceAsStream("/security/server.p12")) {
+            if (in == null) {
+                // Check if it's on disk as development fallback
+                java.io.File file = new java.io.File("src/main/resources/security/server.p12");
+                if (!file.exists()) {
+                    file = new java.io.File("chrionline-server/src/main/resources/security/server.p12");
+                }
+                if (!file.exists()) {
+                    throw new java.io.FileNotFoundException("Keystore server.p12 resource not found on classpath or disk!");
+                }
+            }
+            ServerLogger.info("[TLS] Keystore vérifié et prêt en mémoire.");
+            System.out.println(GRN+B+"  ✅ [5/6] TLS/SSL configuré (server.p12 en mémoire, RSA 2048)"+R);
+        } catch (Exception e) {
+            System.err.println("❌ ERROR: Failed to verify TLS keystore: " + e.getMessage());
+            throw new RuntimeException(e);
         }
-        String keystorePath = keystoreFile.getAbsolutePath();
-
-        System.setProperty("javax.net.ssl.keyStore", keystorePath);
-        System.setProperty("javax.net.ssl.keyStorePassword", "chrionline2026");
-        System.setProperty("javax.net.ssl.keyStoreType", "PKCS12");
-
-        ServerLogger.info("[TLS] Keystore chargé : " + keystorePath);
-        System.out.println(GRN+B+"  ✅ [5/6] TLS/SSL configuré (server.p12, RSA 2048)"+R);
 
         // ─── Step 6 : TCP Server ─────────────────────────
         System.out.println(YLW+"  ⏳ [6/6] Démarrage du serveur TCP/TLS sur le port 9090..."+R);
