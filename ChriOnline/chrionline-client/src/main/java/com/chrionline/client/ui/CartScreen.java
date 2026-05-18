@@ -30,7 +30,7 @@ public class CartScreen {
     private StackPane        loadingOverlay;
 
     private int currentStep = 0;
-    private final String[] stepNames = {"Panier", "Livraison", "Paiement", "Confirmation"};
+    private final String[] stepNames = {"Panier", "Livraison", "Paiement", "Verification", "Confirmation"};
     private HBox stepperBar;
 
     private List<Map<String, Object>> cartItems = new ArrayList<>();
@@ -471,11 +471,17 @@ public class CartScreen {
         Button backBtn = new Button("\u2190 Retour");
         backBtn.getStyleClass().add("cart-continue-btn");
         backBtn.setStyle("-fx-max-width:120;");
+        backBtn.setMinHeight(45);
+        backBtn.setMaxHeight(45);
+
         backBtn.setOnAction(e -> showCartStep());
 
         Button nextBtn = new Button("Continuer \u2192");
         nextBtn.getStyleClass().add("cart-checkout-btn");
         nextBtn.setStyle("-fx-max-width:180;");
+        nextBtn.setMinHeight(45);
+        nextBtn.setMaxHeight(45);
+
         nextBtn.setOnAction(e -> {
             String addr = addrField.getText().trim();
             String city = cityField.getText().trim();
@@ -644,12 +650,6 @@ public class CartScreen {
         validationMessageLabel.setVisible(false);
         validationMessageLabel.setManaged(false);
 
-        // ── Bouton validation carte ──────────────────────────
-        Button validateCardBtn = new Button("Valider la carte");
-        validateCardBtn.getStyleClass().add("cart-checkout-btn");
-        validateCardBtn.setStyle("-fx-max-width:200;");
-        validateCardBtn.setOnAction(e -> validateCardFull());
-
         // ── Section 2FA (cachée au début) ─────────────────────
         tfa2Box = new VBox(12);
         tfa2Box.setVisible(false);
@@ -690,28 +690,38 @@ public class CartScreen {
 
         tfa2Box.getChildren().addAll(tfa2Title, tfa2Info, tfaCodeField, validate2FAButton);
 
-        // ── Boutons navigation ───────────────────────────────
-        HBox btns = new HBox();
-        btns.setAlignment(Pos.CENTER_RIGHT);
-        btns.setPadding(new Insets(8, 0, 0, 0));
+        // ── Boutons navigation et validation ──────────────────
+        HBox actionRow = new HBox(12);
+        actionRow.setAlignment(Pos.CENTER_RIGHT);
+        actionRow.setPadding(new Insets(8, 0, 0, 0));
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Button backBtn = new Button("\u2190 Retour");
         backBtn.getStyleClass().add("cart-continue-btn");
-        backBtn.setStyle("-fx-max-width:140;");
+        backBtn.setStyle("-fx-max-width:120;");
+        backBtn.setMinHeight(45);
+        backBtn.setMaxHeight(45);
+
         backBtn.setOnAction(e -> showShippingStep());
 
-        btns.getChildren().add(backBtn);
+        Button validateCardBtn = new Button("Valider la carte");
+        validateCardBtn.getStyleClass().add("cart-checkout-btn");
+        validateCardBtn.setStyle("-fx-max-width:200;");
+        validateCardBtn.setMinHeight(45);
+        validateCardBtn.setMaxHeight(45);
 
-        // ── Assemblage ───────────────────────────────────────
+        validateCardBtn.setOnAction(e -> validateCardFull());
+
+        actionRow.getChildren().addAll(validationMessageLabel, spacer, backBtn, validateCardBtn);
+
         payCard.getChildren().addAll(
                 payTitle,
                 bankInfoBox,
                 cardNumField,
                 cardRow,
-                validationMessageLabel,
-                validateCardBtn,
-                tfa2Box,
-                btns
+                actionRow
         );
 
         form.getChildren().add(payCard);
@@ -741,6 +751,94 @@ public class CartScreen {
     /**
      * Validation en temps réel du BIN (affichage du logo banque).
      */
+    private void showTfaStep() {
+        currentStep = 3;
+
+        VBox page = new VBox(20);
+        page.setMaxWidth(MAX_W);
+        page.setPadding(new Insets(20, H_PAD, 40, H_PAD));
+        page.setAlignment(Pos.TOP_CENTER);
+        page.getChildren().add(buildStepper());
+
+        HBox content = new HBox(24);
+        content.setAlignment(Pos.TOP_CENTER);
+
+        VBox form = new VBox(16);
+        HBox.setHgrow(form, Priority.ALWAYS);
+
+        VBox tfaCard = new VBox(16);
+        tfaCard.getStyleClass().add("checkout-card");
+
+        Label tfaTitle = new Label("\uD83D\uDD12  Confirmation 2FA");
+        tfaTitle.getStyleClass().add("checkout-section-title");
+        tfaTitle.setStyle("-fx-text-fill: #27AE60;");
+
+        Label tfaInfo = new Label(
+                "Un code de sécurité de paiement a été envoyé à votre adresse e-mail (" 
+                + NavigationManager.getEmail() + "). Veuillez le saisir pour valider la transaction."
+        );
+        tfaInfo.setWrapText(true);
+        tfaInfo.setStyle("-fx-font-size: 13px; -fx-text-fill: #555;");
+
+        tfaCodeField = new TextField();
+        tfaCodeField.setPromptText("Code à 6 chiffres");
+        tfaCodeField.getStyleClass().add("auth-field");
+        tfaCodeField.setStyle("-fx-padding:12 14; -fx-font-size: 14px;");
+        tfaCodeField.setMaxWidth(200);
+
+        validationMessageLabel = new Label();
+        validationMessageLabel.setWrapText(true);
+        validationMessageLabel.setVisible(false);
+        validationMessageLabel.setManaged(false);
+
+        HBox btns = new HBox(12);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        btns.setAlignment(Pos.CENTER_RIGHT);
+        btns.setPadding(new Insets(8, 0, 0, 0));
+
+        Button backBtn = new Button("\u2190 Modifier la carte");
+        backBtn.getStyleClass().add("cart-continue-btn");
+        backBtn.setStyle("-fx-max-width:160;");
+        backBtn.setMinHeight(45);
+        backBtn.setMaxHeight(45);
+
+        backBtn.setOnAction(e -> showPaymentStep());
+
+        Button validateBtn = new Button("Valider et payer");
+        validateBtn.getStyleClass().add("cart-checkout-btn");
+        validateBtn.setStyle("-fx-max-width:160;");
+        validateBtn.setMinHeight(45);
+        validateBtn.setMaxHeight(45);
+
+        validateBtn.setOnAction(e -> verify2FAAndPay());
+
+        btns.getChildren().addAll(validationMessageLabel, spacer, backBtn, validateBtn);
+
+        tfaCard.getChildren().addAll(tfaTitle, tfaInfo, tfaCodeField, btns);
+        form.getChildren().add(tfaCard);
+
+        VBox summaryCol = new VBox(16);
+        summaryCol.setMinWidth(300);
+        summaryCol.setMaxWidth(300);
+        summaryCol.getChildren().add(buildSummaryCard(false));
+
+        VBox shipRecap = new VBox(8);
+        shipRecap.getStyleClass().add("checkout-card");
+        Label shipTitle = new Label("\uD83D\uDCE6 Livraison");
+        shipTitle.getStyleClass().add("checkout-section-title");
+        Label shipAddr = new Label(
+                shippingAddress.isEmpty() ? "Adresse par défaut" : shippingAddress);
+        shipAddr.getStyleClass().add("page-subtitle");
+        shipAddr.setWrapText(true);
+        shipRecap.getChildren().addAll(shipTitle, shipAddr);
+        summaryCol.getChildren().add(shipRecap);
+
+        content.getChildren().addAll(form, summaryCol);
+        page.getChildren().add(content);
+        setContent(page);
+    }
+
     private void validateCardRealtime(String cardNumber, HBox bankInfoBox) {
         Map<String, Object> data = new HashMap<>();
         data.put("cardNumber", cardNumber);
@@ -844,10 +942,7 @@ public class CartScreen {
                         NavigationManager.getToken(), data))
                 .thenAccept(res -> Platform.runLater(() -> {
                     if (res.isSuccess()) {
-                        tfa2Box.setVisible(true);
-                        tfa2Box.setManaged(true);
-                        showValidationMessage(
-                                "✉️ Code de confirmation envoyé à votre email !", true);
+                        showTfaStep();
                     }
                 }));
     }
@@ -917,7 +1012,7 @@ public class CartScreen {
 
     @SuppressWarnings("unchecked")
     private void showConfirmation(Map<String, Object> result) {
-        currentStep = 3;
+        currentStep = 4;
         VBox page = new VBox(20);
         page.setMaxWidth(MAX_W);
         page.setPadding(new Insets(20, H_PAD, 40, H_PAD));

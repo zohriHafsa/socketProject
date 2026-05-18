@@ -201,19 +201,39 @@ public class AuthService {
         if (username == null || password == null)
             return Response.error("Username et password requis.");
 
+        String ip = clientAddress != null ? clientAddress.getHostAddress() : "127.0.0.1";
+
+        // Check if the IP is blocked
+        if (com.chrionline.server.security.IPRateLimiter.isBlocked(ip, username)) {
+            long remaining = com.chrionline.server.security.IPRateLimiter.getRemainingBlockTimeSeconds(ip, username);
+            long minutes = remaining / 60;
+            long seconds = remaining % 60;
+            StringBuilder sb = new StringBuilder("Trop de tentatives de connexion échouées depuis cette adresse. Réessayez dans ");
+            if (minutes > 0) {
+                sb.append(minutes).append(minutes == 1 ? " minute " : " minutes ");
+            }
+            if (seconds > 0 || minutes == 0) {
+                sb.append(seconds).append(seconds == 1 ? " seconde." : " secondes.");
+            } else {
+                sb.append(".");
+            }
+            return Response.error(sb.toString());
+        }
+
         try {
             // 1. Cherche dans ADMINS d'abord
             Map<String, Object> admin = adminDAO.getAdminByUsername(username);
 
             if (admin != null) {
-                String ip = clientAddress != null ? clientAddress.getHostAddress() : "127.0.0.1";
                 if (!isInternalIp(ip)) {
                     ServerLogger.warn("SECURITY ALERT: Tentative de connexion admin hors réseau interne (IP: " + ip + ")");
                     return Response.error("Acces refuse. Les administrateurs peuvent se connecter uniquement via le reseau interne.");
                 }
 
-                if (!verifyPassword(password, (String) admin.get("passwordHash")))
+                if (!verifyPassword(password, (String) admin.get("passwordHash"))) {
+                    com.chrionline.server.security.IPRateLimiter.recordFailedAttempt(ip, username);
                     return Response.error("Mot de passe incorrect.");
+                }
 
                 if (!(boolean) admin.get("isActive"))
                     return Response.error("Ce compte admin est desactive.");
@@ -224,6 +244,7 @@ public class AuthService {
                 String token   = SessionManager.createSession(adminId, username, role, email);
 
                 ServerLogger.info("LOGIN ADMIN OK : " + username + " (ID:" + adminId + ", role=" + role + ")");
+                com.chrionline.server.security.IPRateLimiter.reset(ip, username);
 
                 Map<String, Object> result = new HashMap<>();
                 result.put("token",     token);
@@ -239,8 +260,10 @@ public class AuthService {
             // 2. Cherche dans USERS
             Map<String, Object> user = userDAO.getUserByUsername(username);
 
-            if (user == null)
+            if (user == null) {
+                com.chrionline.server.security.IPRateLimiter.recordFailedAttempt(ip, username);
                 return Response.error("Utilisateur introuvable.");
+            }
 
             int userId = (int) user.get("userId");
 
@@ -275,24 +298,21 @@ public class AuthService {
             }
 
             if (!verifyPassword(password, (String) user.get("passwordHash"))) {
-                userDAO.recordFailedAttempt(userId);
+                boolean becameBlocked = com.chrionline.server.security.IPRateLimiter.recordFailedAttempt(ip, username);
 
-                Map<String, Object> updated = userDAO.getUserById(userId);
-                int attempts = 0;
-                Object att = updated.get("failedAttempts");
-                if (att != null) attempts = ((Number) att).intValue();
-
-                if (attempts == 3)
-                    return Response.error("Mot de passe incorrect. Compte bloque 15 minutes.");
-                else if (attempts == 4)
-                    return Response.error("Mot de passe incorrect. Compte bloque 30 minutes.");
-                else if (attempts >= 5)
-                    return Response.error("Mot de passe incorrect. Compte bloque 1 heure.");
-                else
-                    return Response.error("Mot de passe incorrect. ");
+                if (becameBlocked) {
+                    String userEmail = (String) user.get("email");
+                    if (userEmail != null && !userEmail.isEmpty()) {
+                        EmailService.sendSecurityAlertEmail(userEmail, ip, username);
+                    }
+                    return Response.error("Mot de passe incorrect. Cette adresse IP a été bloquée pendant 15 minutes par mesure de sécurité.");
+                } else {
+                    return Response.error("Mot de passe incorrect.");
+                }
             }
 
             userDAO.resetFailedAttempts(userId);
+            com.chrionline.server.security.IPRateLimiter.reset(ip, username);
 
             Object verified = user.get("isVerified");
             boolean isVerified = verified != null &&
