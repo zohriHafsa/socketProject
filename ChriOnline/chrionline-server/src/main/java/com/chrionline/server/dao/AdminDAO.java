@@ -65,6 +65,15 @@ public class AdminDAO {
         }
     }
 
+    public boolean updatePublicKey(String username, String newPublicKey) throws SQLException {
+        String sql = "UPDATE admins SET public_key = ? WHERE username = ?";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setString(1, newPublicKey);
+            ps.setString(2, username);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
     // ── Activer / Désactiver ──────────────────────────────
     public boolean setActive(int adminId, boolean active)
             throws SQLException {

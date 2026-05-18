@@ -41,6 +41,7 @@ public enum Action {
     VERIFY_PAYMENT_2FA,
     FORGOT_PASSWORD,
     UPDATE_PROFILE,
+    ADMIN_ROTATE_KEY,
     // UDP
     REGISTER_UDP
 }

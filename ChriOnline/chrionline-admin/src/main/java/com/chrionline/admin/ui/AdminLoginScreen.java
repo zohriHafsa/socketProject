@@ -35,6 +35,7 @@ public class AdminLoginScreen {
     private String currentUsername = null;
     private String activeChallenge = null;
     private File selectedKeyFile = null;
+    private boolean isImportMode = false;
 
     public AdminLoginScreen() {
         root = new StackPane();
@@ -65,6 +66,7 @@ public class AdminLoginScreen {
     }
 
     private void showInitPhase() {
+        root.getChildren().removeIf(node -> node instanceof Button && node.getStyleClass().contains("auth-back-link"));
         centerBox.getChildren().clear();
         VBox branding = buildBranding();
 
@@ -102,7 +104,7 @@ public class AdminLoginScreen {
                     if (!ok) {
                         Platform.runLater(() -> {
                             showError(errorBox, errorText,
-                                "Serveur inaccessible. Verifiez qu'il est demarre sur le port 9090.");
+                                    "Serveur inaccessible. Verifiez qu'il est demarre sur le port 9090.");
                             continueBtn.setDisable(false);
                             continueBtn.setText("Continuer");
                         });
@@ -111,37 +113,47 @@ public class AdminLoginScreen {
                 }
 
                 ServerConnection.getInstance().sendAsync(
-                    new Request(Action.ADMIN_AUTH_INIT, null, Map.of("username", user))
-                ).thenAccept(resp -> Platform.runLater(() -> {
-                    continueBtn.setDisable(false);
-                    continueBtn.setText("Continuer");
+                        new Request(Action.ADMIN_AUTH_INIT, null, Map.of("username", user)))
+                        .thenAccept(resp -> Platform.runLater(() -> {
+                            continueBtn.setDisable(false);
+                            continueBtn.setText("Continuer");
 
-                    if (resp.isSuccess()) {
-                        Map<String, Object> data = castToMap(resp.getData());
-                        String status = getStr(data, "status");
-                        
-                        if ("PENDING".equals(status)) {
-                            // Needs initialization
-                            AdminNavigationManager.showAdminInit(user);
-                        } else if ("ACTIVE".equals(status)) {
-                            currentUsername = user;
-                            activeChallenge = getStr(data, "challenge");
-                            showChallengePhase();
-                        }
-                    } else {
-                        showError(errorBox, errorText, resp.getMessage());
-                    }
-                }));
+                            if (resp.isSuccess()) {
+                                Map<String, Object> data = castToMap(resp.getData());
+                                String status = getStr(data, "status");
+
+                                if ("PENDING".equals(status)) {
+                                    // Needs initialization
+                                    AdminNavigationManager.showAdminInit(user);
+                                } else if ("ACTIVE".equals(status)) {
+                                    currentUsername = user;
+                                    activeChallenge = getStr(data, "challenge");
+
+                                    File defaultKey = new File(System.getProperty("user.home")
+                                            + "/.chrionline/keystores/" + user + ".p12");
+                                    if (defaultKey.exists()) {
+                                        selectedKeyFile = defaultKey;
+                                        isImportMode = false;
+                                    } else {
+                                        selectedKeyFile = null;
+                                        isImportMode = false;
+                                    }
+
+                                    showChallengePhase();
+                                }
+                            } else {
+                                showError(errorBox, errorText, resp.getMessage());
+                            }
+                        }));
             }).start();
         });
-        
+
         usernameField.setOnAction(continueBtn.getOnAction()); // Support Enter key
 
         card.getChildren().addAll(
-            userGroup,
-            errorBox,
-            continueBtn
-        );
+                userGroup,
+                errorBox,
+                continueBtn);
 
         centerBox.getChildren().addAll(branding, card);
         animateCard(branding);
@@ -152,55 +164,147 @@ public class AdminLoginScreen {
         centerBox.getChildren().clear();
         VBox branding = buildBranding();
 
-        VBox card = createCard("\uD83D\uDD11", "Authentification RSA", "Challenge sécurisé réceptionné");
+        // Remove any existing backLink from root first
+        root.getChildren().removeIf(node -> node instanceof Button && node.getStyleClass().contains("auth-back-link"));
+
+        // Add back button in the top left
+        Button backLink = new Button("\u2190 Retour a la connexion");
+        backLink.getStyleClass().add("auth-back-link");
+        backLink.setOnAction(evt -> {
+            root.getChildren().remove(backLink);
+            showInitPhase();
+        });
+        StackPane.setAlignment(backLink, Pos.TOP_LEFT);
+        StackPane.setMargin(backLink, new Insets(24, 0, 0, 24));
+        root.getChildren().add(backLink);
+
+        if (selectedKeyFile == null || !selectedKeyFile.exists()) {
+            VBox card = createCard("\uD83D\uDD0D", "Identifiants Introuvables", "Sécurité de l'appareil"); // 🔍 Icon
+                                                                                                           // instead of
+                                                                                                           // ⚠️
+            card.setMaxWidth(500);
+
+            Label errorTitle = new Label("No credentials found for this admin on this device.");
+            errorTitle.setStyle("-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 14px;"); // Premium
+                                                                                                        // neutral Slate
+                                                                                                        // instead of
+                                                                                                        // Red
+            errorTitle.setWrapText(true);
+            errorTitle.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+
+            Label errorDesc = new Label(
+                    "Aucune clé de sécurité locale n'est associée à cet appareil pour l'administrateur \""
+                            + currentUsername
+                            + "\". Veuillez importer vos identifiants existants (.p12) pour configurer cet appareil.");
+            errorDesc.setStyle("-fx-text-fill: #7f8c8d; -fx-font-size: 12px;");
+            errorDesc.setWrapText(true);
+            errorDesc.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+
+            Button importBtn = new Button("Importer des identifiants (.p12)");
+            importBtn.getStyleClass().add("auth-btn-primary");
+            importBtn.setMaxWidth(Double.MAX_VALUE);
+            VBox.setMargin(importBtn, new Insets(15, 0, 0, 0));
+
+            importBtn.setOnAction(evt -> {
+                FileChooser fc = new FileChooser();
+                fc.setTitle("Importer les identifiants existants");
+                fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PKCS12 KeyStore", "*.p12"));
+                Stage stage = (Stage) root.getScene().getWindow();
+                File file = fc.showOpenDialog(stage);
+                if (file != null) {
+                    selectedKeyFile = file;
+                    isImportMode = true;
+                    showChallengePhase();
+                }
+            });
+
+            card.getChildren().addAll(
+                    errorTitle,
+                    errorDesc,
+                    importBtn);
+
+            centerBox.getChildren().addAll(branding, card);
+            animateCard(branding);
+            animateCard(card);
+            return;
+        }
+
+        VBox card = createCard("\uD83D\uDD11", "Authentification RSA",  "Bonjour " + currentUsername + " - déverrouillez vos identifiants.");
         card.setMaxWidth(500);
 
-        Label greeting = new Label("Bonjour " + currentUsername + ", fournissez votre clé privée.");
-        greeting.setStyle("-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 13px;");
-        greeting.setWrapText(true);
-        VBox.setMargin(greeting, new Insets(0, 0, 5, 0));
+        VBox fileGroup = new VBox(5);
+        Hyperlink forceImportLink = null;
 
-        // File Selector
-        Label fileLabel = new Label("Fichier KeyStore Admin (.p12)");
-        fileLabel.getStyleClass().add("auth-field-label");
-        
-        HBox fileBox = new HBox(10);
-        fileBox.setAlignment(Pos.CENTER_LEFT);
-        TextField fileField = new TextField();
-        fileField.setPromptText("Aucune clé sélectionnée");
-        fileField.getStyleClass().add("auth-field");
-        fileField.setEditable(false);
-        HBox.setHgrow(fileField, Priority.ALWAYS);
+        if (isImportMode) {
+            Label importLabel = new Label("📂 Identifiants importés prêts à être enregistrés");
+            importLabel.setStyle("-fx-text-fill: #e67e22; -fx-font-weight: bold; -fx-font-size: 12px;");
+            Label pathLabel = new Label(selectedKeyFile.getName());
+            pathLabel.setStyle("-fx-text-fill: #7f8c8d; -fx-font-size: 11px; -fx-font-family: monospace;");
 
-        Button browseBtn = new Button("Parcourir...");
-        browseBtn.setStyle("-fx-background-color: #ecf0f1; -fx-text-fill: #2c3e50; -fx-cursor: hand;");
-        browseBtn.setOnAction(e -> {
-            FileChooser fc = new FileChooser();
-            fc.setTitle("Sélectionner la clé privée RSA");
-            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PKCS12 KeyStore", "*.p12"));
-            Stage stage = (Stage) root.getScene().getWindow();
-            File file = fc.showOpenDialog(stage);
-            if (file != null) {
-                selectedKeyFile = file;
-                fileField.setText(file.getName());
-            }
-        });
-        fileBox.getChildren().addAll(fileField, browseBtn);
-        VBox fileGroup = new VBox(5, fileLabel, fileBox);
+            Hyperlink cancelLink = new Hyperlink("Annuler l'importation");
+            cancelLink.setStyle(
+                    "-fx-text-fill: #c0392b; " +
+                            "-fx-underline: true; " +
+                            "-fx-font-size: 11px; " +
+                            "-fx-cursor: hand; " +
+                            "-fx-background-color: transparent; " +
+                            "-fx-border-color: transparent; " +
+                            "-fx-border-width: 0; " +
+                            "-fx-padding: 0;");
+            cancelLink.setOnAction(evt -> {
+                selectedKeyFile = null;
+                isImportMode = false;
+                showChallengePhase();
+            });
 
-        // Passphrase
+            fileGroup.getChildren().addAll(importLabel, pathLabel, cancelLink);
+        } else {
+            forceImportLink = new Hyperlink("Importer une nouvelle clé / Remplacer (.p12)...");
+            forceImportLink.setStyle(
+                    "-fx-text-fill: #7f8c8d; " +
+                            "-fx-underline: true; " +
+                            "-fx-font-size: 11px; " +
+                            "-fx-cursor: hand; " +
+                            "-fx-background-color: transparent; " +
+                            "-fx-border-color: transparent; " +
+                            "-fx-border-width: 0; " +
+                            "-fx-padding: 0;");
+            forceImportLink.setOnAction(evt -> {
+                FileChooser fc = new FileChooser();
+                fc.setTitle("Remplacer par un autre fichier de clé");
+                fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PKCS12 KeyStore", "*.p12"));
+                Stage stage = (Stage) root.getScene().getWindow();
+                File file = fc.showOpenDialog(stage);
+                if (file != null) {
+                    selectedKeyFile = file;
+                    isImportMode = true;
+                    showChallengePhase();
+                }
+            });
+        }
+        VBox.setMargin(fileGroup, new Insets(5, 0, 10, 0));
+
         Label passLabel = new Label("Passphrase de déchiffrement");
         passLabel.getStyleClass().add("auth-field-label");
         PasswordField passField = new PasswordField();
-        passField.setPromptText("Entrez la passphrase");
+        passField.setPromptText("Entrez la passphrase de votre clé");
         passField.getStyleClass().add("auth-password-field");
         StackPane passWrapper = wrapWithToggle(passField);
-        VBox passGroup = new VBox(5, passLabel, passWrapper);
+
+        VBox passGroup;
+        if (!isImportMode && forceImportLink != null) {
+            HBox linkRow = new HBox(forceImportLink);
+            linkRow.setAlignment(Pos.CENTER_RIGHT);
+            VBox.setMargin(linkRow, new Insets(4, 0, 0, 0));
+            passGroup = new VBox(5, passLabel, passWrapper, linkRow);
+        } else {
+            passGroup = new VBox(5, passLabel, passWrapper);
+        }
 
         HBox errorBox = createErrorBox();
         Label errorText = (Label) errorBox.getChildren().get(1);
 
-        Button loginBtn = new Button("S'authentifier");
+        Button loginBtn = new Button(isImportMode ? "Importer et s'authentifier" : "S'authentifier");
         loginBtn.getStyleClass().add("auth-btn-primary");
         loginBtn.setMaxWidth(Double.MAX_VALUE);
         VBox.setMargin(loginBtn, new Insets(10, 0, 0, 0));
@@ -208,7 +312,7 @@ public class AdminLoginScreen {
         loginBtn.setOnAction(e -> {
             String pass = passField.getText();
             if (selectedKeyFile == null) {
-                showError(errorBox, errorText, "Veuillez sélectionner votre fichier de clé.");
+                showError(errorBox, errorText, "Aucun identifiant sélectionné.");
                 return;
             }
             if (pass.isEmpty()) {
@@ -223,75 +327,72 @@ public class AdminLoginScreen {
             new Thread(() -> {
                 try {
                     PrivateKey privateKey = ECDSAUtils.loadPrivateKeyFromKeyStore(selectedKeyFile, pass);
-                    
+
                     byte[] sigBytes = ECDSAUtils.sign(activeChallenge, privateKey);
                     String signature = java.util.Base64.getEncoder().encodeToString(sigBytes);
 
                     ServerConnection.getInstance().sendAsync(
-                        new Request(Action.ADMIN_AUTH_RESPONSE, null, Map.of(
-                            "username", currentUsername,
-                            "signature", signature
-                        ))
-                    ).thenAccept(resp -> Platform.runLater(() -> {
-                        loginBtn.setDisable(false);
-                        loginBtn.setText("S'authentifier");
+                            new Request(Action.ADMIN_AUTH_RESPONSE, null, Map.of(
+                                    "username", currentUsername,
+                                    "signature", signature)))
+                            .thenAccept(resp -> Platform.runLater(() -> {
+                                loginBtn.setDisable(false);
+                                loginBtn.setText(isImportMode ? "Importer et s'authentifier" : "S'authentifier");
 
-                        if (resp.isSuccess()) {
-                            Map<String, Object> data = castToMap(resp.getData());
-                            
-                            if (Boolean.TRUE.equals(data.get("2fa_required"))) {
-                                AdminNavigationManager.showTwoFactor(
-                                    getInt(data, "userId"),
-                                    getStr(data, "email")
-                                );
-                                return;
-                            }
+                                if (resp.isSuccess()) {
+                                    if (isImportMode && selectedKeyFile != null) {
+                                        copyToDefaultKeystore(selectedKeyFile, currentUsername);
+                                    }
+                                    Map<String, Object> data = castToMap(resp.getData());
 
-                            // Fallback par sécurité
-                            AdminNavigationManager.setSession(
-                                getStr(data, "token"),
-                                getInt(data, "userId"),
-                                getStr(data, "username"),
-                                getStr(data, "role"),
-                                getStr(data, "firstName"),
-                                getStr(data, "lastName"),
-                                getStr(data, "email")
-                            );
+                                    if (Boolean.TRUE.equals(data.get("2fa_required"))) {
+                                        AdminNavigationManager.showTwoFactor(
+                                                getInt(data, "userId"),
+                                                getStr(data, "email"));
+                                        return;
+                                    }
 
-                            int uid = getInt(data, "userId");
-                            UDPHeartbeatSender heartbeat = new UDPHeartbeatSender(uid);
-                            Thread heartbeatThread = new Thread(heartbeat);
-                            heartbeatThread.setDaemon(true);
-                            heartbeatThread.start();
+                                    AdminNavigationManager.setSession(
+                                            getStr(data, "token"),
+                                            getInt(data, "userId"),
+                                            getStr(data, "username"),
+                                            getStr(data, "role"),
+                                            getStr(data, "firstName"),
+                                            getStr(data, "lastName"),
+                                            getStr(data, "email"));
 
-                            AdminNavigationManager.showAdminDashboard();
-                        } else {
-                            showError(errorBox, errorText, "Accès refusé: " + resp.getMessage());
-                            if(resp.getMessage().contains("expiré")) {
-                                showInitPhase();
-                            }
-                        }
-                    }));
+                                    int uid = getInt(data, "userId");
+                                    UDPHeartbeatSender heartbeat = new UDPHeartbeatSender(uid);
+                                    Thread heartbeatThread = new Thread(heartbeat);
+                                    heartbeatThread.setDaemon(true);
+                                    heartbeatThread.start();
+
+                                    AdminNavigationManager.showAdminDashboard();
+                                } else {
+                                    showError(errorBox, errorText, "Accès refusé: " + resp.getMessage());
+                                    if (resp.getMessage().contains("expiré")) {
+                                        showInitPhase();
+                                    }
+                                }
+                            }));
 
                 } catch (Exception ex) {
                     Platform.runLater(() -> {
                         loginBtn.setDisable(false);
-                        loginBtn.setText("S'authentifier");
+                        loginBtn.setText(isImportMode ? "Importer et s'authentifier" : "S'authentifier");
                         showError(errorBox, errorText, "Erreur cryptographique : Clé ou Passphrase invalide.");
                     });
                 }
             }).start();
         });
-        
-        passField.setOnAction(loginBtn.getOnAction()); // Support Enter key
+
+        passField.setOnAction(loginBtn.getOnAction());
 
         card.getChildren().addAll(
-            greeting,
-            fileGroup,
-            passGroup,
-            errorBox,
-            loginBtn
-        );
+                fileGroup,
+                passGroup,
+                errorBox,
+                loginBtn);
 
         centerBox.getChildren().addAll(branding, card);
         animateCard(branding);
@@ -350,7 +451,7 @@ public class AdminLoginScreen {
         ft.setToValue(1);
         ft.play();
     }
-    
+
     private void hideError(HBox errorBox) {
         errorBox.setVisible(false);
         errorBox.setManaged(false);
@@ -368,7 +469,8 @@ public class AdminLoginScreen {
             logo.setPreserveRatio(true);
             logo.setSmooth(true);
             branding.getChildren().add(logo);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         HBox nameRow = new HBox(0);
         nameRow.setAlignment(Pos.CENTER);
@@ -397,7 +499,7 @@ public class AdminLoginScreen {
         tc.setFromY(20);
         tc.setToY(0);
         tc.setInterpolator(Interpolator.EASE_OUT);
-        
+
         Platform.runLater(() -> {
             card.setOpacity(0);
             new ParallelTransition(fc, tc).play();
@@ -434,22 +536,29 @@ public class AdminLoginScreen {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> castToMap(Object obj) {
-        if (obj == null) return Map.of();
-        if (obj instanceof Map) return (Map<String, Object>) obj;
-        return gson.fromJson(gson.toJson(obj), new TypeToken<Map<String, Object>>(){}.getType());
+        if (obj == null)
+            return Map.of();
+        if (obj instanceof Map)
+            return (Map<String, Object>) obj;
+        return gson.fromJson(gson.toJson(obj), new TypeToken<Map<String, Object>>() {
+        }.getType());
     }
 
     private String getStr(Map<String, Object> m, String key) {
-        if (m == null) return "";
+        if (m == null)
+            return "";
         Object v = m.get(key);
         return v != null ? v.toString() : "";
     }
 
     private int getInt(Map<String, Object> m, String key) {
-        if (m == null) return -1;
+        if (m == null)
+            return -1;
         Object v = m.get(key);
-        if (v == null) return -1;
-        if (v instanceof Double) return ((Double) v).intValue();
+        if (v == null)
+            return -1;
+        if (v instanceof Double)
+            return ((Double) v).intValue();
         return Integer.parseInt(v.toString());
     }
 
@@ -461,10 +570,12 @@ public class AdminLoginScreen {
         visibleField.setManaged(false);
 
         pf.textProperty().addListener((obs, o, n) -> {
-            if (!visibleField.isFocused()) visibleField.setText(n);
+            if (!visibleField.isFocused())
+                visibleField.setText(n);
         });
         visibleField.textProperty().addListener((obs, o, n) -> {
-            if (!pf.isFocused()) pf.setText(n);
+            if (!pf.isFocused())
+                pf.setText(n);
         });
 
         Button eyeBtn = new Button("\uD83D\uDC41");
@@ -473,8 +584,7 @@ public class AdminLoginScreen {
                         "-fx-border-color: transparent;" +
                         "-fx-cursor: hand;" +
                         "-fx-font-size: 14px;" +
-                        "-fx-padding: 0 10 0 0;"
-        );
+                        "-fx-padding: 0 10 0 0;");
         StackPane.setAlignment(eyeBtn, Pos.CENTER_RIGHT);
 
         eyeBtn.setOnAction(e -> {
@@ -499,5 +609,27 @@ public class AdminLoginScreen {
         StackPane wrapper = new StackPane(pf, visibleField, eyeBtn);
         wrapper.setAlignment(Pos.CENTER_LEFT);
         return wrapper;
+    }
+
+    private void copyToDefaultKeystore(File sourceFile, String username) {
+        try {
+            File destDir = new File(System.getProperty("user.home") + "/.chrionline/keystores");
+            if (!destDir.exists()) {
+                destDir.mkdirs();
+            }
+            File destFile = new File(destDir, username + ".p12");
+
+            if (sourceFile.getCanonicalPath().equals(destFile.getCanonicalPath())) {
+                return;
+            }
+
+            java.nio.file.Files.copy(
+                    sourceFile.toPath(),
+                    destFile.toPath(),
+                    java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("[KEY STORE] Key copied successfully to local keychain: " + destFile.getAbsolutePath());
+        } catch (Exception ex) {
+            System.err.println("[KEY STORE] Failed to copy key to default keychain: " + ex.getMessage());
+        }
     }
 }

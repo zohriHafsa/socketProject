@@ -145,6 +145,7 @@ public class RequestRouter {
 
             // Admin — Initialize new admin with RSA details
             case ADMIN_REGISTER_KEY: return adminService.registerKey(request);
+            case ADMIN_ROTATE_KEY: return adminService.rotateKey(request);
 
             // Admin — gestion admins (SUPER_ADMIN seulement)
             case ADMIN_GET_ALL_ADMINS: {

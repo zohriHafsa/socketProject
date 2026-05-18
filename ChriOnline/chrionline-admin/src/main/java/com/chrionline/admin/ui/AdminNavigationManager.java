@@ -42,6 +42,7 @@ public class AdminNavigationManager {
     public static void showManageCategories(){ transitionTo(new ManageCategoriesScreen().getView(), true); }
     public static void showManageAdmins()    { transitionTo(new ManageAdminsScreen().getView(), true); }
     public static void showAdminInit(String username) { transitionTo(new AdminInitScreen(username).getView(), true); }
+    public static void showProfile()         { transitionTo(new ProfileScreen().getView(), true); }
 
     public static void showTwoFactor(int uid, String userEmail) {
         transitionTo(new AdminTwoFactorScreen(uid, userEmail).getView(), true);

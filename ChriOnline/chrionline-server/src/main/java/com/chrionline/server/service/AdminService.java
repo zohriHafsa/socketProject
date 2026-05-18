@@ -261,6 +261,30 @@ public class AdminService {
         }
     }
 
+    public Response rotateKey(Request request) {
+        String username = SessionManager.getUsername(request.getToken());
+        if (username == null) {
+            return Response.error("Session invalide ou utilisateur introuvable.");
+        }
+
+        String newPublicKey = request.getString("publicKey");
+        if (newPublicKey == null || newPublicKey.isEmpty()) {
+            return Response.error("Nouvelle clé publique manquante.");
+        }
+
+        try {
+            boolean success = adminDAO.updatePublicKey(username, newPublicKey);
+            if (!success) {
+                return Response.error("Impossible de mettre à jour la clé de sécurité pour \"" + username + "\".");
+            }
+            ServerLogger.info("ADMIN_ROTATE_KEY : " + username + " (Clé de sécurité rotée avec succès)");
+            return Response.ok("Votre clé de sécurité a été renouvelée et enregistrée avec succès.", null);
+        } catch (SQLException e) {
+            ServerLogger.error("ADMIN_ROTATE_KEY error : " + e.getMessage());
+            return Response.error("Erreur lors de la rotation de clé : " + e.getMessage());
+        }
+    }
+
     // ═══════════ HASH ══════════════════════════
 
     // (Removed hashing logic since Admins no longer use passwords)

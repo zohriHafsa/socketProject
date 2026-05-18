@@ -200,6 +200,10 @@ public class AdminDashboard {
         avatar.getStyleClass().add("header-avatar");
         avatar.setMinSize(32, 32);
         avatar.setMaxSize(32, 32);
+        avatar.setCursor(javafx.scene.Cursor.HAND);
+        avatar.setOnMouseClicked(e -> AdminNavigationManager.showProfile());
+        javafx.scene.control.Tooltip.install(avatar, new javafx.scene.control.Tooltip("Mon profil"));
+
         String initials = "";
         String fn = AdminNavigationManager.getFirstName();
         String ln = AdminNavigationManager.getLastName();

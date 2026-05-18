@@ -23,7 +23,7 @@ import java.util.Map;
 public class AdminInitScreen {
 
     private final StackPane root;
-    private File selectedDirectory;
+    private File selectedDirectory = new File(System.getProperty("user.home") + "/.chrionline/keystores");
     private final String targetUsername;
 
     public AdminInitScreen(String targetUsername) {
@@ -83,33 +83,6 @@ public class AdminInitScreen {
         tokenField.getStyleClass().add("auth-field");
         VBox tokenGroup = new VBox(5, tokenLabel, tokenField);
 
-        // Directory Selector
-        Label dirLabel = new Label("Dossier de sauvegarde");
-        dirLabel.getStyleClass().add("auth-field-label");
-        
-        HBox dirBox = new HBox(10);
-        dirBox.setAlignment(Pos.CENTER_LEFT);
-        TextField dirField = new TextField();
-        dirField.setPromptText("Aucun dossier sélectionné...");
-        dirField.getStyleClass().add("auth-field");
-        dirField.setEditable(false);
-        HBox.setHgrow(dirField, Priority.ALWAYS);
-
-        Button browseBtn = new Button("Parcourir...");
-        browseBtn.setStyle("-fx-background-color: #ecf0f1; -fx-text-fill: #2c3e50; -fx-cursor: hand;");
-        browseBtn.setOnAction(e -> {
-            DirectoryChooser dc = new DirectoryChooser();
-            dc.setTitle("Choisir l'emplacement de sauvegarde");
-            Stage stage = (Stage) root.getScene().getWindow();
-            File dir = dc.showDialog(stage);
-            if (dir != null) {
-                selectedDirectory = dir;
-                dirField.setText(dir.getAbsolutePath());
-            }
-        });
-        dirBox.getChildren().addAll(dirField, browseBtn);
-        VBox dirGroup = new VBox(5, dirLabel, dirBox);
-
         // Passphrase Row
         Label passLabel = new Label("Passphrase de la clé");
         passLabel.getStyleClass().add("auth-field-label");
@@ -156,7 +129,7 @@ public class AdminInitScreen {
         formCard.getChildren().addAll(
                 titleRow, subtitle, div,
                 tokenGroup,
-                dirGroup, passwordsRow,
+                passwordsRow,
                 errorBox, initBtn
         );
 
@@ -208,10 +181,6 @@ public class AdminInitScreen {
             return;
         }
 
-        if (selectedDirectory == null) {
-            showError(errorBox, errorText, "Veuillez sélectionner un dossier pour sauvegarder votre clé privée.");
-            return;
-        }
 
         if (!pass.equals(confirm)) {
             showError(errorBox, errorText, "Les passphrases ne correspondent pas.");
@@ -228,7 +197,8 @@ public class AdminInitScreen {
 
         new Thread(() -> {
             try {
-                File privateKeyFile = new File(selectedDirectory, username + "_admin.p12");
+                selectedDirectory.mkdirs();
+                File privateKeyFile = new File(selectedDirectory, username + ".p12");
                 PublicKey pubKey = ECDSAUtils.generateAndSaveKeyStore(username, privateKeyFile, pass);
 
                 String publicKeyBase64 = ECDSAUtils.encodePublicKey(pubKey);
@@ -246,6 +216,7 @@ public class AdminInitScreen {
                     if (resp.isSuccess()) {
                         formCard.getChildren().clear();
                         formCard.setSpacing(20);
+                        formCard.setMaxWidth(500);
                         HBox titleRow = new HBox(8);
                         titleRow.setAlignment(Pos.CENTER);
                         Label successIcon = new Label("\uD83D\uDD11"); // Key icon
@@ -260,32 +231,13 @@ public class AdminInitScreen {
                         successSub.getStyleClass().add("auth-subtitle");
                         headerBox.getChildren().addAll(titleRow, successSub);
                         
-                        VBox pathBox = new VBox(5);
-                        pathBox.setAlignment(Pos.CENTER);
-                        pathBox.setStyle("-fx-background-color: rgba(142, 68, 173, 0.05); -fx-background-radius: 8; -fx-padding: 15;");
-                        Label pathTitle = new Label("Emplacement de la clé :");
-                        pathTitle.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #8E44AD;");
-                        Label pathValue = new Label(privateKeyFile.getAbsolutePath());
-                        pathValue.setStyle("-fx-font-size: 13px; -fx-font-family: 'Courier New', monospace; -fx-text-fill: #34495E;");
-                        pathValue.setWrapText(true);
-                        pathValue.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
-                        pathBox.getChildren().addAll(pathTitle, pathValue);
-                        
-                        HBox warnBox = new HBox(8);
-                        warnBox.setAlignment(Pos.CENTER);
-                        Label warnIcon = new Label("\u26A0");
-                        warnIcon.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
-                        Label warnMsg = new Label("Ne perdez ni ce fichier, ni votre passphrase.");
-                        warnMsg.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;");
-                        warnBox.getChildren().addAll(warnIcon, warnMsg);
-                        
                         Button returnBtn = new Button("Retour à la connexion");
                         returnBtn.getStyleClass().add("auth-btn-primary");
                         returnBtn.setMaxWidth(Double.MAX_VALUE);
                         VBox.setMargin(returnBtn, new Insets(10, 0, 0, 0));
                         returnBtn.setOnAction(evt -> AdminNavigationManager.showAdminLogin());
                         
-                        formCard.getChildren().addAll(headerBox, pathBox, warnBox, returnBtn);
+                        formCard.getChildren().addAll(headerBox, returnBtn);
                     } else {
                         showError(errorBox, errorText, resp.getMessage());
                     }
