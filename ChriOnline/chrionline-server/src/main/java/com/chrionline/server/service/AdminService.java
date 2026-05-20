@@ -285,7 +285,57 @@ public class AdminService {
         }
     }
 
-    // ═══════════ HASH ══════════════════════════
+    public Response action2faInit(Request request) {
+        String token = request.getToken();
+        String username = SessionManager.getUsername(token);
+        if (username == null) {
+            return Response.error("Session invalide ou utilisateur introuvable.");
+        }
 
-    // (Removed hashing logic since Admins no longer use passwords)
+        try {
+            Map<String, Object> admin = adminDAO.getAdminByUsername(username);
+            if (admin == null) {
+                return Response.error("Compte administrateur introuvable.");
+            }
+
+            int adminId = (int) admin.get("adminId");
+            String email = (String) admin.get("email");
+
+            String code = EmailService.generateCode();
+            adminDAO.saveVerifyCode(adminId, code);
+            EmailService.send2faEmail(email, code);
+
+            ServerLogger.info("ADMIN 2FA ACTION INIT OK for: " + username);
+            return Response.ok("Code 2FA envoyé à votre email.", Map.of(
+                "adminId", adminId,
+                "email", email
+            ));
+        } catch (SQLException e) {
+            ServerLogger.error("action2faInit SQL error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
+        }
+    }
+
+    public Response action2faVerify(Request request) {
+        int adminId = request.getInt("adminId");
+        String code = request.getString("code");
+
+        if (adminId <= 0 || code == null) {
+            return Response.error("adminId et code 2FA requis.");
+        }
+
+        try {
+            boolean valid = adminDAO.verifyOtp(adminId, code);
+            if (valid) {
+                ServerLogger.info("ADMIN 2FA ACTION VERIFY SUCCESS for ID: " + adminId);
+                return Response.ok("Vérification 2FA réussie !", null);
+            } else {
+                return Response.error("Code 2FA incorrect ou expiré.");
+            }
+        } catch (SQLException e) {
+            ServerLogger.error("action2faVerify SQL error : " + e.getMessage());
+            return Response.error("Erreur serveur : " + e.getMessage());
+        }
+    }
+
 }

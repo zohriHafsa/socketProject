@@ -323,4 +323,45 @@ public class UserDAO {
         }
         return false;
     }
+
+    public boolean isIpTrusted(int userId, String ip) throws SQLException {
+        if (ip == null || ip.isEmpty()) return false;
+        
+        // 1. Clean up old banni/expired trusted IPs (older than 30 days)
+        String cleanupSql = "DELETE FROM user_trusted_ips WHERE user_id = ? AND last_used_at <= DATE_SUB(NOW(), INTERVAL 30 DAY)";
+        try (PreparedStatement ps = conn().prepareStatement(cleanupSql)) {
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+        }
+
+        // 2. Check if this IP is trusted and active
+        String sql = "SELECT 1 FROM user_trusted_ips WHERE user_id = ? AND ip_address = ? AND last_used_at > DATE_SUB(NOW(), INTERVAL 30 DAY)";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setString(2, ip);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                // Update last_used_at to renew sliding window lease
+                String updateLease = "UPDATE user_trusted_ips SET last_used_at = NOW() WHERE user_id = ? AND ip_address = ?";
+                try (PreparedStatement ps2 = conn().prepareStatement(updateLease)) {
+                    ps2.setInt(1, userId);
+                    ps2.setString(2, ip);
+                    ps2.executeUpdate();
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addTrustedIp(int userId, String ip) throws SQLException {
+        if (ip == null || ip.isEmpty()) return;
+        String sql = "INSERT INTO user_trusted_ips (user_id, ip_address, last_used_at) VALUES (?, ?, NOW()) " +
+                     "ON DUPLICATE KEY UPDATE last_used_at = NOW()";
+        try (PreparedStatement ps = conn().prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ps.setString(2, ip);
+            ps.executeUpdate();
+        }
+    }
 }

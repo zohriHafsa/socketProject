@@ -649,6 +649,8 @@ public class CartScreen {
         validationMessageLabel.setWrapText(true);
         validationMessageLabel.setVisible(false);
         validationMessageLabel.setManaged(false);
+        validationMessageLabel.setMaxWidth(400);
+        validationMessageLabel.setMinWidth(200);
 
         // ── Section 2FA (cachée au début) ─────────────────────
         tfa2Box = new VBox(12);
@@ -700,17 +702,21 @@ public class CartScreen {
 
         Button backBtn = new Button("\u2190 Retour");
         backBtn.getStyleClass().add("cart-continue-btn");
-        backBtn.setStyle("-fx-max-width:120;");
         backBtn.setMinHeight(45);
         backBtn.setMaxHeight(45);
+        backBtn.setMinWidth(80);
+        backBtn.setPrefWidth(80);
+        backBtn.setMaxWidth(Double.MAX_VALUE);
 
         backBtn.setOnAction(e -> showShippingStep());
 
         Button validateCardBtn = new Button("Valider la carte");
         validateCardBtn.getStyleClass().add("cart-checkout-btn");
-        validateCardBtn.setStyle("-fx-max-width:200;");
         validateCardBtn.setMinHeight(45);
         validateCardBtn.setMaxHeight(45);
+        validateCardBtn.setMinWidth(160);
+        validateCardBtn.setPrefWidth(160);
+        validateCardBtn.setMaxWidth(Double.MAX_VALUE);
 
         validateCardBtn.setOnAction(e -> validateCardFull());
 

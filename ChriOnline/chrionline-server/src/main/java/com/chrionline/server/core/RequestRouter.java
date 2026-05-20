@@ -83,7 +83,7 @@ public class RequestRouter {
             case REGISTER:     return authService.register(request);
             case LOGOUT:       return authService.logout(request);
             case VERIFY_EMAIL: return authService.verifyEmail(request);
-            case VERIFY_2FA:   return authService.verify2FA(request);
+            case VERIFY_2FA:   return authService.verify2FA(request, clientAddress);
             case FORGOT_PASSWORD: return authService.forgotPassword(request);
             case VERIFY_RESET_TOKEN:  return authService.verifyResetToken(request);
             case RESET_PASSWORD:  return authService.resetPassword(request);
@@ -146,6 +146,8 @@ public class RequestRouter {
             // Admin — Initialize new admin with RSA details
             case ADMIN_REGISTER_KEY: return adminService.registerKey(request);
             case ADMIN_ROTATE_KEY: return adminService.rotateKey(request);
+            case ADMIN_ACTION_2FA_INIT: return adminService.action2faInit(request);
+            case ADMIN_ACTION_2FA_VERIFY: return adminService.action2faVerify(request);
 
             // Admin — gestion admins (SUPER_ADMIN seulement)
             case ADMIN_GET_ALL_ADMINS: {
