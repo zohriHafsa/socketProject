@@ -5,6 +5,9 @@ import com.chrionline.shared.dto.Request;
 import com.chrionline.shared.enums.Action;
 import com.chrionline.shared.security.ECDSAUtils;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -191,15 +194,15 @@ public class ProfileScreen {
         Button exportKeyBtn = new Button("📤  Exporter ma clé de sécurité (.p12)");
         exportKeyBtn.getStyleClass().add("btn-secondary");
         exportKeyBtn.setStyle("-fx-font-size: 13px; -fx-padding: 10 20; -fx-cursor: hand;");
-        exportKeyBtn.setOnAction(evt -> handleExportKey(exportKeyBtn));
+        exportKeyBtn.setOnAction(evt -> show2faDialog("Autoriser l'export de clé", () -> handleExportKey(exportKeyBtn)));
 
         Button rotateKeyBtn = new Button("🔄  Renouveler mes clés (Rotation)");
         rotateKeyBtn.getStyleClass().add("btn-secondary");
         rotateKeyBtn.setStyle("-fx-font-size: 13px; -fx-padding: 10 20; -fx-cursor: hand;");
-        rotateKeyBtn.setOnAction(evt -> {
+        rotateKeyBtn.setOnAction(evt -> show2faDialog("Autoriser la rotation de clé", () -> {
             isRotatingKeys = true;
             buildContent();
-        });
+        }));
 
         secButtons.getChildren().addAll(exportKeyBtn, rotateKeyBtn);
 
@@ -620,5 +623,197 @@ public class ProfileScreen {
         StackPane wrapper = new StackPane(pf, visibleField, eyeBtn);
         wrapper.setAlignment(Pos.CENTER_LEFT);
         return wrapper;
+    }
+
+    private void show2faDialog(String actionLabel, Runnable onSuccess) {
+
+        // ── Dark semi-transparent backdrop ───────────────────────────────────
+        StackPane overlay = new StackPane();
+        overlay.setStyle("-fx-background-color: rgba(10, 6, 24, 0.75);");
+        overlay.setOpacity(0);
+
+        // ── Auth-style card (same class as login/2FA screens) ────────────────
+        VBox card = new VBox(14);
+        card.getStyleClass().add("auth-card");
+        card.setPadding(new Insets(28, 36, 28, 36));
+        card.setAlignment(Pos.CENTER);
+        card.setMaxWidth(480);
+        card.setMaxHeight(javafx.scene.layout.Region.USE_PREF_SIZE);
+        // Start slightly below for entrance animation
+        card.setTranslateY(20);
+        card.setOpacity(0);
+
+        // Title row — lock icon + label (same HBox pattern as AdminTwoFactorScreen)
+        HBox titleRow = new HBox(10);
+        titleRow.setAlignment(Pos.CENTER);
+        Label mailIcon = new Label("\uD83D\uDD12");
+        mailIcon.setStyle("-fx-font-size: 22px; -fx-text-fill: #2C3E50;");
+        Label titleLbl = new Label("Autorisation requise");
+        titleLbl.getStyleClass().add("auth-title");
+        titleLbl.setStyle("-fx-font-size: 20px;");
+        titleRow.getChildren().addAll(mailIcon, titleLbl);
+
+        Label subtitle = new Label(actionLabel + "\n\nUn code à 6 chiffres vient d'être envoyé à votre adresse email...");
+        subtitle.getStyleClass().add("auth-subtitle");
+        subtitle.setWrapText(true);
+        subtitle.setStyle("-fx-text-alignment: center;");
+
+        Region div = new Region();
+        div.setStyle("-fx-background-color: #E8E8E8; -fx-pref-height: 1;");
+
+        // Loading state shown initially
+        Label loadingLbl = new Label("⏳  Envoi du code en cours...");
+        loadingLbl.getStyleClass().add("auth-subtitle");
+
+        card.getChildren().addAll(titleRow, subtitle, div, loadingLbl);
+        overlay.getChildren().add(card);
+
+        // Attach overlay on top of the existing center pane
+        if (root.getCenter() instanceof StackPane sp) {
+            sp.getChildren().add(overlay);
+        } else {
+            StackPane wrapper = new StackPane(root.getCenter(), overlay);
+            root.setCenter(wrapper);
+        }
+
+        // ── Entrance animations ───────────────────────────────────────────────
+        Timeline fadeIn = new Timeline(
+                new KeyFrame(Duration.millis(0), new KeyValue(overlay.opacityProperty(), 0)),
+                new KeyFrame(Duration.millis(250), new KeyValue(overlay.opacityProperty(), 1)));
+        fadeIn.play();
+
+        javafx.animation.TranslateTransition slideIn = new javafx.animation.TranslateTransition(Duration.millis(300),
+                card);
+        slideIn.setToY(0);
+        slideIn.setInterpolator(javafx.animation.Interpolator.EASE_OUT);
+        javafx.animation.FadeTransition cardFade = new javafx.animation.FadeTransition(Duration.millis(300), card);
+        cardFade.setToValue(1);
+        new javafx.animation.ParallelTransition(slideIn, cardFade).play();
+
+        // ── Close helper ──────────────────────────────────────────────────────
+        Runnable closeOverlay = () -> {
+            Timeline fadeOut = new Timeline(
+                    new KeyFrame(Duration.millis(0), new KeyValue(overlay.opacityProperty(), 1)),
+                    new KeyFrame(Duration.millis(220), new KeyValue(overlay.opacityProperty(), 0)));
+            fadeOut.setOnFinished(ev -> {
+                if (root.getCenter() instanceof StackPane sp)
+                    sp.getChildren().remove(overlay);
+            });
+            fadeOut.play();
+        };
+
+        // ── Step 2: send ADMIN_ACTION_2FA_INIT ───────────────────────────────
+        ServerConnection.getInstance()
+                .sendAsync(new Request(Action.ADMIN_ACTION_2FA_INIT, AdminNavigationManager.getToken(), null))
+                .thenAccept(initResp -> Platform.runLater(() -> {
+
+                    if (!initResp.isSuccess()) {
+                        closeOverlay.run();
+                        showError("Impossible d'envoyer le code 2FA : " + initResp.getMessage());
+                        return;
+                    }
+
+                    @SuppressWarnings("unchecked")
+                    java.util.Map<String, Object> initData = (java.util.Map<String, Object>) initResp.getData();
+                    int adminId = ((Number) initData.get("adminId")).intValue();
+                    String email = (String) initData.get("email");
+
+                    // ── OTP input (same style as AdminTwoFactorScreen) ────────────
+                    Label codeLabel = new Label("Code de vérification (2FA)");
+                    codeLabel.getStyleClass().add("auth-field-label");
+
+                    TextField codeField = new TextField();
+                    codeField.setPromptText("_ _ _ _ _ _");
+                    codeField.getStyleClass().add("auth-field");
+                    codeField.setAlignment(Pos.CENTER);
+                    codeField.setStyle(
+                            "-fx-font-size: 22px;" +
+                                    "-fx-text-alignment: center;" +
+                                    "-fx-letter-spacing: 8px;");
+                    codeField.textProperty().addListener((obs, o, n) -> {
+                        if (!n.matches("\\d*"))
+                            codeField.setText(n.replaceAll("[^\\d]", ""));
+                        if (n.length() > 6)
+                            codeField.setText(n.substring(0, 6));
+                    });
+                    VBox codeGroup = new VBox(5, codeLabel, codeField);
+
+                    // Update subtitle to include the email
+                    subtitle.setText(actionLabel + "\n\nUn code à 6 chiffres vient d'être envoyé à votre adresse email :\n" + email);
+
+                    // Error feedback box (same pattern as AdminTwoFactorScreen)
+                    HBox fbBox = new HBox(8);
+                    fbBox.getStyleClass().add("auth-error");
+                    fbBox.setVisible(false);
+                    fbBox.setManaged(false);
+                    fbBox.setAlignment(Pos.CENTER_LEFT);
+                    Label fbIcon = new Label("\u26A0");
+                    fbIcon.setStyle("-fx-font-size: 14px; -fx-text-fill: #E74C3C;");
+                    Label fbText = new Label();
+                    fbText.getStyleClass().add("auth-error-text");
+                    fbText.setWrapText(true);
+                    HBox.setHgrow(fbText, Priority.ALWAYS);
+                    fbBox.getChildren().addAll(fbIcon, fbText);
+
+                    // Primary verify button
+                    Button verifyBtn = new Button("Valider le code 2FA");
+                    verifyBtn.getStyleClass().add("auth-btn-primary");
+
+                    // Cancel link
+                    Button cancelBtn = new Button("Annuler");
+                    cancelBtn.setStyle(
+                            "-fx-background-color: transparent; -fx-text-fill: #718096;" +
+                                    "-fx-font-size: 12px; -fx-cursor: hand; -fx-underline: true;");
+                    cancelBtn.setOnAction(e -> closeOverlay.run());
+
+                    // Swap the loading label for the real OTP form
+                    card.getChildren().setAll(titleRow, subtitle, div, codeGroup, fbBox, verifyBtn,
+                            cancelBtn);
+                    codeField.requestFocus();
+
+                    // ── Step 3: verify the OTP ────────────────────────────────────
+                    Runnable doVerify = () -> {
+                        String code = codeField.getText().trim();
+                        if (code.length() != 6) {
+                            fbText.setText("Le code doit contenir 6 chiffres.");
+                            fbBox.setVisible(true);
+                            fbBox.setManaged(true);
+                            return;
+                        }
+
+                        verifyBtn.setDisable(true);
+                        verifyBtn.setText("Vérification...");
+                        fbBox.setVisible(false);
+                        fbBox.setManaged(false);
+
+                        ServerConnection.getInstance()
+                                .sendAsync(new Request(
+                                        Action.ADMIN_ACTION_2FA_VERIFY,
+                                        AdminNavigationManager.getToken(),
+                                        Map.of("adminId", adminId, "code", code)))
+                                .thenAccept(verifyResp -> Platform.runLater(() -> {
+                                    if (verifyResp.isSuccess()) {
+                                        closeOverlay.run();
+                                        onSuccess.run();
+                                    } else {
+                                        verifyBtn.setDisable(false);
+                                        verifyBtn.setText("Valider le code 2FA");
+                                        fbText.setText(verifyResp.getMessage() != null
+                                                ? verifyResp.getMessage()
+                                                : "Code incorrect ou expiré.");
+                                        fbIcon.setText("\u26A0");
+                                        fbBox.getStyleClass().removeAll("auth-success");
+                                        fbBox.getStyleClass().add("auth-error");
+                                        fbBox.setVisible(true);
+                                        fbBox.setManaged(true);
+                                        codeField.clear();
+                                        codeField.requestFocus();
+                                    }
+                                }));
+                    };
+
+                    verifyBtn.setOnAction(e -> doVerify.run());
+                    codeField.setOnAction(e -> doVerify.run());
+                }));
     }
 }

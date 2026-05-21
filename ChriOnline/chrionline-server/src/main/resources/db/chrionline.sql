@@ -422,3 +422,19 @@ INSERT INTO notifications (notification_id, user_id, message, type, is_read, pro
 (5, 5,  'Votre commande #ORD-0005-2026 a ete annulee.',           'ORDER',   0, 'UDP', '2026-03-15 23:41:06'),
 (7, 7,  'Commande ORD-EC8F6535 confirmée ! Total : 1199.99 €',    'ORDER',   1, 'UDP', '2026-03-25 14:53:51'),
 (8, 10, 'Commande ORD-10A9EE80 confirmée ! Total : 899.99 €',     'ORDER',   1, 'UDP', '2026-04-14 19:09:36');
+
+
+-- =============================================================
+--  TABLE : user_trusted_ips
+--  Persists client IP addresses that have passed 2FA verification (trusted for at most 30 days).
+-- =============================================================
+CREATE TABLE user_trusted_ips (
+    user_id       INT          NOT NULL,
+    ip_address    VARCHAR(45)  NOT NULL,
+    trusted_since DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_used_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT pk_user_trusted_ips PRIMARY KEY (user_id, ip_address),
+    CONSTRAINT fk_trusted_ips_user FOREIGN KEY (user_id)
+        REFERENCES users (user_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

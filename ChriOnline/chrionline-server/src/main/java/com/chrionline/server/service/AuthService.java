@@ -326,6 +326,25 @@ public class AuthService {
             userId = (int)   user.get("userId");
             String userEmail = (String) user.get("email");
 
+            // ️ ADAPTIVE 2FA: Check if the client IP is trusted
+            if (userDAO.isIpTrusted(userId, ip)) {
+                String role = (String) user.get("role");
+                if (role == null) role = "CLIENT";
+                String token = SessionManager.createSession(userId, username, role, userEmail);
+
+                ServerLogger.info("LOGIN USER (BYPASS 2FA - IP TRUSTED) OK : " + username + " (IP: " + ip + ")");
+
+                Map<String, Object> result = new HashMap<>();
+                result.put("token",     token);
+                result.put("userId",    userId);
+                result.put("username",  username);
+                result.put("email",     userEmail);
+                result.put("role",      role);
+                result.put("firstName", user.get("firstName"));
+                result.put("lastName",  user.get("lastName"));
+                return Response.ok("Connexion reussie !", result);
+            }
+
             String code = EmailService.generateCode();
             userDAO.saveVerifyCode(userId, code);
             EmailService.send2faEmail(userEmail, code);
@@ -334,7 +353,7 @@ public class AuthService {
             result.put("userId", userId);
             result.put("email",  userEmail);
             result.put("2fa_required", true);
-            ServerLogger.info("LOGIN 2FA TRIGGERED (NEW CODE) : " + username);
+            ServerLogger.info("LOGIN 2FA TRIGGERED (NEW IP: " + ip + ") : " + username);
             return Response.ok("Code 2FA envoye a votre email.", result);
 
         } catch (SQLException e) {
@@ -344,7 +363,7 @@ public class AuthService {
     }
 
     // ── 2FA VERIFY ─────────────────────────────────────────
-    public Response verify2FA(Request request) {
+    public Response verify2FA(Request request, java.net.InetAddress clientAddress) {
         int    userId = request.getInt("userId");
         String code   = request.getString("code");
         boolean isAdmin = Boolean.TRUE.equals(request.get("isAdmin"));
@@ -384,7 +403,11 @@ public class AuthService {
                     String role     = "CLIENT";
                     String token    = SessionManager.createSession(userId, username, role, email);
     
-                    ServerLogger.info("LOGIN CLIENT (2FA PASSED) OK : " + username + " (ID:" + userId + ", role=" + role + ")");
+                    // ADAPTIVE 2FA: Trust the client's current IP address since they passed 2FA!
+                    String ip = clientAddress != null ? clientAddress.getHostAddress() : "127.0.0.1";
+                    userDAO.addTrustedIp(userId, ip);
+
+                    ServerLogger.info("LOGIN CLIENT (2FA PASSED) OK : " + username + " (ID:" + userId + ", role=" + role + ", IP trusted: " + ip + ")");
     
                     Map<String, Object> result = new HashMap<>();
                     result.put("token",     token);
